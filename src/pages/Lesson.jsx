@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BookOpen, Send, ArrowLeft, ArrowRight } from 'lucide-react';
 import InterLessonDialog from '../components/dialog/InterLessonDialog';
 import { motion } from 'framer-motion';
+import mama from '../assets/4.png';
 
 const LessonPage = () => {
   const [lesson, setLesson] = useState(null);
@@ -28,7 +29,7 @@ const LessonPage = () => {
         const data = await response.json();
         setLesson(data);
         setLoading(false);
-        setIsNextAvailable(data.isCompleted);
+        setIsNextAvailable(data.isCompleted); // Initially set based on lesson completion
       } catch (err) {
         setError(err.message);
         setLoading(false);
@@ -42,16 +43,13 @@ const LessonPage = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        console.log('Fetching quiz data...');
         const response = await fetch(`http://127.0.0.1:8000/courses/quizzes/${lessonId}/Qlist/`);
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
         const quizData = await response.json();
-        console.log('Quiz data fetched successfully:', quizData);
-        setQuizzes(quizData);  // Set the quizzes in a separate state
+        setQuizzes(quizData);
       } catch (err) {
-        console.error('Error fetching quiz data:', err);
         setError(err.message);
       }
     };
@@ -64,23 +62,21 @@ const LessonPage = () => {
   // Handle answer submission
   const handleSubmitQuiz = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem("accessToken");
 
-    const userId = localStorage.getItem('userId'); // Get user ID from local storage (or from your authentication system)
-
-    if (!userId) {
+    if (!token) {
       setError('User not found, please log in.');
       return;
     }
 
     try {
-      console.log('Submitting quiz answer...');
       const response = await fetch(`http://127.0.0.1:8000/courses/answers/`, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user: userId,  // Add user field
           answers: [{ question: selectedAnswer.questionId, selected_option: selectedAnswer.answer }],
         }),
       });
@@ -88,29 +84,23 @@ const LessonPage = () => {
       if (response.ok) {
         const result = await response.json();
         setQuizResults(result);
+        setIsNextAvailable(true); // Enable the "Next" button after successful quiz submission
         setIsDialogOpen(true);
-        console.log('Quiz submitted successfully:', result);
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to submit answer');
       }
     } catch (err) {
-      console.error('Error submitting quiz answer:', err);
       setError(err.message);
     }
   };
 
   const handleNavigation = (direction) => {
-    if (direction === 'next' && isNextAvailable) {
-      const newLessonId = lesson.nextLessonId;
-      if (newLessonId) {
-        navigate(`/course/${courseId}/lesson/${newLessonId}`);
-      }
-    } else if (direction === 'previous') {
-      const newLessonId = lesson.previousLessonId;
-      if (newLessonId) {
-        navigate(`/course/${courseId}/lesson/${newLessonId}`);
-      }
+    const currentLessonId = parseInt(lessonId);
+    const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
+    console.log(currentLessonId)
+    if (currentLessonId > 0) {  // Prevent negative or zero lesson IDs
+      navigate(`/courses/${courseId}/lessons/${newLessonId}`);
     }
   };
 
@@ -186,7 +176,7 @@ const LessonPage = () => {
       <div className="flex justify-between items-center p-4 bg-gray-200 dark:bg-gray-800">
         <button
           onClick={() => handleNavigation('previous')}
-          disabled={!lesson.previousLessonId}
+          disabled={lesson.lessonId === 1}  // Disable only if it's the first lesson
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
@@ -194,7 +184,7 @@ const LessonPage = () => {
         </button>
         <button
           onClick={() => handleNavigation('next')}
-          disabled={!isNextAvailable}
+          disabled={!isNextAvailable}  // Enable only when the quiz is passed
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Next Lesson
@@ -206,7 +196,7 @@ const LessonPage = () => {
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
         message={dialogMessage}
-        svgUrl="/api/placeholder/300/200"
+        svgUrl={mama}
       />
     </div>
   );

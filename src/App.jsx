@@ -12,6 +12,7 @@ import Layout from './components/layout/Layout';
 import MyCourses from './pages/Courses';
 import CharacterIntroPage from './pages/characters';
 import FuturisticFamilyPage from './pages/characters1';
+import AboutUs from './pages/AboutUs';
 
 
 
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/cha" element={<CharacterIntroPage/>} />
           <Route path="/cha1" element={<FuturisticFamilyPage />} />
           <Route path="/courses" element={<MyCourses />} />
+          <Route path="/about-us" element={<AboutUs />} />
 
 
         </Routes>
