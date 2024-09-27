@@ -9,10 +9,11 @@ import UserProfilePage from './pages/UserProfile';
 import QuizComponent from './pages/WhatToLearnQuiz';
 import RequestPage from './pages/CourseRequest';
 import Layout from './components/layout/Layout';
-import MyCourses from './pages/Courses';
+import Courses from './pages/Courses';
 import CharacterIntroPage from './pages/characters';
 import FuturisticFamilyPage from './pages/characters1';
 import AboutUs from './pages/AboutUs';
+import MyCourses from './pages/MyCourses';
 
 
 
@@ -46,7 +47,8 @@ const App = () => {
           <Route path="/ask" element={<RequestPage/>} />
           <Route path="/cha" element={<CharacterIntroPage/>} />
           <Route path="/cha1" element={<FuturisticFamilyPage />} />
-          <Route path="/courses" element={<MyCourses />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/about-us" element={<AboutUs />} />
 
 

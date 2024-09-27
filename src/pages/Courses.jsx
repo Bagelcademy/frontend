@@ -8,7 +8,7 @@ import '../css/courses.css';
 
 const ITEMS_PER_PAGE = 20;
 
-const MyCourses = () => {
+const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -124,4 +124,4 @@ const MyCourses = () => {
   );
 };
 
-export default MyCourses;
+export default Courses;
