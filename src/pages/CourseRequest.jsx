@@ -77,7 +77,7 @@ const RequestPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/courses/course-generation/generate_gpt_course/', {
+      const response = await fetch('https://bagelapi.artina.org//courses/course-generation/generate_gpt_course/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

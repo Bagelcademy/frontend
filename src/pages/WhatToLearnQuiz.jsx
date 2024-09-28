@@ -109,7 +109,7 @@ const QuizComponent = () => {
     );
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/courses/Category/popular-courses/', {
+      const response = await fetch('https://bagelapi.artina.org//courses/Category/popular-courses/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

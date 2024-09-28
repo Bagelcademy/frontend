@@ -10,7 +10,7 @@ const UserProfilePage = () => {
     const fetchUserProfile = async () => {
       try {
         const token = localStorage.getItem("accessToken"); // Replace with the key where the token is stored
-        const response = await fetch('http://127.0.0.1:8000/account/user-info/', {
+        const response = await fetch('https://bagelapi.artina.org//account/user-info/', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

@@ -22,7 +22,7 @@ const LessonPage = () => {
     // Fetch lesson content
     const fetchLesson = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/courses/courses/${courseId}/lessons/${lessonId}`);
+        const response = await fetch(`https://bagelapi.artina.org//courses/courses/${courseId}/lessons/${lessonId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch lesson data');
         }
@@ -43,7 +43,7 @@ const LessonPage = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/courses/quizzes/${lessonId}/Qlist/`);
+        const response = await fetch(`https://bagelapi.artina.org//courses/quizzes/${lessonId}/Qlist/`);
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
@@ -70,7 +70,7 @@ const LessonPage = () => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/courses/answers/`, {
+      const response = await fetch(`https://bagelapi.artina.org//courses/answers/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

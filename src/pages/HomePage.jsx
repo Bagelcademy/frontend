@@ -13,7 +13,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/courses/courses/get_all_courses/');
+        const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
         }

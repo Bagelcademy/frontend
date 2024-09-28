@@ -16,7 +16,7 @@ const CourseLandingPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/courses/courses/${id}/with_lessons/`);
+        const response = await fetch(`https://bagelapi.artina.org//courses/courses/${id}/with_lessons/`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -25,7 +25,7 @@ const CourseLandingPage = () => {
         setLoading(false);
 
         // Check if the user is already enrolled in the course
-        const enrollmentResponse = await fetch(`http://127.0.0.1:8000/courses/enroll/${id}/enroll/`, {
+        const enrollmentResponse = await fetch(`https://bagelapi.artina.org//courses/enroll/${id}/enroll/`, {
           method: 'GET',
           credentials: 'include'
         });
@@ -52,7 +52,7 @@ const CourseLandingPage = () => {
   const handleEnrollClick = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`http://127.0.0.1:8000/courses/enroll/${id}/enroll/`, {
+      const response = await fetch(`https://bagelapi.artina.org//courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
