@@ -14,6 +14,7 @@ import CharacterIntroPage from './pages/characters';
 import FuturisticFamilyPage from './pages/characters1';
 import AboutUs from './pages/AboutUs';
 import MyCourses from './pages/MyCourses';
+import Survey from './pages/Survey';
 
 
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/courses" element={<Courses />} />
           <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/servey" element={<Survey />} />
 
 
         </Routes>

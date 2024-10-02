@@ -17,7 +17,17 @@ module.exports = {
       backdropBlur: {
         'md': '10px',
       },
+      keyframes: {
+        explosion: {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.5)', opacity: '0.5' },
+          '100%': { transform: 'scale(2)', opacity: '0' },
+          
+        }
+      },
+
       animation: {
+        'explosion': 'explosion 0.5s ease-out',
         'fade-in-down': 'fadeInDown 1s ease-out',
         'fade-in-up': 'fadeInUp 1s ease-out',
         'bounce': 'bounce 1s infinite',
