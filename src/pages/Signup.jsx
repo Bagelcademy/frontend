@@ -26,7 +26,12 @@ const Signup = () => {
         throw new Error('Registration failed');
       }
       // Navigate to /survey instead of /login after successful registration
+      const data = await response.json();
+      localStorage.setItem('accessToken', data.data.access);
+      localStorage.setItem('refreshToken', data.data.refresh);
+      setIsLoggedIn(true);
       navigate('/survey');
+
     } catch (error) {
       setError('Registration failed. Please try again.');
     }
