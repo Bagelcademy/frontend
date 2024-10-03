@@ -79,7 +79,7 @@ const Survey = () => {
     try {
       const token = localStorage.getItem('accessToken');
 
-      const response = await fetch('https://bagelapi.artina.org/account/user-info/Servay/', { 
+      const response = await fetch('https://bagelapi.artina.org/account/user-info/Survay/', { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -94,6 +94,8 @@ const Survey = () => {
       
       if (response.ok) {
         console.log('Survey submitted successfully');
+        navigate('/');
+
       } else {
         console.error('Failed to submit survey');
       }
