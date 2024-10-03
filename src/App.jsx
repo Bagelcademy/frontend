@@ -15,6 +15,7 @@ import FuturisticFamilyPage from './pages/characters1';
 import AboutUs from './pages/AboutUs';
 import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
+import NotFoundPage from './pages/NotFoundPage';
 
 
 
@@ -39,6 +40,7 @@ const App = () => {
       >
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/course/:id" element={<CourseLandingPage />} />

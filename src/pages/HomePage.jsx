@@ -6,6 +6,7 @@ import heroImage from '../assets/3.png';
 import quizGif from '../assets/2.gif'; // Import the GIFs
 import signupGif from '../assets/3.gif';
 import aiGif from '../assets/ai_section.gif'
+import CounterSection from '../components/ui/CounterSection';
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
+        const response = await fetch('https://bagelapi.artina.org/courses/course-generation/popular_courses/');
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
         }
@@ -56,7 +57,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           ))}
         </div>
       </section>
-
+      <CounterSection />
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-white dark:bg-black text-black dark:text-white">
       <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right"> {/* Added padding-left and padding-right */}
         <h2 className="text-3xl font-bold mb-4">Ready to design your own course?</h2>

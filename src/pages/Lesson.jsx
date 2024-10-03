@@ -19,24 +19,35 @@ const LessonPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch lesson content
-    const fetchLesson = async () => {
+    const checkAndFetchLesson = async () => {
       try {
-        const response = await fetch(`https://bagelapi.artina.org//courses/courses/${courseId}/lessons/${lessonId}`);
-        if (!response.ok) {
+        // First, check if the course needs to be generated
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/contentgenrations/${courseId}/${lessonId}`);
+        
+        if (generationResponse.status === 201) {
+          // Course needs to be generated
+          console.log('Generating course content...');
+          // You might want to show a loading indicator or message here
+          window.location.reload(); // Refresh the page after generation
+          return; // Exit the function early to avoid fetching lesson data before the refresh
+        }
+        
+        // If status is 200 or any other status, proceed with fetching lesson data
+        const lessonResponse = await fetch(`https://bagelapi.artina.org//courses/courses/${courseId}/lessons/${lessonId}`);
+        if (!lessonResponse.ok) {
           throw new Error('Failed to fetch lesson data');
         }
-        const data = await response.json();
+        const data = await lessonResponse.json();
         setLesson(data);
+        setIsNextAvailable(data.isCompleted);
         setLoading(false);
-        setIsNextAvailable(data.isCompleted); // Initially set based on lesson completion
       } catch (err) {
         setError(err.message);
         setLoading(false);
       }
     };
 
-    fetchLesson();
+    checkAndFetchLesson();
   }, [courseId, lessonId]);
 
   // Fetch quiz questions for the lesson
@@ -84,7 +95,7 @@ const LessonPage = () => {
       if (response.ok) {
         const result = await response.json();
         setQuizResults(result);
-        setIsNextAvailable(true); // Enable the "Next" button after successful quiz submission
+        setIsNextAvailable(true);
         setIsDialogOpen(true);
       } else {
         const errorData = await response.json();
@@ -98,8 +109,7 @@ const LessonPage = () => {
   const handleNavigation = (direction) => {
     const currentLessonId = parseInt(lessonId);
     const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
-    console.log(currentLessonId)
-    if (currentLessonId > 0) {  // Prevent negative or zero lesson IDs
+    if (currentLessonId > 0) {
       navigate(`/courses/${courseId}/lessons/${newLessonId}`);
     }
   };

@@ -14,7 +14,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     try {
       const response = await fetch('https://bagelapi.artina.org//account/register/', {
         method: 'POST',
@@ -23,12 +22,11 @@ const Signup = () => {
         },
         body: JSON.stringify({ username, email, password }),
       });
-
       if (!response.ok) {
         throw new Error('Registration failed');
       }
-
-      navigate('/login');
+      // Navigate to /survey instead of /login after successful registration
+      navigate('/survey');
     } catch (error) {
       setError('Registration failed. Please try again.');
     }
@@ -40,8 +38,8 @@ const Signup = () => {
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Sign Up</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="mb-4 ">
-            <Label  className="dark:text-white" htmlFor="username">Username</Label>
+          <div className="mb-4">
+            <Label className="dark:text-white" htmlFor="username">Username</Label>
             <Input
               id="username"
               type="text"
