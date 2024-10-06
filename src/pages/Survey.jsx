@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, GraduationCap, Users, Code, Palette, Coffee, Baby, User, UserPlus, Zap, Search, MessageCircle, Share2, Radio } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const iconMap = {
   Developer: Code,
@@ -42,6 +43,7 @@ const Survey = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [explodingOption, setExplodingOption] = useState(null);
+  const navigate = useNavigate();
 
   const questions = [
     {
@@ -78,7 +80,7 @@ const Survey = () => {
   const submitSurvey = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-
+      console.log(token)
       const response = await fetch('https://bagelapi.artina.org/account/user-info/Survey/', { 
         method: 'POST',
         headers: {

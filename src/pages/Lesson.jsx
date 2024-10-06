@@ -22,7 +22,7 @@ const LessonPage = () => {
     const checkAndFetchLesson = async () => {
       try {
         // First, check if the course needs to be generated
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/contentgenrations/${courseId}/${lessonId}`);
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}`);
         
         if (generationResponse.status === 201) {
           // Course needs to be generated
@@ -33,7 +33,7 @@ const LessonPage = () => {
         }
         
         // If status is 200 or any other status, proceed with fetching lesson data
-        const lessonResponse = await fetch(`https://bagelapi.artina.org//courses/courses/${courseId}/lessons/${lessonId}`);
+        const lessonResponse = await fetch(`https://bagelapi.artina.org/courses/courses/${courseId}/lessons/${lessonId}`);
         if (!lessonResponse.ok) {
           throw new Error('Failed to fetch lesson data');
         }

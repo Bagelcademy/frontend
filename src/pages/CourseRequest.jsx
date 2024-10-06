@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Send, ChevronDown } from 'lucide-react';
-
+import AILoadingDialog from '../components/dialog/AILoadingDialog';
 const languages = [
   { label: 'English', value: 'en' },
   { label: 'Mandarin Chinese', value: 'zh' },
@@ -106,10 +106,12 @@ const RequestPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [courses, setCourses] = useState([]);
-
+  const [isLoadingDialogOpen, setIsLoadingDialogOpen] = useState(false); // New state for controlling the loading dialog
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setIsLoadingDialogOpen(true); // Open the loading dialog
 
     try {
       const response = await fetch('https://bagelapi.artina.org//courses/course-generation/generate_gpt_course/', {
@@ -133,6 +135,7 @@ const RequestPage = () => {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
+      setIsLoadingDialogOpen(false); // Close the loading dialog
     }
   };
 
@@ -231,11 +234,16 @@ const RequestPage = () => {
             ))}
           </motion.div>
         )}
-      </motion.div>
+      </motion.div>      
       <StarField />
+      <AILoadingDialog 
+        isOpen={isLoadingDialogOpen} 
+        onClose={() => setIsLoadingDialogOpen(false)}
+      />
     </div>
   );
 };
+
 
 
 const StarField = () => {

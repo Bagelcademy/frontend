@@ -15,7 +15,7 @@ const Signup = () => {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('https://bagelapi.artina.org//account/register/', {
+      const response = await fetch('https://bagelapi.artina.org/account/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,8 +29,9 @@ const Signup = () => {
       const data = await response.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
-      setIsLoggedIn(true);
       navigate('/survey');
+
+      setIsLoggedIn(true);
 
     } catch (error) {
       setError('Registration failed. Please try again.');
