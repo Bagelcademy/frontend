@@ -56,7 +56,7 @@ const LessonPage = () => {
     const fetchQuiz = async () => {
       try {
 
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`);
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/generate-quiz/${courseId}/${lessonId}/`);
         
         if (generationResponse.status === 201) {
           // Course needs to be generated
