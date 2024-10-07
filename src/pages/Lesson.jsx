@@ -10,7 +10,7 @@ const LessonPage = () => {
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizResults, setQuizResults] = useState(null);
   const [quizzes, setQuizzes] = useState([]);
   const [isNextAvailable, setIsNextAvailable] = useState(false);
@@ -55,12 +55,12 @@ const LessonPage = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/generate-quiz/${courseId}/${lessonId}/`,{
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/generate-quiz/${courseId}/${lessonId}/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-          } });
+          }
+        });
         
         if (generationResponse.status === 201) {
           // Course needs to be generated
@@ -104,7 +104,10 @@ const LessonPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          answers: [{ question: selectedAnswer.questionId, selected_option: selectedAnswer.answer }],
+          answers: Object.entries(selectedAnswers).map(([questionId, answer]) => ({
+            question: questionId,
+            selected_option: answer
+          })),
         }),
       });
 
@@ -166,9 +169,9 @@ const LessonPage = () => {
                     {['option_1', 'option_2', 'option_3', 'option_4'].map((option, index) => (
                       <motion.div
                         key={index}
-                        onClick={() => setSelectedAnswer({ questionId: question.id, answer: question[option] })}
+                        onClick={() => setSelectedAnswers({...selectedAnswers, [question.id]: question[option]})}
                         className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${
-                          selectedAnswer?.questionId === question.id && selectedAnswer.answer === question[option]
+                          selectedAnswers[question.id] === question[option]
                             ? 'border-blue-500 bg-blue-100'
                             : 'border-gray-300 hover:border-blue-400'
                         }`}
@@ -228,64 +231,60 @@ const LessonPage = () => {
         svgUrl={mama}
       />
 
-
-<style jsx global>{`
-  .markdown-content {
-    text-align: justify;
-    line-height: 1.8;
-    color: #333;
-  }
-  .dark .markdown-content {
-    color: #e0e0e0;
-  }
-  .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
-    margin-top: 1.5em;
-    margin-bottom: 0.75em;
-    font-weight: 600;
-  }
-  .markdown-content p {
-    margin-bottom: 1.25em;
-  }
-  .markdown-content ul, .markdown-content ol {
-    padding-left: 1.5em;
-    margin-bottom: 1.25em;
-  }
-  .markdown-content li {
-    margin-bottom: 0.5em;
-  }
-  .markdown-content blockquote {
-    border-left: 4px solid #e0e0e0;
-    padding-left: 1em;
-    margin-left: 0;
-    font-style: italic;
-  }
-  .dark .markdown-content blockquote {
-    border-left-color: #4a4a4a;
-  }
-  .markdown-content code {
-    background-color: #f0f0f0;
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-size: 0.9em;
-  }
-  .dark .markdown-content code {
-    background-color: #2a2a2a;
-  }
-  .markdown-content pre {
-    background-color: #f5f5f5;
-    padding: 1em;
-    border-radius: 5px;
-    overflow-x: auto;
-  }
-  .dark .markdown-content pre {
-    background-color: #1a1a1a;
-  }
-`}</style>
+      <style jsx global>{`
+        .markdown-content {
+          text-align: justify;
+          line-height: 1.8;
+          color: #333;
+        }
+        .dark .markdown-content {
+          color: #e0e0e0;
+        }
+        .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6 {
+          margin-top: 1.5em;
+          margin-bottom: 0.75em;
+          font-weight: 600;
+        }
+        .markdown-content p {
+          margin-bottom: 1.25em;
+        }
+        .markdown-content ul, .markdown-content ol {
+          padding-left: 1.5em;
+          margin-bottom: 1.25em;
+        }
+        .markdown-content li {
+          margin-bottom: 0.5em;
+        }
+        .markdown-content blockquote {
+          border-left: 4px solid #e0e0e0;
+          padding-left: 1em;
+          margin-left: 0;
+          font-style: italic;
+        }
+        .dark .markdown-content blockquote {
+          border-left-color: #4a4a4a;
+        }
+        .markdown-content code {
+          background-color: #f0f0f0;
+          padding: 0.2em 0.4em;
+          border-radius: 3px;
+          font-size: 0.9em;
+        }
+        .dark .markdown-content code {
+          background-color: #2a2a2a;
+        }
+        .markdown-content pre {
+          background-color: #f5f5f5;
+          padding: 1em;
+          border-radius: 5px;
+          overflow-x: auto;
+        }
+        .dark .markdown-content pre {
+          background-color: #1a1a1a;
+        }
+      `}</style>
     </div>
-
   );
 };
-
-
 
 export default LessonPage;
