@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BookOpen, Send, ArrowLeft, ArrowRight } from 'lucide-react';
 import InterLessonDialog from '../components/dialog/InterLessonDialog';
 import { motion } from 'framer-motion';
-import mama from '../assets/4.png';
+import mama from '../assets/87.gif';
 import ReactMarkdown from 'react-markdown';
 
 const LessonPage = () => {
@@ -40,6 +40,9 @@ const LessonPage = () => {
         }
         const data = await lessonResponse.json();
         setLesson(data);
+        if (data.is_last_lesson) {
+        setIsLastLesson(true);
+      }
         setIsNextAvailable(data.isCompleted);
         setLoading(false);
       } catch (err) {
@@ -70,7 +73,7 @@ const LessonPage = () => {
           return; // Exit the function early to avoid fetching lesson data before the refresh
         }
                 
-        const response = await fetch(`https://bagelapi.artina.org//courses/quizzes/${lessonId}/Qlist/`);
+        const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/Qlist/`);
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
         }
@@ -126,11 +129,14 @@ const LessonPage = () => {
   };
 
   const handleNavigation = (direction) => {
+    if (isLastLesson) {
+      setOpenDialog(true);}
+    else {
     const currentLessonId = parseInt(lessonId);
     const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
     if (currentLessonId > 0) {
       navigate(`/courses/${courseId}/lessons/${newLessonId}`);
-    }
+    }}
   };
 
   const handleDialogClose = () => {
@@ -172,8 +178,8 @@ const LessonPage = () => {
                         onClick={() => setSelectedAnswers({...selectedAnswers, [question.id]: question[option]})}
                         className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${
                           selectedAnswers[question.id] === question[option]
-                            ? 'border-blue-500 bg-blue-100'
-                            : 'border-gray-300 hover:border-blue-400'
+                            ? 'border-gray-600 bg-red-100'
+                            : 'border-gray-300 hover:border-red-400'
                         }`}
                       >
                         {question[option]}
@@ -222,6 +228,20 @@ const LessonPage = () => {
           Next Lesson
           <ArrowRight className="w-4 h-4 ml-2" />
         </button>
+              {/* Dialog for certificate */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Congratulations!</DialogTitle>
+        <DialogContent>
+          <img src={pic} alt="Congratulations" />
+          <p>Would you like to get a certificate for this course?</p>
+          <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
+            Get Certificate
+          </Button>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confetti animation */}
+      {openDialog && <Confetti />}
       </div>
 
       <InterLessonDialog

@@ -19,7 +19,7 @@ const InterLessonDialog = ({ isOpen, onClose, message, svgUrl }) => {
         </div>
         <button
           onClick={onClose}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300"
+          className="w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition duration-300"
         >
           OK
         </button>
