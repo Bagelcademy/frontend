@@ -5,8 +5,11 @@ import InterLessonDialog from '../components/dialog/InterLessonDialog';
 import { motion } from 'framer-motion';
 import mama from '../assets/87.gif';
 import ReactMarkdown from 'react-markdown';
+import Confetti from 'react-confetti';
+import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 
 const LessonPage = () => {
+  const [openDialog, setOpenDialog] = useState(false); 
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,14 +20,15 @@ const LessonPage = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const { courseId, lessonId } = useParams();
+  const [isLastLesson, setIsLastLesson] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
       try {
         // First, check if the course needs to be generated
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}`);
-        
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`)
+
         if (generationResponse.status === 201) {
           // Course needs to be generated
           console.log('Generating course content...');
@@ -232,7 +236,7 @@ const LessonPage = () => {
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogTitle>Congratulations!</DialogTitle>
         <DialogContent>
-          <img src={pic} alt="Congratulations" />
+          <img src={mama} alt="Congratulations" />
           <p>Would you like to get a certificate for this course?</p>
           <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
             Get Certificate
