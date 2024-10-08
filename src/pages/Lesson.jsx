@@ -175,15 +175,15 @@ const LessonPage = () => {
               quizzes.map((quiz) =>
                 quiz.questions.map((question) => (
                   <div key={question.id} className="mb-4">
-                    <p className="font-semibold">{question.question_text}</p>
+                    <p className="font-semibold dark:text-white">{question.question_text}</p>
                     {['option_1', 'option_2', 'option_3', 'option_4'].map((option, index) => (
                       <motion.div
                         key={index}
                         onClick={() => setSelectedAnswers({...selectedAnswers, [question.id]: question[option]})}
                         className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${
                           selectedAnswers[question.id] === question[option]
-                            ? 'border-gray-600 bg-red-100'
-                            : 'border-gray-300 hover:border-red-400'
+                            ? 'border-gray-600 dark:text-white bg-red-100 dark:bg-red-600'
+                            : 'border-gray-500 dark:text-white hover:border-red-400'
                         }`}
                       >
                         {question[option]}

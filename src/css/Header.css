@@ -1,0 +1,79 @@
+/* Header.css or index.css */
+
+header {
+    background: rgba(255, 255, 255, 0.2); /* Increased transparency for better visibility of the blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+    backdrop-filter: blur(10px); /* Blur effect */
+    position: relative; /* Ensure positioning context */
+    z-index: 50; /* Bring it above other content */
+  }
+  
+  nav {
+    padding: 10px 20px; /* Adjust padding for better spacing */
+  }
+  
+  header a {
+    transition: color 0.3s ease; /* Smooth transition for link colors */
+  }
+  
+  header a:hover {
+    color: rgba(255, 255, 255, 0.8); /* Change link color on hover for visibility */
+  }
+  
+  button {
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Button transition for hover effect */
+  }
+  
+  button:hover {
+    transform: scale(1.05); /* Slight scale up on hover */
+  }
+  
+/* Add to Header.css or index.css */
+
+nav {
+    padding: 10px 20px; /* Adjust padding for better spacing */
+  }
+  
+  .text-xl {
+    font-size: 1.5rem; /* Increase the size of the title */
+  }
+  
+  .text-gray-700,
+  .text-gray-900,
+  .text-gray-300 {
+    font-weight: 500; /* Make text a bit bolder */
+  }
+  
+  .button {
+    border-radius: 9999px; /* Fully rounded buttons */
+  }
+/* Header.css or index.css */
+
+header {
+  background: rgba(255, 255, 255, 0.2); /* Increased transparency for better visibility of the blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+  backdrop-filter: blur(10px); /* Blur effect */
+  position: relative; /* Ensure positioning context */
+  z-index: 50; /* Bring it above other content */
+}
+
+nav {
+  padding: 10px 20px; /* Adjust padding for better spacing */
+}
+
+header a {
+  transition: color 0.3s ease; /* Smooth transition for link colors */
+}
+
+header a:hover {
+  color: rgba(255, 255, 255, 0.8); /* Change link color on hover for visibility */
+}
+
+button {
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Button transition for hover effect */
+}
+
+button:hover {
+  transform: scale(1.05); /* Slight scale up on hover */
+}
+    

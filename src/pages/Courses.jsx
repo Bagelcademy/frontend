@@ -33,7 +33,7 @@ const Courses = () => {
   };
 
   const fetchCategories = async () => {
-    const response = await fetch('/api/categories');
+    const response = await fetch('https://bagelapi.artina.org/courses/Category/');
     const data = await response.json();
     setCategories(data);
   };

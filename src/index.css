@@ -77,3 +77,22 @@ button:focus-visible {
 }
 
 
+/* Add to Header.css or index.css */
+
+nav {
+  padding: 10px 20px; /* Adjust padding for better spacing */
+}
+
+.text-xl {
+  font-size: 1.5rem; /* Increase the size of the title */
+}
+
+.text-gray-700,
+.text-gray-900,
+.text-gray-300 {
+  font-weight: 500; /* Make text a bit bolder */
+}
+
+.button {
+  border-radius: 9999px; /* Fully rounded buttons */
+}

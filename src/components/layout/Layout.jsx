@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './header';
 import Footer from './footer';
 
-const Layout = ({ children, isLoggedIn, isDarkTheme, toggleTheme, handleLogout }) => {
+const Layout = ({ children, isLoggedIn, isDarkTheme, toggleTheme, handleLogout ,changeLanguage}) => {
   return (
     <div className={`min-h-screen ${isDarkTheme ? 'dark' : ''} bg-white dark:bg-gray-900 transition-colors duration-300 flex flex-col`}>
       <Header 
@@ -10,6 +10,8 @@ const Layout = ({ children, isLoggedIn, isDarkTheme, toggleTheme, handleLogout }
         isDarkTheme={isDarkTheme}
         toggleTheme={toggleTheme}
         handleLogout={handleLogout}
+        changeLanguage={changeLanguage} // Pass it here
+
       />
       <main className="flex-grow">
         {children}

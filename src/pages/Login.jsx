@@ -31,7 +31,8 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
-      setIsLoggedIn(true);
+      localStorage.setItem('isLoggedIn', 'true');
+      // setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
       setError('Invalid username or password');

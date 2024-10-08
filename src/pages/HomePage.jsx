@@ -7,9 +7,13 @@ import quizGif from '../assets/2.gif'; // Import the GIFs
 import signupGif from '../assets/3.gif';
 import aiGif from '../assets/ai_section.gif'
 import CounterSection from '../components/ui/CounterSection';
+import { useTranslation } from 'react-i18next'; // Import the hook
+
+
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Call the useTranslation hook
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -34,10 +38,10 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
         <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 animate-fade-in-down">Welcome to Learning</h2>
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 animate-fade-in-down">{t('Welcome')}</h2>
             <Link to="./courses">
               <Button size="lg" className="animate-bounce bg-buttonColor text-white hover:bg-opacity-80">
-                Explore Courses
+                {t('Explore')}
               </Button>
             </Link>
           </div>
@@ -45,7 +49,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       </section>
 
       <section className="py-12 px-4 bg-lightBackground dark:bg-darkBackground">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">Popular Courses</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('PopularCourses')}</h2>
         <div className="flex flex-wrap justify-center gap-4">
           {courses.map((course) => (
             <Card key={course.id} className="w-64 transition-transform hover:scale-105 border border-borderColor">
@@ -60,7 +64,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       <CounterSection />
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-white dark:bg-black text-black dark:text-white">
       <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right"> {/* Added padding-left and padding-right */}
-        <h2 className="text-3xl font-bold mb-4">Ready to design your own course?</h2>
+        <h2 className="text-3xl font-bold mb-4">{t('Ready to design your own course?')}</h2>
         <p className="mb-6">Design a course based on any subject or any languages you want!</p>
         <Link to="/ask">
           <Button variant="secondary" size="lg" className="bg-buttonColor text-white hover:bg-gray-800">
