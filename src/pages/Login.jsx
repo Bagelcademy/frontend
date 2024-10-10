@@ -30,9 +30,9 @@ const Login = ({ setIsLoggedIn }) => {
   }, []);
 
   const initializeGoogleLogin = () => {
-    if (window.google && import.meta.env.VITE_GOOGLE_CLIENT_ID) {
+    if (window.google && '59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com') {
       window.google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        client_id: '59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com',
         callback: handleGoogleLogin,
       });
       window.google.accounts.id.renderButton(
@@ -130,7 +130,7 @@ const Login = ({ setIsLoggedIn }) => {
           </div>
           <div className="mb-4">
             <ReCAPTCHA
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              sitekey="6Lffcl0qAAAAAAvWf8DvfCrpteArawryjhlE3Gli"
               onChange={onRecaptchaChange}
             />
           </div>
