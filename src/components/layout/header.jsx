@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sun, Globe ,Moon} from 'lucide-react';
+import {  Globe ,Moon} from 'lucide-react';
 import { Button } from '../ui/button';
+import sun from '../../assets/sun.svg'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -49,9 +50,9 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
           ) : (
             <Link to="/login" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('login')}</Link>
           )}
-          <Button onClick={toggleTheme} size="icon" className="ml-2 text-yellow-400 ">
-            {isDarkTheme ? <Moon className="w-6 h-6 mr-2" /> : <Sun className="w-6 h-6 mr-2" />}
-          </Button>
+<Button onClick={toggleTheme}  size="icon" className="bg-black text-white ml-2 text-yellow-400">
+  <img src={sun} className="w-6 h-6 mr-2" alt="Sun Icon" />
+</Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">

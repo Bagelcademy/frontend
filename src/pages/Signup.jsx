@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,6 +10,18 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,18 +37,50 @@ const Signup = () => {
       if (!response.ok) {
         throw new Error('Registration failed');
       }
-      // Navigate to /survey instead of /login after successful registration
       const data = await response.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
       navigate('/survey');
-
-      setIsLoggedIn(true);
-
     } catch (error) {
       setError('Registration failed. Please try again.');
     }
   };
+
+  const handleGoogleSignup = async (response) => {
+    try {
+      const backendResponse = await fetch('https://bagelapi.artina.org/account/google-signup/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token: response.credential }),
+      });
+      
+      if (!backendResponse.ok) {
+        throw new Error('Google signup failed');
+      }
+      
+      const data = await backendResponse.json();
+      localStorage.setItem('accessToken', data.data.access);
+      localStorage.setItem('refreshToken', data.data.refresh);
+      navigate('/survey');
+    } catch (error) {
+      setError('Google signup failed. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: "59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com",
+        callback: handleGoogleSignup,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleSignupButton'),
+        { theme: 'outline', size: 'large', width: '100%' }
+      );
+    }
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -78,7 +122,13 @@ const Signup = () => {
             Sign Up
           </Button>
         </form>
-        <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+        <div className="mt-4 flex items-center justify-between">
+          <hr className="w-full border-t border-gray-300" />
+          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">or</span>
+          <hr className="w-full border-t border-gray-300" />
+        </div>
+        <div id="googleSignupButton" className="mt-4"></div>
+        <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{' '}
           <a href="/login" className="text-blue-500 hover:underline">
             Log in
