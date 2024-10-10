@@ -13,16 +13,36 @@ const Login = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    const loadGoogleScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogleLogin;
+      document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
     };
+
+    return loadGoogleScript();
   }, []);
+
+  const initializeGoogleLogin = () => {
+    if (window.google && import.meta.env.VITE_GOOGLE_CLIENT_ID) {
+      window.google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        callback: handleGoogleLogin,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleLoginButton'),
+        { theme: 'outline', size: 'large', width: '100%' }
+      );
+    } else {
+      console.error('Google client library not loaded or client ID not set');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +52,7 @@ const Login = ({ setIsLoggedIn }) => {
       return;
     }
     try {
-      const response = await fetch('https://bagelapi.artina.org//account/login/', {
+      const response = await fetch('https://bagelapi.artina.org/account/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,15 +67,15 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
       localStorage.setItem('isLoggedIn', 'true');
-      // setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
       setError('Invalid username or password');
     }
   };
+
   const handleGoogleLogin = async (response) => {
     try {
-      const backendResponse = await fetch('https://bagelapi.artina.org//account/google-login/', {
+      const backendResponse = await fetch('https://bagelapi.artina.org/account/google-login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,30 +92,15 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
       localStorage.setItem('isLoggedIn', 'true');
-      // setIsLoggedIn(true);
       navigate('/');
     } catch (error) {
       setError('Google login failed. Please try again.');
     }
   };
 
-
   const onRecaptchaChange = (token) => {
     setRecaptchaToken(token);
   };
-
-  useEffect(() => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: handleGoogleLogin,
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById('googleLoginButton'),
-        { theme: 'outline', size: 'large', width: '100%' }
-      );
-    }
-  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -125,8 +130,8 @@ const Login = ({ setIsLoggedIn }) => {
           </div>
           <div className="mb-4">
             <ReCAPTCHA
-                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}  // Ensure this key is correct
-                onChange={onRecaptchaChange}
+              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
             />
           </div>
           <Button className="bg-buttonColor w-full text-white" type="submit">
