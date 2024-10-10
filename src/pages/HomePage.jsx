@@ -3,17 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import heroImage from '../assets/3.png';
-import quizGif from '../assets/2.gif'; // Import the GIFs
+import quizGif from '../assets/2.gif';
 import signupGif from '../assets/3.gif';
-import aiGif from '../assets/ai_section.gif'
+import aiGif from '../assets/ai_section.gif';
 import CounterSection from '../components/ui/CounterSection';
-import { useTranslation } from 'react-i18next'; // Import the hook
-
+import { useTranslation } from 'react-i18next';
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
-  const { t } = useTranslation(); // Call the useTranslation hook
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -63,42 +62,42 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       </section>
       <CounterSection />
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-white dark:bg-black text-black dark:text-white">
-      <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right"> {/* Added padding-left and padding-right */}
-        <h2 className="text-3xl font-bold mb-4">{t('Ready to design your own course?')}</h2>
-        <p className="mb-6">Design a course based on any subject or any languages you want!</p>
-        <Link to="/ask">
-          <Button variant="secondary" size="lg" className="bg-buttonColor text-white hover:bg-gray-800">
-            go to AI
-          </Button>
-        </Link>
-      </div>
-      <div className="md:w-1/2 md:pl-20 md:pr-8 flex justify-center">
-        <img src={aiGif} alt="Sign Up" className="w-64 md:w-96" />
-      </div>
-    </section>
+        <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right">
+          <h2 className="text-3xl font-bold mb-4">{t('Ready to design your own course?')}</h2>
+          <p className="mb-6">{t('Design a course based on any subject or any languages you want!')}</p>
+          <Link to="/ask">
+            <Button variant="secondary" size="lg" className="bg-buttonColor text-white hover:bg-gray-800">
+              {t('go to AI')}
+            </Button>
+          </Link>
+        </div>
+        <div className="md:w-1/2 md:pl-20 md:pr-8 flex justify-center">
+          <img src={aiGif} alt="Sign Up" className="w-64 md:w-96" />
+        </div>
+      </section>
 
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-lightBackground dark:bg-gray-800">
         <div className="md:w-1/2 mt-6 md:mt-0 flex justify-center">
           <img src={quizGif} alt="Quiz" className="w-64 md:w-96" />
         </div>
-        <div className="md:w-1/2 text-center md:text-left md:pl-8 md:pr-8"> {/* Added padding-left and padding-right */}
-          <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Not sure what to learn?</h2>
-          <p className="mb-6 text-gray-700 dark:text-gray-300">Take our quiz to find the perfect course for you!</p>
+        <div className="md:w-1/2 text-center md:text-left md:pl-8 md:pr-8">
+          <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">{t('Not sure what to learn?')}</h2>
+          <p className="mb-6 text-gray-700 dark:text-gray-300">{t('Take our quiz to find the perfect course for you!')}</p>
           <Link to="/quiz">
             <Button size="lg" className="animate-pulse bg-buttonColor text-white hover:bg-opacity-80">
-              Take Quiz
+              {t('Take Quiz')}
             </Button>
           </Link>
         </div>
       </section>
 
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-white dark:bg-black text-black dark:text-white">
-        <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right"> {/* Added padding-left and padding-right */}
-          <h2 className="text-3xl font-bold mb-4">Ready to start learning?</h2>
-          <p className="mb-6">Sign up now and get access to all our courses!</p>
+        <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right">
+          <h2 className="text-3xl font-bold mb-4">{t('Ready to start learning?')}</h2>
+          <p className="mb-6">{t('Sign up now and get access to all our courses!')}</p>
           <Link to="/signup">
             <Button variant="secondary" size="lg" className="bg-buttonColor text-white hover:bg-gray-800">
-              Sign Up
+              {t('Sign Up')}
             </Button>
           </Link>
         </div>

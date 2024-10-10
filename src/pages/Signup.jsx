@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import i18next hook
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 
 const Signup = () => {
+  const { t } = useTranslation(); // Use translation hook
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,13 +44,13 @@ const Signup = () => {
       localStorage.setItem('refreshToken', data.data.refresh);
       navigate('/survey');
     } catch (error) {
-      setError('Registration failed. Please try again.');
+      setError(t('registrationFailed')); // Use translation for error message
     }
   };
 
   const handleGoogleSignup = async (response) => {
     try {
-      const backendResponse = await fetch('https://bagelapi.artina.org/account/google-signup/', {
+      const backendResponse = await fetch('https://bagelapi.artina.org/account/login/google_login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +67,7 @@ const Signup = () => {
       localStorage.setItem('refreshToken', data.data.refresh);
       navigate('/survey');
     } catch (error) {
-      setError('Google signup failed. Please try again.');
+      setError(t('googleSignupFailed')); // Use translation for error message
     }
   };
 
@@ -85,11 +87,11 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('signupTitle')}</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="username">Username</Label>
+            <Label className="dark:text-white" htmlFor="username">{t('username')}</Label>
             <Input
               id="username"
               type="text"
@@ -99,7 +101,7 @@ const Signup = () => {
             />
           </div>
           <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="email">Email</Label>
+            <Label className="dark:text-white" htmlFor="email">{t('email')}</Label>
             <Input
               id="email"
               type="email"
@@ -109,7 +111,7 @@ const Signup = () => {
             />
           </div>
           <div className="mb-6">
-            <Label className="dark:text-white" htmlFor="password">Password</Label>
+            <Label className="dark:text-white" htmlFor="password">{t('password')}</Label>
             <Input
               id="password"
               type="password"
@@ -119,19 +121,19 @@ const Signup = () => {
             />
           </div>
           <Button type="submit" className="bg-buttonColor w-full text-white">
-            Sign Up
+            {t('signupButton')}
           </Button>
         </form>
         <div className="mt-4 flex items-center justify-between">
           <hr className="w-full border-t border-gray-300" />
-          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">or</span>
+          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">{t('orText')}</span>
           <hr className="w-full border-t border-gray-300" />
         </div>
         <div id="googleSignupButton" className="mt-4"></div>
         <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
+          {t('alreadyHaveAccount')}{' '}
           <a href="/login" className="text-blue-500 hover:underline">
-            Log in
+            {t('login')}
           </a>
         </p>
       </div>

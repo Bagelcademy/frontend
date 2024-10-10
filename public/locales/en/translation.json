@@ -10,6 +10,32 @@
     "Explore":"Explore",
     "PopularCourses":"Popular Courses",
     "Ready to design your own course?":"Ready to design your own course?",
-    "Design a course based on any subject or any languages you want!":"Design a course based on any subject or any languages you want!"
+    "Design a course based on any subject or any languages you want!":"Design a course based on any subject or any languages you want!",
 
+    "signupTitle": "Sign Up",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "signupButton": "Sign Up",
+    "orText": "or",
+    "googleSignupFailed": "Google signup failed. Please try again.",
+    "registrationFailed": "Registration failed. Please try again.",
+    "alreadyHaveAccount": "Already have an account?",
+    
+      "loading": "Loading...",
+      "error": "Error: {{message}}",
+      "no_course": "No course found",
+      "course_content": "Course Content",
+      "go_button": "Go",
+      "enroll_button": "Enroll in Course",
+      "enrolled": "You have enrolled already",
+      "student_feedback": "What Students Are Saying",
+      "comments": {
+        "john": "This course completely changed my perspective on the topic. Highly recommend!",
+        "jane": "Amazing content and great instructor. Learned a lot!",
+        "samuel": "The course was very engaging and informative. Worth every minute.",
+        "emily": "Great course, very well structured and easy to follow.",
+        "michael": "Loved the practical examples and exercises. It really helped me understand the concepts."
+      }
+      
   }

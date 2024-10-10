@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Calendar, User, BookOpen } from 'lucide-react';
-import Slider from 'react-slick'; 
+import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { useTranslation } from 'react-i18next'; // Importing the translation hook
 
 const CourseLandingPage = () => {
+  const { t } = useTranslation(); // Initialize the translation hook
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isEnrolled, setIsEnrolled] = useState(false); // State for tracking enrollment
+  const [isEnrolled, setIsEnrolled] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -24,7 +26,6 @@ const CourseLandingPage = () => {
         setCourse(data);
         setLoading(false);
 
-        // Check if the user is already enrolled in the course
         const enrollmentResponse = await fetch(`https://bagelapi.artina.org//courses/enroll/${id}/enroll/`, {
           method: 'GET',
           credentials: 'include'
@@ -57,12 +58,11 @@ const CourseLandingPage = () => {
         credentials: 'include',
         headers: {
           'Authorization': `Bearer ${token}`
-          // 'Content-Type': 'application/json'
         }
       });
 
       if (response.ok) {
-        setIsEnrolled(true); // Update the button state to reflect enrollment
+        setIsEnrolled(true);
       } else {
         const data = await response.json();
         console.error("Error enrolling in course:", data);
@@ -73,11 +73,11 @@ const CourseLandingPage = () => {
   };
 
   const comments = [
-    { name: 'John Doe', comment: 'This course completely changed my perspective on the topic. Highly recommend!' },
-    { name: 'Jane Smith', comment: 'Amazing content and great instructor. Learned a lot!' },
-    { name: 'Samuel Johnson', comment: 'The course was very engaging and informative. Worth every minute.' },
-    { name: 'Emily Davis', comment: 'Great course, very well structured and easy to follow.' },
-    { name: 'Michael Brown', comment: 'Loved the practical examples and exercises. It really helped me understand the concepts.' }
+    { name: 'John Doe', comment: t('This course completely changed my perspective on the topic. Highly recommend!') },
+    { name: 'Jane Smith', comment: t('Amazing content and great instructor. Learned a lot!') },
+    { name: 'Samuel Johnson', comment: t('The course was very engaging and informative. Worth every minute.') },
+    { name: 'Emily Davis', comment: t('Great course, very well structured and easy to follow.') },
+    { name: 'Michael Brown', comment: t('Loved the practical examples and exercises. It really helped me understand the concepts.') }
   ];
 
   const sliderSettings = {
@@ -96,9 +96,9 @@ const CourseLandingPage = () => {
     ]
   };
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
+  if (loading) return <div className="text-center p-4">{t('Loading...')}</div>; // Use translation
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
-  if (!course) return <div className="text-center p-4">No course found</div>;
+  if (!course) return <div className="text-center p-4">{t('No course found')}</div>; // Use translation
 
   return (
     <div className="bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
@@ -125,7 +125,7 @@ const CourseLandingPage = () => {
         </div>
 
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Course Content</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('Course Content')}</h2> {/* Use translation */}
           <ul className="space-y-4">
             {course.lessons?.map((lesson, index) => (
               <li key={index} className="flex items-start bg-lightBackground dark:bg-gray-700 rounded-lg p-4 transition-transform transform hover:scale-105">
@@ -133,7 +133,7 @@ const CourseLandingPage = () => {
                   onClick={() => handleLessonClick(lesson.id)} 
                   className="bg-gradient-to-r from-green-400 to-blue-500 text-white p-2 rounded hover:bg-gradient-to-l from-blue-500 to-green-400 transition duration-300 mr-3"
                 >
-                  Go
+                  {t('Go')} {/* Use translation */}
                 </button>
                 <BookOpen className="w-5 h-5 mr-3 mt-1" />
                 <div>
@@ -151,11 +151,11 @@ const CourseLandingPage = () => {
           disabled={isEnrolled}
           className={`py-2 px-4 rounded ${isEnrolled ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-buttonColor to-red-500 text-white hover:scale-105 transition-transform'}`}
         >
-          {isEnrolled ? 'You have enrolled already' : 'Enroll in Course'}
+          {isEnrolled ? t('You have enrolled already') : t('Enroll in Course')} {/* Use translation */}
         </button>
 
         <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4">What Students Are Saying</h2>
+          <h2 className="text-2xl font-semibold mb-4">{t('What Students Are Saying')}</h2> {/* Use translation */}
           <Slider {...sliderSettings}>
             {comments.map((comment, index) => (
               <Comment key={index} name={comment.name} text={comment.comment} />

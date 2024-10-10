@@ -11,6 +11,8 @@ import {
 } from '../ui/dropdown-menu';
 import '../../css/Header.css'; // Import your new CSS file if you create one
 import { useTranslation } from 'react-i18next'; // Import the hook
+import GoogleTranslateWidget from './GoogleTranslateWidget';
+import CustomLanguageSelector from './CustomLanguageSelector';
 
 const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +43,7 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
         <div className="flex items-center space-x-4">
           <Link to="/" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('home')}</Link>
           <Link to="/courses" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('courses')}</Link>
+
           {isLoggedIn ? (
             <>
               <Link to="/my-courses" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('myCourses')}</Link>
@@ -56,7 +59,7 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Globe className="h-6 w-6" />
+                <Globe className="h-6 w-6 bg-white text-black" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>

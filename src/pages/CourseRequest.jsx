@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Send, ChevronDown } from 'lucide-react';
 import AILoadingDialog from '../components/dialog/AILoadingDialog';
+import { useTranslation } from 'react-i18next'; // Import the hook
+
 const languages = [
   { label: 'English', value: 'English' },
   { label: 'Mandarin Chinese', value: 'Mandarin Chinese' },
@@ -138,8 +140,10 @@ const RequestPage = () => {
       setIsLoadingDialogOpen(false); // Close the loading dialog
     }
   };
+  const { t } = useTranslation();
 
   return (
+
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
@@ -153,15 +157,15 @@ const RequestPage = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="text-4xl font-bold text-white text-center mb-6"
         >
-          Explore the Universe of Knowledge
-        </motion.h1>
+         {t('Explore the Universe of Knowledge')}
+         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-xl text-blue-200 text-center mb-8"
         >
-          Ask what you can't find, and let curiosity be your guide!
+         {t('Ask what you can\'t find, and let curiosity be your guide!')}
         </motion.p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <motion.textarea
@@ -170,7 +174,7 @@ const RequestPage = () => {
             transition={{ delay: 0.6, duration: 0.5 }}
             value={request}
             onChange={(e) => setRequest(e.target.value)}
-            placeholder="What knowledge are you seeking?"
+            placeholder={t('What knowledge are you seeking?')}
             className="w-full p-4 bg-white bg-opacity-20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
             rows="4"
           />
@@ -203,7 +207,7 @@ const RequestPage = () => {
             className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-semibold flex items-center justify-center space-x-2 disabled:opacity-50"
             type="submit"
           >
-            <span>Launch Your Question</span>
+            <span>{t('Launch Your Question')}</span>
             <Send className="w-5 h-5" />
           </motion.button>
         </form>
@@ -217,8 +221,8 @@ const RequestPage = () => {
             }`}
           >
             {submitStatus === 'success'
-              ? 'Your quest for knowledge has begun!'
-              : 'Oops! There was an error. Please try again.'}
+              ? t('Your quest for knowledge has begun!')
+              : t('Oops! There was an error. Please try again.')}
           </motion.div>
         )}
         {courses.length > 0 && (

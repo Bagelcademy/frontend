@@ -4,8 +4,10 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import ReCAPTCHA from "react-google-recaptcha";
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const Login = ({ setIsLoggedIn }) => {
+  const { t } = useTranslation(); // Initialize translation hook
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -48,7 +50,7 @@ const Login = ({ setIsLoggedIn }) => {
     e.preventDefault();
     setError('');
     if (!recaptchaToken) {
-      setError('Please complete the reCAPTCHA');
+      setError(t('recaptchaError')); // Use translation for error message
       return;
     }
     try {
@@ -60,7 +62,7 @@ const Login = ({ setIsLoggedIn }) => {
         body: JSON.stringify({ username, password, recaptcha_token: recaptchaToken }),
       });
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error(t('invalidCredentials')); // Use translation for error message
       }
       const data = await response.json();
       localStorage.setItem('accessToken', data.data.access);
@@ -69,7 +71,7 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/');
     } catch (error) {
-      setError('Invalid username or password');
+      setError(t('invalidCredentials')); // Use translation for error message
     }
   };
 
@@ -84,7 +86,7 @@ const Login = ({ setIsLoggedIn }) => {
       });
       
       if (!backendResponse.ok) {
-        throw new Error('Google login failed');
+        throw new Error(t('googleLoginFailed')); // Use translation for error message
       }
       
       const data = await backendResponse.json();
@@ -94,7 +96,7 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/');
     } catch (error) {
-      setError('Google login failed. Please try again.');
+      setError(t('googleLoginFailed')); // Use translation for error message
     }
   };
 
@@ -105,11 +107,11 @@ const Login = ({ setIsLoggedIn }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('login')}</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="username">Username</Label>
+            <Label className="dark:text-white" htmlFor="username">{t('username')}</Label>
             <Input
               id="username"
               type="text"
@@ -119,7 +121,7 @@ const Login = ({ setIsLoggedIn }) => {
             />
           </div>
           <div className="mb-6">
-            <Label className="dark:text-white" htmlFor="password">Password</Label>
+            <Label className="dark:text-white" htmlFor="password">{t('password')}</Label>
             <Input
               id="password"
               type="password"
@@ -135,19 +137,19 @@ const Login = ({ setIsLoggedIn }) => {
             />
           </div>
           <Button className="bg-buttonColor w-full text-white" type="submit">
-            Log In
+            {t('login')} {/* Use translation for button text */}
           </Button>
         </form>
         <div className="mt-4 flex items-center justify-between">
           <hr className="w-full border-t border-gray-300" />
-          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">or</span>
+          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">{t('or')}</span>
           <hr className="w-full border-t border-gray-300" />
         </div>
         <div id="googleLoginButton" className="mt-4"></div>
         <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
+          {t('signupPrompt')}{' '}
           <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
+            {t('signupLink')} {/* Use translation for signup link */}
           </a>
         </p>
       </div>

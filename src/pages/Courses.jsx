@@ -5,7 +5,7 @@ import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import CourseCard from '../components/ui/coursecard';
 import '../css/courses.css';
-
+import { useTranslation } from 'react-i18next'; 
 const ITEMS_PER_PAGE = 20;
 
 const Courses = () => {
@@ -16,6 +16,7 @@ const Courses = () => {
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(1);
   const navigate = useNavigate(); // Use useNavigate to navigate programmatically
+  const { t } = useTranslation(); // Call the useTranslation hook
 
   useEffect(() => {
     fetchCourses();
@@ -76,22 +77,22 @@ const Courses = () => {
   return (
     <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">Courses</h1>
+        <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <Input
             type="text"
-            placeholder="Search courses..."
+            placeholder={t('Search courses...')}
             value={searchTerm}
             onChange={handleSearchChange}
             className="md:w-1/2 border border-borderColor dark:border-gray-700"
           />
           <Select onValueChange={handleCategoryChange} value={selectedCategory} className="md:w-1/4">
             <SelectTrigger className="border border-borderColor dark:border-gray-700">
-              <SelectValue placeholder="Select Category" />
+              <SelectValue placeholder={t('Select Category')} />
             </SelectTrigger>
             <SelectContent className="bg-lightBackground dark:bg-darkBackground">
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="">{t('All Categories')}</SelectItem>
               {categories.map(category => (
                 <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
               ))}
@@ -101,7 +102,7 @@ const Courses = () => {
             onClick={handleAskClick} 
             className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
           >
-            Did'nt you find what you were looking for?
+            {t("Didn't you find what you were looking for?")}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-light-move"></span>
           </Button>
         </div>
@@ -111,14 +112,6 @@ const Courses = () => {
             <CourseCard key={course.id} course={course} />
           ))}
         </div>
-
-        {displayedCourses.length < courses.length && (
-          <div className="mt-8 text-center">
-            <Button onClick={handleLoadMore} className="bg-buttonColor  text-white py-2 px-4 rounded ">
-              Load More
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

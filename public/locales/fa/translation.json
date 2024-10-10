@@ -5,9 +5,131 @@
     "myCourses": "درس های من",
     "login": "ورود",
     "logout": "خروج",
+    "getting PRO":"مشترک شدن",
+
     "Welcome":"چی میخوای یاد بگیری؟",
     "Explore":"یه دور بزنیم",
-    "PopularCourses":"پرطرفدارها",
-    "Ready to design your own course?":"آماده ای کلاس درس خودت رو با هوش مصنوعی طراحی کنی؟",
-    "getting PRO":"خرید اشتراک"
+  "PopularCourses": "دوره های محبوب",
+  "Ready to design your own course?": "آیا آماده طراحی دوره خود هستید؟",
+  "Not sure what to learn?": "نمی‌دانید چه چیزی را یاد بگیرید؟",
+  "Take our quiz to find the perfect course for you!": "به آزمون ما شرکت کنید تا دوره مناسب برای شما پیدا شود!",
+  "Ready to start learning?": "آماده شروع یادگیری هستید؟",
+  "Sign up now and get access to all our courses!": "همین حالا ثبت نام کنید و به همه دوره‌های ما دسترسی پیدا کنید!",
+  "go to AI": "به هوش مصنوعی بروید",
+  "Take Quiz": "آزمون را بگیرید",
+
+    
+
+    "About BagelAcademy": "درباره بگل آکادمی",
+    "Welcome to": "خوش آمدید به",
+    "your go-to platform for engaging, gamified learning!": "پلتفرم شما برای یادگیری جذاب و بازی‌گونه!",      "Our unique approach to education combines interactive lessons with personalized motivational support from the Bagel family—Dad Bagel, Mom Bagel, and their two enthusiastic kids.": "رویکرد منحصر به فرد ما به آموزش شامل درس‌های تعاملی و پشتیبانی انگیزشی شخصی‌سازی شده از خانواده بگل است—پدر بگل، مادر بگل، و دو فرزند پرشورشان.",
+    "At BagelAcademy, we believe that learning should be both productive and enjoyable.": "در بگل آکادمی، ما معتقدیم که یادگیری باید هم مفید و هم لذت‌بخش باشد.",
+    "Whether you're mastering new skills or perfecting your craft, our virtual Bagel family is here to support you every step of the way.": "چه در حال یادگیری مهارت‌های جدید باشید یا بهبود دادن هنر خود، خانواده مجازی بگل در هر مرحله از راه از شما حمایت می‌کنند.",
+    "Each family member brings their own unique personality and encouragement to help you stay motivated.": "هر عضو خانواده شخصیت و تشویق منحصر به فرد خود را دارد تا شما را برای ادامه انگیزه دهد.",
+    "Join us at BagelAcademy and let our Bagel family guide you through your educational journey, one fun and motivating step at a time!": "به ما در بگل آکادمی بپیوندید و بگذارید خانواده بگل شما را در مسیر آموزشی‌تان قدم به قدم با انگیزه و سرگرم کننده همراهی کنند!",
+    
+    
+
+    
+      "Bagelcademy": "بگل آکادمی",
+      "Stay Curious. Keep Growing.": "کنجکاو بمانید. رشد کنید.",
+      "Quick Links": "لینک‌های سریع",
+      "Home": "خانه",
+      "AI course design": "طراحی دوره با هوش مصنوعی",
+      "Shop": "فروشگاه",
+      "Contact": "تماس",
+      "Email": "ایمیل",
+      "Phone": "تلفن",
+      "Follow Us": "ما را دنبال کنید",
+      "All rights reserved.": "تمام حقوق محفوظ است.",
+       "About us": "درباره ما",     
+    "Didn't you find what you were looking for?":"چیزی که دنبالشی رو پیدا نکردی؟",
+    "Search courses...": "جستجوی درس ها...",
+    "Select Category": "انتخاب دسته بندی",
+    "All Categories": "همه دسته بندی ها",
+    "lessons": "درس ها",  
+      
+        "Explore the Universe of Knowledge": "کاوش در دنیای دانش",
+        "Ask what you can't find, and let curiosity be your guide!": "هر آنچه را نمی‌یابید بپرسید و بگذارید کنجکاوی راهنمای شما باشد!",
+        "What knowledge are you seeking?": "دنبال چه دانشی هستید؟",
+        "Launch Your Question": "پرسش خود را مطرح کنید",
+        "Your quest for knowledge has begun!": "جستجوی شما برای دانش آغاز شد!",
+        "Oops! There was an error. Please try again.": "اوه! خطایی رخ داد. لطفاً دوباره تلاش کنید.",
+        "Generated Courses": "دوره‌های تولید شده",
+
+
+
+        "searchPlaceholder": "جستجو در دوره های من...",
+        "selectCategory": "انتخاب دسته بندی",
+        "allCategories": "همه دسته بندی ها",
+        "exploreCourses": "دوره های بیشتر را بررسی کنید",
+        "noCourses": "هنوز در هیچ دوره ای ثبت نام نکرده اید.",
+        "loadMore": "بارگذاری بیشتر",
+        "continueLearning": "ادامه آموزش",
+        "complete": "{{percentage}}% کامل",
+        "points": "{{points}} امتیاز",
+        "streak": "{{streak}} روز متوالی",
+
+
+
+
+        "signupTitle": "ثبت نام",
+        "username": "نام کاربری",
+        "email": "ایمیل",
+        "password": "رمز عبور",
+        "signupButton": "ثبت نام",
+        "orText": "یا",
+        "googleSignupFailed": "ثبت نام با گوگل ناموفق بود. دوباره امتحان کنید.",
+        "registrationFailed": "ثبت نام ناموفق بود. دوباره امتحان کنید.",
+        "alreadyHaveAccount": "قبلاً حساب دارید؟",
+
+
+
+        "invalidCredentials": "نام کاربری یا رمز عبور نامعتبر است",
+        "googleLoginFailed": "ورود با گوگل ناموفق بود. لطفاً دوباره تلاش کنید.",
+        "recaptchaError": "لطفاً reCAPTCHA را کامل کنید",
+        "or": "یا",
+        "signupPrompt": "آیا حساب کاربری ندارید؟",
+        "signupLink": "ثبت نام",
+
+
+        "Start Learning":"شروع یادگیری",
+        
+        "Our Growing Community": "جامعه در حال رشد ما",
+        "Courses": "دوره‌ها",
+        "Users": "کاربران" ,
+        
+        
+        "Congratulations": "تبریک می‌گوییم!",
+        "Get Certificate": "دریافت گواهینامه",
+        "Would you like to get a certificate for this course?": "آیا می‌خواهید گواهینامه‌ای برای این دوره دریافت کنید؟",
+        "Submit Answer": "ارسال پاسخ",
+        "No quiz available for this lesson.": "برای این درس آزمونی در دسترس نیست.",
+        "Quiz": "آزمون",
+        "Previous Lesson": "درس قبلی",
+        "Next Lesson": "درس بعدی",
+        "Loading...": "در حال بارگذاری...",
+        "No lesson found": "درس پیدا نشد",
+        "Failed to fetch lesson data": "خطا در بارگیری داده‌های درس",
+        "User not found, please log in.": "کاربر پیدا نشد، لطفاً وارد شوید.",
+
+
+
+        
+        
+          "No course found": "هیچ دوره‌ای یافت نشد",
+          "Course Content": "محتوای دوره",
+          "Go": "برو",
+          "You have enrolled already": "شما قبلاً ثبت‌نام کرده‌اید",
+          "Enroll in Course": "ثبت‌نام در دوره",
+          "What Students Are Saying": "دانش‌آموزان چه می‌گویند",
+          "This course completely changed my perspective on the topic. Highly recommend!": "این دوره کاملاً دیدگاه من را در مورد این موضوع تغییر داد. به شدت توصیه می‌کنم!",
+          "Amazing content and great instructor. Learned a lot!": "محتوای شگفت‌انگیز و مدرس عالی. خیلی چیزها یاد گرفتم!",
+          "The course was very engaging and informative. Worth every minute.": "این دوره بسیار جذاب و آموزنده بود. هر دقیقه‌اش ارزشمند بود.",
+          "Great course, very well structured and easy to follow.": "دوره عالی، به خوبی ساختار یافته و آسان برای پیگیری.",
+          "Loved the practical examples and exercises. It really helped me understand the concepts.": "مثال‌ها و تمرین‌های عملی را دوست داشتم. واقعاً به من کمک کرد تا مفاهیم را درک کنم."
+        
+        
+        
+        
   }

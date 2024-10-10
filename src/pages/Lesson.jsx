@@ -7,8 +7,10 @@ import mama from '../assets/87.gif';
 import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
-
+import { useTranslation } from 'react-i18next'; 
 const LessonPage = () => {
+  const { t } = useTranslation(); // Call the useTranslation hook
+
   const [openDialog, setOpenDialog] = useState(false); 
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -79,7 +81,7 @@ const LessonPage = () => {
                 
         const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/Qlist/`);
         if (!response.ok) {
-          throw new Error('Failed to fetch quiz data');
+          throw new Error(t('Failed to fetch quiz data'));
         }
         const quizData = await response.json();
         setQuizzes(quizData);
@@ -99,7 +101,7 @@ const LessonPage = () => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
-      setError('User not found, please log in.');
+      setError(t('User not found, please log in.'));
       return;
     }
 
@@ -125,7 +127,7 @@ const LessonPage = () => {
         setIsDialogOpen(true);
       } else {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to submit answer');
+        throw new Error(errorData.message || t('Failed to submit answer'));
       }
     } catch (err) {
       setError(err.message);
@@ -148,9 +150,9 @@ const LessonPage = () => {
     setQuizResults(null);
   };
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
+  if (loading) return <div className="text-center p-4">{t('Loading...')}</div>;
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
-  if (!lesson) return <div className="text-center p-4">No lesson found</div>;
+  if (!lesson) return <div className="text-center p-4">{t('No lesson found')}</div>;
 
   return (
     <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
@@ -168,7 +170,7 @@ const LessonPage = () => {
         <div className="w-full bg-spaceArea dark:bg-gray-900 p-6 flex flex-col overflow-y-auto">
           <h2 className="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
             <BookOpen className="w-6 h-6 mr-2" />
-            Quiz
+            {t('Quiz')}
           </h2>
           <form onSubmit={handleSubmitQuiz}>
             {quizzes.length > 0 ? (
@@ -193,14 +195,14 @@ const LessonPage = () => {
                 ))
               )
             ) : (
-              <p>No quiz available for this lesson.</p>
+              <p>{t('No quiz available for this lesson.')}</p>
             )}
             <button
               type="submit"
               className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center"
             >
               <Send className="w-4 h-4 mr-2" />
-              Submit Answer
+              {t('Submit Answer')}
             </button>
           </form>
           {quizResults && (
@@ -222,24 +224,24 @@ const LessonPage = () => {
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Previous Lesson
+          {t('Previous Lesson')}
         </button>
         <button
           onClick={() => handleNavigation('next')}
           disabled={!isNextAvailable}  // Enable only when the quiz is passed
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Next Lesson
+          {t('Next Lesson')}
           <ArrowRight className="w-4 h-4 ml-2" />
         </button>
               {/* Dialog for certificate */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Congratulations!</DialogTitle>
+        <DialogTitle>{t('Congratulations')}</DialogTitle>
         <DialogContent>
           <img src={mama} alt="Congratulations" />
-          <p>Would you like to get a certificate for this course?</p>
+          <p>{t('Would you like to get a certificate for this course?')}</p>
           <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
-            Get Certificate
+          {t('Get Certificate')}
           </Button>
         </DialogContent>
       </Dialog>
