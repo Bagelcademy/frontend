@@ -75,7 +75,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleGoogleLogin = async (response) => {
     try {
-      const backendResponse = await fetch('https://bagelapi.artina.org/account/google-login/', {
+      const backendResponse = await fetch('https://bagelapi.artina.org/account/login/google_login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
