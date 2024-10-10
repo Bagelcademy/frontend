@@ -87,7 +87,7 @@ const Login = ({ setIsLoggedIn }) => {
   useEffect(() => {
     if (window.google) {
       window.google.accounts.id.initialize({
-        client_id: import.meta.env.REACT_APP_GOOGLE_CLIENT_ID,
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleLogin,
       });
       window.google.accounts.id.renderButton(
@@ -125,8 +125,8 @@ const Login = ({ setIsLoggedIn }) => {
           </div>
           <div className="mb-4">
             <ReCAPTCHA
-              sitekey={import.meta.env.YOUR_RECAPTCHA_SITE_KEY}
-              onChange={onRecaptchaChange}
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}  // Ensure this key is correct
+                onChange={onRecaptchaChange}
             />
           </div>
           <Button className="bg-buttonColor w-full text-white" type="submit">
