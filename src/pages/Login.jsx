@@ -125,7 +125,7 @@ const Login = ({ setIsLoggedIn }) => {
           </div>
           <div className="mb-4">
             <ReCAPTCHA
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+              sitekey={import.meta.env.YOUR_RECAPTCHA_SITE_KEY}
               onChange={onRecaptchaChange}
             />
           </div>
