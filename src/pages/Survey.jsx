@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Briefcase, GraduationCap, Users, Code, Palette, Coffee, Baby, User, UserPlus, Zap, Search, MessageCircle, Share2, Radio } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Import useTranslation
 
 const iconMap = {
   Developer: Code,
@@ -40,6 +41,7 @@ const ExplosiveOption = ({ option, onSelect, isExploding }) => {
 };
 
 const Survey = () => {
+  const { t } = useTranslation(); // Initialize the translation hook
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [explodingOption, setExplodingOption] = useState(null);
@@ -47,16 +49,16 @@ const Survey = () => {
 
   const questions = [
     {
-      question: "What's your job?",
-      options: ["Developer", "Designer", "Manager", "Student", "Entrepreneur", "Other"]
+      question: t("What's your job?"), // Translate this string
+      options: [t("Developer"), t("Designer"), t("Manager"), t("Student"), t("Entrepreneur"), t("Other")] // Translate options
     },
     {
-      question: "What's your age?",
-      options: ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+      question: t("What's your age?"), // Translate this string
+      options: [t("18-24"), t("25-34"), t("35-44"), t("45-54"), t("55-64"), t("65+")] // Translate options
     },
     {
-      question: "How did you find Bagel Academy?",
-      options: ["Search Engine", "Social Media", "Friend", "Advertisement", "Blog", "Other"]
+      question: t("How did you find Bagel Academy?"), // Translate this string
+      options: [t("Search Engine"), t("Social Media"), t("Friend"), t("Advertisement"), t("Blog"), t("Other")] // Translate options
     }
   ];
 
@@ -80,7 +82,6 @@ const Survey = () => {
   const submitSurvey = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      console.log(token)
       const response = await fetch('https://bagelapi.artina.org/account/user-info/Survey/', { 
         method: 'POST',
         headers: {

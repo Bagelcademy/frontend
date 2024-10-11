@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import heroImage from '../assets/3.png';
@@ -8,6 +9,12 @@ import signupGif from '../assets/3.gif';
 import aiGif from '../assets/ai_section.gif';
 import CounterSection from '../components/ui/CounterSection';
 import { useTranslation } from 'react-i18next';
+
+// Import Bagel family images
+import img4 from '../assets/4.png';
+import img5 from '../assets/5.png';
+import img6 from '../assets/6.png';
+import img7 from '../assets/7.png';
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
@@ -31,8 +38,20 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
     fetchCourses();
   }, []);
 
+  const bagelFamily = [
+    { id: 1, nameKey: "mama_bagel", image: img4 },
+    { id: 2, nameKey: "papa_bagel", image: img5 },
+    { id: 3, nameKey: "emily_bagel", image: img6 },
+    { id: 4, nameKey: "jackie_bagel", image: img7 },
+  ];
+
   return (
     <main>
+      {/* ... (previous sections remain unchanged) ... */}
+
+
+
+
       <section className="relative h-[50vh] md:h-[70vh] overflow-hidden">
         <img src={heroImage} alt="Hero" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -90,7 +109,34 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           </Link>
         </div>
       </section>
-
+      {/* New Bagel Family Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-gray-400 to-gray-600">
+        <h2 className="text-4xl font-bold text-white text-center mb-8">{t('Meet the Bagel Family')}</h2>
+        <div className="flex flex-wrap justify-center gap-8">
+          {bagelFamily.map((character, index) => (
+            <motion.div
+              key={character.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white rounded-lg overflow-hidden shadow-lg cursor-pointer w-48"
+            >
+              <img src={character.image} alt={t(character.nameKey)} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-xl font-bold text-center">{t(character.nameKey)}</h3>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        <div className="text-center mt-12">
+          <Link to="/cha">
+            <Button size="lg" className="bg-buttonColor text-white hover:bg-gray-800">
+              {t('meet_our_characters')}
+            </Button>
+          </Link>
+        </div>
+      </section>
       <section className="flex flex-col md:flex-row items-center justify-between py-12 px-4 bg-white dark:bg-black text-black dark:text-white">
         <div className="md:w-1/2 text-center mt-6 md:mt-0 md:text-right">
           <h2 className="text-3xl font-bold mb-4">{t('Ready to start learning?')}</h2>

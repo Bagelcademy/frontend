@@ -20,18 +20,18 @@
 
     
 
-    "About BagelAcademy": "درباره بگل آکادمی",
+    "About BagelAcademy": "درباره بیگل آکادمی",
     "Welcome to": "خوش آمدید به",
-    "your go-to platform for engaging, gamified learning!": "پلتفرم شما برای یادگیری جذاب و بازی‌گونه!",      "Our unique approach to education combines interactive lessons with personalized motivational support from the Bagel family—Dad Bagel, Mom Bagel, and their two enthusiastic kids.": "رویکرد منحصر به فرد ما به آموزش شامل درس‌های تعاملی و پشتیبانی انگیزشی شخصی‌سازی شده از خانواده بگل است—پدر بگل، مادر بگل، و دو فرزند پرشورشان.",
-    "At BagelAcademy, we believe that learning should be both productive and enjoyable.": "در بگل آکادمی، ما معتقدیم که یادگیری باید هم مفید و هم لذت‌بخش باشد.",
-    "Whether you're mastering new skills or perfecting your craft, our virtual Bagel family is here to support you every step of the way.": "چه در حال یادگیری مهارت‌های جدید باشید یا بهبود دادن هنر خود، خانواده مجازی بگل در هر مرحله از راه از شما حمایت می‌کنند.",
+    "your go-to platform for engaging, gamified learning!": "پلتفرم شما برای یادگیری جذاب و بازی‌گونه!",      "Our unique approach to education combines interactive lessons with personalized motivational support from the Bagel family—Dad Bagel, Mom Bagel, and their two enthusiastic kids.": "رویکرد منحصر به فرد ما به آموزش شامل درس‌های تعاملی و پشتیبانی انگیزشی شخصی‌سازی شده از خانواده بیگل است—پدر بیگل، مادر بیگل، و دو فرزند پرشورشان.",
+    "At BagelAcademy, we believe that learning should be both productive and enjoyable.": "در بیگل آکادمی، ما معتقدیم که یادگیری باید هم مفید و هم لذت‌بخش باشد.",
+    "Whether you're mastering new skills or perfecting your craft, our virtual Bagel family is here to support you every step of the way.": "چه در حال یادگیری مهارت‌های جدید باشید یا بهبود دادن هنر خود، خانواده مجازی بیگل در هر مرحله از راه از شما حمایت می‌کنند.",
     "Each family member brings their own unique personality and encouragement to help you stay motivated.": "هر عضو خانواده شخصیت و تشویق منحصر به فرد خود را دارد تا شما را برای ادامه انگیزه دهد.",
-    "Join us at BagelAcademy and let our Bagel family guide you through your educational journey, one fun and motivating step at a time!": "به ما در بگل آکادمی بپیوندید و بگذارید خانواده بگل شما را در مسیر آموزشی‌تان قدم به قدم با انگیزه و سرگرم کننده همراهی کنند!",
+    "Join us at BagelAcademy and let our Bagel family guide you through your educational journey, one fun and motivating step at a time!": "به ما در بیگل آکادمی بپیوندید و بگذارید خانواده بیگل شما را در مسیر آموزشی‌تان قدم به قدم با انگیزه و سرگرم کننده همراهی کنند!",
     
     
 
     
-      "Bagelcademy": "بگل آکادمی",
+      "Bagelcademy": "بیگل آکادمی",
       "Stay Curious. Keep Growing.": "کنجکاو بمانید. رشد کنید.",
       "Quick Links": "لینک‌های سریع",
       "Home": "خانه",
@@ -127,9 +127,47 @@
           "Amazing content and great instructor. Learned a lot!": "محتوای شگفت‌انگیز و مدرس عالی. خیلی چیزها یاد گرفتم!",
           "The course was very engaging and informative. Worth every minute.": "این دوره بسیار جذاب و آموزنده بود. هر دقیقه‌اش ارزشمند بود.",
           "Great course, very well structured and easy to follow.": "دوره عالی، به خوبی ساختار یافته و آسان برای پیگیری.",
-          "Loved the practical examples and exercises. It really helped me understand the concepts.": "مثال‌ها و تمرین‌های عملی را دوست داشتم. واقعاً به من کمک کرد تا مفاهیم را درک کنم."
+          "Loved the practical examples and exercises. It really helped me understand the concepts.": "مثال‌ها و تمرین‌های عملی را دوست داشتم. واقعاً به من کمک کرد تا مفاهیم را درک کنم.",
         
         
-        
+
+          
+            "Oops! Page not found": "اوه! صفحه پیدا نشد",
+            "Go Home": "بازگشت به خانه",
+            "Go Back": "بازگشت به صفحه قبل",
+          
+            
+              "What's your job?": "شغل شما چیست؟",
+              "What's your age?": "سن شما چقدر است؟",
+              "How did you find Bagel Academy?": "چطور با بَگِل آکادمی آشنا شدید؟",
+              "Developer": "توسعه‌دهنده",
+              "Designer": "طراح",
+              "Manager": "مدیر",
+              "Student": "دانشجو",
+              "Entrepreneur": "کارآفرین",
+              "Other": "سایر",
+              "18-24": "۱۸-۲۴",
+              "25-34": "۲۵-۳۴",
+              "35-44": "۳۵-۴۴",
+              "45-54": "۴۵-۵۴",
+              "55-64": "۵۵-۶۴",
+              "65+": "۶۵+",
+              "Search Engine": "موتور جستجو",
+              "Social Media": "شبکه اجتماعی",
+              "Friend": "دوست",
+              "Advertisement": "تبلیغات",
+              "Blog": "وبلاگ",
+            
+              "Meet the Bagel Family":"ملاقات با خانواده بیگل",
+              "meet_our_characters": "با شخصیت‌های ما آشنا شوید",
+              "mama_bagel": "مامان بیگل",
+              "mama_bagel_backstory": "یک مامان که می‌خواهد دوره‌های خود را تمام کنید، شغلی خوب پیدا کنید و زندگی خوبی داشته باشید",
+              "papa_bagel": "بابا بیگل",
+              "papa_bagel_backstory": "یک پدر که می‌خواهد شما دانش داشته باشید و هر چیزی که می‌خواهید یاد بگیرید",
+              "emily_bagel": "امیلی بیگل",
+              "emily_bagel_backstory": "اوه، او فقط به خودش و دوستانش اهمیت می‌دهد! اما حالا شما یکی از دوستان او هستید. پس آماده جشن شوید!",
+              "jackie_bagel": "جکی بیگل",
+              "jackie_bagel_backstory": "می‌خواهد استراحت کند و با هم Call of Duty بازی کنیم؟",
+              "close": "بستن"         
         
   }
