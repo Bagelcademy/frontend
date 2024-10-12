@@ -11,8 +11,6 @@ import {
 } from '../ui/dropdown-menu';
 import '../../css/Header.css'; // Import your new CSS file if you create one
 import { useTranslation } from 'react-i18next'; // Import the hook
-import GoogleTranslateWidget from './GoogleTranslateWidget';
-import CustomLanguageSelector from './CustomLanguageSelector';
 
 const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
