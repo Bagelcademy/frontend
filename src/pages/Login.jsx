@@ -132,7 +132,7 @@ const Login = ({ setIsLoggedIn }) => {
           </div>
           <div className="mb-4">
             <ReCAPTCHA
-              sitekey="6Lffcl0qAAAAAAvWf8DvfCrpteArawryjhlE3Gli"
+              sitekey="6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI"
               onChange={onRecaptchaChange}
             />
           </div>
