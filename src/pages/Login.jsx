@@ -3,16 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import ReCAPTCHA from "react-google-recaptcha";
-import { useTranslation } from 'react-i18next'; // Import useTranslation
+import { useTranslation } from 'react-i18next';
 
 const Login = ({ setIsLoggedIn }) => {
-  const { t } = useTranslation(); // Initialize translation hook
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [recaptchaToken, setRecaptchaToken] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Load the reCAPTCHA v3 script
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   useEffect(() => {
     const loadGoogleScript = () => {
@@ -49,21 +60,23 @@ const Login = ({ setIsLoggedIn }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!recaptchaToken) {
-      setError(t('recaptchaError')); // Use translation for error message
-      return;
-    }
+    
     try {
+      // Execute reCAPTCHA with the site key
+      const token = await executeRecaptcha();
+      
       const response = await fetch('https://bagelapi.artina.org/account/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password, recaptcha_token: recaptchaToken }),
+        body: JSON.stringify({ username, password, recaptcha_token: token }),
       });
+      
       if (!response.ok) {
-        throw new Error(t('invalidCredentials')); // Use translation for error message
+        throw new Error(t('invalidCredentials'));
       }
+      
       const data = await response.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
@@ -71,8 +84,18 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/');
     } catch (error) {
-      setError(t('invalidCredentials')); // Use translation for error message
+      setError(t('invalidCredentials'));
     }
+  };
+
+  const executeRecaptcha = () => {
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'login' })
+          .then(token => resolve(token))
+          .catch(error => reject(error));
+      });
+    });
   };
 
   const handleGoogleLogin = async (response) => {
@@ -86,7 +109,7 @@ const Login = ({ setIsLoggedIn }) => {
       });
       
       if (!backendResponse.ok) {
-        throw new Error(t('googleLoginFailed')); // Use translation for error message
+        throw new Error(t('googleLoginFailed'));
       }
       
       const data = await backendResponse.json();
@@ -96,12 +119,8 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/');
     } catch (error) {
-      setError(t('googleLoginFailed')); // Use translation for error message
+      setError(t('googleLoginFailed'));
     }
-  };
-
-  const onRecaptchaChange = (token) => {
-    setRecaptchaToken(token);
   };
 
   return (
@@ -130,14 +149,8 @@ const Login = ({ setIsLoggedIn }) => {
               required
             />
           </div>
-          <div className="mb-4">
-            <ReCAPTCHA
-              sitekey="6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI"
-              onChange={onRecaptchaChange}
-            />
-          </div>
           <Button className="bg-buttonColor w-full text-white" type="submit">
-            {t('login')} {/* Use translation for button text */}
+            {t('login')}
           </Button>
         </form>
         <div className="mt-4 flex items-center justify-between">
@@ -149,7 +162,7 @@ const Login = ({ setIsLoggedIn }) => {
         <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
           {t('signupPrompt')}{' '}
           <a href="/signup" className="text-blue-500 hover:underline">
-            {t('signupLink')} {/* Use translation for signup link */}
+            {t('signupLink')}
           </a>
         </p>
       </div>
