@@ -80,7 +80,7 @@ const SubscriptionCards = () => {
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"
-          price="10000"
+          price="129000"
           period="month"
           isHighlighted={true}
           features={[
@@ -88,11 +88,11 @@ const SubscriptionCards = () => {
             "24/7 customer support",
             "Cancel anytime"
           ]}
-          onSubscribe={() => handleSubscribe(10000)}
+          onSubscribe={() => handleSubscribe(129000)}
         />
         <SubscriptionCard
           title="6 Months"
-          price="50000"
+          price="729000"
           period="6 months"
           isBestOffer={true}
           features={[
@@ -101,11 +101,11 @@ const SubscriptionCards = () => {
             "Exclusive content",
             "50% off first month"
           ]}
-          onSubscribe={() => handleSubscribe(50000)}
+          onSubscribe={() => handleSubscribe(729000)}
         />
         <SubscriptionCard
           title="Yearly"
-          price="100000"
+          price="1200000"
           period="year"
           features={[
             "All 6-month features",
@@ -113,7 +113,7 @@ const SubscriptionCards = () => {
             "Annual performance review",
             "Early access to new features"
           ]}
-          onSubscribe={() => handleSubscribe(100000)}
+          onSubscribe={() => handleSubscribe(1200000)}
         />
       </div>
       {loading && <p className="mt-4">Processing subscription...</p>}
