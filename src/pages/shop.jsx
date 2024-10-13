@@ -47,11 +47,13 @@ const SubscriptionCards = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://bagelapi.artina.org/account/payment/', {
+      const token = localStorage.getItem('accessToken');
+
+      const response = await fetch('https://bagelapi.artina.org/account/payment/', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_ACCESS_TOKEN_HERE' // Replace with actual token
         },
         body: JSON.stringify({ amount })
       });
