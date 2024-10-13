@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
-// import { Badge } from '@/components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Check } from 'lucide-react';
 
-const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features }) => (
+const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => (
   <Card className={`w-72 rounded-3xl overflow-hidden ${isHighlighted ? 'border-2 border-red-500' : ''} relative`}>
     {isBestOffer && (
       <div className="absolute top-0 right-0 bg-yellow-400 text-black font-bold py-1 px-4 rounded-bl-lg transform rotate-45 translate-x-8 -translate-y-1">
@@ -17,11 +16,11 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
     <CardContent className="text-center">
       {discountPrice ? (
         <>
-          <span className="text-2xl font-bold line-through">${price}</span>
-          <span className="text-3xl font-bold text-green-500 ml-2">${discountPrice}</span>
+          <span className="text-2xl font-bold line-through">{price} Rial</span>
+          <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} Rial</span>
         </>
       ) : (
-        <span className="text-3xl font-bold">${price}</span>
+        <span className="text-3xl font-bold">{price} Rial</span>
       )}
       <p className="text-sm text-gray-500">per {period}</p>
       <ul className="mt-4 text-left">
@@ -34,52 +33,90 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
       </ul>
     </CardContent>
     <CardFooter className="justify-center">
-      <Button className="rounded-full">Subscribe Now</Button>
+      <Button className="rounded-full" onClick={onSubscribe}>Subscribe Now</Button>
     </CardFooter>
   </Card>
 );
 
-const SubscriptionCards = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-    <h1 className="text-3xl font-bold mb-8">Choose Your Subscription</h1>
-    <div className="flex flex-wrap justify-center gap-6">
-      <SubscriptionCard
-        title="Monthly"
-        price="6.00"
-        discountPrice="3.99"
-        period="month"
-        isHighlighted={true}
-        features={[
-          "Full access to all features",
-          "24/7 customer support",
-          "Cancel anytime"
-        ]}
-      />
-      <SubscriptionCard
-        title="6 Months"
-        price="30.00"
-        period="6 months"
-        isBestOffer={true}
-        features={[
-          "All monthly features",
-          "Priority support",
-          "Exclusive content",
-          "50% off first month"
-        ]}
-      />
-      <SubscriptionCard
-        title="Yearly"
-        price="60.00"
-        period="year"
-        features={[
-          "All 6-month features",
-          "2 months free",
-          "Annual performance review",
-          "Early access to new features"
-        ]}
-      />
+const SubscriptionCards = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubscribe = async (amount) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://bagelapi.artina.org/account/payment/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN_HERE' // Replace with actual token
+        },
+        body: JSON.stringify({ amount })
+      });
+
+      if (!response.ok) {
+        throw new Error('Subscription failed');
+      }
+
+      const data = await response.json();
+      console.log('Subscription successful:', data);
+      // Handle successful subscription (e.g., show a success message, redirect, etc.)
+    } catch (err) {
+      setError('An error occurred during subscription. Please try again.');
+      console.error('Subscription error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <h1 className="text-3xl font-bold mb-8">Choose Your Subscription</h1>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <div className="flex flex-wrap justify-center gap-6">
+        <SubscriptionCard
+          title="Monthly"
+          price="10000"
+          period="month"
+          isHighlighted={true}
+          features={[
+            "Full access to all features",
+            "24/7 customer support",
+            "Cancel anytime"
+          ]}
+          onSubscribe={() => handleSubscribe(10000)}
+        />
+        <SubscriptionCard
+          title="6 Months"
+          price="50000"
+          period="6 months"
+          isBestOffer={true}
+          features={[
+            "All monthly features",
+            "Priority support",
+            "Exclusive content",
+            "50% off first month"
+          ]}
+          onSubscribe={() => handleSubscribe(50000)}
+        />
+        <SubscriptionCard
+          title="Yearly"
+          price="100000"
+          period="year"
+          features={[
+            "All 6-month features",
+            "2 months free",
+            "Annual performance review",
+            "Early access to new features"
+          ]}
+          onSubscribe={() => handleSubscribe(100000)}
+        />
+      </div>
+      {loading && <p className="mt-4">Processing subscription...</p>}
     </div>
-  </div>
-);
+  );
+};
 
 export default SubscriptionCards;

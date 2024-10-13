@@ -19,6 +19,8 @@ import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
 import NotFoundPage from './pages/NotFoundPage';
 import SubscriptionCards from './pages/shop';
+import LearningPathsPage from './pages/LearningPath';
+import LearningPathDetail from './pages/LearningPathDetail';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -63,6 +65,9 @@ const App = () => {
           <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/survey" element={<Survey />} />
+          <Route path="/learning-paths" element={<LearningPathsPage />} />
+          <Route path="/learning-paths/:id" element={<LearningPathDetail />} />
+
         </Routes>
       </Layout>
     </Router>
