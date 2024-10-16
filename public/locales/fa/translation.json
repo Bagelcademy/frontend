@@ -159,7 +159,7 @@
               "Blog": "وبلاگ",
             
               "Meet the Bagel Family":"ملاقات با خانواده بیگل",
-              "meet_our_characters": "با شخصیت‌های ما آشنا شوید",
+              "meet our characters": "با شخصیت‌های ما آشنا شوید",
               "mama_bagel": "مامان بیگل",
               "mama_bagel_backstory": "یک مامان که می‌خواهد دوره‌های خود را تمام کنید، شغلی خوب پیدا کنید و زندگی خوبی داشته باشید",
               "papa_bagel": "بابا بیگل",
@@ -168,6 +168,8 @@
               "emily_bagel_backstory": "اوه، او فقط به خودش و دوستانش اهمیت می‌دهد! اما حالا شما یکی از دوستان او هستید. پس آماده جشن شوید!",
               "jackie_bagel": "جکی بیگل",
               "jackie_bagel_backstory": "می‌خواهد استراحت کند و با هم Call of Duty بازی کنیم؟",
-              "close": "بستن"         
+              "close": "بستن",
+              
+              "Design a course based on any subject or any languages you want!": "دوره‌ای را بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید!"
         
   }

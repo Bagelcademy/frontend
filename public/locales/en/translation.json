@@ -5,8 +5,8 @@
     "myCourses": "My Courses",
     "login": "Login",
     "logout": "Logout",
-    "Welcome":"what you want to learn?",
-    "geting PRO":"geting PRO",
+    "Welcome":"What You Want to Learn?",
+    "getting PRO":"Getting PRO",
     "Explore":"Explore",
     "PopularCourses":"Popular Courses",
     "Ready to design your own course?":"Ready to design your own course?",
@@ -18,7 +18,7 @@
     "password": "Password",
     "signupButton": "Sign Up",
     "orText": "or",
-    "googleSignupFailed": "Google signup failed. Please try again.",
+    "googleSignupFailed": "Google Sign up Failed. Please try again.",
     "registrationFailed": "Registration failed. Please try again.",
     "alreadyHaveAccount": "Already have an account?",
     
@@ -36,6 +36,8 @@
         "samuel": "The course was very engaging and informative. Worth every minute.",
         "emily": "Great course, very well structured and easy to follow.",
         "michael": "Loved the practical examples and exercises. It really helped me understand the concepts."
-      }
+      },
+
+      "meet our characters": "Meet Our Characters"
       
   }
