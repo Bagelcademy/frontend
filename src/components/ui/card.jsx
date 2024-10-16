@@ -14,7 +14,7 @@ export const CardHeader = ({ children }) => (
 );
 
 export const CardTitle = ({ children }) => (
-  <h2 className="text-xl font-semibold">
+  <h2 className="text-xl font-semibold my-1">
     {children}
   </h2>
 );
