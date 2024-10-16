@@ -91,7 +91,7 @@ const Courses = () => {
             <SelectTrigger className="border border-borderColor dark:border-gray-700">
               <SelectValue placeholder={t('Select Category')} />
             </SelectTrigger>
-            <SelectContent className="bg-lightBackground dark:bg-darkBackground">
+            <SelectContent className="bg-lightBackground dark:bg-darkBackground z-1000">
               <SelectItem value="">{t('All Categories')}</SelectItem>
               {categories.map(category => (
                 <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>

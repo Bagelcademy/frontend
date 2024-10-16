@@ -71,7 +71,7 @@ const CharacterIntroPage = () => {
   return (
     <div className="min-h-screen bg-lightBackground dark:bg-darkBackground py-12 px-4">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">{t('meet_our_characters')}</h1>
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">{t('meet our characters')}</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {characters.map((character) => (
             <CharacterCard
