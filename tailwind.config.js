@@ -6,6 +6,22 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+
+    screens: {
+      'sm': '640px',
+      // => @media (min-width: 640px) { ... }
+
+      'md': '768px',
+      // => @media (min-width: 768px) { ... }
+
+      'lg': '1024px',
+      // => @media (min-width: 1024px) { ... }
+
+      'xl': '1280px',
+      // => @media (min-width: 1280px) { ... }
+    },
+
+
     extend: {
       colors: {
         lightBackground: '#EBEAE1', // Light theme background color
@@ -46,6 +62,27 @@ module.exports = {
           '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' },
         },
       },
+
+      fontFamily: {
+        b1: ["KalamehThin", "system-ui"],
+        b2: ["KalamehExtraLight", "system-ui"],
+        b3: ["KalamehLight", "system-ui"],
+        b4: ["KalamehRegular", "system-ui"],
+        b5: ["KalamehMedium", "system-ui"],
+        b6: ["KalamehSemiBold", "system-ui"],
+        b7: ["KalamehBold", "system-ui"],
+        b8: ["KalamehExtraBold", "system-ui"],
+        b9: ["KalamehBlack", "system-ui"],
+      },
+
+      // screens: {
+      //   'sm': '640px',
+      //   sm: '640px',
+      //   'md': '768px',
+      //   'lg': '1024px',
+      //   'xl': '1280px',
+      //   '2xl': '1536px',
+      // },
     },
   },
   plugins: [],
