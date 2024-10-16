@@ -1,16 +1,15 @@
-// src/i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import translationEN from '../public/locales/en/translation.json'; // Ensure this path is correct
-import translationFR from '../public/locales/fa/translation.json'; // Ensure this path is correct
+import translationEN from '../public/locales/en/translation.json'; 
+import translationFA from '../public/locales/fa/translation.json';  // Correct the 'fa' identifier
 
 const resources = {
   en: {
     translation: translationEN,
   },
   fa: {
-    translation: translationFR,
+    translation: translationFA,  // Persian (RTL) language
   },
 };
 
