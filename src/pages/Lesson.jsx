@@ -8,9 +8,9 @@ import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next'; 
-const LessonPage = () => {
-  const { t } = useTranslation(); // Call the useTranslation hook
 
+const LessonPage = () => {
+  const { t, i18n } = useTranslation(); // Use i18n to get the current language
   const [openDialog, setOpenDialog] = useState(false); 
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,18 +28,14 @@ const LessonPage = () => {
   useEffect(() => {
     const checkAndFetchLesson = async () => {
       try {
-        // First, check if the course needs to be generated
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`)
+        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`);
 
         if (generationResponse.status === 201) {
-          // Course needs to be generated
           console.log('Generating course content...');
-          // You might want to show a loading indicator or message here
-          window.location.reload(); // Refresh the page after generation
-          return; // Exit the function early to avoid fetching lesson data before the refresh
+          window.location.reload();
+          return;
         }
-        
-        // If status is 200 or any other status, proceed with fetching lesson data
+
         const lessonResponse = await fetch(`https://bagelapi.artina.org/courses/courses/${courseId}/lessons/${lessonId}/`);
         if (!lessonResponse.ok) {
           throw new Error('Failed to fetch lesson data');
@@ -47,8 +43,8 @@ const LessonPage = () => {
         const data = await lessonResponse.json();
         setLesson(data);
         if (data.is_last_lesson) {
-        setIsLastLesson(true);
-      }
+          setIsLastLesson(true);
+        }
         setIsNextAvailable(data.isCompleted);
         setLoading(false);
       } catch (err) {
@@ -60,7 +56,6 @@ const LessonPage = () => {
     checkAndFetchLesson();
   }, [courseId, lessonId]);
 
-  // Fetch quiz questions for the lesson
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
@@ -68,17 +63,14 @@ const LessonPage = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-          }
+          },
         });
-        
+
         if (generationResponse.status === 201) {
-          // Course needs to be generated
-          console.log('Generating course content...');
-          // You might want to show a loading indicator or message here
-          window.location.reload(); // Refresh the page after generation
-          return; // Exit the function early to avoid fetching lesson data before the refresh
+          window.location.reload();
+          return;
         }
-                
+
         const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/Qlist/`);
         if (!response.ok) {
           throw new Error(t('Failed to fetch quiz data'));
@@ -95,10 +87,9 @@ const LessonPage = () => {
     }
   }, [lessonId]);
 
-  // Handle answer submission
   const handleSubmitQuiz = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
 
     if (!token) {
       setError(t('User not found, please log in.'));
@@ -106,16 +97,16 @@ const LessonPage = () => {
     }
 
     try {
-      const response = await fetch(`https://bagelapi.artina.org//courses/answers/`, {
+      const response = await fetch(`https://bagelapi.artina.org/courses/answers/`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           answers: Object.entries(selectedAnswers).map(([questionId, answer]) => ({
             question: questionId,
-            selected_option: answer
+            selected_option: answer,
           })),
         }),
       });
@@ -136,13 +127,14 @@ const LessonPage = () => {
 
   const handleNavigation = (direction) => {
     if (isLastLesson) {
-      setOpenDialog(true);}
-    else {
-    const currentLessonId = parseInt(lessonId);
-    const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
-    if (currentLessonId > 0) {
-      navigate(`/courses/${courseId}/lessons/${newLessonId}`);
-    }}
+      setOpenDialog(true);
+    } else {
+      const currentLessonId = parseInt(lessonId);
+      const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
+      if (currentLessonId > 0) {
+        navigate(`/courses/${courseId}/lessons/${newLessonId}`);
+      }
+    }
   };
 
   const handleDialogClose = () => {
@@ -154,22 +146,17 @@ const LessonPage = () => {
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   if (!lesson) return <div className="text-center p-4">{t('No lesson found')}</div>;
 
+  const isPersian = i18n.language === 'fa'; // Check if the language is Persian
+
   return (
-    <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="flex flex-grow overflow-hidden">
-        {/* Left side: Lesson Content */}
-        <div className="w-full p-6 overflow-y-auto bg-white dark:bg-darkBackground">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson.title}</h1>
-          <div className="markdown-content">
-            <ReactMarkdown className="prose max-w-none dark:prose-dark">
-              {lesson.content}
-            </ReactMarkdown>
-          </div>
-        </div>
-        {/* Right side: Quiz section */}
-        <div className="w-full bg-spaceArea dark:bg-gray-900 p-6 flex flex-col overflow-y-auto">
+    <div
+      className={`flex flex-col h-screen bg-gray-100 dark:bg-gray-900 ${isPersian ? 'rtl' : 'ltr'}`}
+    >
+      <div className={`flex flex-grow overflow-hidden ${isPersian ? 'flex-row-reverse' : 'flex-row'}`}>
+        {/* Left side: Quiz section (Right side in Persian) */}
+        <div className="w-full bg-spaceArea text-black dark:bg-gray-900 p-6 flex flex-col overflow-y-auto">
           <h2 className="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
-            <BookOpen className="w-6 h-6 mr-2" />
+            <BookOpen className="w-6 h-6 mx-2" />
             {t('Quiz')}
           </h2>
           <form onSubmit={handleSubmitQuiz}>
@@ -214,6 +201,15 @@ const LessonPage = () => {
             </div>
           )}
         </div>
+        {/* Right side: Lesson Content (Left side in Persian) */}
+        <div className="w-full p-6 overflow-y-auto bg-white dark:bg-darkBackground">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson.title}</h1>
+          <div className="markdown-content">
+            <ReactMarkdown className="prose max-w-none dark:prose-dark">
+              {lesson.content}
+            </ReactMarkdown>
+          </div>
+        </div>
       </div>
 
       {/* Navigation buttons */}
@@ -234,29 +230,24 @@ const LessonPage = () => {
           {t('Next Lesson')}
           <ArrowRight className="w-4 h-4 ml-2" />
         </button>
-              {/* Dialog for certificate */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{t('Congratulations')}</DialogTitle>
-        <DialogContent>
-          <img src={mama} alt="Congratulations" />
-          <p>{t('Would you like to get a certificate for this course?')}</p>
-          <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
-          {t('Get Certificate')}
-          </Button>
-        </DialogContent>
-      </Dialog>
-
-      {/* Confetti animation */}
-      {openDialog && <Confetti />}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>{t('Congratulations')}</DialogTitle>
+          <DialogContent>
+            <img src={mama} alt="Congratulations" />
+            <p>{t('Would you like to get a certificate for this course?')}</p>
+            <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
+              {t('Get Certificate')}
+            </Button>
+          </DialogContent>
+        </Dialog>
+        {openDialog && <Confetti />}
       </div>
-
       <InterLessonDialog
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
         message={dialogMessage}
         svgUrl={mama}
       />
-
       <style jsx global>{`
         .markdown-content {
           text-align: justify;
