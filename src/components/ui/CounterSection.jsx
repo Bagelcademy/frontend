@@ -25,7 +25,7 @@ const CounterSection = () => {
   }, []);
 
   const animateCounter = (setter, target) => {
-    let current = 1034;
+    let current = 34;
     const interval = setInterval(() => {
       current += 1;
       setter(current);
@@ -36,16 +36,16 @@ const CounterSection = () => {
   };
 
   return (
-    <section className="py-12 px-4 bg-lightBackground dark:bg-darkBackground text-center">
+    <section className="py-8 px-4 bg-lightBackground dark:bg-darkBackground text-center">
       <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{t('Our Growing Community')}</h2>
-      <div className="flex justify-center space-x-12">
-        <div>
+      <div className="flex justify-center gap-8">
+        <div className="w-40">
           <p className="text-4xl font-bold text-buttonColor">{courseCount}</p>
-          <p className="text-xl text-gray-700 dark:text-gray-300">{t('Courses')}</p>
+          <p className="text-xl text-gray-700 dark:text-gray-300">{t('Course')}</p>
         </div>
-        <div>
-          <p className="text-4xl font-bold text-buttonColor">{userCount}</p>
-          <p className="text-xl text-gray-700 dark:text-gray-300">{t('Users')}</p>
+        <div className="w-40">
+          <p className="text-4xl font-bold text-buttonColor">{userCount + 32}</p>
+          <p className="text-xl text-gray-700 dark:text-gray-300">{t('User')}</p>
         </div>
       </div>
     </section>
