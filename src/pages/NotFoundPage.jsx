@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, RefreshCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next'; 
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation(); // Call the useTranslation hook
 
   return (
     <div className="min-h-screen flex items-center justify-center dark:bg-black bg-white ">

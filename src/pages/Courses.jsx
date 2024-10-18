@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import CourseCard from '../components/ui/coursecard';
 import '../css/courses.css';
 import { useTranslation } from 'react-i18next'; 
+
 const ITEMS_PER_PAGE = 20;
 
 const Courses = () => {
@@ -15,8 +16,8 @@ const Courses = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(1);
-  const navigate = useNavigate(); // Use useNavigate to navigate programmatically
-  const { t } = useTranslation(); // Call the useTranslation hook
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchCourses();
@@ -69,10 +70,11 @@ const Courses = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  // Function to navigate to the ./ask page
   const handleAskClick = () => {
     navigate('/ask');
   };
+  const selectRef = useRef(null);
+
 
   return (
     <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
@@ -80,6 +82,27 @@ const Courses = () => {
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="md:w-1/4 relative z-[1000]">
+            <Select onValueChange={handleCategoryChange} value={selectedCategory}>
+              <SelectTrigger className="w-full border border-borderColor dark:border-gray-700">
+                <SelectValue placeholder={t('Select Category')} />
+              </SelectTrigger>
+              <SelectContent 
+                className="absolute bg-lightBackground dark:bg-darkBackground shadow-lg rounded-md overflow-hidden"
+                style={{
+                  zIndex: 1001,
+                  minWidth: '100%',
+                  top: 'calc(100% + 5px)',
+                  left: 0,
+                }}
+              >
+                <SelectItem value="">{t('All Categories')}</SelectItem>
+                {categories.map(category => (
+                  <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <Input
             type="text"
             placeholder={t('Search courses...')}
@@ -87,17 +110,6 @@ const Courses = () => {
             onChange={handleSearchChange}
             className="md:w-1/2 border border-borderColor dark:border-gray-700"
           />
-          <Select onValueChange={handleCategoryChange} value={selectedCategory} className="md:w-1/4">
-            <SelectTrigger className="border border-borderColor dark:border-gray-700">
-              <SelectValue placeholder={t('Select Category')} />
-            </SelectTrigger>
-            <SelectContent className="bg-lightBackground dark:bg-darkBackground z-1000">
-              <SelectItem value="">{t('All Categories')}</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           <Button 
             onClick={handleAskClick} 
             className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
@@ -112,6 +124,14 @@ const Courses = () => {
             <CourseCard key={course.id} course={course} />
           ))}
         </div>
+
+        {displayedCourses.length < courses.length && (
+          <div className="mt-8 text-center">
+            <Button onClick={handleLoadMore} className="bg-buttonColor text-white py-2 px-4 rounded">
+              {t('Load More')}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
