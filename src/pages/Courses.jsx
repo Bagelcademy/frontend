@@ -28,7 +28,7 @@ const Courses = () => {
   }, [searchTerm, selectedCategory, courses, page]);
 
   const fetchCourses = async () => {
-    const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
+    const response = await fetch('https://bagelapi.artina.org//courses/courses/');
     const data = await response.json();
     setCourses(data);
   };
