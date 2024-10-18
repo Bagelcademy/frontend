@@ -1,6 +1,6 @@
 {
     "home": "Home",
-    "courses": "Courses",
+    "course": "Course",
     "profile": "Profile",
     "myCourses": "My Courses",
     "login": "Login",
@@ -38,6 +38,7 @@
         "michael": "Loved the practical examples and exercises. It really helped me understand the concepts."
       },
 
-      "meet our characters": "Meet Our Characters"
+      "meet our characters": "Meet Our Characters",
+      "Sign Up": "Sign Up"
       
   }
