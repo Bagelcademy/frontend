@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'; // Import the hook
 
 const languages = [
   { label: 'English', value: 'English' },
+  { label: 'Persian (Farsi)', value: 'Persian' },
   { label: 'Mandarin Chinese', value: 'Mandarin Chinese' },
   { label: 'Spanish', value: 'Spanish' },
   { label: 'Hindi', value: 'Hindi' },
@@ -17,7 +18,6 @@ const languages = [
   { label: 'Japanese', value: 'Japanese' },
   { label: 'German', value: 'German' },
   { label: 'French', value: 'French' },
-  { label: 'Persian (Farsi)', value: 'Persian' },
   { label: 'Korean', value: 'Korean' },
   { label: 'Turkish', value: 'Turkish' },
   { label: 'Italian', value: 'Italian' },
@@ -63,7 +63,7 @@ const Listbox = ({ value, onChange, options }) => {
         <ChevronDown className={`w-5 h-5 text-yellow-300 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
       {isOpen && (
-        <div className="absolute bg-white bg-opacity-20 backdrop-blur-lg rounded-lg mt-2 z-10 w-full max-h-28 overflow-y-auto">
+        <div className="absolute bg-white bg-opacity-20 backdrop-blur-lg rounded-lg mt-2 z-10 w-full max-h-48 overflow-y-auto">
           {options.map((option) => (
             <button
               key={option.value}
@@ -179,7 +179,7 @@ const RequestPage = () => {
             rows="4"
           />
 
-          <div className="flex space-x-4 bg-opacity-10 text-white-300 " >
+          <div className="flex gap-4 bg-opacity-10 text-white-300 " >
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
