@@ -29,7 +29,7 @@ const Courses = () => {
   }, [searchTerm, selectedCategory, courses, page]);
 
   const fetchCourses = async () => {
-    const response = await fetch('https://bagelapi.artina.org//courses/courses/');
+    const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
     const data = await response.json();
     setCourses(data);
   };
@@ -61,8 +61,8 @@ const Courses = () => {
     setPage(1);
   };
 
-  const handleCategoryChange = (value) => {
-    setSelectedCategory(value);
+  const handleCategoryChange = (key) => {
+    setSelectedCategory(key);
     setPage(1);
   };
 
@@ -98,7 +98,7 @@ const Courses = () => {
               >
                 <SelectItem value="">{t('All Categories')}</SelectItem>
                 {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+                  <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
