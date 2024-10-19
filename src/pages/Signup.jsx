@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next'; // Import i18next hook
+import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 
 const Signup = () => {
-  const { t } = useTranslation(); // Use translation hook
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,8 +14,9 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Load the reCAPTCHA v3 script
     const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
+    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -25,27 +26,77 @@ const Signup = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const loadGoogleScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogleSignup;
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    };
+
+    return loadGoogleScript();
+  }, []);
+
+  const initializeGoogleSignup = () => {
+    if (window.google && '59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com') {
+      window.google.accounts.id.initialize({
+        client_id: '59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com',
+        callback: handleGoogleSignup,
+      });
+      window.google.accounts.id.renderButton(
+        document.getElementById('googleSignupButton'),
+        { theme: 'outline', size: 'large', width: '100%' }
+      );
+    } else {
+      console.error('Google client library not loaded or client ID not set');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    
     try {
+      // Execute reCAPTCHA with the site key
+      const token = await executeRecaptcha();
+      
       const response = await fetch('https://bagelapi.artina.org/account/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, recaptcha_token: token }),
       });
+      
       if (!response.ok) {
         throw new Error('Registration failed');
       }
+      
       const data = await response.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
+      localStorage.setItem('userRole', data.data.role);
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/survey');
     } catch (error) {
-      setError(t('registrationFailed')); // Use translation for error message
+      setError(t('registrationFailed'));
     }
+  };
+
+  const executeRecaptcha = () => {
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'signup' })
+          .then(token => resolve(token))
+          .catch(error => reject(error));
+      });
+    });
   };
 
   const handleGoogleSignup = async (response) => {
@@ -59,30 +110,19 @@ const Signup = () => {
       });
       
       if (!backendResponse.ok) {
-        throw new Error('Google signup failed');
+        throw new Error(t('googleSignupFailed'));
       }
       
       const data = await backendResponse.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
+      localStorage.setItem('userRole', data.data.role);
+      localStorage.setItem('isLoggedIn', 'true');
       navigate('/survey');
     } catch (error) {
-      setError(t('googleSignupFailed')); // Use translation for error message
+      setError(t('googleSignupFailed'));
     }
   };
-
-  useEffect(() => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: "59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com",
-        callback: handleGoogleSignup,
-      });
-      window.google.accounts.id.renderButton(
-        document.getElementById('googleSignupButton'),
-        { theme: 'outline', size: 'large', width: '100%' }
-      );
-    }
-  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
