@@ -57,6 +57,13 @@ const Login = ({ setIsLoggedIn }) => {
     }
   };
 
+  const handleLoginSuccess = () => {
+    localStorage.setItem('isLoggedIn', 'true');
+    // Dispatch the custom event
+    window.dispatchEvent(new Event('loginStateChanged'));
+    navigate('/');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -81,8 +88,7 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
-      localStorage.setItem('isLoggedIn', 'true');
-      navigate('/');
+      handleLoginSuccess();
     } catch (error) {
       setError(t('invalidCredentials'));
     }
@@ -116,8 +122,7 @@ const Login = ({ setIsLoggedIn }) => {
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
-      localStorage.setItem('isLoggedIn', 'true');
-      navigate('/');
+      handleLoginSuccess();
     } catch (error) {
       setError(t('googleLoginFailed'));
     }

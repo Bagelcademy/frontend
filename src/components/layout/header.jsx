@@ -1,25 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Moon, Sun, Menu } from 'lucide-react'; // Using Menu icon for hamburger
+import { Globe, Moon, Sun, Menu } from 'lucide-react';
 import { Button } from '../ui/button';
 import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
 
 const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // State to toggle mobile menu
+  const [menuOpen, setMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
   useEffect(() => {
-    const loggedInStatus = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(loggedInStatus === 'true');
+    const checkLoginStatus = () => {
+      const loggedInStatus = localStorage.getItem('isLoggedIn');
+      setIsLoggedIn(loggedInStatus === 'true');
+    };
+
+    checkLoginStatus();
+
+    // Add event listener for storage changes
+    window.addEventListener('storage', checkLoginStatus);
+
+    // Custom event listener for login state changes
+    window.addEventListener('loginStateChanged', checkLoginStatus);
+
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+      window.removeEventListener('loginStateChanged', checkLoginStatus);
+    };
   }, []);
 
   const handleLogoutClick = () => {
     handleLogout();
     localStorage.setItem('isLoggedIn', 'false');
     setIsLoggedIn(false);
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('loginStateChanged'));
   };
 
   const toggleLanguage = () => {
@@ -29,7 +46,7 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
   };
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen); // Toggle mobile menu
+    setMenuOpen(!menuOpen);
   };
 
   return (
