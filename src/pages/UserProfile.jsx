@@ -135,7 +135,7 @@ const UserProfilePage = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch('https://bagelapi.artina.org/account/update-profile/', {
+      const response = await fetch('https://bagelapi.artina.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -21,6 +21,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import SubscriptionCards from './pages/shop';
 import LearningPathsPage from './pages/LearningPath';
 import LearningPathDetail from './pages/LearningPathDetail';
+import PaymentStatusPage from './pages/PaymentStatusPage';
 
 
 const App = () => {
@@ -59,7 +60,8 @@ const App = () => {
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage />} />
             <Route path="/profile" element={<UserProfilePage />} />
             <Route path="/learning-paths" element={<LearningPathsPage />} />
-            <Route path="/learning-paths/:id" element={<LearningPathDetail />} />            
+            <Route path="/learning-paths/:id" element={<LearningPathDetail />} />  
+            <Route path="/payment_status" element={<PaymentStatusPage />} />          
             <Route path="/quiz" element={<QuizComponent />} />
             <Route path="/shop" element={<SubscriptionCards />} />
             <Route path="/ask" element={<RequestPage />} />

@@ -136,5 +136,33 @@
   "close": "بستن",
   "Design a course based on any subject or any languages you want!": "دوره‌ای را بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید!",
   "Sign Up": "ثبت نام",
-  "Courses": "دوره‌ها"
+  "Courses": "دوره‌ها",
+  
+    "Choose Your Subscription": "اشتراک خود را انتخاب کنید",
+    "Best Offer": "بهترین پیشنهاد",
+    "Rial": "تومان",
+    "per": "برای هر",
+    "Subscribe Now": "الان مشترک شوید",
+    "An error occurred during subscription. Please try again.": "خطایی در هنگام اشتراک رخ داد. لطفا دوباره تلاش کنید.",
+    "Processing subscription...": "در حال پردازش اشتراک...",
+    "Monthly": "ماهانه",
+    "6 Months": "۶ ماهه",
+    "Yearly": "سالانه",
+    "month": "ماه",
+    "6 months": "۶ ماه",
+    "year": "سال",
+    "Full access to all features": "دسترسی کامل به تمام امکانات",
+    "24/7 customer support": "پشتیبانی ۲۴/۷ مشتری",
+    "Cancel anytime": "لغو در هر زمان",
+    "All monthly features": "تمام امکانات ماهانه",
+    "Priority support": "پشتیبانی ویژه",
+    "Exclusive content": "محتوای انحصاری",
+    "50% off first month": "۵۰٪ تخفیف برای ماه اول",
+    "All 6-month features": "تمام امکانات ۶ ماهه",
+    "2 months free": "۲ ماه رایگان",
+    "Annual performance review": "بررسی عملکرد سالانه",
+    "Early access to new features": "دسترسی زودهنگام به امکانات جدید"
+  
+  
+
 }
