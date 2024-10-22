@@ -1,3 +1,4 @@
+// Courses.jsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from "../components/ui/input";
@@ -6,10 +7,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import CourseCard from '../components/ui/coursecard';
 import '../css/courses.css';
 import { useTranslation } from 'react-i18next'; 
+import { useSnackbar } from 'notistack';
 
 const ITEMS_PER_PAGE = 20;
 
 const Courses = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [courses, setCourses] = useState([]);
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,15 +32,25 @@ const Courses = () => {
   }, [searchTerm, selectedCategory, courses, page]);
 
   const fetchCourses = async () => {
-    const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
-    const data = await response.json();
-    setCourses(data);
+    try {
+      const response = await fetch('https://bagelapi.artina.org//courses/courses/get_all_courses/');
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      enqueueSnackbar(t('Failed to fetch courses. Please try again later.'), { variant: 'error' });
+    }
   };
 
   const fetchCategories = async () => {
-    const response = await fetch('https://bagelapi.artina.org/courses/Category/');
-    const data = await response.json();
-    setCategories(data);
+    try {
+      const response = await fetch('https://bagelapi.artina.org/courses/Category/');
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      enqueueSnackbar(t('Failed to fetch categories. Please try again later.'), { variant: 'error' });
+    }
   };
 
   const filterCourses = () => {
@@ -71,13 +84,18 @@ const Courses = () => {
   };
 
   const handleAskClick = () => {
-    navigate('/ask');
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      enqueueSnackbar(t('Please log in to access this feature.'), { variant: 'info' });
+      navigate('/login');
+    } else {
+      navigate('/ask');
+    }
   };
   const selectRef = useRef(null);
 
-
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+     <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 

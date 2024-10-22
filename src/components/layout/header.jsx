@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Globe, Moon, Sun, Menu } from 'lucide-react';
 import { Button } from '../ui/button';
 import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'notistack';
 
-const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
+const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -31,13 +34,50 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
     };
   }, []);
 
-  const handleLogoutClick = () => {
-    handleLogout();
-    localStorage.setItem('isLoggedIn', 'false');
-    setIsLoggedIn(false);
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new Event('loginStateChanged'));
-  };
+const handleLogoutClick = async () => {
+  try {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (!refreshToken) {
+      setError(t('Refresh token not found. Please log in.'));
+      return;
+    }
+
+    const response = await fetch('https://bagelapi.artina.org/account/logout/logout/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        refresh: refreshToken,
+      }),
+    });
+
+    if (response.ok) {
+      handleLogoutClick();  // Custom logout handler (clear state)
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.setItem('isLoggedIn', 'false');
+      setIsLoggedIn(false);
+
+      window.dispatchEvent(new Event('loginStateChanged'));
+      enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
+      navigate('/login');
+    } else {
+      const errorData = await response.json();
+      enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
+      console.error('Logout error:', errorData);
+    }
+  } catch (error) {
+    enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
+    console.error('Logout error:', error);
+  }
+};
+
+  
+  
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'fa' : 'en';
@@ -50,6 +90,7 @@ const Header = ({ isDarkTheme, toggleTheme, handleLogout, changeLanguage }) => {
   };
 
   return (
+    
     <header className="bg-white dark:bg-gray-800 shadow-sm backdrop-blur-md sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">

@@ -4,17 +4,28 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertDialog, AlertDialogDescription } from '../components/ui/alert-dialog';
 
 const Signup = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  
+  // Form states
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [verificationCode, setVerificationCode] = useState('');
+  
+  // UI states
   const [error, setError] = useState('');
-  const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [showVerification, setShowVerification] = useState(false);
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [timer, setTimer] = useState(0);
+  
   useEffect(() => {
-    // Load the reCAPTCHA v3 script
+    // Load reCAPTCHA script
     const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
     script.async = true;
@@ -27,6 +38,7 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
+    // Load Google Sign-in script
     const loadGoogleScript = () => {
       const script = document.createElement('script');
       script.src = 'https://accounts.google.com/gsi/client';
@@ -43,6 +55,17 @@ const Signup = () => {
     return loadGoogleScript();
   }, []);
 
+  // Timer effect for resending verification code
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
   const initializeGoogleSignup = () => {
     if (window.google && '59248842872-ii33fubr6b2gap6nebu4dsotrm60lihq.apps.googleusercontent.com') {
       window.google.accounts.id.initialize({
@@ -53,39 +76,6 @@ const Signup = () => {
         document.getElementById('googleSignupButton'),
         { theme: 'outline', size: 'large', width: '100%' }
       );
-    } else {
-      console.error('Google client library not loaded or client ID not set');
-    }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    
-    try {
-      // Execute reCAPTCHA with the site key
-      const token = await executeRecaptcha();
-      
-      const response = await fetch('https://bagelapi.artina.org/account/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password, recaptcha_token: token }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Registration failed');
-      }
-      
-      const data = await response.json();
-      localStorage.setItem('accessToken', data.data.access);
-      localStorage.setItem('refreshToken', data.data.refresh);
-      localStorage.setItem('userRole', data.data.role);
-      localStorage.setItem('isLoggedIn', 'true');
-      navigate('/survey');
-    } catch (error) {
-      setError(t('registrationFailed'));
     }
   };
 
@@ -99,8 +89,110 @@ const Signup = () => {
     });
   };
 
+  const sendVerificationEmail = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+      
+      const response = await fetch('https://bagelapi.artina.org/account/email/email_verification/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || t('emailVerificationFailed'));
+      }
+
+      setIsEmailSent(true);
+      setShowVerification(true);
+      setTimer(180); // 3 minutes cooldown
+      
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const verifyAndRegister = async () => {
+    try {
+      setIsLoading(true);
+      setError('');
+
+      // First verify the code
+      const verifyResponse = await fetch('https://bagelapi.artina.org/account/email/verify_code/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email,
+          verification_code: verificationCode 
+        }),
+      });
+
+      if (!verifyResponse.ok) {
+        const data = await verifyResponse.json();
+        throw new Error(data.error || t('verificationFailed'));
+      }
+
+      // Get reCAPTCHA token
+      const token = await executeRecaptcha();
+
+      // Complete registration
+      const registerResponse = await fetch('https://bagelapi.artina.org/account/register/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          username, 
+          email, 
+          password, 
+          recaptcha_token: token 
+        }),
+      });
+
+      const data = await registerResponse.json();
+      
+      if (!registerResponse.ok) {
+        throw new Error(data.error || t('registrationFailed'));
+      }
+
+      // Save auth tokens and redirect
+      localStorage.setItem('accessToken', data.data.access);
+      localStorage.setItem('refreshToken', data.data.refresh);
+      localStorage.setItem('userRole', data.data.role);
+      localStorage.setItem('isLoggedIn', 'true');
+      navigate('/survey');
+
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!showVerification) {
+      await sendVerificationEmail();
+    } else {
+      await verifyAndRegister();
+    }
+  };
+
   const handleGoogleSignup = async (response) => {
     try {
+      setIsLoading(true);
+      setError('');
+      
       const backendResponse = await fetch('https://bagelapi.artina.org/account/login/google_login/', {
         method: 'POST',
         headers: {
@@ -119,57 +211,137 @@ const Signup = () => {
       localStorage.setItem('userRole', data.data.role);
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/survey');
+      
     } catch (error) {
-      setError(t('googleSignupFailed'));
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('signupTitle')}</h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="username">{t('username')}</Label>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
+          {t('signupTitle')}
+        </h2>
+
+        {error && (
+          <AlertDialog variant="destructive" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDialogDescription>{error}</AlertDialogDescription>
+          </AlertDialog>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label className="dark:text-white" htmlFor="username">
+              {t('username')}
+            </Label>
             <Input
               id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
+              disabled={isLoading || showVerification}
             />
           </div>
-          <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="email">{t('email')}</Label>
+
+          <div>
+            <Label className="dark:text-white" htmlFor="email">
+              {t('email')}
+            </Label>
             <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading || showVerification}
             />
           </div>
-          <div className="mb-6">
-            <Label className="dark:text-white" htmlFor="password">{t('password')}</Label>
+
+          <div>
+            <Label className="dark:text-white" htmlFor="password">
+              {t('password')}
+            </Label>
             <Input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading || showVerification}
             />
           </div>
-          <Button type="submit" className="bg-buttonColor w-full text-white">
-            {t('signupButton')}
+          
+          {showVerification && (
+            <div>
+              <Label className="dark:text-white" htmlFor="verificationCode">
+                {t('verificationCode')}
+              </Label>
+              <Input
+                id="verificationCode"
+                type="text"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                required
+                disabled={isLoading}
+                placeholder={t('enterVerificationCode')}
+              />
+              {isEmailSent && (
+                <div className="mt-2 text-sm">
+                  <p className="text-green-500 dark:text-green-400">
+                    {t('verificationEmailSent')}
+                  </p>
+                  {timer > 0 ? (
+                    <p className="text-gray-500">
+                      {t('resendCodeIn', { seconds: timer })}
+                    </p>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={sendVerificationEmail}
+                      disabled={isLoading}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {t('resendCode')}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          <Button 
+            type="submit" 
+            className="w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t('loading')}
+              </>
+            ) : showVerification ? (
+              t('verify')
+            ) : (
+              t('signupButton')
+            )}
           </Button>
         </form>
+
         <div className="mt-4 flex items-center justify-between">
           <hr className="w-full border-t border-gray-300" />
-          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800">{t('orText')}</span>
+          <span className="px-2 text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400">
+            {t('orText')}
+          </span>
           <hr className="w-full border-t border-gray-300" />
         </div>
+
         <div id="googleSignupButton" className="mt-4"></div>
+
         <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
           {t('alreadyHaveAccount')}{' '}
           <a href="/login" className="text-blue-500 hover:underline">
