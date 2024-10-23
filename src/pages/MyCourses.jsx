@@ -39,6 +39,7 @@ const MyCourses = () => {
       });
       const data = await response.json();
       setCourses(data);
+      console.log(response)
     } catch (error) {
       console.error('Failed to fetch courses:', error);
     }
@@ -110,7 +111,7 @@ const MyCourses = () => {
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center">
               <Award className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />
-              <span className="text-sm">{t('points', { points: progress.total_score })}</span>
+              <span className="text-sm">{t('points', { points: progress.points_earned })}</span>
             </div>
             <div className="flex items-center">
               <Zap className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />

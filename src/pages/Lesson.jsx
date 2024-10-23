@@ -7,7 +7,7 @@ import mama from '../assets/87.gif';
 import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 
 const LessonPage = () => {
   const { t, i18n } = useTranslation(); // Use i18n to get the current language
@@ -124,18 +124,74 @@ const LessonPage = () => {
       setError(err.message);
     }
   };
+  const handleCompleteLessonAndNavigate = async (direction) => {
+    if (direction === 'next') {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          setError(t('User not found, please log in.'));
+          return;
+        }
 
-  const handleNavigation = (direction) => {
-    if (isLastLesson) {
-      setOpenDialog(true);
+        const response = await fetch(`https://bagelapi.artina.org/courses/student-progress/${lessonId}/complete-lesson/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            lesson_id: lessonId
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || t('Failed to complete lesson'));
+        }
+
+        const result = await response.json();
+        console.log('Lesson completion result:', result);
+
+        // After successful completion, handle navigation
+        if (isLastLesson) {
+          setOpenDialog(true);
+        } else {
+          const currentLessonId = parseInt(lessonId);
+          const newLessonId = currentLessonId + 1;
+          navigate(`/courses/${courseId}/lessons/${newLessonId}`);
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error('Error completing lesson:', err);
+      }
     } else {
+      // For previous navigation, just navigate without completing
       const currentLessonId = parseInt(lessonId);
-      const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
-      if (currentLessonId > 0) {
+      const newLessonId = currentLessonId - 1;
+      if (currentLessonId > 1) {
         navigate(`/courses/${courseId}/lessons/${newLessonId}`);
       }
     }
   };
+
+  const handleNavigation = (direction) => {
+    if (!isNextAvailable && direction === 'next') {
+      setError(t('Please complete the quiz before moving to the next lesson.'));
+      return;
+    }
+    handleCompleteLessonAndNavigate(direction);
+  };
+  // const handleNavigation = (direction) => {
+  //   if (isLastLesson) {
+  //     setOpenDialog(true);
+  //   } else {
+  //     const currentLessonId = parseInt(lessonId);
+  //     const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
+  //     if (currentLessonId > 0) {
+  //       navigate(`/courses/${courseId}/lessons/${newLessonId}`);
+  //     }
+  //   }
+  // };
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -212,24 +268,24 @@ const LessonPage = () => {
         </div>
       </div>
 
-      {/* Navigation buttons */}
-      <div className="flex justify-between items-center p-4 bg-gray-200 dark:bg-gray-800">
-        <button
-          onClick={() => handleNavigation('previous')}
-          disabled={lesson.lessonId === 1}  // Disable only if it's the first lesson
-          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          {t('Previous Lesson')}
-        </button>
-        <button
-          onClick={() => handleNavigation('next')}
-          disabled={!isNextAvailable}  // Enable only when the quiz is passed
-          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {t('Next Lesson')}
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </button>
+    {/* Navigation buttons */}
+    <div className="flex justify-between items-center p-4 bg-gray-200 dark:bg-gray-800">
+      <button
+        onClick={() => handleNavigation('previous')}
+        disabled={lesson.lessonId === 1}
+        className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" />
+        {t('Previous Lesson')}
+      </button>
+      <button
+        onClick={() => handleNavigation('next')}
+        disabled={!isNextAvailable}
+        className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {t('Next Lesson')}
+        <ArrowRight className="w-4 h-4 ml-2" />
+      </button>
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>{t('Congratulations')}</DialogTitle>
           <DialogContent>

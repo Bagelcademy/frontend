@@ -1,4 +1,3 @@
-// src/components/ui/card.jsx
 import React from 'react';
 
 export const Card = ({ className, children }) => (
@@ -17,6 +16,12 @@ export const CardTitle = ({ children }) => (
   <h2 className="text-xl font-semibold my-1">
     {children}
   </h2>
+);
+
+export const CardDescription = ({ children }) => (
+  <p className="text-sm text-gray-500 dark:text-gray-400">
+    {children}
+  </p>
 );
 
 export const CardContent = ({ children }) => (

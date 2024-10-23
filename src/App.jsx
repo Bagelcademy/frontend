@@ -13,15 +13,14 @@ import RequestPage from './pages/CourseRequest';
 import Layout from './components/layout/Layout';
 import Courses from './pages/Courses';
 import CharacterIntroPage from './pages/characters';
-import FuturisticFamilyPage from './pages/characters1';
 import AboutUs from './pages/AboutUs';
 import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
 import NotFoundPage from './pages/NotFoundPage';
 import SubscriptionCards from './pages/shop';
-import LearningPathsPage from './pages/LearningPath';
 import LearningPathDetail from './pages/LearningPathDetail';
 import PaymentStatusPage from './pages/PaymentStatusPage';
+import CareerPathsPage from './pages/LearningPath';
 
 
 const App = () => {
@@ -59,7 +58,7 @@ const App = () => {
             <Route path="/course/:id" element={<CourseLandingPage />} />
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage />} />
             <Route path="/profile" element={<UserProfilePage />} />
-            <Route path="/learning-paths" element={<LearningPathsPage />} />
+            <Route path="/learning-paths" element={<CareerPathsPage />} />
             <Route path="/learning-paths/:id" element={<LearningPathDetail />} />  
             <Route path="/payment_status" element={<PaymentStatusPage />} />          
             <Route path="/quiz" element={<QuizComponent />} />
