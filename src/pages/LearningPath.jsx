@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+// LearningPath.jsx
+import React, { useState, useEffect } from 'react';
 import { Search, Clock, BookOpen, Star, Filter, Briefcase } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 const CareerPathsPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [paths, setPaths] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const categories = [
     { id: 'all', name: 'All Paths' },
@@ -15,56 +21,47 @@ const CareerPathsPage = () => {
     { id: 'ai', name: 'AI & Machine Learning' }
   ];
 
-  const paths = [
-    {
-      id: 1,
-      title: 'Full-Stack Engineering',
-      category: 'web',
-      description: 'Learn to build complete web applications from start to finish',
-      duration: '6 months',
-      lessons: 35,
-      level: 'Beginner Friendly',
-      popular: true,
-      image: '/api/placeholder/400/200'
-    },
-    {
-      id: 2,
-      title: 'Data Scientist',
-      category: 'data',
-      description: 'Master data analysis, visualization, and machine learning',
-      duration: '8 months',
-      lessons: 42,
-      level: 'Intermediate',
-      popular: true,
-      image: '/api/placeholder/400/200'
-    },
-    {
-      id: 3,
-      title: 'Mobile Development',
-      category: 'mobile',
-      description: 'Build iOS and Android apps with React Native',
-      duration: '5 months',
-      lessons: 28,
-      level: 'Intermediate',
-      popular: false,
-      image: '/api/placeholder/400/200'
-    },
-    {
-      id: 4,
-      title: 'Machine Learning Engineer',
-      category: 'ai',
-      description: 'Build and deploy machine learning models',
-      duration: '9 months',
-      lessons: 45,
-      level: 'Advanced',
-      popular: false,
-      image: '/api/placeholder/400/200'
-    }
-  ];
+  useEffect(() => {
+    const fetchPaths = async () => {
+      try {
+        const response = await fetch('https://bagelapi.artina.org/courses/learning-paths/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch paths');
+        }
+        const data = await response.json();
+        // Transform API data to match your UI structure
+        const transformedData = data.map(path => ({
+          id: path.id,
+          title: path.title,
+          category: path.category || 'other',
+          description: path.description,
+          duration: path.duration || '6 months',
+          lessons: path.lessons || 0,
+          level: path.level,
+          popular: path.popular || false,
+          image: path.image || '/api/placeholder/400/200'
+        }));
+        setPaths(transformedData);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPaths();
+  }, []);
 
   const filteredPaths = activeFilter === 'all' 
     ? paths 
     : paths.filter(path => path.category === activeFilter);
+
+  const handlePathClick = (pathId) => {
+    navigate(`/learning-path/${pathId}`);
+  };
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center">Error: {error}</div>;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -103,7 +100,7 @@ const CareerPathsPage = () => {
               key={category.id}
               variant={activeFilter === category.id ? "default" : "outline"}
               onClick={() => setActiveFilter(category.id)}
-              className="whitespace-nowrap"
+              className="whitespace-nowrap bg-gray-500 text-white"
             >
               {category.name}
             </Button>
@@ -113,7 +110,11 @@ const CareerPathsPage = () => {
         {/* Paths Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPaths.map(path => (
-            <Card key={path.id} className="group hover:shadow-lg transition-shadow">
+            <Card 
+              key={path.id} 
+              className="group hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => handlePathClick(path.id)}
+            >
               <CardHeader className="p-0">
                 <img
                   src={path.image}
@@ -129,12 +130,6 @@ const CareerPathsPage = () => {
                     </CardTitle>
                     <CardDescription>{path.description}</CardDescription>
                   </div>
-                  {path.popular && (
-                    <Badge variant="secondary" className="flex items-center gap-1">
-                      <Star className="w-3 h-3" />
-                      Popular
-                    </Badge>
-                  )}
                 </div>
                 
                 <div className="flex flex-wrap gap-4 mt-4 text-sm text-gray-600">
@@ -152,7 +147,9 @@ const CareerPathsPage = () => {
                   </div>
                 </div>
 
-                <Button className="w-full mt-4">
+                <Button             
+                  onClick={() => navigate(`/learning-paths/${path.id}`)}
+                  className="w-full mt-4 bg-buttonColor text-white">
                   View Path
                 </Button>
               </CardContent>
@@ -165,3 +162,4 @@ const CareerPathsPage = () => {
 };
 
 export default CareerPathsPage;
+

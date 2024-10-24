@@ -18,7 +18,8 @@ import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
 import NotFoundPage from './pages/NotFoundPage';
 import SubscriptionCards from './pages/shop';
-import LearningPathDetail from './pages/LearningPathDetail';
+// import LearningPathDetail from './pages/LearningPathDetail';
+import LearningPathDetail from './pages/l';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 import CareerPathsPage from './pages/LearningPath';
 
