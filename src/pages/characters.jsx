@@ -7,10 +7,46 @@ import img6 from '../assets/6.png';
 import img7 from '../assets/7.png';
 
 const characters = [
-  { id: 1, nameKey: "mama_bagel", image: img4, backstoryKey: "mama_bagel_backstory" },
-  { id: 2, nameKey: "papa_bagel", image: img5, backstoryKey: "papa_bagel_backstory" },
-  { id: 3, nameKey: "emily_bagel", image: img6, backstoryKey: "emily_bagel_backstory" },
-  { id: 4, nameKey: "jackie_bagel", image: img7, backstoryKey: "jackie_bagel_backstory" },
+  { 
+    id: 1, 
+    nameKey: "mama_bagel", 
+    image: img4, 
+    backstoryKey: "mama_bagel_backstory",
+    role: "The Heart of the Family",
+    specialty: "Master Baker",
+    favoriteQuote: "A bagel made with love tastes twice as good!",
+    funFact: "Can braid challah with her eyes closed"
+  },
+  { 
+    id: 2, 
+    nameKey: "papa_bagel", 
+    image: img5, 
+    backstoryKey: "papa_bagel_backstory",
+    role: "The Family Jokester",
+    specialty: "Seasoning Expert",
+    favoriteQuote: "Everything's better with everything seasoning!",
+    funFact: "Holds the record for fastest bagel rolling"
+  },
+  { 
+    id: 3, 
+    nameKey: "emily_bagel", 
+    image: img6, 
+    backstoryKey: "emily_bagel_backstory",
+    role: "The Creative Spirit",
+    specialty: "Innovative Flavors",
+    favoriteQuote: "Who says bagels can't be adventurous?",
+    funFact: "Created a rainbow bagel that went viral"
+  },
+  { 
+    id: 4, 
+    nameKey: "jackie_bagel", 
+    image: img7, 
+    backstoryKey: "jackie_bagel_backstory",
+    role: "The Tech-Savvy Sibling",
+    specialty: "making a mess everywhere",
+    favoriteQuote: "here for you to play ageme in your breaks!",
+    funFact: "always playing call of duty"
+  }
 ];
 
 const CharacterCard = ({ character, onClick }) => {
@@ -47,18 +83,51 @@ const CharacterModal = ({ character, onClose }) => {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 50, opacity: 0 }}
-        className="bg-white dark:bg-gray-800 p-8 rounded-lg max-w-2xl w-full"
+        className="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full flex overflow-hidden max-h-[80vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">{t(character.nameKey)}</h2>
-        <img src={character.image} alt={t(character.nameKey)} className="w-full h-64 object-cover rounded-lg mb-4" />
-        <p className="text-gray-700 dark:text-gray-300">{t(character.backstoryKey)}</p>
-        <button
-          className="mt-4 bg-buttonColor text-white px-4 py-2 rounded hover:bg-opacity-80"
-          onClick={onClose}
-        >
-          {t('close')}
-        </button>
+        {/* Left side - Content */}
+        <div className="w-1/2 p-6 overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t(character.nameKey)}</h2>
+          
+          <div className="space-y-4">
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{character.role}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">{t(character.backstoryKey)}</p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Specialty</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">{character.specialty}</p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Favorite Quote</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm italic">"{character.favoriteQuote}"</p>
+            </div>
+
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Fun Fact</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">{character.funFact}</p>
+            </div>
+          </div>
+
+          <button
+            className="mt-6 bg-buttonColor text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition-colors text-sm"
+            onClick={onClose}
+          >
+            {t('close')}
+          </button>
+        </div>
+        
+        {/* Right side - Image */}
+        <div className="w-1/2 bg-gray-100 dark:bg-gray-900">
+          <img 
+            src={character.image} 
+            alt={t(character.nameKey)} 
+            className="w-full h-full object-cover"
+          />
+        </div>
       </motion.div>
     </motion.div>
   );
