@@ -13,6 +13,17 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -21,11 +32,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
     };
 
     checkLoginStatus();
-
-    // Add event listener for storage changes
     window.addEventListener('storage', checkLoginStatus);
-
-    // Custom event listener for login state changes
     window.addEventListener('loginStateChanged', checkLoginStatus);
 
     return () => {
@@ -34,50 +41,47 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
     };
   }, []);
 
-const handleLogoutClick = async () => {
-  try {
-    const refreshToken = localStorage.getItem('refreshToken');
-    const accessToken = localStorage.getItem('accessToken');
+  const handleLogoutClick = async () => {
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+      const accessToken = localStorage.getItem('accessToken');
 
-    if (!refreshToken) {
-      setError(t('Refresh token not found. Please log in.'));
-      return;
-    }
+      if (!refreshToken) {
+        setError(t('Refresh token not found. Please log in.'));
+        return;
+      }
 
-    const response = await fetch('https://bagelapi.artina.org/account/logout/logout/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        refresh: refreshToken,
-      }),
-    });
+      const response = await fetch('https://bagelapi.artina.org/account/logout/logout/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          refresh: refreshToken,
+        }),
+      });
 
-    if (response.ok) {
-      handleLogoutClick();  // Custom logout handler (clear state)
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.setItem('isLoggedIn', 'false');
-      setIsLoggedIn(false);
+      if (response.ok) {
+        handleLogoutClick();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.setItem('isLoggedIn', 'false');
+        setIsLoggedIn(false);
 
-      window.dispatchEvent(new Event('loginStateChanged'));
-      enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
-      navigate('/login');
-    } else {
-      const errorData = await response.json();
+        window.dispatchEvent(new Event('loginStateChanged'));
+        enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
+        navigate('/login');
+      } else {
+        const errorData = await response.json();
+        enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
+        console.error('Logout error:', errorData);
+      }
+    } catch (error) {
       enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
-      console.error('Logout error:', errorData);
+      console.error('Logout error:', error);
     }
-  } catch (error) {
-    enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
-    console.error('Logout error:', error);
-  }
-};
-
-  
-  
+  };
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage === 'en' ? 'fa' : 'en';
@@ -90,91 +94,311 @@ const handleLogoutClick = async () => {
   };
 
   return (
-    
-    <header className="bg-white dark:bg-gray-800 shadow-sm backdrop-blur-md sticky top-0 z-50">
-      <nav className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <header 
+      className={`
+        fixed w-full top-0 z-50 transition-all duration-100
+        ${scrolled ? 'py-2' : 'py-4'}
+        ${isDarkTheme 
+          ? 'bg-gray-800/70 shadow-lg shadow-gray-900/10' 
+          : 'bg-white/30 shadow-lg shadow-gray-200/10'
+        }
+        backdrop-blur-xl
+        border-b
+        ${isDarkTheme ? 'border-gray-700/30' : 'border-gray-200/30'}
+      `}
+    >
+      <nav className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link to="/" className="text-xl font-b7 text-gray-900 dark:text-white">Bagelcademy</Link>
-          <Link to="/shop" className="md:flex items-center text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
-            <Button className="bg-gradient-to-r from-red-700 to-red-400 text-white rounded-lg p-2 hover:scale-105 transform transition-all duration-300">
+          <Link 
+            to="/" 
+            className={`text-xl font-bold relative overflow-hidden
+              ${isDarkTheme ? 'text-white' : 'text-gray-900'}
+              hover:scale-105 transition-transform duration-300
+            `}
+          >
+            Bagelcademy
+          </Link>
+          <Link to="/shop">
+            <Button 
+              className={`
+                relative overflow-hidden bg-gradient-to-r
+                ${isDarkTheme 
+                  ? 'from-gray-700 to-gray-600' 
+                  : 'from-gray-800 to-gray-700'
+                }
+                text-white rounded-lg p-2
+                hover:scale-105 transform transition-all duration-300
+                before:absolute before:inset-0 before:bg-white/10
+                before:translate-x-[-100%] hover:before:translate-x-[100%]
+                before:transition-transform before:duration-500
+                shadow-lg
+              `}
+            >
               {t('getting PRO')}
             </Button>
           </Link>
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Link to="/" className="mx-2 text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('home')}</Link>
-          <Link to="/courses" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('courses')}</Link>
-
-          {isLoggedIn ? (
-            <>
-              <Link to="/my-courses" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('myCourses')}</Link>
-              <Link to="/profile" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('profile')}</Link>
-              <Button onClick={handleLogoutClick} variant="outline">{t('logout')}</Button>
-            </>
-          ) : (
-            <Link to="/login" className="text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">{t('login')}</Link>
-          )}
-
-          <div onClick={toggleTheme} className="mx-2 cursor-pointer">
-            {isDarkTheme ? (
-              <Moon className="h-6 w-6 bg-white text-black dark:bg-gray-800 dark:text-white" />
-            ) : (
-              <Sun className="h-6 w-6 bg-white text-black" />
-            )}
-          </div>
-
-          <div onClick={toggleLanguage} className="mx-2 cursor-pointer flex items-center">
-            <Globe className="h-6 w-6 bg-white text-black dark:bg-gray-800 dark:text-white" />
-            <span className="mx-2 text-gray-700 dark:text-gray-300">
-              {currentLanguage === 'en' ? 'فا' : 'EN'}
-            </span>
-          </div>
-        </div>
-
-        {/* Hamburger Menu Icon */}
-        <div className="md:hidden flex items-center">
-          <button onClick={toggleMenu} className="bg-white text-gray-700 dark:text-gray-300">
-            <Menu className="h-6 w-6" />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white dark:bg-gray-800 px-4 py-2 space-y-3">
-          <Link to="/" onClick={toggleMenu} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+          <Link 
+            to="/" 
+            className={`
+              mx-2 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              after:w-0 hover:after:w-full after:transition-all after:duration-300
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:text-white after:bg-white' 
+                : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+              }
+            `}
+          >
             {t('home')}
           </Link>
-          <Link to="/courses" onClick={toggleMenu} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+          <Link 
+            to="/courses" 
+            className={`
+              relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              after:w-0 hover:after:w-full after:transition-all after:duration-300
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:text-white after:bg-white' 
+                : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+              }
+            `}
+          >
             {t('courses')}
           </Link>
 
           {isLoggedIn ? (
             <>
-              <Link to="/my-courses" onClick={toggleMenu} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+              <Link 
+                to="/my-courses" 
+                className={`
+                  relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+                  after:w-0 hover:after:w-full after:transition-all after:duration-300
+                  ${isDarkTheme 
+                    ? 'text-gray-300 hover:text-white after:bg-white' 
+                    : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                  }
+                `}
+              >
                 {t('myCourses')}
               </Link>
-              <Link to="/profile" onClick={toggleMenu} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+              <Link 
+                to="/profile" 
+                className={`
+                  relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+                  after:w-0 hover:after:w-full after:transition-all after:duration-300
+                  ${isDarkTheme 
+                    ? 'text-gray-300 hover:text-white after:bg-white' 
+                    : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                  }
+                `}
+              >
                 {t('profile')}
               </Link>
-              <button onClick={() => {handleLogoutClick(); toggleMenu();}} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+              <Button 
+                onClick={handleLogoutClick} 
+                variant="outline" 
+                className={`
+                  backdrop-blur-sm border
+                  ${isDarkTheme 
+                    ? 'text-black border-gray-600 hover:bg-gray-700/50' 
+                    : 'text-gray-700 border-gray-200 hover:bg-gray-100/50'
+                  }
+                  transition-all duration-300
+                `}
+              >
                 {t('logout')}
-              </button>
+              </Button>
             </>
           ) : (
-            <Link to="/login" onClick={toggleMenu} className="block text-gray-700 dark:text-gray-300 hover:text-buttonColor dark:hover:text-buttonColor transition-colors">
+            <Link 
+              to="/login" 
+              className={`
+                relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+                after:w-0 hover:after:w-full after:transition-all after:duration-300
+                ${isDarkTheme 
+                  ? 'text-gray-300 hover:text-white after:bg-white' 
+                  : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                }
+              `}
+            >
               {t('login')}
             </Link>
           )}
 
-          {/* Theme Toggle for Mobile */}
-          <div onClick={toggleTheme} className="block text-gray-700 dark:text-gray-300 cursor-pointer">
+          <div 
+            onClick={toggleTheme} 
+            className={`
+              mx-2 cursor-pointer p-2 rounded-full
+              hover:bg-gray-200/20 transition-colors duration-300
+            `}
+          >
+            {isDarkTheme ? (
+              <Moon className="h-6 w-6 text-white" />
+            ) : (
+              <Sun className="h-6 w-6 text-gray-700" />
+            )}
+          </div>
+
+          <div 
+            onClick={toggleLanguage} 
+            className={`
+              mx-2 cursor-pointer flex items-center p-2 rounded-full
+              hover:bg-gray-200/20 transition-colors duration-300
+            `}
+          >
+            <Globe className={`h-6 w-6 ${isDarkTheme ? 'text-white' : 'text-gray-700'}`} />
+            <span className={`mx-2 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>
+              {currentLanguage === 'en' ? 'فا' : 'EN'}
+            </span>
+          </div>
+        </div>
+
+        <div className="md:hidden flex items-center">
+          <button 
+            onClick={toggleMenu} 
+            className={`
+              p-2 rounded-full
+              ${isDarkTheme ? 'text-white' : 'text-gray-700'}
+              hover:bg-gray-200/20 transition-colors duration-300
+            `}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+      </nav>
+
+      {menuOpen && (
+        <div 
+          className={`
+            md:hidden px-4 py-2 space-y-3
+            backdrop-blur-xl
+            ${isDarkTheme 
+              ? 'bg-gray-800/90' 
+              : 'bg-white/90'
+            }
+            border-t
+            ${isDarkTheme ? 'border-gray-700/30' : 'border-gray-200/30'}
+          `}
+        >
+          <Link 
+            to="/" 
+            onClick={toggleMenu} 
+            className={`
+              block py-2 px-3 rounded-lg
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:bg-gray-700/50' 
+                : 'text-gray-700 hover:bg-gray-100/50'
+              }
+              transition-colors duration-300
+            `}
+          >
+            {t('home')}
+          </Link>
+          <Link 
+            to="/courses" 
+            onClick={toggleMenu} 
+            className={`
+              block py-2 px-3 rounded-lg
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:bg-gray-700/50' 
+                : 'text-gray-700 hover:bg-gray-100/50'
+              }
+              transition-colors duration-300
+            `}
+          >
+            {t('courses')}
+          </Link>
+
+          {isLoggedIn ? (
+            <>
+              <Link 
+                to="/my-courses" 
+                onClick={toggleMenu} 
+                className={`
+                  block py-2 px-3 rounded-lg
+                  ${isDarkTheme 
+                    ? 'text-gray-300 hover:bg-gray-700/50' 
+                    : 'text-gray-700 hover:bg-gray-100/50'
+                  }
+                  transition-colors duration-300
+                `}
+              >
+                {t('myCourses')}
+              </Link>
+              <Link 
+                to="/profile" 
+                onClick={toggleMenu} 
+                className={`
+                  block py-2 px-3 rounded-lg
+                  ${isDarkTheme 
+                    ? 'text-gray-300 hover:bg-gray-700/50' 
+                    : 'text-gray-700 hover:bg-gray-100/50'
+                  }
+                  transition-colors duration-300
+                `}
+              >
+                {t('profile')}
+              </Link>
+              <button 
+                onClick={() => {
+                  handleLogoutClick(); 
+                  toggleMenu();
+                }} 
+                className={`
+                  block w-full text-left py-2 px-3 rounded-lg
+                  ${isDarkTheme 
+                    ? 'text-gray-300 hover:bg-gray-700/50' 
+                    : 'text-gray-700 hover:bg-gray-100/50'
+                  }
+                  transition-colors duration-300
+                `}
+              >
+                {t('logout')}
+              </button>
+            </>
+          ) : (
+            <Link 
+              to="/login" 
+              onClick={toggleMenu} 
+              className={`
+                block py-2 px-3 rounded-lg
+                ${isDarkTheme 
+                  ? 'text-gray-300 hover:bg-gray-700/50' 
+                  : 'text-gray-700 hover:bg-gray-100/50'
+                }
+                transition-colors duration-300
+              `}
+            >
+              {t('login')}
+            </Link>
+          )}
+
+          <div 
+            onClick={toggleTheme} 
+            className={`
+              block py-2 px-3 rounded-lg cursor-pointer
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:bg-gray-700/50' 
+                : 'text-gray-700 hover:bg-gray-100/50'
+              }
+              transition-colors duration-300
+            `}
+          >
             {isDarkTheme ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
           </div>
 
-          {/* Language Toggle for Mobile */}
-          <div onClick={toggleLanguage} className="text-gray-700 dark:text-gray-300 cursor-pointer flex gap-1">
+          <div 
+            onClick={toggleLanguage} 
+            className={`
+              flex items-center py-2 px-3 rounded-lg cursor-pointer
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:bg-gray-700/50' 
+                : 'text-gray-700 hover:bg-gray-100/50'
+              }
+              transition-colors duration-300
+            `}
+          >
             <Globe className="h-6 w-6" />
             <span className="ml-2">{currentLanguage === 'en' ? 'فا' : 'EN'}</span>
           </div>

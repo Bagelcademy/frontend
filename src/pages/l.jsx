@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Clock, Book, Award, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import cimage from "../assets/12.png" 
 
 const LearningPathDetail = () => {
   const { id } = useParams();
@@ -175,7 +176,7 @@ const LearningPathDetail = () => {
             <div className="w-full md:w-80">
               <div className="bg-lightBackground dark:bg-darkBackground p-6 rounded-lg border border-borderColor">
                 <img 
-                  src="/api/placeholder/320/200" 
+                  src={cimage}
                   alt="Certificate Preview" 
                   className="w-full rounded-lg shadow-md"
                 />
