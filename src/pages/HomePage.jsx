@@ -17,7 +17,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('https://bagelapi.artina.org/courses/course-generation/popular_courses/');
+        const response = await fetch('https://bagelapi.artina.org/courses/courses/popular_courses/');
         if (!response.ok) throw new Error('Failed to fetch courses');
         const data = await response.json();
         setCourses(data);

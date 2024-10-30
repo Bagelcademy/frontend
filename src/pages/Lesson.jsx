@@ -21,7 +21,7 @@ const LessonPage = () => {
   const [isNextAvailable, setIsNextAvailable] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
-  const { courseId, lessonId } = useParams();
+  const { courseId, lessonId ,quizId} = useParams();
   const [isLastLesson, setIsLastLesson] = useState(false); 
   const navigate = useNavigate();
 
@@ -71,7 +71,7 @@ const LessonPage = () => {
           return;
         }
 
-        const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/Qlist/`);
+        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${lessonId}/Qlist/`);
         if (!response.ok) {
           throw new Error(t('Failed to fetch quiz data'));
         }
@@ -97,16 +97,16 @@ const LessonPage = () => {
     }
 
     try {
-      const response = await fetch(`https://bagelapi.artina.org/courses/answers/`, {
+      const response = await fetch(`https://bagelapi.artina.org/api/quizzes/${lessonId}/submit_answers/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          answers: Object.entries(selectedAnswers).map(([questionId, answer]) => ({
-            question: questionId,
-            selected_option: answer,
+          answers: Object.entries(selectedAnswers).map(([questionId, selectedOption]) => ({
+            question_id: parseInt(questionId),
+            selected_option: selectedOption
           })),
         }),
       });
@@ -123,7 +123,10 @@ const LessonPage = () => {
     } catch (err) {
       setError(err.message);
     }
-  };
+};
+
+
+
   const handleCompleteLessonAndNavigate = async (direction) => {
     if (direction === 'next') {
       try {
@@ -249,13 +252,16 @@ const LessonPage = () => {
             </button>
           </form>
           {quizResults && (
-            <div className="mt-4">
-              <h3 className="font-semibold mb-2">Quiz Results:</h3>
-              <p className="bg-white dark:bg-gray-700 p-2 rounded-lg text-gray-900 dark:text-gray-300">
-                Correct Answers: {quizResults.correct_answers} / {quizResults.total_questions} ({quizResults.score}%)
-              </p>
-            </div>
+              <div className="mt-4">
+                <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>
+                  <p className="bg-white dark:bg-gray-700 p-2 rounded-lg text-gray-900 dark:text-gray-300">
+                    {quizResults.message}<br />
+                  {t('Total Score')}: {quizResults.total_score}<br />
+                  {t('Points Earned')}: {quizResults.points_earned}
+                  </p>
+              </div>
           )}
+
         </div>
         {/* Right side: Lesson Content (Left side in Persian) */}
         <div className="w-full p-6 overflow-y-auto bg-white dark:bg-darkBackground">

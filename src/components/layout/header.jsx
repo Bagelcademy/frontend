@@ -41,13 +41,23 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
     };
   }, []);
 
+  const clearAuthData = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.setItem('isLoggedIn', 'false');
+    setIsLoggedIn(false);
+    window.dispatchEvent(new Event('loginStateChanged'));
+  };
+
   const handleLogoutClick = async () => {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
       const accessToken = localStorage.getItem('accessToken');
 
-      if (!refreshToken) {
-        setError(t('Refresh token not found. Please log in.'));
+      if (!refreshToken || !accessToken) {
+        clearAuthData();
+        enqueueSnackbar(t('Session expired. Please log in again.'), { variant: 'info' });
+        navigate('/login');
         return;
       }
 
@@ -63,23 +73,23 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       });
 
       if (response.ok) {
-        handleLogoutClick();
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.setItem('isLoggedIn', 'false');
-        setIsLoggedIn(false);
-
-        window.dispatchEvent(new Event('loginStateChanged'));
+        clearAuthData();
         enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
         navigate('/login');
       } else {
         const errorData = await response.json();
-        enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
         console.error('Logout error:', errorData);
+        // Even if the server request fails, we should clean up local storage
+        clearAuthData();
+        enqueueSnackbar(t('Failed to log out properly, but your session has been cleared.'), { variant: 'warning' });
+        navigate('/login');
       }
     } catch (error) {
-      enqueueSnackbar(t('Failed to log out. Please try again later.'), { variant: 'error' });
       console.error('Logout error:', error);
+      // Even if there's a network error, we should clean up local storage
+      clearAuthData();
+      enqueueSnackbar(t('Failed to log out properly, but your session has been cleared.'), { variant: 'warning' });
+      navigate('/login');
     }
   };
 
