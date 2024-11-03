@@ -10,7 +10,7 @@ const Footer = () => {
     <footer className="bg-gray-100 dark:bg-zinc-800 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
+          <div className="flex flex-col items-center">
             <h3 className="text-gray-600 dark:text-gray-400 text-xl font-bold mb-4">{t('Bagelcademy')}</h3>
             <p className="text-gray-600 dark:text-gray-400">{t('Stay Curious. Keep Growing.')}</p>
             <div className="flex w-[40%] items-center justify-center p-3 rounded-xl border-2 border-secondary mt-4">
@@ -24,9 +24,9 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Quick Links')}</h4>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-center">
               <li><Link to="/" className="hover:text-buttonColor transition-colors">{t('Home')}</Link></li>
               <li><Link to="/ask" className="hover:text-buttonColor transition-colors">{t('AI course design')}</Link></li>
               <li><Link to="/courses" className="hover:text-buttonColor transition-colors">{t('Courses')}</Link></li>
@@ -34,12 +34,12 @@ const Footer = () => {
               <li><Link to="/about-us" className="hover:text-buttonColor transition-colors">{t('About us')}</Link></li>
             </ul>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Contact')}</h4>
             <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@bagelcademy.com</p>
             <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: (024) 45678905</p>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
             <div className="flex gap-4">
               <a href="#" className="hover:text-buttonColor transition-colors"><Facebook /></a>

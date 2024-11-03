@@ -91,22 +91,22 @@ const CharacterModal = ({ character, onClose }) => {
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t(character.nameKey)}</h2>
           
           <div className="space-y-4">
-            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{character.role}</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">{t(character.backstoryKey)}</p>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Specialty</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">{character.specialty}</p>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Favorite Quote</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm italic">"{character.favoriteQuote}"</p>
             </div>
 
-            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+            <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Fun Fact</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">{character.funFact}</p>
             </div>

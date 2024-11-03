@@ -31,20 +31,20 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const gradientOverlay = "absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent";
 
   return (
-    <main className={`min-h-screen dark:bg-zinc-900 bg-white`}>
+    <main className={`pt-24 min-h-screen dark:bg-zinc-900 bg-white`}>
       {/* Hero Section */}
       <section className="relative min-h-[60vh] md:h-[90vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0">
-          <img 
-            src={heroImage} 
-            alt="Hero" 
+          <img
+            src={heroImage}
+            alt="Hero"
             className="w-full h-full object-cover object-center"
           />
           <div className={`absolute inset-0 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-zinc-900/90 bg-gradient-to-b from-blue-500/10 to-white/90`} />
           <div className={`absolute inset-0 dark:bg-[#00ff9d]/5 bg-[#00ff9d]/10`} />
           <div className={`absolute inset-0 dark:bg-gradient-to-t dark:from-zinc-900 dark:via-transparent dark:to-transparent bg-gradient-to-t from-gray-100 via-transparent to-transparent`} />
         </div>
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="relative z-10 text-center space-y-4 sm:space-y-8 w-full max-w-4xl mx-auto mt-16 sm:mt-20"
@@ -59,7 +59,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           </p>
           <div className="flex gap-4 justify-center">
             <Link to="/courses">
-              <Button size="lg" 
+              <Button size="lg"
                 className="bg-[#082f49] hover:opacity-90 dark:text-white dark:bg-gray-600 text-white font-bold px-4 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
               >
                 {t('Explore')}
@@ -81,20 +81,22 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
               whileHover={{ y: -5 }}
               className="relative overflow-hidden rounded-2xl"
             >
-              <Card className="border-cyan-500 dark:bg-zinc-800/50 dark:text-white bg-gray-100 text-black shadow-lg overflow-hidden">
+              <Card className="border-cyan-500 dark:bg-zinc-800/50 dark:text-white bg-gray-100 text-black shadow-lg overflow-hidden h-full">
                 <div className="relative aspect-video">
-                  <img 
-                    src={course.image_url} 
-                    alt={course.title} 
+                  <img
+                    src={course.image_url}
+                    alt={course.title}
                     className="w-full h-full object-cover"
                   />
                   <div className={gradientOverlay} />
                 </div>
-                <div className="p-4 sm:p-6">
-                  <h3 className="font-bold text-base sm:text-lg dark:text-white text-black mb-2">
-                    {course.title}
-                  </h3>
-                  <div className="flex items-center justify-between">
+                <div className="flex flex-col p-4 sm:p-6 justify-between">
+                  <div>
+                    <h3 className="font-bold text-base sm:text-lg dark:text-white text-black mb-2">
+                      {course.title}
+                    </h3>
+                  </div>
+                  <div className="flex">
                     <span className="text-blue-400">{t('Learn More')}</span>
                   </div>
                 </div>
@@ -139,11 +141,11 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-90`} />
               <div className={gradientOverlay} />
-              <div className="relative z-10">
+              <div className="flex flex-col justify-between h-full relative z-10">
                 <h3 className="text-xl sm:text-2xl font-bold mb-2">{feature.title}</h3>
                 <p className="mb-4 sm:mb-6 dark:text-zinc-300 text-gray-700">{feature.description}</p>
                 <Link to={feature.link}>
-                  <Button 
+                  <Button
                     className="dark:bg-white/10 dark:hover:bg-white/20 dark:text-white bg-blue-500 hover:bg-blue-600 text-white text-sm sm:text-base"
                   >
                     {feature.buttonText}
@@ -166,8 +168,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             {t('Sign up now and get access to all our courses!')}
           </p>
           <Link to="/signup">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className={`bg-gradient-to-r from-blue-400 to-cyan-400 hover:opacity-90 font-bold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg ${isDarkTheme ? 'text-black' : 'text-white'}`}
             >
               {t('Sign Up')}

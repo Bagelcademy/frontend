@@ -133,7 +133,7 @@ const CourseLandingPage = () => {
             {course.lessons?.map((lesson, index) => (
 
              
-             <li key={index} className="flex items-start bg-lightBackground dark:bg-gray-700 rounded-lg p-4 transition-transform transform hover:scale-105">
+             <li key={index} className="flex items-start bg-lightBackground dark:bg-darkBase rounded-lg p-4 transition-transform transform hover:scale-105">
               <button
                             onClick={() => handleLessonClick(lesson.id)}
                             className="bg-gradient-to-r from-green-400 to-blue-500 text-white p-2 rounded hover:bg-gradient-to-l from-blue-500 to-green-400 transition duration-300 mr-3"

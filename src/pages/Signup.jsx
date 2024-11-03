@@ -10,20 +10,20 @@ import { AlertDialog, AlertDialogDescription } from '../components/ui/alert-dial
 const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  
+
   // Form states
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
-  
+
   // UI states
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [timer, setTimer] = useState(0);
-  
+
   useEffect(() => {
     // Load reCAPTCHA script
     const script = document.createElement('script');
@@ -93,7 +93,7 @@ const Signup = () => {
     try {
       setIsLoading(true);
       setError('');
-      
+
       const response = await fetch('https://bagelapi.artina.org/account/email/email_verification/', {
         method: 'POST',
         headers: {
@@ -103,7 +103,7 @@ const Signup = () => {
       });
 
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || t('emailVerificationFailed'));
       }
@@ -111,7 +111,7 @@ const Signup = () => {
       setIsEmailSent(true);
       setShowVerification(true);
       setTimer(180); // 3 minutes cooldown
-      
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -130,9 +130,9 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           email,
-          verification_code: verificationCode 
+          verification_code: verificationCode
         }),
       });
 
@@ -150,16 +150,16 @@ const Signup = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          username, 
-          email, 
-          password, 
-          recaptcha_token: token 
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          recaptcha_token: token
         }),
       });
 
       const data = await registerResponse.json();
-      
+
       if (!registerResponse.ok) {
         throw new Error(data.error || t('registrationFailed'));
       }
@@ -180,7 +180,7 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!showVerification) {
       await sendVerificationEmail();
     } else {
@@ -192,7 +192,7 @@ const Signup = () => {
     try {
       setIsLoading(true);
       setError('');
-      
+
       const backendResponse = await fetch('https://bagelapi.artina.org/account/login/google_login/', {
         method: 'POST',
         headers: {
@@ -200,18 +200,18 @@ const Signup = () => {
         },
         body: JSON.stringify({ token: response.credential }),
       });
-      
+
       if (!backendResponse.ok) {
         throw new Error(t('googleSignupFailed'));
       }
-      
+
       const data = await backendResponse.json();
       localStorage.setItem('accessToken', data.data.access);
       localStorage.setItem('refreshToken', data.data.refresh);
       localStorage.setItem('userRole', data.data.role);
       localStorage.setItem('isLoggedIn', 'true');
       navigate('/survey');
-      
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -235,7 +235,7 @@ const Signup = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label className="dark:text-white" htmlFor="username">
+            <Label className="text-black dark:text-white" htmlFor="username">
               {t('username')}
             </Label>
             <Input
@@ -249,7 +249,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <Label className="dark:text-white" htmlFor="email">
+            <Label className="text-black dark:text-white" htmlFor="email">
               {t('email')}
             </Label>
             <Input
@@ -263,7 +263,7 @@ const Signup = () => {
           </div>
 
           <div>
-            <Label className="dark:text-white" htmlFor="password">
+            <Label className="text-black dark:text-white" htmlFor="password">
               {t('password')}
             </Label>
             <Input
@@ -275,10 +275,10 @@ const Signup = () => {
               disabled={isLoading || showVerification}
             />
           </div>
-          
+
           {showVerification && (
             <div>
-              <Label className="dark:text-white" htmlFor="verificationCode">
+              <Label className="text-black dark:text-white" htmlFor="verificationCode">
                 {t('verificationCode')}
               </Label>
               <Input
@@ -297,25 +297,27 @@ const Signup = () => {
                   </p>
                   {timer > 0 ? (
                     <p className="text-gray-500">
-                      {t('resendCodeIn', { seconds: timer })}
+                      {t('resendCodeIn-1')} {timer} {t('resendCodeIn-2')}
                     </p>
                   ) : (
-                    <button
-                      type="button"
-                      onClick={sendVerificationEmail}
-                      disabled={isLoading}
-                      className="text-blue-500 hover:underline"
-                    >
-                      {t('resendCode')}
-                    </button>
+                    <div className="flex justify-center">
+                      <button
+                        type="button"
+                        onClick={sendVerificationEmail}
+                        disabled={isLoading}
+                        className="hover:underline bg-white text-black dark:text-white dark:bg-gray-800 border-b-2  px-2 py-1 mt-2"
+                      >
+                        {t('resendCode')}
+                      </button>
+                    </div>
                   )}
                 </div>
               )}
             </div>
           )}
 
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             className="w-full"
             disabled={isLoading}
           >

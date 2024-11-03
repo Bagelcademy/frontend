@@ -254,7 +254,7 @@ const LessonPage = () => {
           {quizResults && (
               <div className="mt-4">
                 <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>
-                  <p className="bg-white dark:bg-gray-700 p-2 rounded-lg text-gray-900 dark:text-gray-300">
+                  <p className="bg-white dark:bg-darkBase p-2 rounded-lg text-gray-900 dark:text-gray-300">
                     {quizResults.message}<br />
                   {t('Total Score')}: {quizResults.total_score}<br />
                   {t('Points Earned')}: {quizResults.points_earned}

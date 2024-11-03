@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const CareerPathsPage = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -12,13 +13,14 @@ const CareerPathsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const categories = [
-    { id: 'all', name: 'All Paths' },
-    { id: 'web', name: 'Web Development' },
-    { id: 'data', name: 'Data Science' },
-    { id: 'mobile', name: 'Mobile Development' },
-    { id: 'ai', name: 'AI & Machine Learning' }
+    { id: 'all', name: t('All Paths') },
+    { id: 'web', name: t('Web Development') },
+    { id: 'data', name: t('Data Science') },
+    { id: 'mobile', name: t('Mobile Development') },
+    { id: 'ai', name: t('AI & Machine Learning') }
   ];
 
   useEffect(() => {
@@ -64,13 +66,13 @@ const CareerPathsPage = () => {
   if (error) return <div className="min-h-screen flex items-center justify-center">Error: {error}</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100 pt-24 dark:bg-darkBase">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="bg-white border-b dark:bg-zinc-800">
         <div className="max-w-6xl mx-auto px-6 py-8">
-          <h1 className="text-4xl font-bold mb-4">Career Paths</h1>
-          <p className="text-xl text-gray-600 mb-6">
-            Choose your path and start your journey to a new career in tech
+          <h1 className="text-4xl font-bold mb-4">{t("Career Paths")}</h1>
+          <p className="text-xl text-gray-600 mb-6 dark:text-gray-400">
+            {t("Choose path")}
           </p>
           
           {/* Search and Filter */}
@@ -79,13 +81,13 @@ const CareerPathsPage = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Search for a path..."
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={t("Search path")}
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black bg-gray-100 dark:bg-gray-800 dark:text-white" 
               />
             </div>
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 bg-slate-600">
               <Filter className="w-4 h-4" />
-              Filters
+              {t("Filters")}
             </Button>
           </div>
         </div>
@@ -139,7 +141,7 @@ const CareerPathsPage = () => {
                   </div>
                   <div className="flex items-center gap-1">
                     <BookOpen className="w-4 h-4" />
-                    {path.lessons} lessons
+                    {path.lessons} {t("lessons")}
                   </div>
                   <div className="flex items-center gap-1">
                     <Briefcase className="w-4 h-4" />
@@ -150,7 +152,7 @@ const CareerPathsPage = () => {
                 <Button             
                   onClick={() => navigate(`/learning-paths/${path.id}`)}
                   className="w-full mt-4 bg-buttonColor text-white">
-                  View Path
+                  {t("View Path")}
                 </Button>
               </CardContent>
             </Card>

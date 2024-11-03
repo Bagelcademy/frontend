@@ -96,7 +96,7 @@ const Courses = () => {
 
   return (
      <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
-      <div className="container mx-auto px-4 py-8">
+      <div className="pt-24 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">

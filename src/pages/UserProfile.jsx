@@ -121,9 +121,11 @@ const UserProfilePage = () => {
         setTotalPoints(pointsData.total_points_earned);
         setBio(userData.bio || '');
         setLoading(false);
+        console.log('User data:', userData);
       } catch (err) {
         setError(err.message);
         setLoading(false);
+        console.error(err);
       }
     };
 

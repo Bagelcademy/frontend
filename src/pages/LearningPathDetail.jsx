@@ -71,13 +71,13 @@ const LearningPathDetail = () => {
           <div className="p-6">
             <p className="text-gray-600 dark:text-gray-300 mb-4">{pathData.description}</p>
             <div className="flex flex-wrap gap-4 mb-4">
-              <span className="text-sm font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+              <span className="text-sm font-medium bg-gray-100 dark:bg-darkBase px-3 py-1 rounded-full">
                 Duration: {pathData.duration}
               </span>
-              <span className="text-sm font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+              <span className="text-sm font-medium bg-gray-100 dark:bg-darkBase px-3 py-1 rounded-full">
                 Level: {pathData.level}
               </span>
-              <span className="text-sm font-medium bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+              <span className="text-sm font-medium bg-gray-100 dark:bg-darkBase px-3 py-1 rounded-full">
                 Lessons: {pathData.lessons}
               </span>
             </div>

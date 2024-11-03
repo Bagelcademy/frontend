@@ -19,7 +19,7 @@ export const CardTitle = ({ children }) => (
 );
 
 export const CardDescription = ({ children }) => (
-  <p className="text-sm text-gray-500 dark:text-gray-400">
+  <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
     {children}
   </p>
 );

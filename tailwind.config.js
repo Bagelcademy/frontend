@@ -26,6 +26,7 @@ module.exports = {
       colors: {
         lightBackground: '#EBEAE1', // Light theme background color
         darkBackground: '#000000', // Dark theme background color
+        darkBase: '#1A202C', // Dark theme base color
         borderColor: '#009FA9', // Border color for both themes
         buttonColor: '#082f49', // Button color for light theme
         spaceArea:'#fff2d1',

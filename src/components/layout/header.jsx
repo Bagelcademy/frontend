@@ -79,14 +79,12 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       } else {
         const errorData = await response.json();
         console.error('Logout error:', errorData);
-        // Even if the server request fails, we should clean up local storage
         clearAuthData();
         enqueueSnackbar(t('Failed to log out properly, but your session has been cleared.'), { variant: 'warning' });
         navigate('/login');
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if there's a network error, we should clean up local storage
       clearAuthData();
       enqueueSnackbar(t('Failed to log out properly, but your session has been cleared.'), { variant: 'warning' });
       navigate('/login');
@@ -126,7 +124,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               hover:scale-105 transition-transform duration-300
             `}
           >
-            Bagelcademy
+            {t("Bagelcademy")}
           </Link>
           <Link to="/shop">
             <Button 
@@ -149,15 +147,15 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
           </Link>
         </div>
 
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center gap-x-4">
           <Link 
             to="/" 
             className={`
-              mx-2 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
               after:w-0 hover:after:w-full after:transition-all after:duration-300
               ${isDarkTheme 
                 ? 'text-gray-300 hover:text-white after:bg-white' 
-                : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                : 'text-black hover:text-gray-900 after:bg-gray-900'
               }
             `}
           >
@@ -170,11 +168,25 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               after:w-0 hover:after:w-full after:transition-all after:duration-300
               ${isDarkTheme 
                 ? 'text-gray-300 hover:text-white after:bg-white' 
-                : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                : 'text-black hover:text-gray-900 after:bg-gray-900'
               }
             `}
           >
             {t('courses')}
+          </Link>
+
+          <Link 
+            to="/learning-paths" 
+            className={`
+              relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              after:w-0 hover:after:w-full after:transition-all after:duration-300
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:text-white after:bg-white' 
+                : 'text-black hover:text-gray-900 after:bg-gray-900'
+              }
+            `}
+          >
+            {t('learningPath')}
           </Link>
 
           {isLoggedIn ? (
@@ -186,7 +198,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                   after:w-0 hover:after:w-full after:transition-all after:duration-300
                   ${isDarkTheme 
                     ? 'text-gray-300 hover:text-white after:bg-white' 
-                    : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                    : 'text-black hover:text-gray-900 after:bg-gray-900'
                   }
                 `}
               >
@@ -199,7 +211,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                   after:w-0 hover:after:w-full after:transition-all after:duration-300
                   ${isDarkTheme 
                     ? 'text-gray-300 hover:text-white after:bg-white' 
-                    : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                    : 'text-black hover:text-gray-900 after:bg-gray-900'
                   }
                 `}
               >
@@ -211,8 +223,8 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                 className={`
                   backdrop-blur-sm border
                   ${isDarkTheme 
-                    ? 'text-black border-gray-600 hover:bg-gray-700/50' 
-                    : 'text-gray-700 border-gray-200 hover:bg-gray-100/50'
+                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50' 
+                    : 'text-black border-gray-200 bg-gray-300 hover:bg-gray-100/50'
                   }
                   transition-all duration-300
                 `}
@@ -228,7 +240,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                 after:w-0 hover:after:w-full after:transition-all after:duration-300
                 ${isDarkTheme 
                   ? 'text-gray-300 hover:text-white after:bg-white' 
-                  : 'text-gray-600 hover:text-gray-900 after:bg-gray-900'
+                  : 'text-black hover:text-gray-900 after:bg-gray-900'
                 }
               `}
             >
@@ -239,26 +251,26 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
           <div 
             onClick={toggleTheme} 
             className={`
-              mx-2 cursor-pointer p-2 rounded-full
+              cursor-pointer p-2 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
           >
             {isDarkTheme ? (
               <Moon className="h-6 w-6 text-white" />
             ) : (
-              <Sun className="h-6 w-6 text-gray-700" />
+              <Sun className="h-6 w-6 text-black" />
             )}
           </div>
 
           <div 
             onClick={toggleLanguage} 
             className={`
-              mx-2 cursor-pointer flex items-center p-2 rounded-full
+              cursor-pointer flex items-center p-2 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
           >
-            <Globe className={`h-6 w-6 ${isDarkTheme ? 'text-white' : 'text-gray-700'}`} />
-            <span className={`mx-2 ${isDarkTheme ? 'text-gray-300' : 'text-gray-600'}`}>
+            <Globe className={`h-6 w-6 ${isDarkTheme ? 'text-white' : 'text-black'}`} />
+            <span className={`mx-2 ${isDarkTheme ? 'text-gray-300' : 'text-black'}`}>
               {currentLanguage === 'en' ? 'فا' : 'EN'}
             </span>
           </div>
@@ -281,11 +293,11 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       {menuOpen && (
         <div 
           className={`
-            md:hidden px-4 py-2 space-y-3
+            md:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
             ${isDarkTheme 
-              ? 'bg-gray-800/90' 
-              : 'bg-white/90'
+              ? 'bg-transparent' 
+              : 'bg-transparent'
             }
             border-t
             ${isDarkTheme ? 'border-gray-700/30' : 'border-gray-200/30'}
@@ -298,7 +310,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               block py-2 px-3 rounded-lg
               ${isDarkTheme 
                 ? 'text-gray-300 hover:bg-gray-700/50' 
-                : 'text-gray-700 hover:bg-gray-100/50'
+                : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
             `}
@@ -312,12 +324,27 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               block py-2 px-3 rounded-lg
               ${isDarkTheme 
                 ? 'text-gray-300 hover:bg-gray-700/50' 
-                : 'text-gray-700 hover:bg-gray-100/50'
+                : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
             `}
           >
             {t('courses')}
+          </Link>
+
+          <Link 
+            to="/learning-paths" 
+            onClick={toggleMenu} 
+            className={`
+              block py-2 px-3 rounded-lg
+              ${isDarkTheme 
+                ? 'text-gray-300 hover:bg-gray-700/50' 
+                : 'text-black hover:bg-gray-100/50'
+              }
+              transition-colors duration-300
+            `}
+          >
+            {t('learningPath')}
           </Link>
 
           {isLoggedIn ? (
@@ -329,7 +356,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                   block py-2 px-3 rounded-lg
                   ${isDarkTheme 
                     ? 'text-gray-300 hover:bg-gray-700/50' 
-                    : 'text-gray-700 hover:bg-gray-100/50'
+                    : 'text-black hover:bg-gray-100/50'
                   }
                   transition-colors duration-300
                 `}
@@ -343,7 +370,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                   block py-2 px-3 rounded-lg
                   ${isDarkTheme 
                     ? 'text-gray-300 hover:bg-gray-700/50' 
-                    : 'text-gray-700 hover:bg-gray-100/50'
+                    : 'text-black hover:bg-gray-100/50'
                   }
                   transition-colors duration-300
                 `}
@@ -356,10 +383,11 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                   toggleMenu();
                 }} 
                 className={`
-                  block w-full text-left py-2 px-3 rounded-lg
+                  block py-2 px-3 rounded-lg 
+                  ${i18n.dir() === 'rtl' ? 'text-right' : 'text-left'}
                   ${isDarkTheme 
-                    ? 'text-gray-300 hover:bg-gray-700/50' 
-                    : 'text-gray-700 hover:bg-gray-100/50'
+                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50' 
+                    : 'text-black border-gray-200 bg-gray-300 hover:bg-gray-100/50'
                   }
                   transition-colors duration-300
                 `}
@@ -375,7 +403,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
                 block py-2 px-3 rounded-lg
                 ${isDarkTheme 
                   ? 'text-gray-300 hover:bg-gray-700/50' 
-                  : 'text-gray-700 hover:bg-gray-100/50'
+                  : 'text-black hover:bg-gray-100/50'
                 }
                 transition-colors duration-300
               `}
@@ -390,7 +418,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               block py-2 px-3 rounded-lg cursor-pointer
               ${isDarkTheme 
                 ? 'text-gray-300 hover:bg-gray-700/50' 
-                : 'text-gray-700 hover:bg-gray-100/50'
+                : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
             `}
@@ -404,7 +432,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
               flex items-center py-2 px-3 rounded-lg cursor-pointer
               ${isDarkTheme 
                 ? 'text-gray-300 hover:bg-gray-700/50' 
-                : 'text-gray-700 hover:bg-gray-100/50'
+                : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
             `}

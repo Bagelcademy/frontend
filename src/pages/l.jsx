@@ -62,7 +62,7 @@ const LearningPathDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground">
+    <div className="pt-28 min-h-screen bg-lightBackground dark:bg-darkBackground">
       {/* Hero Section */}
       <div className="bg-white dark:bg-gray-800 border-b border-borderColor">
         <div className="max-w-6xl mx-auto px-4 py-12">
