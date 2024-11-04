@@ -28,6 +28,11 @@ const LessonPage = () => {
   useEffect(() => {
     const checkAndFetchLesson = async () => {
       try {
+        const token = localStorage.getItem('accessToken');
+
+        if (!token) {
+          setError(t('User not found, please log in.'));
+          return;}
         const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`);
 
         if (generationResponse.status === 201) {
@@ -36,7 +41,13 @@ const LessonPage = () => {
           return;
         }
 
-        const lessonResponse = await fetch(`https://bagelapi.artina.org/courses/courses/${courseId}/lessons/${lessonId}/`);
+        const lessonResponse = await fetch(`https://bagelapi.artina.org/courses/courses/${courseId}/lessons/${lessonId}/`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',},
+        });        
+        
         if (!lessonResponse.ok) {
           throw new Error('Failed to fetch lesson data');
         }
@@ -58,12 +69,16 @@ const LessonPage = () => {
 
   useEffect(() => {
     const fetchQuiz = async () => {
+      const token = localStorage.getItem('accessToken');
+        if (!token) {
+          setError(t('User not found, please log in.'));
+          return;}
       try {
         const generationResponse = await fetch(`https://bagelapi.artina.org/courses/generate-quiz/${courseId}/${lessonId}/`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-          },
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',          },
         });
 
         if (generationResponse.status === 201) {
@@ -71,7 +86,13 @@ const LessonPage = () => {
           return;
         }
 
-        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${lessonId}/Qlist/`);
+        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${lessonId}/Qlist/`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',          },
+        });        
+        
         if (!response.ok) {
           throw new Error(t('Failed to fetch quiz data'));
         }
@@ -95,9 +116,8 @@ const LessonPage = () => {
       setError(t('User not found, please log in.'));
       return;
     }
-
     try {
-      const response = await fetch(`https://bagelapi.artina.org/api/quizzes/${lessonId}/submit_answers/`, {
+      const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/submit_answers/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -113,6 +133,7 @@ const LessonPage = () => {
 
       if (response.ok) {
         const result = await response.json();
+        console.log(result)
         setQuizResults(result);
         setIsNextAvailable(true);
         setIsDialogOpen(true);
