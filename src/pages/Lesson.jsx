@@ -227,23 +227,31 @@ const LessonPage = () => {
   if (!lesson) return <div className="text-center p-4">{t('No lesson found')}</div>;
 
   const isPersian = i18n.language === 'fa'; // Check if the language is Persian
-
   return (
     <div
       className={`flex flex-col h-screen bg-gray-100 dark:bg-gray-900 ${isPersian ? 'rtl' : 'ltr'}`}
     >
-      <div className={`flex flex-grow overflow-hidden ${isPersian ? 'flex-row-reverse' : 'flex-row'}`}>
-        {/* Left side: Quiz section (Right side in Persian) */}
-        <div className="w-full bg-spaceArea text-black dark:bg-gray-900 p-6 flex flex-col overflow-y-auto">
+      <div className="flex flex-grow overflow-hidden">
+        {/* Left side: Lesson Content */}
+        <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-white dark:bg-darkBackground">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson.title}</h1>
+          <div className="markdown-content">
+            <ReactMarkdown className="prose max-w-none dark:prose-dark">
+              {lesson.content}
+            </ReactMarkdown>
+          </div>
+        </div>
+        {/* Right side: Quiz section */}
+        <div className="w-full md:w-1/2 bg-spaceArea text-black dark:bg-gray-900 p-6 flex flex-col h-full overflow-y-auto">
           <h2 className="text-2xl font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
             <BookOpen className="w-6 h-6 mx-2" />
             {t('Quiz')}
           </h2>
-          <form onSubmit={handleSubmitQuiz}>
+          <form onSubmit={handleSubmitQuiz} className="flex-grow flex flex-col">
             {quizzes.length > 0 ? (
               quizzes.map((quiz) =>
                 quiz.questions.map((question) => (
-                  <div key={question.id} className="mb-4">
+                  <div key={question.id} className="mb-4 flex-grow">
                     <p className="font-semibold dark:text-white">{question.question_text}</p>
                     {['option_1', 'option_2', 'option_3', 'option_4'].map((option, index) => (
                       <motion.div
@@ -266,71 +274,64 @@ const LessonPage = () => {
             )}
             <button
               type="submit"
-              className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center"
+              className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center mt-auto"
             >
               <Send className="w-4 h-4 mr-2" />
               {t('Submit Answer')}
             </button>
           </form>
           {quizResults && (
-              <div className="mt-4">
-                <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>
-                  <p className="bg-white dark:bg-darkBase p-2 rounded-lg text-gray-900 dark:text-gray-300">
-                    {quizResults.message}<br />
-                  {t('Total Score')}: {quizResults.total_score}<br />
-                  {t('Points Earned')}: {quizResults.points_earned}
-                  </p>
-              </div>
+            <div className="mt-4">
+              <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>
+              <p className="bg-white dark:bg-darkBase p-2 rounded-lg text-gray-900 dark:text-gray-300">
+                {quizResults.message}<br />
+                {t('Total Score')}: {quizResults.total_score}<br />
+                {t('Points Earned')}: {quizResults.points_earned}
+              </p>
+            </div>
           )}
-
-        </div>
-        {/* Right side: Lesson Content (Left side in Persian) */}
-        <div className="w-full p-6 overflow-y-auto bg-white dark:bg-darkBackground">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson.title}</h1>
-          <div className="markdown-content">
-            <ReactMarkdown className="prose max-w-none dark:prose-dark">
-              {lesson.content}
-            </ReactMarkdown>
-          </div>
         </div>
       </div>
 
-    {/* Navigation buttons */}
-    <div className="flex justify-between items-center p-4 bg-gray-200 dark:bg-gray-800">
-      <button
-        onClick={() => handleNavigation('previous')}
-        disabled={lesson.lessonId === 1}
-        className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        {t('Previous Lesson')}
-      </button>
-      <button
-        onClick={() => handleNavigation('next')}
-        disabled={!isNextAvailable}
-        className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {t('Next Lesson')}
-        <ArrowRight className="w-4 h-4 ml-2" />
-      </button>
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>{t('Congratulations')}</DialogTitle>
-          <DialogContent>
-            <img src={mama} alt="Congratulations" />
-            <p>{t('Would you like to get a certificate for this course?')}</p>
-            <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
-              {t('Get Certificate')}
-            </Button>
-          </DialogContent>
-        </Dialog>
-        {openDialog && <Confetti />}
+      {/* Navigation buttons */}
+      <div className="flex justify-between items-center p-4 bg-gray-200 dark:bg-gray-800">
+        <button
+          onClick={() => handleNavigation('previous')}
+          disabled={lesson.lessonId === 1}
+          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          {t('Previous Lesson')}
+        </button>
+        <button
+          onClick={() => handleNavigation('next')}
+          disabled={!isNextAvailable}
+          className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {t('Next Lesson')}
+          <ArrowRight className="w-4 h-4 ml-2" />
+        </button>
       </div>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>{t('Congratulations')}</DialogTitle>
+        <DialogContent>
+          <img src={mama} alt="Congratulations" />
+          <p>{t('Would you like to get a certificate for this course?')}</p>
+          <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
+            {t('Get Certificate')}
+          </Button>
+        </DialogContent>
+      </Dialog>
+      {openDialog && <Confetti />}
+
       <InterLessonDialog
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
         message={dialogMessage}
         svgUrl={mama}
       />
+
       <style jsx global>{`
         .markdown-content {
           text-align: justify;
@@ -381,6 +382,18 @@ const LessonPage = () => {
         }
         .dark .markdown-content pre {
           background-color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+          .flex-grow {
+            flex-direction: column;
+          }
+          .w-1/2 {
+            width: 100%;
+          }
+          .quiz-section {
+            order: -1;
+          }
         }
       `}</style>
     </div>
