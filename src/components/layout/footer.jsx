@@ -37,7 +37,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Contact')}</h4>
             <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@bagelcademy.com</p>
-            <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: (024) 45678905</p>
+            <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052676</p>
           </div>
           <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>

@@ -14,6 +14,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const [logoutAlert, setLogoutAlert] = useState(false); // State for logout alert
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,6 +76,8 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       if (response.ok) {
         clearAuthData();
         enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
+        setLogoutAlert(true); // Show logout alert
+        setTimeout(() => setLogoutAlert(false), 5000); // Hide alert after 5 seconds
         navigate('/login');
       } else {
         const errorData = await response.json();
@@ -115,6 +118,13 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
         ${isDarkTheme ? 'border-gray-700/30' : 'border-gray-200/30'}
       `}
     >
+      {/* Logout alert block */}
+      {logoutAlert && (
+        <div className="fixed mt-20 bg-green-600 text-white font-b7 p-4 text-center shadow-md transition-transform duration-300">
+          {t('You have successfully logged out.')}
+        </div>
+      )}
+
       <nav className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link 
