@@ -5,12 +5,16 @@ import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <Card className={`w-72 rounded-3xl overflow-hidden ${isHighlighted ? 'border-2 border-red-500' : ''} relative`}>
       {isBestOffer && (
-        <div className="absolute top-0 right-0 bg-yellow-400 text-black font-bold py-1 px-4 rounded-bl-lg transform rotate-45 translate-x-8 -translate-y-1">
+        <div 
+          className={`absolute top-10 ${i18n.language === 'fa' ? '-left-20' : 'right-0'} 
+          bg-yellow-400 text-black font-bold py-1 px-10 rounded-bl-md transform 
+          ${i18n.language === 'fa' ? '-rotate-45' : 'rotate-45'} translate-x-10 -translate-y-2`}
+        >
           {t('Best Offer')}
         </div>
       )}
@@ -27,7 +31,7 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
           <span className="text-3xl font-bold">{price} {t('Rial')}</span>
         )}
         <p className="text-sm text-gray-500">{t('per')} {t(period)}</p>
-        <ul className="mt-4 text-left">
+        <ul className="mt-4 text-left h-32">
           {features.map((feature, index) => (
             <li key={index} className="flex items-center mb-2">
               <Check className="mr-2 h-4 w-4 text-green-500" />
@@ -37,7 +41,7 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button className="rounded-full" onClick={onSubscribe}>{t('Subscribe Now')}</Button>
+        <Button className="rounded-full text-white" onClick={onSubscribe}>{t('Subscribe Now')}</Button>
       </CardFooter>
     </Card>
   );
@@ -86,8 +90,8 @@ const SubscriptionCards = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-8">{t('Choose Your Subscription')}</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-darkBase p-4">
+      <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">{t('Choose Your Subscription')}</h1>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard

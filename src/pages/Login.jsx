@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useTranslation } from 'react-i18next';
+import { Notify } from 'notiflix';
 
 const Login = ({ setIsLoggedIn }) => {
   const { t } = useTranslation();
@@ -61,6 +62,7 @@ const Login = ({ setIsLoggedIn }) => {
     localStorage.setItem('isLoggedIn', 'true');
     // Dispatch the custom event
     window.dispatchEvent(new Event('loginStateChanged'));
+    Notify.success(t('loginSuccess'));
     navigate('/');
   };
 
@@ -135,7 +137,7 @@ const Login = ({ setIsLoggedIn }) => {
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <Label className="dark:text-white" htmlFor="username">{t('username')}</Label>
+            <Label className="text-black dark:text-white" htmlFor="username">{t('username')}</Label>
             <Input
               id="username"
               type="text"
@@ -145,7 +147,7 @@ const Login = ({ setIsLoggedIn }) => {
             />
           </div>
           <div className="mb-6">
-            <Label className="dark:text-white" htmlFor="password">{t('password')}</Label>
+            <Label className="text-black dark:text-white" htmlFor="password">{t('password')}</Label>
             <Input
               id="password"
               type="password"

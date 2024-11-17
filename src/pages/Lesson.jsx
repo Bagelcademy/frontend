@@ -90,8 +90,17 @@ const LessonPage = () => {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',          },
+            'Content-Type': 'application/json',          
+          },
         });        
+
+        if (response.status === 403) {
+          const errorData = await response.json();
+          if (errorData.detail === 'You do not have a subscription') {
+            navigate('/shop'); // Redirect to the shop if no subscription
+            return;
+          }
+        }
         
         if (!response.ok) {
           throw new Error(t('Failed to fetch quiz data'));
@@ -229,7 +238,7 @@ const LessonPage = () => {
   const isPersian = i18n.language === 'fa'; // Check if the language is Persian
   return (
     <div
-      className={`flex flex-col h-screen bg-gray-100 dark:bg-gray-900 ${isPersian ? 'rtl' : 'ltr'}`}
+      className={`mt-24 flex flex-col h-screen bg-gray-100 dark:bg-gray-900 ${isPersian ? 'rtl' : 'ltr'}`}
     >
       <div className="flex flex-grow overflow-hidden">
         {/* Left side: Lesson Content */}
@@ -305,7 +314,7 @@ const LessonPage = () => {
         </button>
         <button
           onClick={() => handleNavigation('next')}
-          disabled={!isNextAvailable}
+          disabled={isNextAvailable}
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {t('Next Lesson')}

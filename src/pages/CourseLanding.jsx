@@ -18,7 +18,7 @@ const CourseLandingPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`https://bagelapi.artina.org//courses/courses/${id}/with_lessons/`);
+        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${id}/with_lessons/`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -26,9 +26,13 @@ const CourseLandingPage = () => {
         setCourse(data);
         setLoading(false);
 
-        const enrollmentResponse = await fetch(`https://bagelapi.artina.org//courses/enroll/${id}/enroll/`, {
-          method: 'GET',
-          credentials: 'include'
+        const enrollmentResponse = await fetch(`https://bagelapi.artina.org/courses/enroll/${id}/enroll/`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
         });
 
         if (enrollmentResponse.ok) {
@@ -53,7 +57,7 @@ const CourseLandingPage = () => {
   const handleEnrollClick = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`https://bagelapi.artina.org//courses/enroll/${id}/enroll/`, {
+      const response = await fetch(`https://bagelapi.artina.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -101,7 +105,7 @@ const CourseLandingPage = () => {
   if (!course) return <div className="text-center p-4">{t('No course found')}</div>; // Use translation
 
   return (
-    <div className="bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+    <div className="mt-24 bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
       <section className="relative h-[60vh] overflow-hidden">
         <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
@@ -129,24 +133,27 @@ const CourseLandingPage = () => {
 
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4">{t('Course Content')}</h2> {/* Use translation */}
-          <ul className="space-y-4">
+          <ul className="space-y-4 flex flex-col">
             {course.lessons?.map((lesson, index) => (
 
-             
-             <li key={index} className="flex items-start bg-lightBackground dark:bg-darkBase rounded-lg p-4 transition-transform transform hover:scale-105">
-              <button
-                            onClick={() => handleLessonClick(lesson.id)}
-                            className="bg-gradient-to-r from-green-400 to-blue-500 text-white p-2 rounded hover:bg-gradient-to-l from-blue-500 to-green-400 transition duration-300 mr-3"
-                          > 
-                  {t('Go')} {/* Use translation */}
-                <BookOpen className="w-5 h-5 mr-3 mt-1" />
-                </button>
+
+              <li key={index}
+                onClick={() => handleLessonClick(lesson.id)}
+                className="flex cursor-pointer items-center bg-lightBackground dark:bg-darkBase rounded-lg p-4 transition-transform transform hover:scale-105 justify-between">
+
 
                 <div>
-                  <h3 className="font-medium">{lesson.title}</h3>
-                  
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{lesson.description}</p>
+                  <h3 className="font-medium mx-2">{lesson.title}</h3>
+
+                  {/* <p className="text-sm text-gray-600 dark:text-gray-400">{lesson.description}</p> */}
                 </div>
+
+                <button
+                  className="flex gap-1 bg-gradient-to-r text-white p-2 rounded from-green-500 to-green-400 w-16 h-10 justify-center items-center"
+                >
+                  {t('Go')}
+                  <BookOpen className="flex w-5 h-5 mt-1 justify-center items-center" />
+                </button>
               </li>
 
             ))}
@@ -157,7 +164,7 @@ const CourseLandingPage = () => {
         <button
           onClick={handleEnrollClick}
           disabled={isEnrolled}
-          className={`py-2 px-4 rounded ${isEnrolled ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-buttonColor to-red-500 text-white hover:scale-105 transition-transform'}`}
+          className={`py-2 px-4 rounded ${isEnrolled ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-buttonColor to-red-500 text-white transition-transform'}`}
         >
           {isEnrolled ? t('You have enrolled already') : t('Enroll in Course')} {/* Use translation */}
         </button>
