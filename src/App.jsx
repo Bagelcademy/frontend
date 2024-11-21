@@ -22,12 +22,16 @@ import SubscriptionCards from './pages/shop';
 import LearningPathDetail from './pages/l';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 import CareerPathsPage from './pages/LearningPath';
+import { GoftinoSnippet }from '@mohsen007/react-goftino/dist/index.js';
+
 
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const { i18n } = useTranslation();
+  const GOFTINO_KEY = "cD7Gse";
+
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng); // Ensure i18n is initialized
@@ -42,6 +46,12 @@ const App = () => {
 
   return (
     <Router>
+      <GoftinoSnippet
+        goftinoKey={GOFTINO_KEY}
+        onReady={() => {
+          window.Goftino.close();
+        }}
+      />
       <div dir={i18n.language === 'fa' ? 'rtl' : 'ltr'}>
         <Layout
           isLoggedIn={isLoggedIn}
