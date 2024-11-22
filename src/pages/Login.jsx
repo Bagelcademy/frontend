@@ -74,7 +74,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Execute reCAPTCHA with the site key
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.artina.org/account/login/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleGoogleLogin = async (response) => {
     try {
-      const backendResponse = await fetch('https://bagelapi.artina.org/account/login/google_login/', {
+      const backendResponse = await fetch('https://bagelapi.bagelcademy.org/account/login/google_login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="mt-12 min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('login')}</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -170,6 +170,12 @@ const Login = ({ setIsLoggedIn }) => {
           {t('signupPrompt')}{' '}
           <a href="/signup" className="text-blue-500 hover:underline">
             {t('signupLink')}
+          </a>
+        </p> 
+          <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+          
+          <a href="/reserpass" className="text-blue-500 hover:underline">
+            {t('resetPassword')}
           </a>
         </p>
       </div>

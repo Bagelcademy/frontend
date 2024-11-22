@@ -1,8 +1,11 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { CheckCircle, XCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const PaymentStatusPage = () => {
+  const { t, i18n } = useTranslation();
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const status = searchParams.get('status');
@@ -24,12 +27,12 @@ const PaymentStatusPage = () => {
           </h1>
           <p className="text-gray-600 mb-4">
             {isSuccess
-              ? 'Thank you! Your payment has been processed successfully.'
-              : "We're sorry, but your payment could not be processed at this time."}
+              ? (t('Thank you! Your payment has been processed successfully.'))
+              : (t("We're sorry, but your payment could not be processed at this time.")) }
           </p>
           {!isSuccess && (
             <p className="text-gray-600 mb-4">
-              Please try again or contact our support team for assistance.
+              (t('Please try again or contact our support team for assistance.'))
             </p>
           )}
           <p className="text-sm text-gray-500">

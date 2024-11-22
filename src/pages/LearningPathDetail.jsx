@@ -17,7 +17,7 @@ const LearningPathDetail = () => {
       }
 
       try {
-        const url = `https://bagelapi.artina.org/courses/learning-paths/${id}/`;
+        const url = `https://bagelapi.bagelcademy.org/courses/learning-paths/${id}/`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

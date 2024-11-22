@@ -117,7 +117,7 @@ const RequestPage = () => {
     try {
       const recaptchaToken = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.artina.org/courses/course-generation/generate_gpt_course/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/course-generation/generate_gpt_course/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

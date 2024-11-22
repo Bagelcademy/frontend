@@ -32,7 +32,7 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.artina.org//courses/courses/get_user_courses/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org//courses/courses/get_user_courses/', {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -18,7 +18,7 @@ const CourseLandingPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${id}/with_lessons/`);
+        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -26,7 +26,7 @@ const CourseLandingPage = () => {
         setCourse(data);
         setLoading(false);
 
-        const enrollmentResponse = await fetch(`https://bagelapi.artina.org/courses/enroll/${id}/enroll/`, {
+        const enrollmentResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -57,7 +57,7 @@ const CourseLandingPage = () => {
   const handleEnrollClick = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`https://bagelapi.artina.org/courses/enroll/${id}/enroll/`, {
+      const response = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {

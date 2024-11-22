@@ -62,7 +62,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
         return;
       }
 
-      const response = await fetch('https://bagelapi.artina.org/account/logout/logout/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/logout/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

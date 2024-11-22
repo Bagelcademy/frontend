@@ -22,6 +22,9 @@ import SubscriptionCards from './pages/shop';
 import LearningPathDetail from './pages/l';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 import CareerPathsPage from './pages/LearningPath';
+import ResetPassword from './pages/PasswordReset';
+import LoginPagee from './pages/t';
+import ExamPage from './pages/Exam';
 
 
 const App = () => {
@@ -70,6 +73,9 @@ const App = () => {
             <Route path="/my-courses" element={<MyCourses />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/survey" element={<Survey />} />
+            <Route path="/resetpass" element={<ResetPassword />} />
+            <Route path="/lo" element={<LoginPagee />} />
+            <Route path="/exam" element={<ExamPage />} />
           </Routes>
         </Layout>
       </div>

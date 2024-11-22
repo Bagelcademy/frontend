@@ -52,7 +52,7 @@ const SubscriptionCards = () => {
     try {
       const token = localStorage.getItem('accessToken');
 
-      const response = await fetch('https://bagelapi.artina.org/account/payment/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/payment/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../compone
 import { Button } from '../components/ui/button';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Input } from '../components/ui/input';
 
 const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => {
   const { t, i18n } = useTranslation();
@@ -24,7 +25,7 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
       <CardContent className="text-center">
         {discountPrice ? (
           <>
-            <span className="text-2xl font-bold line-through">{price} {t('Rial')}</span>
+            <span className="text-2xl font-bold line-through text-gray-400">{price} {t('Rial')}</span>
             <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('Rial')}</span>
           </>
         ) : (
@@ -50,7 +51,41 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
 const SubscriptionCards = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [discountCode, setDiscountCode] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
   const { t } = useTranslation();
+
+  const applyDiscount = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('accessToken');
+
+      const response = await fetch('https://bagelapi.bagelcademy.org/api/discount', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: discountCode })
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid discount code');
+      }
+
+      const data = await response.json();
+      setDiscountPercent(data.percent);
+      console.log('Discount applied:', data);
+    } catch (err) {
+      setError(t('Invalid or expired discount code'));
+      setDiscountPercent(0);
+      console.error('Discount error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubscribe = async (amount) => {
     setLoading(true);
@@ -58,14 +93,17 @@ const SubscriptionCards = () => {
 
     try {
       const token = localStorage.getItem('accessToken');
+      const discountedAmount = discountPercent 
+        ? Math.round(amount * (1 - discountPercent / 100)) 
+        : amount;
 
-      const response = await fetch('https://bagelapi.artina.org/account/payment/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/payment/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount })
+        body: JSON.stringify({ amount: discountedAmount })
       });
 
       if (!response.ok) {
@@ -89,14 +127,40 @@ const SubscriptionCards = () => {
     }
   };
 
+  const calculateDiscountedPrice = (originalPrice) => {
+    return discountPercent 
+      ? Math.round(originalPrice * (1 - discountPercent / 100)) 
+      : null;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-darkBase p-4">
       <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">{t('Choose Your Subscription')}</h1>
+      
+      <div className="mb-4 flex items-center">
+        <Input 
+          placeholder={t('Enter discount code')} 
+          value={discountCode}
+          onChange={(e) => setDiscountCode(e.target.value)}
+          className="mr-2 w-48"
+        />
+        <Button onClick={applyDiscount} disabled={loading}>
+          {t('Apply Discount')}
+        </Button>
+      </div>
+      
       {error && <p className="text-red-500 mb-4">{error}</p>}
+      {discountPercent > 0 && (
+        <p className="text-green-600 mb-4">
+          {t('Discount applied')}: {discountPercent}% {t('off')}
+        </p>
+      )}
+      
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"
           price="129000"
+          discountPrice={calculateDiscountedPrice(129000)}
           period="month"
           isHighlighted={true}
           features={[
@@ -109,6 +173,7 @@ const SubscriptionCards = () => {
         <SubscriptionCard
           title="6 Months"
           price="729000"
+          discountPrice={calculateDiscountedPrice(729000)}
           period="6 months"
           isBestOffer={true}
           features={[
@@ -122,6 +187,7 @@ const SubscriptionCards = () => {
         <SubscriptionCard
           title="Yearly"
           price="1200000"
+          discountPrice={calculateDiscountedPrice(1200000)}
           period="year"
           features={[
             "All 6-month features",
@@ -132,7 +198,7 @@ const SubscriptionCards = () => {
           onSubscribe={() => handleSubscribe(1200000)}
         />
       </div>
-      {loading && <p className="mt-4">{t('Processing subscription...')}</p>}
+      {loading && <p className="mt-4">{t('Processing...')}</p>}
     </div>
   );
 };

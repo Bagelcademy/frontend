@@ -109,7 +109,7 @@ const QuizComponent = () => {
     );
 
     try {
-      const response = await fetch('https://bagelapi.artina.org//courses/Category/popular-courses/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org//courses/Category/popular-courses/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const QuizComponent = () => {
 
   return (
    
-    <div className="max-w-2xl mx-auto p-6 ">
+    <div className="mt-24 max-w-2xl mx-auto p-6 ">
       <AnimatePresence mode="wait">
         {!quizCompleted ? (
           <motion.div

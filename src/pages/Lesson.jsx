@@ -8,12 +8,14 @@ import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
+import LoadingSpinner from '../components/ui/loading'; 
 const LessonPage = () => {
   const { t, i18n } = useTranslation(); // Use i18n to get the current language
   const [openDialog, setOpenDialog] = useState(false); 
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [contentGenerating, setContentGenerating] = useState(false);
+  const [quizGenerating, setQuizGenerating] = useState(false); 
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizResults, setQuizResults] = useState(null);
@@ -33,36 +35,39 @@ const LessonPage = () => {
         if (!token) {
           setError(t('User not found, please log in.'));
           return;}
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`);
-
-        if (generationResponse.status === 201) {
-          console.log('Generating course content...');
-          window.location.reload();
-          return;
+          setContentGenerating(true); 
+          const generationResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`);
+  
+          if (generationResponse.status === 201) {
+            console.log('Generating course content...');
+            window.location.reload();
+            return;
+          }
+  
+          const lessonResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${courseId}/lessons/${lessonId}/`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+  
+          if (!lessonResponse.ok) {
+            throw new Error('Failed to fetch lesson data');
+          }
+          const data = await lessonResponse.json();
+          setLesson(data);
+          if (data.is_last_lesson) {
+            setIsLastLesson(true);
+          }
+          setIsNextAvailable(data.isCompleted);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+          setContentGenerating(false); 
         }
-
-        const lessonResponse = await fetch(`https://bagelapi.artina.org/courses/courses/${courseId}/lessons/${lessonId}/`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',},
-        });        
-        
-        if (!lessonResponse.ok) {
-          throw new Error('Failed to fetch lesson data');
-        }
-        const data = await lessonResponse.json();
-        setLesson(data);
-        if (data.is_last_lesson) {
-          setIsLastLesson(true);
-        }
-        setIsNextAvailable(data.isCompleted);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+      };
 
     checkAndFetchLesson();
   }, [courseId, lessonId]);
@@ -70,15 +75,18 @@ const LessonPage = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       const token = localStorage.getItem('accessToken');
-        if (!token) {
-          setError(t('User not found, please log in.'));
-          return;}
+      if (!token) {
+        setError(t('User not found, please log in.'));
+        return;
+      }
       try {
-        const generationResponse = await fetch(`https://bagelapi.artina.org/courses/generate-quiz/${courseId}/${lessonId}/`, {
+        setQuizGenerating(true); // Start loading
+        const generationResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/generate-quiz/${courseId}/${lessonId}/`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',          },
+            'Content-Type': 'application/json',
+          },
         });
 
         if (generationResponse.status === 201) {
@@ -86,22 +94,22 @@ const LessonPage = () => {
           return;
         }
 
-        const response = await fetch(`https://bagelapi.artina.org/courses/courses/${lessonId}/Qlist/`, {
+        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${lessonId}/Qlist/`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',          
+            'Content-Type': 'application/json',
           },
-        });        
+        });
 
         if (response.status === 403) {
           const errorData = await response.json();
           if (errorData.detail === 'You do not have a subscription') {
-            navigate('/shop'); // Redirect to the shop if no subscription
+            navigate('/shop');
             return;
           }
         }
-        
+
         if (!response.ok) {
           throw new Error(t('Failed to fetch quiz data'));
         }
@@ -109,6 +117,8 @@ const LessonPage = () => {
         setQuizzes(quizData);
       } catch (err) {
         setError(err.message);
+      } finally {
+        setQuizGenerating(false); // End loading
       }
     };
 
@@ -126,7 +136,7 @@ const LessonPage = () => {
       return;
     }
     try {
-      const response = await fetch(`https://bagelapi.artina.org/courses/quizzes/${lessonId}/submit_answers/`, {
+      const response = await fetch(`https://bagelapi.bagelcademy.org/courses/quizzes/${lessonId}/submit_answers/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -166,7 +176,7 @@ const LessonPage = () => {
           return;
         }
 
-        const response = await fetch(`https://bagelapi.artina.org/courses/student-progress/${lessonId}/complete-lesson/`, {
+        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -243,12 +253,18 @@ const LessonPage = () => {
       <div className="flex flex-grow overflow-hidden">
         {/* Left side: Lesson Content */}
         <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-white dark:bg-darkBackground">
-          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson.title}</h1>
-          <div className="markdown-content">
-            <ReactMarkdown className="prose max-w-none dark:prose-dark">
-              {lesson.content}
-            </ReactMarkdown>
-          </div>
+          {contentGenerating ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">{lesson?.title}</h1>
+              <div className="markdown-content">
+                <ReactMarkdown className="prose max-w-none dark:prose-dark">
+                  {lesson?.content}
+                </ReactMarkdown>
+              </div>
+            </>
+          )}
         </div>
         {/* Right side: Quiz section */}
         <div className="w-full md:w-1/2 bg-spaceArea text-black dark:bg-gray-900 p-6 flex flex-col h-full overflow-y-auto">
@@ -256,7 +272,11 @@ const LessonPage = () => {
             <BookOpen className="w-6 h-6 mx-2" />
             {t('Quiz')}
           </h2>
-          <form onSubmit={handleSubmitQuiz} className="flex-grow flex flex-col">
+          {quizGenerating ? (
+            <LoadingSpinner />
+          ) : (
+            <form onSubmit={handleSubmitQuiz} className="flex-grow flex flex-col">
+                          
             {quizzes.length > 0 ? (
               quizzes.map((quiz) =>
                 quiz.questions.map((question) => (
@@ -289,6 +309,7 @@ const LessonPage = () => {
               {t('Submit Answer')}
             </button>
           </form>
+          )}
           {quizResults && (
             <div className="mt-4">
               <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>

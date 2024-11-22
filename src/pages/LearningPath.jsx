@@ -26,7 +26,7 @@ const CareerPathsPage = () => {
   useEffect(() => {
     const fetchPaths = async () => {
       try {
-        const response = await fetch('https://bagelapi.artina.org/courses/learning-paths/');
+        const response = await fetch('https://bagelapi.bagelcademy.org/courses/learning-paths/');
         if (!response.ok) {
           throw new Error('Failed to fetch paths');
         }

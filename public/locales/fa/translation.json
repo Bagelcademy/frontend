@@ -4,6 +4,11 @@
   "profile": "پروفایل",
   "myCourses": "درس های من",
   "login": "ورود",
+  "passwordResetFailed":"تغییر پسورد : ناموفق",
+  "sendVerificationCode":"ارسال کد تاییدیه",
+  "verifyCode":"تایید کد",
+  "resetPassword":"تغییر رمز عبور",
+  "backToLogin":"بازگشت به صفحه ورود",
   "logout": "خروج",
   "getting PRO": "مشترک شدن",
   "Welcome": "چی میخوای یاد بگیری؟",
@@ -209,5 +214,9 @@
   "enterNationalCode": "کد ملی خود را وارد کنید",
   "loginSuccess": "با موفقیت وارد شدید",
   "You do not have enough credit. Please purchase more.": "شما اعتبار کافی ندارید. لطفاً اعتبار خود را افزایش دهید.",
-  "Go to Shop": "برو به فروشگاه"
+  "Go to Shop": "برو به فروشگاه",
+  "credits":"اعتبار",
+  "Thank you! Your payment has been processed successfully.":"متشکرم! پرداخت شما با موفقیت انجام شد.",
+"We're sorry, but your payment could not be processed at this time. ":" متأسفیم، اما پرداخت شما در حال حاضر قابل پردازش نیست.",
+"Please try again or contact our support team for assistance. ":"لطفاً دوباره امتحان کنید یا برای راهنمایی با تیم پشتیبانی ما تماس بگیرید. "
 }

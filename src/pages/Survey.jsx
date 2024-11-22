@@ -80,7 +80,7 @@ const Survey = () => {
   const submitSurvey = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.artina.org/account/user-info/Survey/', { 
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/Survey/', { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
