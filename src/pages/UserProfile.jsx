@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Flame, Mail, Star, Calendar, Edit3, Upload, Bell, 
+import {
+  Flame, Mail, Star, Calendar, Edit3, Upload, Bell,
   Trophy, Target, CircleSlash, Gift, CreditCard
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Notiflix from 'notiflix';
 
 const StatsCard = ({ icon: Icon, label, value, color }) => (
   <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md flex items-center gap-4">
@@ -27,32 +28,40 @@ const UserProfilePage = () => {
   const [notifications, setNotifications] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const Notify = Notiflix.Notify;
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
     try {
-      setUploadProgress(0);
+      // Notify the user that the upload is in progress
+      Notify.info(t('uploadInProgress')); // Translation key for "Upload in progress"
+  
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
       formData.append("image", file);
-
-      // First, upload the image to MyImage endpoint
+  
+      // Show the selected file as a preview before uploading
+      const filePreview = URL.createObjectURL(file);
+      setUser((prev) => ({ ...prev, profile_picture: filePreview }));
+  
+      // Upload the image to the MyImage endpoint
       const uploadResponse = await fetch('https://bagelapi.bagelcademy.org/account/MyImage/', {
         method: 'POST',
-        headers: { 
-          'Authorization': `Bearer ${token}`
+        headers: {
+          'Authorization': `Bearer ${token}`,
         },
         body: formData,
       });
-
+  
       if (!uploadResponse.ok) {
-        throw new Error(t('uploadProfilePicError'));
+        throw new Error(t('uploadProfilePicError')); // Translation key for "Error uploading profile picture"
       }
-
+  
       const uploadData = await uploadResponse.json();
-      
-      // Then, update the user profile with the new image URL
+  
+      // Update the user profile with the new image URL
       const updateProfileResponse = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
@@ -61,26 +70,28 @@ const UserProfilePage = () => {
         },
         body: JSON.stringify({
           ...user,
-          profile_picture: uploadData.profile_picture_url
+          pic_url: uploadData.image, // Make sure the API returns the correct field
         }),
       });
-
+  
       if (!updateProfileResponse.ok) {
-        throw new Error(t('updateProfileError'));
+        throw new Error(t('updateProfileError')); // Translation key for "Error updating profile"
       }
-
+  
       const updatedUserData = await updateProfileResponse.json();
-      setUser({ ...user, profile_picture: uploadData.profile_picture_url });
-      setUploadProgress(100);
-      
-      // Reset progress after a delay
-      setTimeout(() => setUploadProgress(0), 1000);
-      
+      setUser((prev) => ({
+        ...prev,
+        profile_picture: updatedUserData.profile_picture || uploadData.image, // Update the profile picture
+      }));
+  
+      // Notify the user that the upload was successful
+      Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
     } catch (err) {
       setError(err.message);
-      setUploadProgress(0);
+      Notify.error(err.message); // Show the error notification
     }
   };
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -130,6 +141,7 @@ const UserProfilePage = () => {
           birthdate: user.birthdate,
           email: user.email,
           national_code: user.national_code,
+          pic_url: user.profile_picture,
         }),
       });
 
@@ -142,6 +154,8 @@ const UserProfilePage = () => {
 
       setUser({ ...user, ...updatedUserData });
       setEditMode(false);
+
+      Notify.success(t('profileUpdated'));
     } catch (err) {
       setError(err.message);
     }
@@ -164,7 +178,7 @@ const UserProfilePage = () => {
         {/* Profile Header */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden">
           <div className="relative h-32 bg-gradient-to-r from-buttonColor to-buttonColor/80">
-            <button 
+            <button
               onClick={() => setEditMode(!editMode)}
               className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors"
             >
@@ -172,7 +186,7 @@ const UserProfilePage = () => {
               {editMode ? t('cancel') : t('editProfile')}
             </button>
           </div>
-          
+
           <div className="px-6 pb-6">
             <div className="relative flex flex-col items-center">
               <div className="relative -mt-16">
@@ -181,36 +195,36 @@ const UserProfilePage = () => {
                   alt={user.first_name}
                   className="w-32 h-32 rounded-full border-4 border-white dark:border-gray-800 shadow-lg"
                 />
- {editMode && (
-      <label 
-        htmlFor="profile-picture" 
-        className="absolute bottom-0 right-0 bg-buttonColor text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-opacity-90 transition-colors"
-      >
-        <Upload className="w-4 h-4" />
-        <input
-          id="profile-picture"
-          type="file"
-          className="hidden"
-          accept="image/*"
-          onChange={handleImageUpload}
-        />
-        {uploadProgress > 0 && (
-          <div className="absolute -bottom-8 right-0 w-20 h-1 bg-gray-200 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-buttonColor transition-all duration-300"
-              style={{ width: `${uploadProgress}%` }}
-            />
-          </div>
-        )}
-      </label>
-    )}
+                {editMode && (
+                  <label
+                    htmlFor="profile-picture"
+                    className="absolute bottom-0 right-0 bg-buttonColor text-white p-2 rounded-full cursor-pointer shadow-lg hover:bg-opacity-90 transition-colors"
+                  >
+                    <Upload className="w-4 h-4" />
+                    <input
+                      id="profile-picture"
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                    {uploadProgress > 0 && (
+                      <div className="absolute -bottom-8 right-0 w-20 h-1 bg-gray-200 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-buttonColor transition-all duration-300"
+                          style={{ width: `${uploadProgress}%` }}
+                        />
+                      </div>
+                    )}
+                  </label>
+                )}
 
                 <div className="absolute -top-2 -right-2 bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
                   <Flame className="w-5 h-5" />
                   <span className="text-xs font-bold ml-1">{user.streak}</span>
                 </div>
               </div>
-              
+
               <h1 className="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
                 {user.first_name}
               </h1>
@@ -248,7 +262,7 @@ const UserProfilePage = () => {
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
             {t('personalInfo')}
           </h2>
-          
+
           {editMode ? (
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -336,15 +350,14 @@ const UserProfilePage = () => {
               {t('myNotifications')}
             </h2>
           </div>
-          
+
           {notifications.length > 0 ? (
             <div className="space-y-4">
               {notifications.map((notification) => (
-                <div 
+                <div
                   key={notification.id}
-                  className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-700 ${
-                    !notification.message_seen ? 'border-l-4 border-buttonColor' : ''
-                  }`}
+                  className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-700 ${!notification.message_seen ? 'border-l-4 border-buttonColor' : ''
+                    }`}
                 >
                   <p className="text-gray-600 dark:text-gray-300">
                     {notification.text}

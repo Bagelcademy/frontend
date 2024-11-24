@@ -9,6 +9,9 @@ import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '../components/ui/loading'; 
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+
 const LessonPage = () => {
   const { t, i18n } = useTranslation(); // Use i18n to get the current language
   const [openDialog, setOpenDialog] = useState(false); 
@@ -29,48 +32,57 @@ const LessonPage = () => {
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
+      const token = localStorage.getItem('accessToken');
+  
+      if (!token) {
+        Notify.failure(t('Please login first.'));
+        navigate('/login');
+        return; // Stop further execution
+      }
+  
       try {
-        const token = localStorage.getItem('accessToken');
-
-        if (!token) {
-          setError(t('User not found, please log in.'));
-          return;}
-          setContentGenerating(true); 
-          const generationResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`);
+        setContentGenerating(true);
+        const generationResponse = await fetch(
+          `https://bagelapi.bagelcademy.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
+        );
   
-          if (generationResponse.status === 201) {
-            console.log('Generating course content...');
-            window.location.reload();
-            return;
-          }
+        if (generationResponse.status === 201) {
+          console.log('Generating course content...');
+          window.location.reload();
+          return;
+        }
   
-          const lessonResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${courseId}/lessons/${lessonId}/`, {
+        const lessonResponse = await fetch(
+          `https://bagelapi.bagelcademy.org/courses/courses/${courseId}/lessons/${lessonId}/`,
+          {
             method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-          });
+          }
+        );
   
-          if (!lessonResponse.ok) {
-            throw new Error('Failed to fetch lesson data');
-          }
-          const data = await lessonResponse.json();
-          setLesson(data);
-          if (data.is_last_lesson) {
-            setIsLastLesson(true);
-          }
-          setIsNextAvailable(data.isCompleted);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-          setContentGenerating(false); 
+        if (!lessonResponse.ok) {
+          throw new Error('Failed to fetch lesson data');
         }
-      };
-
+        const data = await lessonResponse.json();
+        setLesson(data);
+        if (data.is_last_lesson) {
+          setIsLastLesson(true);
+        }
+        setIsNextAvailable(data.isCompleted);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+        setContentGenerating(false);
+      }
+    };
+  
     checkAndFetchLesson();
   }, [courseId, lessonId]);
+  
 
   useEffect(() => {
     const fetchQuiz = async () => {

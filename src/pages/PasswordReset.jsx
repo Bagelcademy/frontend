@@ -127,15 +127,15 @@ const ResetPassword = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/api/reset', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/reset/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email,
-          verification_code: verificationCode,
-          new_password: newPassword,
+          token: verificationCode,
+          password: newPassword,
           recaptcha_token: token
         }),
       });
@@ -189,7 +189,7 @@ const ResetPassword = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {currentStep === 'email' && (
             <div>
-              <Label htmlFor="reset-email">{t('email')}</Label>
+              <Label className="text-black dark:text-white" htmlFor="reset-email">{t('email')}</Label>
               <Input
                 id="reset-email"
                 type="email"
@@ -232,7 +232,7 @@ const ResetPassword = () => {
 
           {currentStep === 'newPassword' && (
             <div>
-              <Label htmlFor="new-password">{t('newPassword')}</Label>
+              <Label className="text-black dark:text-white" htmlFor="new-password">{t('newPassword')}</Label>
               <Input
                 id="new-password"
                 type="password"

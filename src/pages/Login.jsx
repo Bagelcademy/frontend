@@ -173,8 +173,8 @@ const Login = ({ setIsLoggedIn }) => {
           </a>
         </p> 
           <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          
-          <a href="/reserpass" className="text-blue-500 hover:underline">
+          {t('resetPasswordPrompt')}{' '}
+          <a href="/resetpass" className="text-blue-500 hover:underline">
             {t('resetPassword')}
           </a>
         </p>

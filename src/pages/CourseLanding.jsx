@@ -143,7 +143,10 @@ const CourseLandingPage = () => {
 
 
                 <div>
-                  <h3 className="font-medium mx-2">{lesson.title}</h3>
+                  <div className="flex items-center">
+                    <span className="font-bold text-lg mr-2">{index + 1}.</span>
+                    <h3 className="font-medium mx-2">{lesson.title}</h3>
+                  </div>
 
                   {/* <p className="text-sm text-gray-600 dark:text-gray-400">{lesson.description}</p> */}
                 </div>

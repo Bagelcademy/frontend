@@ -4,6 +4,9 @@ import { Button } from '../components/ui/button';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../components/ui/input';
+import { useNavigate } from 'react-router-dom';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { useEffect } from 'react';
 
 const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => {
   const { t, i18n } = useTranslation();
@@ -11,7 +14,7 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
   return (
     <Card className={`w-72 rounded-3xl overflow-hidden ${isHighlighted ? 'border-2 border-red-500' : ''} relative`}>
       {isBestOffer && (
-        <div 
+        <div
           className={`absolute top-10 ${i18n.language === 'fa' ? '-left-20' : 'right-0'} 
           bg-yellow-400 text-black font-bold py-1 px-10 rounded-bl-md transform 
           ${i18n.language === 'fa' ? '-rotate-45' : 'rotate-45'} translate-x-10 -translate-y-2`}
@@ -25,8 +28,10 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
       <CardContent className="text-center">
         {discountPrice ? (
           <>
-            <span className="text-2xl font-bold line-through text-gray-400">{price} {t('Rial')}</span>
-            <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('Rial')}</span>
+            <div className="flex flex-col justify-center">
+              <span className="text-2xl font-bold line-through text-gray-400">{price} {t('Rial')}</span>
+              <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('Rial')}</span>
+            </div>
           </>
         ) : (
           <span className="text-3xl font-bold">{price} {t('Rial')}</span>
@@ -54,21 +59,27 @@ const SubscriptionCards = () => {
   const [discountCode, setDiscountCode] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const applyDiscount = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      Notify.failure(t('Please login first.'));
+      navigate('/login');
+      return; // Stop further execution
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const token = localStorage.getItem('accessToken');
-
-      const response = await fetch('https://bagelapi.bagelcademy.org/api/discount', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/discounts/verify-discount/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code: discountCode })
+        body: JSON.stringify({ code: discountCode }),
       });
 
       if (!response.ok) {
@@ -88,13 +99,19 @@ const SubscriptionCards = () => {
   };
 
   const handleSubscribe = async (amount) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      Notify.failure(t('Please login first.'));
+      navigate('/login');
+      return; // Stop further execution
+    }
+
     setLoading(true);
     setError(null);
 
     try {
-      const token = localStorage.getItem('accessToken');
-      const discountedAmount = discountPercent 
-        ? Math.round(amount * (1 - discountPercent / 100)) 
+      const discountedAmount = discountPercent
+        ? Math.round(amount * (1 - discountPercent / 100))
         : amount;
 
       const response = await fetch('https://bagelapi.bagelcademy.org/account/payment/', {
@@ -103,7 +120,7 @@ const SubscriptionCards = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: discountedAmount })
+        body: JSON.stringify({ amount: discountedAmount }),
       });
 
       if (!response.ok) {
@@ -112,8 +129,7 @@ const SubscriptionCards = () => {
 
       const data = await response.json();
       console.log('Subscription successful:', data);
-      
-      // Redirect to the payment URL in a new tab
+
       if (data.url) {
         window.open(data.url, '_blank');
       } else {
@@ -128,18 +144,18 @@ const SubscriptionCards = () => {
   };
 
   const calculateDiscountedPrice = (originalPrice) => {
-    return discountPercent 
-      ? Math.round(originalPrice * (1 - discountPercent / 100)) 
+    return discountPercent
+      ? Math.round(originalPrice * (1 - discountPercent / 100))
       : null;
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-darkBase p-4">
       <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">{t('Choose Your Subscription')}</h1>
-      
+
       <div className="mb-4 flex items-center">
-        <Input 
-          placeholder={t('Enter discount code')} 
+        <Input
+          placeholder={t('Enter discount code')}
           value={discountCode}
           onChange={(e) => setDiscountCode(e.target.value)}
           className="mr-2 w-48"
@@ -148,14 +164,14 @@ const SubscriptionCards = () => {
           {t('Apply Discount')}
         </Button>
       </div>
-      
+
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {discountPercent > 0 && (
         <p className="text-green-600 mb-4">
           {t('Discount applied')}: {discountPercent}% {t('off')}
         </p>
       )}
-      
+
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"

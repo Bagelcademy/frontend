@@ -101,5 +101,13 @@
   "EnterNationalCode": "Enter your national code",
   "loginSuccess": "Login successful",
   "You do not have enough credit. Please purchase more.": "You do not have enough credit. Please purchase more.",
-  "Go to Shop": "Go to Shop"
+  "Go to Shop": "Go to Shop",
+  "createNewPassword": "Create New Password",
+  "newPassword": "New Password",
+  "Please login first.": "Please login first.",
+  "Apply Discount": "Apply Discount",
+  "Enter discount code": "Enter discount code",
+  "personalInfo": "Personal Information",
+  "uploadInProgress": "Upload in progress...",
+  "profilePictureUpdated": "Profile picture updated"
 }
