@@ -1,127 +1,37 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Check } from 'lucide-react';
-import { useTranslation } from 'react-i18next'; 
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Home, RefreshCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => (
-  <Card className={`w-72 rounded-3xl overflow-hidden ${isHighlighted ? 'border-2 border-red-500' : ''} relative`}>
-    {isBestOffer && (
-      <div className="absolute top-0 right-0 bg-yellow-400 text-black font-bold py-1 px-4 rounded-bl-lg transform rotate-45 translate-x-8 -translate-y-1">
-        {t('bestOffer')}
-      </div>
-    )}
-    <CardHeader className="text-center">
-      <CardTitle>{title}</CardTitle>
-    </CardHeader>
-    <CardContent className="text-center">
-      {discountPrice ? (
-        <>
-          <span className="text-2xl font-bold line-through">{price} {t('currency')}</span>
-          <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('currency')}</span>
-        </>
-      ) : (
-        <span className="text-3xl font-bold">{price} {t('currency')}</span>
-      )}
-      <p className="text-sm text-gray-500">{t('per')} {period}</p>
-      <ul className="mt-4 text-left">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center mb-2">
-            <Check className="mr-2 h-4 w-4 text-green-500" />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-    </CardContent>
-    <CardFooter className="justify-center">
-      <Button className="rounded-full" onClick={onSubscribe}>{t('subscribeNow')}</Button>
-    </CardFooter>
-  </Card>
-);
+const NotFoundPage = () => {
+  const navigate = useNavigate();
 
-const SubscriptionCards = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [showDetails, setShowDetails] = useState(false); // Add toggle state
-  const { t } = useTranslation(); // Call the useTranslation hook
-
-  const handleSubscribe = async (amount) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem('accessToken');
-
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/payment/', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount })
-      });
-
-      if (!response.ok) {
-        throw new Error(t('subscriptionFailed')); // Use translated message
-      }
-
-      const data = await response.json();
-      console.log('Subscription successful:', data);
-      // Handle successful subscription (e.g., show a success message, redirect, etc.)
-    } catch (err) {
-      setError(t('subscriptionError')); // Use translated message
-      console.error('Subscription error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-8">{t('chooseSubscription')}</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <div className="flex flex-wrap justify-center gap-6">
-        <SubscriptionCard
-          title={t('monthly')}
-          price="129000"
-          period={t('month')}
-          isHighlighted={true}
-          features={[
-            t('fullAccess'),
-            t('customerSupport'),
-            t('cancelAnytime')
-          ]}
-          onSubscribe={() => handleSubscribe(129000)}
-        />
-        <SubscriptionCard
-          title={t('sixMonths')}
-          price="729000"
-          period={t('sixMonths')}
-          isBestOffer={true}
-          features={[
-            t('allMonthlyFeatures'),
-            t('prioritySupport'),
-            t('exclusiveContent'),
-            t('fiftyPercentOff')
-          ]}
-          onSubscribe={() => handleSubscribe(729000)}
-        />
-        <SubscriptionCard
-          title={t('yearly')}
-          price="1200000"
-          period={t('year')}
-          features={[
-            t('allSixMonthFeatures'),
-            t('twoMonthsFree'),
-            t('annualPerformanceReview'),
-            t('earlyAccess')
-          ]}
-          onSubscribe={() => handleSubscribe(1200000)}
-        />
+    <div className="min-h-screen flex items-center justify-center dark:bg-black bg-white ">
+      <div className="text-center">
+        <h1 className="text-9xl font-bold text-black dark:text-white mb-4 animate-pulse">404</h1>
+        <p className="text-2xl text-white mb-8">{t('Oops! Page not found')}</p>
+        <div className="space-y-4">
+          <button
+            onClick={() => navigate('/')}
+            className="bg-transparent text-gray-500 dark:text-white px-6 py-3 rounded-full font-semibold inline-flex items-center border border-white hover:bg-gray hover:text-black  ml-4"
+          >
+            <Home className="w-5 h-5 mr-2" />
+            {t('Go Home')}
+          </button>
+          <button
+            onClick={() => navigate(-1)}
+            className="bg-transparent text-gray-500 px-6 py-3 dark:text-white rounded-full font-semibold inline-flex items-center border border-white hover:bg-gray hover:text-black  ml-4"
+          >
+            <RefreshCcw className="w-5 h-5 mr-2" />
+            {t('Go Back')}
+          </button>
+        </div>
       </div>
-      {loading && <p className="mt-4">{t('processingSubscription')}</p>}
     </div>
   );
 };
 
-export default SubscriptionCards;
+export default NotFoundPage;

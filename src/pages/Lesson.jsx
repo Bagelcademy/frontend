@@ -8,17 +8,17 @@ import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from '../components/ui/loading'; 
+import LoadingSpinner from '../components/ui/loading';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 const LessonPage = () => {
   const { t, i18n } = useTranslation(); // Use i18n to get the current language
-  const [openDialog, setOpenDialog] = useState(false); 
+  const [openDialog, setOpenDialog] = useState(false);
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [contentGenerating, setContentGenerating] = useState(false);
-  const [quizGenerating, setQuizGenerating] = useState(false); 
+  const [quizGenerating, setQuizGenerating] = useState(false);
   const [error, setError] = useState(null);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [quizResults, setQuizResults] = useState(null);
@@ -26,32 +26,32 @@ const LessonPage = () => {
   const [isNextAvailable, setIsNextAvailable] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
-  const { courseId, lessonId ,quizId} = useParams();
-  const [isLastLesson, setIsLastLesson] = useState(false); 
+  const { courseId, lessonId, quizId } = useParams();
+  const [isLastLesson, setIsLastLesson] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
       const token = localStorage.getItem('accessToken');
-  
+
       if (!token) {
         Notify.failure(t('Please login first.'));
         navigate('/login');
         return; // Stop further execution
       }
-  
+
       try {
         setContentGenerating(true);
         const generationResponse = await fetch(
           `https://bagelapi.bagelcademy.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
         );
-  
+
         if (generationResponse.status === 201) {
           console.log('Generating course content...');
           window.location.reload();
           return;
         }
-  
+
         const lessonResponse = await fetch(
           `https://bagelapi.bagelcademy.org/courses/courses/${courseId}/lessons/${lessonId}/`,
           {
@@ -62,7 +62,7 @@ const LessonPage = () => {
             },
           }
         );
-  
+
         if (!lessonResponse.ok) {
           throw new Error('Failed to fetch lesson data');
         }
@@ -79,10 +79,10 @@ const LessonPage = () => {
         setContentGenerating(false);
       }
     };
-  
+
     checkAndFetchLesson();
   }, [courseId, lessonId]);
-  
+
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -164,9 +164,11 @@ const LessonPage = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result)
+        console.log(result);
         setQuizResults(result);
-        setIsNextAvailable(true);
+        setDialogMessage(
+          `${t('Quiz submitted successfully.')}\n\n${t('Total Score')}: ${result.total_score}\n${t('Points Earned')}: ${result.points_earned}`
+        );
         setIsDialogOpen(true);
       } else {
         const errorData = await response.json();
@@ -175,7 +177,7 @@ const LessonPage = () => {
     } catch (err) {
       setError(err.message);
     }
-};
+  };
 
 
 
@@ -288,39 +290,38 @@ const LessonPage = () => {
             <LoadingSpinner />
           ) : (
             <form onSubmit={handleSubmitQuiz} className="flex-grow flex flex-col">
-                          
-            {quizzes.length > 0 ? (
-              quizzes.map((quiz) =>
-                quiz.questions.map((question) => (
-                  <div key={question.id} className="mb-4 flex-grow">
-                    <p className="font-semibold dark:text-white">{question.question_text}</p>
-                    {['option_1', 'option_2', 'option_3', 'option_4'].map((option, index) => (
-                      <motion.div
-                        key={index}
-                        onClick={() => setSelectedAnswers({...selectedAnswers, [question.id]: question[option]})}
-                        className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${
-                          selectedAnswers[question.id] === question[option]
-                            ? 'border-gray-600 dark:text-white bg-red-100 dark:bg-red-600'
-                            : 'border-gray-500 dark:text-white hover:border-red-400'
-                        }`}
-                      >
-                        {question[option]}
-                      </motion.div>
-                    ))}
-                  </div>
-                ))
-              )
-            ) : (
-              <p>{t('No quiz available for this lesson.')}</p>
-            )}
-            <button
-              type="submit"
-              className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center mt-auto"
-            >
-              <Send className="w-4 h-4 mr-2" />
-              {t('Submit Answer')}
-            </button>
-          </form>
+
+              {quizzes.length > 0 ? (
+                quizzes.map((quiz) =>
+                  quiz.questions.map((question) => (
+                    <div key={question.id} className="mb-4 flex-grow">
+                      <p className="font-semibold dark:text-white">{question.question_text}</p>
+                      {['option_1', 'option_2', 'option_3', 'option_4'].map((option, index) => (
+                        <motion.div
+                          key={index}
+                          onClick={() => setSelectedAnswers({ ...selectedAnswers, [question.id]: question[option] })}
+                          className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${selectedAnswers[question.id] === question[option]
+                              ? 'border-gray-600 dark:text-white bg-red-100 dark:bg-red-600'
+                              : 'border-gray-500 dark:text-white hover:border-red-400'
+                            }`}
+                        >
+                          {question[option]}
+                        </motion.div>
+                      ))}
+                    </div>
+                  ))
+                )
+              ) : (
+                <p>{t('No quiz available for this lesson.')}</p>
+              )}
+              <button
+                type="submit"
+                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center mt-auto"
+              >
+                <Send className="w-4 h-4 mr-2" />
+                {t('Submit Answer')}
+              </button>
+            </form>
           )}
           {quizResults && (
             <div className="mt-4">

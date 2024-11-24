@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { useTranslation } from 'react-i18next';
+import { Notify } from 'notiflix';
+import { useNavigate } from 'react-router-dom';
 
 const ExamPage = () => {
   const [exam, setExam] = useState(null);
@@ -11,12 +13,14 @@ const ExamPage = () => {
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchExam = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch('https://bagelapi.bagelcademy.org/api/exam', {
+        const response = await fetch('https://bagelapi.bagelcademy.org/courses/paths/1/generate_exam/', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -24,8 +28,9 @@ const ExamPage = () => {
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch exam');
+        if (response.status === 4002) {
+          Notify.failure("You have not completed all courses in the learning path.");
+          navigate('/learning-paths');
         }
 
         const data = await response.json();
@@ -72,7 +77,7 @@ const ExamPage = () => {
       setSubmitting(false);
     }
   };
-  
+
   const sampleExam = {
     questions: [
       {
@@ -145,10 +150,10 @@ const ExamPage = () => {
   );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-6">Online Exam</h1>
+    <div className="mt-24 flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-darkBase p-4">
+      <h1 className="text-2xl font-bold mb-6 text-black dark:text-white">Online Exam</h1>
       {sampleExam.questions.map((question) => (
-        <Card key={question.id} className="w-full max-w-xl mb-4">
+        <Card key={question.id} className="w-full max-w-xl mb-4 dark:bg-gray-700">
           <CardHeader>
             <CardTitle>{question.text}</CardTitle>
           </CardHeader>
@@ -158,18 +163,20 @@ const ExamPage = () => {
                 <Button
                   key={option.id}
                   variant={selectedAnswers[question.id] === option.id ? 'default' : 'outline'}
-                  className="w-full justify-start"
+                  className={`w-full justify-start ${selectedAnswers[question.id] === option.id ? 'bg-blue-500 text-white' : ''
+                    }`}
                   onClick={() => handleAnswerSelect(question.id, option.id)}
                 >
                   {option.text}
                 </Button>
               ))}
+
             </div>
           </CardContent>
         </Card>
       ))}
-      <Button 
-        onClick={handleSubmitExam} 
+      <Button
+        onClick={handleSubmitExam}
         disabled={submitting || Object.keys(selectedAnswers).length !== sampleExam.questions.length}
       >
         Submit Exam

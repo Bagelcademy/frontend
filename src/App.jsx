@@ -19,7 +19,7 @@ import Survey from './pages/Survey';
 import NotFoundPage from './pages/NotFoundPage';
 import SubscriptionCards from './pages/shop';
 // import LearningPathDetail from './pages/LearningPathDetail';
-import LearningPathDetail from './pages/l';
+import LearningPathDetail from './pages/LearningPathDetail';
 import PaymentStatusPage from './pages/PaymentStatusPage';
 import CareerPathsPage from './pages/LearningPath';
 import ResetPassword from './pages/PasswordReset';
@@ -85,7 +85,7 @@ const App = () => {
             <Route path="/survey" element={<Survey />} />
             <Route path="/resetpass" element={<ResetPassword />} />
             <Route path="/lo" element={<LoginPagee />} />
-            <Route path="/exam" element={<ExamPage />} />
+            <Route path="/exam/:id" element={<ExamPage />} />
           </Routes>
         </Layout>
       </div>
