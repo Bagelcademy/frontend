@@ -26,6 +26,8 @@ import ResetPassword from './pages/PasswordReset';
 import LoginPagee from './pages/t';
 import ExamPage from './pages/Exam';
 import { GoftinoSnippet }from '@mohsen007/react-goftino/dist/index.js';
+import PrivacyPolicy from './pages/privacy';
+import TermsOfService from './pages/terms';
 
 
 
@@ -85,6 +87,8 @@ const App = () => {
             <Route path="/survey" element={<Survey />} />
             <Route path="/resetpass" element={<ResetPassword />} />
             <Route path="/lo" element={<LoginPagee />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
             <Route path="/exam/:id" element={<ExamPage />} />
           </Routes>
         </Layout>
