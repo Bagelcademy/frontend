@@ -228,6 +228,10 @@
   "personalInfo": "اطلاعات کاربری",
   "uploadInProgress": "در حال بارگذاری...",
   "profilePictureUpdated": "عکس پروفایل با موفقیت آپدیت شد",
-  "profileUpdated": "پروفایل با موفقیت آپدیت شد"
-
+  "profileUpdated": "پروفایل با موفقیت آپدیت شد",
+  "invalidName": "Please enter a valid name. Only letters are allowed.",
+  "invalidPhoneNumber": "Please enter a valid phone number. Only numbers are allowed.",
+  "invalidEmail": "Please enter a valid email address.",
+  "invalidBirthdate": "Please enter a valid birthdate in the format YYYY-MM-DD.",
+  "invalidNationalCode": "Please enter a valid national code. Only alphanumeric characters are allowed."
 }
