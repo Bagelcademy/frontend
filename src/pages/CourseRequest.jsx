@@ -116,10 +116,17 @@ const RequestPage = () => {
 
     try {
       const recaptchaToken = await executeRecaptcha();
-      
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        setError(t('User not found, please log in.'));
+        return;
+      }      
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/course-generation/generate_gpt_course/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           name: request,
           language: selectedLanguage.value,
