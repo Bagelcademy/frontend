@@ -67,9 +67,9 @@ const Signup = () => {
   }, [timer]);
 
   const initializeGoogleSignup = () => {
-    if (window.google && '591389169063-0aos87kroucsvkk9ubltr58b9jcjbfb2.apps.googleusercontent.com') {
+    if (window.google && '610913276270-scrlbejnmfgt9u0fmk4o4dgvojq4etp0.apps.googleusercontent.com') {
       window.google.accounts.id.initialize({
-        client_id: '591389169063-0aos87kroucsvkk9ubltr58b9jcjbfb2.apps.googleusercontent.com',
+        client_id: '610913276270-scrlbejnmfgt9u0fmk4o4dgvojq4etp0.apps.googleusercontent.com ',
         callback: handleGoogleSignup,
       });
       window.google.accounts.id.renderButton(
