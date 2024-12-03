@@ -169,6 +169,7 @@ const LessonPage = () => {
         setDialogMessage(
           `${t('Quiz submitted successfully.')}\n\n${t('Total Score')}: ${result.total_score}\n${t('Points Earned')}: ${result.points_earned}`
         );
+        setIsNextAvailable(true);
         setIsDialogOpen(true);
       } else {
         const errorData = await response.json();
@@ -232,23 +233,21 @@ const LessonPage = () => {
   };
 
   const handleNavigation = (direction) => {
-    if (!isNextAvailable && direction === 'next') {
-      setError(t('Please complete the quiz before moving to the next lesson.'));
-      return;
+    if (direction === 'next') {
+      // Allow navigation if quizzes are empty
+      if (!isNextAvailable && quizzes[0].questions.length === 0) {
+        handleCompleteLessonAndNavigate(direction);
+        return;
+      }
+
+      // If quizzes are present, ensure the lesson is marked as completed
+      if (!isNextAvailable) {
+        Notify.failure(t('Please complete the current lesson first.'));
+        return;
+      }
     }
     handleCompleteLessonAndNavigate(direction);
   };
-  // const handleNavigation = (direction) => {
-  //   if (isLastLesson) {
-  //     setOpenDialog(true);
-  //   } else {
-  //     const currentLessonId = parseInt(lessonId);
-  //     const newLessonId = direction === 'next' ? currentLessonId + 1 : currentLessonId - 1;
-  //     if (currentLessonId > 0) {
-  //       navigate(`/courses/${courseId}/lessons/${newLessonId}`);
-  //     }
-  //   }
-  // };
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
@@ -301,8 +300,8 @@ const LessonPage = () => {
                           key={index}
                           onClick={() => setSelectedAnswers({ ...selectedAnswers, [question.id]: question[option] })}
                           className={`cursor-pointer p-2 rounded-lg border-2 mb-2 ${selectedAnswers[question.id] === question[option]
-                              ? 'border-gray-600 dark:text-white bg-red-100 dark:bg-red-600'
-                              : 'border-gray-500 dark:text-white hover:border-red-400'
+                            ? 'border-gray-600 dark:text-white bg-red-100 dark:bg-red-600'
+                            : 'border-gray-500 dark:text-white hover:border-red-400'
                             }`}
                         >
                           {question[option]}
@@ -326,11 +325,11 @@ const LessonPage = () => {
           {quizResults && (
             <div className="mt-4">
               <h3 className="font-semibold mb-2">{t('Quiz Results')}:</h3>
-              <p className="bg-white dark:bg-darkBase p-2 rounded-lg text-gray-900 dark:text-gray-300">
+              <div className="bg-white dark:bg-darkBase p-2 rounded-lg text-gray-900 dark:text-gray-300">
                 {quizResults.message}<br />
                 {t('Total Score')}: {quizResults.total_score}<br />
                 {t('Points Earned')}: {quizResults.points_earned}
-              </p>
+              </div>
             </div>
           )}
         </div>
@@ -348,7 +347,7 @@ const LessonPage = () => {
         </button>
         <button
           onClick={() => handleNavigation('next')}
-          disabled={isNextAvailable}
+          disabled={!isNextAvailable && quizzes[0]?.questions?.length > 0}
           className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {t('Next Lesson')}
@@ -371,7 +370,16 @@ const LessonPage = () => {
       <InterLessonDialog
         isOpen={isDialogOpen}
         onClose={handleDialogClose}
-        message={dialogMessage}
+        message={
+          <span
+            className={`block p-4 rounded-lg ${isPersian ? 'rtl' : 'ltr'
+              } ${document.body.classList.contains('dark')
+                ? 'text-white bg-gray-900'
+                : 'text-black bg-white'
+              }`}>
+            {dialogMessage}
+          </span>
+        }
         svgUrl={mama}
       />
 

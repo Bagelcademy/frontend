@@ -4,6 +4,7 @@ import { Clock, Book, Award, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import cimage from "../assets/12.png"
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { Notify } from 'notiflix';
 
 
 const LearningPathDetail = () => {
@@ -48,6 +49,26 @@ const LearningPathDetail = () => {
       setExpandedCourse(null);
     } else {
       setExpandedCourse(courseId);
+    }
+  };
+
+  const takeExamHandler = () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = fetch('https://bagelapi.bagelcademy.org/courses/paths/1/generate_exam/', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        Notify.failure('"You have not completed all courses in the learning path."');
+      } else {
+        navigate('/exam/1');
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -177,11 +198,7 @@ const LearningPathDetail = () => {
               </p>
               <button
                 className="bg-buttonColor text-white px-6 py-2 rounded-md font-medium hover:opacity-90 transition-colors"
-                onClick={() => {
-                  if (id) {
-                    navigate(`/exam/${id}`);
-                  }
-                }}
+                onClick={takeExamHandler}
               >
                 {t('Take The Exam')}
               </button>

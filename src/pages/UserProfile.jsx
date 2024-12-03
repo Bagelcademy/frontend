@@ -33,19 +33,19 @@ const UserProfilePage = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     try {
       // Notify the user that the upload is in progress
       Notify.info(t('uploadInProgress')); // Translation key for "Upload in progress"
-  
+
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
       formData.append("image", file);
-  
+
       // Show the selected file as a preview before uploading
       const filePreview = URL.createObjectURL(file);
       setUser((prev) => ({ ...prev, profile_picture: filePreview }));
-  
+
       // Upload the image to the MyImage endpoint
       const uploadResponse = await fetch('https://bagelapi.bagelcademy.org/account/MyImage/', {
         method: 'POST',
@@ -54,13 +54,13 @@ const UserProfilePage = () => {
         },
         body: formData,
       });
-  
+
       if (!uploadResponse.ok) {
         throw new Error(t('uploadProfilePicError')); // Translation key for "Error uploading profile picture"
       }
-  
+
       const uploadData = await uploadResponse.json();
-  
+
       // Update the user profile with the new image URL
       const updateProfileResponse = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
         method: 'POST',
@@ -73,17 +73,17 @@ const UserProfilePage = () => {
           pic_url: uploadData.image, // Make sure the API returns the correct field
         }),
       });
-  
+
       if (!updateProfileResponse.ok) {
         throw new Error(t('updateProfileError')); // Translation key for "Error updating profile"
       }
-  
+
       const updatedUserData = await updateProfileResponse.json();
       setUser((prev) => ({
         ...prev,
         profile_picture: updatedUserData.profile_picture || uploadData.image, // Update the profile picture
       }));
-  
+
       // Notify the user that the upload was successful
       Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
     } catch (err) {
@@ -91,7 +91,7 @@ const UserProfilePage = () => {
       Notify.error(err.message); // Show the error notification
     }
   };
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -163,9 +163,39 @@ const UserProfilePage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
+  
+    // Allow empty values to avoid blocking the user from editing
+    if (value === "") {
+      setUser((prev) => ({ ...prev, [name]: value }));
+      return;
+    }
+  
+    let isValid = true;
+  
+    // Validation rules
+    if (name === "first_name" || name === "last_name") {
+      isValid = /^[\u0600-\u06FFa-zA-Z\s]+$/.test(value); // Persian and English letters, and spaces
+      if (!isValid) Notify.error(t("invalidName")); // Translation key for "Invalid name"
+    } else if (name === "phone_number") {
+      isValid = /^[0-9]+$/.test(value); // Only numbers allowed
+      if (!isValid) Notify.error(t("invalidPhoneNumber")); // Translation key for "Invalid phone number"
+    } else if (name === "email") {
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); // Simple email regex
+      if (!isValid) Notify.error(t("invalidEmail")); // Translation key for "Invalid email"
+    } else if (name === "birthdate") {
+      isValid = /^\d{4}-\d{2}-\d{2}$/.test(value); // Format YYYY-MM-DD
+      if (!isValid) Notify.error(t("invalidBirthdate")); // Translation key for "Invalid birthdate format"
+    } else if (name === "national_code") {
+      isValid = /^[0-9]+$/.test(value); // Only numbers allowed
+      if (!isValid) Notify.error(t("invalidNationalCode")); // Translation key for "Invalid national code"
+    }
+  
+    // Update state only if valid
+    if (isValid) {
+      setUser((prev) => ({ ...prev, [name]: value }));
+    }
   };
-
+  
 
 
   if (loading) return <div className="text-center p-4 text-gray-500">{t('loading')}</div>;
@@ -267,35 +297,35 @@ const UserProfilePage = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                   placeholder={t('enterName')}
                   value={user.first_name}
                   name="first_name"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                   placeholder={t('enterPhoneNumber')}
                   value={user.phone_number}
                   name="phone_number"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                   placeholder={t('enterEmail')}
                   value={user.email}
                   name="email"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                   placeholder={t('enterBirthdate')}
                   value={user.birthdate}
                   name="birthdate"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                   placeholder={t('enterNationalCode')}
                   value={user.national_code}
                   name="national_code"
