@@ -62,7 +62,7 @@ const ResetPassword = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/email_reset/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/email_verification_resetPass/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
