@@ -421,6 +421,17 @@ const LessonPage = () => {
           padding: 0.2em 0.4em;
           border-radius: 3px;
           font-size: 0.9em;
+          direction: ltr;
+          text-align: left;
+        }
+        .markdown-content pre,
+        .markdown-content code {
+          background-color: #f5f5f5;
+          padding: 1em;
+          border-radius: 5px;
+          overflow-x: auto;
+          direction: ltr; /* Set text direction to left */
+          text-align: left;
         }
         .dark .markdown-content code {
           background-color: #2a2a2a;

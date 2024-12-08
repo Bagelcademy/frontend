@@ -28,8 +28,16 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const loggedInStatus = localStorage.getItem('isLoggedIn');
-      setIsLoggedIn(loggedInStatus === 'true');
+      const accessToken = localStorage.getItem('accessToken');
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      if (!accessToken || !refreshToken) {
+        enqueueSnackbar(t('Your session has expired. Please log in again.'), { variant: 'warning' });
+        clearAuthData();
+        navigate('/login');
+      } else {
+        setIsLoggedIn(true);
+      }
     };
 
     checkLoginStatus();
@@ -40,7 +48,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       window.removeEventListener('storage', checkLoginStatus);
       window.removeEventListener('loginStateChanged', checkLoginStatus);
     };
-  }, []);
+  }, [enqueueSnackbar, navigate, t]);
 
   const clearAuthData = () => {
     localStorage.removeItem('accessToken');
@@ -56,6 +64,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
       const accessToken = localStorage.getItem('accessToken');
 
       if (!refreshToken || !accessToken) {
+        console.log('No tokens found in local storage.');
         clearAuthData();
         enqueueSnackbar(t('Session expired. Please log in again.'), { variant: 'info' });
         navigate('/login');
