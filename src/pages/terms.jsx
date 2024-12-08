@@ -1,78 +1,83 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TermsOfService = () => {
+  const { t } = useTranslation();
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
-      
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-        <p>By accessing our platform, you agree to these terms. Users must be 13+ years old.</p>
-      </section>
+    <div className="pt-24 min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 animate-fade-in-down">{t('terms.title')}</h1>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">2. User Account</h2>
-        <div className="pl-4">
-          <h3 className="text-xl font-medium mb-2">Account Creation</h3>
-          <ul className="list-disc pl-5">
-            <li>Provide accurate information</li>
-            <li>Maintain account security</li>
-            <li>One account per person</li>
-            <li>No impersonation</li>
-          </ul>
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('terms.acceptance.title')}</h2>
+          <p className="text-gray-700 dark:text-gray-300">{t('terms.acceptance.description')}</p>
+        </section>
 
-          <h3 className="text-xl font-medium mt-4 mb-2">Account Termination</h3>
-          <p>We reserve the right to suspend/terminate accounts for:</p>
-          <ul className="list-disc pl-5">
-            <li>Terms of service violations</li>
-            <li>Fraudulent activities</li>
-            <li>Inappropriate behavior</li>
-          </ul>
-        </div>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('terms.userAccount.title')}</h2>
+          <div className="pl-4">
+            <h3 className="text-xl font-medium mb-2">{t('terms.userAccount.accountCreation.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.userAccount.accountCreation.item1')}</li>
+              <li>{t('terms.userAccount.accountCreation.item2')}</li>
+              <li>{t('terms.userAccount.accountCreation.item3')}</li>
+              <li>{t('terms.userAccount.accountCreation.item4')}</li>
+            </ul>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">3. Course Content</h2>
-        <div className="pl-4">
-          <h3 className="text-xl font-medium mb-2">Intellectual Property</h3>
-          <ul className="list-disc pl-5">
-            <li>Course content is platform property</li>
-            <li>No reproduction without permission</li>
-            <li>AI-generated content usage rights reserved</li>
-          </ul>
+            <h3 className="text-xl font-medium mt-4 mb-2">{t('terms.userAccount.accountTermination.title')}</h3>
+            <p className="text-gray-700 dark:text-gray-300">{t('terms.userAccount.accountTermination.description')}</p>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.userAccount.accountTermination.item1')}</li>
+              <li>{t('terms.userAccount.accountTermination.item2')}</li>
+              <li>{t('terms.userAccount.accountTermination.item3')}</li>
+            </ul>
+          </div>
+        </section>
 
-          <h3 className="text-xl font-medium mt-4 mb-2">Content Limitations</h3>
-          <ul className="list-disc pl-5">
-            <li>No guaranteed course outcomes</li>
-            <li>Content may change without notice</li>
-            <li>Certificates are non-transferable</li>
-          </ul>
-        </div>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('terms.courseContent.title')}</h2>
+          <div className="pl-4">
+            <h3 className="text-xl font-medium mb-2">{t('terms.courseContent.intellectualProperty.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.courseContent.intellectualProperty.item1')}</li>
+              <li>{t('terms.courseContent.intellectualProperty.item2')}</li>
+              <li>{t('terms.courseContent.intellectualProperty.item3')}</li>
+            </ul>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">4. Payments and Refunds</h2>
-        <div className="pl-4">
-          <h3 className="text-xl font-medium mb-2">Pricing</h3>
-          <ul className="list-disc pl-5">
-            <li>Prices subject to change</li>
-            <li>Taxes not included</li>
-            <li>Subscription-based model</li>
-          </ul>
+            <h3 className="text-xl font-medium mt-4 mb-2">{t('terms.courseContent.contentLimitations.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.courseContent.contentLimitations.item1')}</li>
+              <li>{t('terms.courseContent.contentLimitations.item2')}</li>
+              <li>{t('terms.courseContent.contentLimitations.item3')}</li>
+            </ul>
+          </div>
+        </section>
 
-          <h3 className="text-xl font-medium mt-4 mb-2">Refund Policy</h3>
-          <ul className="list-disc pl-5">
-            <li>14-day money-back guarantee</li>
-            <li>Pro-rated refunds</li>
-            <li>No refunds for completed courses</li>
-          </ul>
-        </div>
-      </section>
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('terms.payments.title')}</h2>
+          <div className="pl-4">
+            <h3 className="text-xl font-medium mb-2">{t('terms.payments.pricing.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.payments.pricing.item1')}</li>
+              <li>{t('terms.payments.pricing.item2')}</li>
+              <li>{t('terms.payments.pricing.item3')}</li>
+            </ul>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">5. Contact</h2>
-        <p>support@[yourplatform].com</p>
-      </section>
+            <h3 className="text-xl font-medium mt-4 mb-2">{t('terms.payments.refundPolicy.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('terms.payments.refundPolicy.item1')}</li>
+              <li>{t('terms.payments.refundPolicy.item2')}</li>
+              <li>{t('terms.payments.refundPolicy.item3')}</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">{t('terms.contact.title')}</h2>
+          <p className="text-gray-700 dark:text-gray-300">{t('terms.contact.email')}</p>
+        </section>
+      </div>
     </div>
   );
 };

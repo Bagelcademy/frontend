@@ -1,61 +1,63 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next'; // Import the hook
+import { useTranslation } from 'react-i18next';
 
 const PrivacyPolicy = () => {
-    const { t } = useTranslation(); // Call the useTranslation hook
+  const { t } = useTranslation();
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
-      
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">1. Information We Collect</h2>
-        <div className="pl-4">
-          <h3 className="text-xl font-medium mb-2">Personal Information</h3>
-          <ul className="list-disc pl-5">
-            <li>Name</li>
-            <li>Email address</li>
-            <li>Profile information</li>
-            <li>Payment details</li>
-            <li>Login credentials</li>
+    <div className="pt-24 min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">{t('privacy.title')}</h1>
+
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('privacy.informationWeCollect.title')}</h2>
+          <div className="pl-4">
+            <h3 className="text-xl font-medium mb-2">{t('privacy.informationWeCollect.personalInformation.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('privacy.informationWeCollect.personalInformation.item1')}</li>
+              <li>{t('privacy.informationWeCollect.personalInformation.item2')}</li>
+              <li>{t('privacy.informationWeCollect.personalInformation.item3')}</li>
+              <li>{t('privacy.informationWeCollect.personalInformation.item4')}</li>
+              <li>{t('privacy.informationWeCollect.personalInformation.item5')}</li>
+            </ul>
+
+            <h3 className="text-xl font-medium mt-4 mb-2">{t('privacy.informationWeCollect.usageData.title')}</h3>
+            <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+              <li>{t('privacy.informationWeCollect.usageData.item1')}</li>
+              <li>{t('privacy.informationWeCollect.usageData.item2')}</li>
+              <li>{t('privacy.informationWeCollect.usageData.item3')}</li>
+              <li>{t('privacy.informationWeCollect.usageData.item4')}</li>
+              <li>{t('privacy.informationWeCollect.usageData.item5')}</li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('privacy.howWeUse.title')}</h2>
+          <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+            <li>{t('privacy.howWeUse.item1')}</li>
+            <li>{t('privacy.howWeUse.item2')}</li>
+            <li>{t('privacy.howWeUse.item3')}</li>
+            <li>{t('privacy.howWeUse.item4')}</li>
+            <li>{t('privacy.howWeUse.item5')}</li>
           </ul>
+        </section>
 
-          <h3 className="text-xl font-medium mt-4 mb-2">Usage Data</h3>
-          <ul className="list-disc pl-5">
-            <li>Course interactions</li>
-            <li>Learning progress</li>
-            <li>Device information</li>
-            <li>IP address</li>
-            <li>Browser type</li>
+        <section className="mb-6">
+          <h2 className="text-2xl font-semibold mb-4">{t('privacy.userRights.title')}</h2>
+          <ul className="list-disc pl-5 text-gray-700 dark:text-gray-300">
+            <li>{t('privacy.userRights.item1')}</li>
+            <li>{t('privacy.userRights.item2')}</li>
+            <li>{t('privacy.userRights.item3')}</li>
+            <li>{t('privacy.userRights.item4')}</li>
           </ul>
-        </div>
-      </section>
+        </section>
 
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">2. How We Use Your Information</h2>
-        <ul className="list-disc pl-5">
-          <li>Provide and personalize learning experiences</li>
-          <li>Process payments</li>
-          <li>Communicate platform updates</li>
-          <li>Improve AI course recommendations</li>
-          <li>Ensure platform security</li>
-        </ul>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">3. User Rights</h2>
-        <ul className="list-disc pl-5">
-          <li>Access personal data</li>
-          <li>Request data deletion</li>
-          <li>Opt-out of marketing communications</li>
-          <li>Export learning data</li>
-        </ul>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">4. Contact Information</h2>
-        <p>For privacy concerns, email: privacy@[yourplatform].com</p>
-      </section>
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">{t('privacy.contactInformation.title')}</h2>
+          <p className="text-gray-700 dark:text-gray-300">{t('privacy.contactInformation.email')}</p>
+        </section>
+      </div>
     </div>
   );
 };

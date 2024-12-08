@@ -78,6 +78,24 @@ const Listbox = ({ value, onChange, options }) => {
   );
 };
 
+const CourseCard = ({ course }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="bg-white bg-opacity-10 rounded-lg p-4 mb-4">
+      <h3 className="text-xl font-semibold text-white mb-2">{course.title}</h3>
+      <p className="text-blue-200 mb-2">{t("Language")} : {course.language}</p>
+      <p className="text-blue-200 mb-2">{t("Level")} : {course.level}</p>
+      <button
+        onClick={() => navigate(`/course/${course.id}`)}
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+      >
+        View Course
+      </button>
+    </div>
+  );
+};
+
 const RequestPage = () => {
   const [request, setRequest] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
@@ -254,6 +272,19 @@ const RequestPage = () => {
             ) : (
               t('Oops! There was an error. Please try again.')
             )}
+          </motion.div>
+        )}
+        {courses.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mt-8"
+          >
+            <h2 className="text-2xl font-bold text-white mb-4">{t("Generated Courses")}</h2>
+            {courses.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
           </motion.div>
         )}
       </motion.div>

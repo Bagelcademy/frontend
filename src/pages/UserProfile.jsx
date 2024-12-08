@@ -282,7 +282,7 @@ const UserProfilePage = () => {
           <StatsCard
             icon={CreditCard}
             label={t('credits')}
-            value={user.credits || 0}
+            value={user.credit || 0}
             color="bg-purple-500"
           />
         </div>

@@ -98,7 +98,7 @@ const SubscriptionCards = () => {
     }
   };
 
-  const handleSubscribe = async (amount) => {
+  const handleSubscribe = async (amount, planCode) => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       Notify.failure(t('Please login first.'));
@@ -110,9 +110,15 @@ const SubscriptionCards = () => {
     setError(null);
 
     try {
-      const discountedAmount = discountPercent
-        ? Math.round(amount * (1 - discountPercent / 100))
-        : amount;
+      const bodyData = {
+        amount: amount,
+        plan_code: planCode,
+      };
+
+      // Add discount_code only if it exists
+      if (discountCode) {
+        bodyData.discount_code = discountCode;
+      }
 
       const response = await fetch('https://bagelapi.bagelcademy.org/account/payment/', {
         method: 'POST',
@@ -120,7 +126,7 @@ const SubscriptionCards = () => {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: discountedAmount }),
+        body: JSON.stringify(bodyData),
       });
 
       if (!response.ok) {
@@ -184,7 +190,7 @@ const SubscriptionCards = () => {
             "24/7 customer support",
             "Cancel anytime"
           ]}
-          onSubscribe={() => handleSubscribe(129000)}
+          onSubscribe={() => handleSubscribe(129000, '1M')}
         />
         <SubscriptionCard
           title="6 Months"
@@ -198,7 +204,7 @@ const SubscriptionCards = () => {
             "Exclusive content",
             "50% off first month"
           ]}
-          onSubscribe={() => handleSubscribe(729000)}
+          onSubscribe={() => handleSubscribe(729000, '6M')}
         />
         <SubscriptionCard
           title="Yearly"
@@ -211,7 +217,7 @@ const SubscriptionCards = () => {
             "Annual performance review",
             "Early access to new features"
           ]}
-          onSubscribe={() => handleSubscribe(1200000)}
+          onSubscribe={() => handleSubscribe(1200000, '12M')}
         />
       </div>
       {loading && <p className="mt-4">{t('Processing...')}</p>}
