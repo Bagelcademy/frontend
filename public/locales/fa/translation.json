@@ -52,7 +52,7 @@
   "Launch Your Question": "پرسش خود را مطرح کنید",
   "Your quest for knowledge has begun!": "جستجوی شما برای دانش آغاز شد!",
   "Oops! There was an error. Please try again.": "اوه! خطایی رخ داد. لطفاً دوباره تلاش کنید.",
-  "Generated Courses": "دوره‌های تولید شده",
+  "Generated Courses": "دوره‌ تولید شده",
   "searchPlaceholder": "جستجو در دوره های من...",
   "selectCategory": "انتخاب دسته بندی",
   "allCategories": "همه دسته بندی ها",
@@ -233,5 +233,106 @@
   "invalidPhoneNumber": "Please enter a valid phone number. Only numbers are allowed.",
   "invalidEmail": "Please enter a valid email address.",
   "invalidBirthdate": "Please enter a valid birthdate in the format YYYY-MM-DD.",
-  "invalidNationalCode": "Please enter a valid national code. Only alphanumeric characters are allowed."
+  "invalidNationalCode": "Please enter a valid national code. Only alphanumeric characters are allowed.",
+  "Level": "سطح",
+  "Language": "زبان",
+  "terms": {
+    "title": "شرایط خدمات",
+    "acceptance": {
+      "title": "۱. پذیرش شرایط",
+      "description": "با دسترسی به پلتفرم ما، شما این شرایط را می‌پذیرید. کاربران باید حداقل ۱۳ سال داشته باشند."
+    },
+    "userAccount": {
+      "title": "۲. حساب کاربری",
+      "accountCreation": {
+        "title": "ایجاد حساب",
+        "item1": "اطلاعات صحیح ارائه کنید",
+        "item2": "امنیت حساب را حفظ کنید",
+        "item3": "هر شخص فقط یک حساب",
+        "item4": "عدم جعل هویت"
+      },
+      "accountTermination": {
+        "title": "تعلیق حساب",
+        "description": "ما حق تعلیق/خاتمه حساب‌ها را در موارد زیر داریم:",
+        "item1": "نقض شرایط خدمات",
+        "item2": "فعالیت‌های تقلبی",
+        "item3": "رفتار نامناسب"
+      }
+    },
+    "courseContent": {
+      "title": "۳. محتوای دوره‌ها",
+      "intellectualProperty": {
+        "title": "مالکیت معنوی",
+        "item1": "محتوای دوره متعلق به پلتفرم است",
+        "item2": "تکثیر بدون مجوز ممنوع است",
+        "item3": "حقوق استفاده از محتوای تولید شده با هوش مصنوعی محفوظ است"
+      },
+      "contentLimitations": {
+        "title": "محدودیت‌های محتوا",
+        "item1": "نتایج دوره تضمین نمی‌شود",
+        "item2": "محتوا ممکن است بدون اطلاع تغییر کند",
+        "item3": "گواهینامه‌ها قابل انتقال نیستند"
+      }
+    },
+    "payments": {
+      "title": "۴. پرداخت‌ها و بازپرداخت‌ها",
+      "pricing": {
+        "title": "قیمت‌گذاری",
+        "item1": "قیمت‌ها ممکن است تغییر کنند",
+        "item2": "مالیات شامل نمی‌شود",
+        "item3": "مدل مبتنی بر اشتراک"
+      },
+      "refundPolicy": {
+        "title": "سیاست بازپرداخت",
+        "item1": "تضمین بازپرداخت ۱۴ روزه",
+        "item2": "بازپرداخت‌های نسبی",
+        "item3": "برای دوره‌های تکمیل‌شده بازپرداخت انجام نمی‌شود"
+      }
+    },
+    "contact": {
+      "title": "۵. تماس",
+      "email": "support@[yourplatform].com"
+    }
+  },
+  "privacy": {
+    "title": "سیاست حفظ حریم خصوصی",
+    "informationWeCollect": {
+      "title": "۱. اطلاعاتی که جمع‌آوری می‌کنیم",
+      "personalInformation": {
+        "title": "اطلاعات شخصی",
+        "item1": "نام",
+        "item2": "آدرس ایمیل",
+        "item3": "اطلاعات پروفایل",
+        "item4": "جزئیات پرداخت",
+        "item5": "اطلاعات ورود"
+      },
+      "usageData": {
+        "title": "داده‌های استفاده",
+        "item1": "تعاملات دوره",
+        "item2": "پیشرفت یادگیری",
+        "item3": "اطلاعات دستگاه",
+        "item4": "آدرس IP",
+        "item5": "نوع مرورگر"
+      }
+    },
+    "howWeUse": {
+      "title": "۲. نحوه استفاده از اطلاعات شما",
+      "item1": "ارائه و شخصی‌سازی تجربه‌های یادگیری",
+      "item2": "پردازش پرداخت‌ها",
+      "item3": "ارتباط به‌روزرسانی‌های پلتفرم",
+      "item4": "بهبود توصیه‌های دوره‌های هوش مصنوعی",
+      "item5": "اطمینان از امنیت پلتفرم"
+    },
+    "userRights": {
+      "title": "۳. حقوق کاربران",
+      "item1": "دسترسی به داده‌های شخصی",
+      "item2": "درخواست حذف داده‌ها",
+      "item3": "انصراف از ارتباطات بازاریابی",
+      "item4": "صادرات داده‌های یادگیری"
+    },
+    "contactInformation": {
+      "title": "۴. اطلاعات تماس",
+      "email": "برای نگرانی‌های مربوط به حریم خصوصی، ایمیل: privacy@[yourplatform].com"
+    }
+  }
 }

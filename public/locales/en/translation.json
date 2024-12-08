@@ -109,5 +109,104 @@
   "Enter discount code": "Enter discount code",
   "personalInfo": "Personal Information",
   "uploadInProgress": "Upload in progress...",
-  "profilePictureUpdated": "Profile picture updated"
+  "profilePictureUpdated": "Profile picture updated",
+  "terms": {
+    "title": "Terms of Service",
+    "acceptance": {
+      "title": "1. Acceptance of Terms",
+      "description": "By accessing our platform, you agree to these terms. Users must be 13+ years old."
+    },
+    "userAccount": {
+      "title": "2. User Account",
+      "accountCreation": {
+        "title": "Account Creation",
+        "item1": "Provide accurate information",
+        "item2": "Maintain account security",
+        "item3": "One account per person",
+        "item4": "No impersonation"
+      },
+      "accountTermination": {
+        "title": "Account Termination",
+        "description": "We reserve the right to suspend/terminate accounts for:",
+        "item1": "Terms of service violations",
+        "item2": "Fraudulent activities",
+        "item3": "Inappropriate behavior"
+      }
+    },
+    "courseContent": {
+      "title": "3. Course Content",
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "item1": "Course content is platform property",
+        "item2": "No reproduction without permission",
+        "item3": "AI-generated content usage rights reserved"
+      },
+      "contentLimitations": {
+        "title": "Content Limitations",
+        "item1": "No guaranteed course outcomes",
+        "item2": "Content may change without notice",
+        "item3": "Certificates are non-transferable"
+      }
+    },
+    "payments": {
+      "title": "4. Payments and Refunds",
+      "pricing": {
+        "title": "Pricing",
+        "item1": "Prices subject to change",
+        "item2": "Taxes not included",
+        "item3": "Subscription-based model"
+      },
+      "refundPolicy": {
+        "title": "Refund Policy",
+        "item1": "14-day money-back guarantee",
+        "item2": "Pro-rated refunds",
+        "item3": "No refunds for completed courses"
+      }
+    },
+    "contact": {
+      "title": "5. Contact",
+      "email": "support@[yourplatform].com"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "informationWeCollect": {
+      "title": "1. Information We Collect",
+      "personalInformation": {
+        "title": "Personal Information",
+        "item1": "Name",
+        "item2": "Email address",
+        "item3": "Profile information",
+        "item4": "Payment details",
+        "item5": "Login credentials"
+      },
+      "usageData": {
+        "title": "Usage Data",
+        "item1": "Course interactions",
+        "item2": "Learning progress",
+        "item3": "Device information",
+        "item4": "IP address",
+        "item5": "Browser type"
+      }
+    },
+    "howWeUse": {
+      "title": "2. How We Use Your Information",
+      "item1": "Provide and personalize learning experiences",
+      "item2": "Process payments",
+      "item3": "Communicate platform updates",
+      "item4": "Improve AI course recommendations",
+      "item5": "Ensure platform security"
+    },
+    "userRights": {
+      "title": "3. User Rights",
+      "item1": "Access personal data",
+      "item2": "Request data deletion",
+      "item3": "Opt-out of marketing communications",
+      "item4": "Export learning data"
+    },
+    "contactInformation": {
+      "title": "4. Contact Information",
+      "email": "For privacy concerns, email: privacy@[yourplatform].com"
+    }
+  }
 }
