@@ -106,7 +106,7 @@ const LessonPage = () => {
           return;
         }
 
-        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${lessonId}/Qlist/`, {
+        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/exams/${lessonId}/Qlist/`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
