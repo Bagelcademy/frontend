@@ -30,25 +30,25 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
     const checkLoginStatus = () => {
       const accessToken = localStorage.getItem('accessToken');
       const refreshToken = localStorage.getItem('refreshToken');
-
+  
       if (!accessToken || !refreshToken) {
-        enqueueSnackbar(t('Your session has expired. Please log in again.'), { variant: 'warning' });
-        clearAuthData();
-        navigate('/login');
+        setIsLoggedIn(false);
+        clearAuthData(); 
       } else {
         setIsLoggedIn(true);
       }
     };
-
+  
     checkLoginStatus();
     window.addEventListener('storage', checkLoginStatus);
     window.addEventListener('loginStateChanged', checkLoginStatus);
-
+  
     return () => {
       window.removeEventListener('storage', checkLoginStatus);
       window.removeEventListener('loginStateChanged', checkLoginStatus);
     };
-  }, [enqueueSnackbar, navigate, t]);
+  }, []);
+  
 
   const clearAuthData = () => {
     localStorage.removeItem('accessToken');
