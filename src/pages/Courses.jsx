@@ -100,7 +100,7 @@ const Courses = () => {
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 
         <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="md:w-1/4 relative z-[1000]">
+          <div className="md:w-1/4 relative z-[10]">
             <Select onValueChange={handleCategoryChange} value={selectedCategory}>
               <SelectTrigger className="w-full border border-borderColor dark:border-gray-700">
                 <SelectValue placeholder={t('Select Category')} />
@@ -108,7 +108,7 @@ const Courses = () => {
               <SelectContent 
                 className="absolute bg-lightBackground dark:bg-darkBackground shadow-lg rounded-md overflow-hidden"
                 style={{
-                  zIndex: 1001,
+                  // zIndex: 1001,
                   minWidth: '100%',
                   top: 'calc(100% + 5px)',
                   left: 0,

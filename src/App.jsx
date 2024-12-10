@@ -40,6 +40,7 @@ const App = () => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     setIsLoggedIn(!!(accessToken && refreshToken));
+    console.log('isLoggedIn:', isLoggedIn);
   }, []);
 
   const changeLanguage = (lng) => {
@@ -89,6 +90,7 @@ const App = () => {
             <Route path="/cha" element={<CharacterIntroPage />} />
             <Route path="/lo" element={<LoginPagee />} />
             <Route path="/survey" element={<Survey />} />
+            <Route path="/course/:id" element={<CourseLandingPage />} />
 
             {/* Protected Routes */}
             <Route path="/profile" element={<ProtectedRoute isLoggedIn={isLoggedIn}> <UserProfilePage /> </ProtectedRoute>} />

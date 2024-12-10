@@ -47,7 +47,7 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button className="rounded-full text-white" onClick={onSubscribe}>{t('Subscribe Now')}</Button>
+        <Button className="rounded-full text-white bg-gray-800 dark:bg-gray-800:" onClick={onSubscribe}>{t('Subscribe Now')}</Button>
       </CardFooter>
     </Card>
   );

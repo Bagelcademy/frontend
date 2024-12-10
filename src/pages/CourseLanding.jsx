@@ -35,11 +35,12 @@ const CourseLandingPage = () => {
           },
         });
 
-        if (enrollmentResponse.ok) {
-          const enrollmentData = await enrollmentResponse.json();
-          if (enrollmentData.status === 'enrolled') {
-            setIsEnrolled(true);
-          }
+        console.log('enrolment response.ok:', enrollmentResponse.ok);
+        console.log('enrolment response.status:', enrollmentResponse.status);
+
+        if (!enrollmentResponse.ok && enrollmentResponse.status === 400) {
+          setIsEnrolled(true);
+          console.log('Enrolled:', isEnrolled);
         }
       } catch (error) {
         console.error("Error fetching course:", error);
@@ -48,7 +49,7 @@ const CourseLandingPage = () => {
       }
     }
     fetchData();
-  }, [id]);
+  }, [id, isEnrolled]);
 
   const handleLessonClick = (lessonId) => {
     navigate(`/courses/${id}/lessons/${lessonId}`);
