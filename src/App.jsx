@@ -30,7 +30,11 @@ import { GoftinoSnippet } from '@mohsen007/react-goftino/dist/index.js';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+    return !!(accessToken && refreshToken);
+  });
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const { i18n } = useTranslation();
   const GOFTINO_KEY = "cD7Gse";
@@ -40,7 +44,6 @@ const App = () => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     setIsLoggedIn(!!(accessToken && refreshToken));
-    console.log('isLoggedIn:', isLoggedIn);
   }, []);
 
   const changeLanguage = (lng) => {
@@ -64,6 +67,7 @@ const App = () => {
       <div dir={i18n.language === 'fa' ? 'rtl' : 'ltr'}>
         <Layout
           isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
           isDarkTheme={isDarkTheme}
           toggleTheme={toggleTheme}
           handleLogout={handleLogout}
@@ -92,10 +96,10 @@ const App = () => {
             <Route path="/survey" element={<Survey />} />
             <Route path="/course/:id" element={<CourseLandingPage />} />
 
-            {/* Protected Routes */}
-            <Route path="/profile" element={<ProtectedRoute isLoggedIn={isLoggedIn}> <UserProfilePage /> </ProtectedRoute>} />
-            <Route path="/my-courses" element={<ProtectedRoute isLoggedIn={isLoggedIn}> <MyCourses /> </ProtectedRoute>} />
-            <Route path="/courses/:courseId/lessons/:lessonId" element={<ProtectedRoute isLoggedIn={isLoggedIn}> <LessonPage /> </ProtectedRoute>} />
+
+            <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn}/> }/>
+            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn}/> }/>
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
