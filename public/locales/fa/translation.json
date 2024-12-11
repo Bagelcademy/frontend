@@ -232,7 +232,7 @@
   "invalidName": "Please enter a valid name. Only letters are allowed.",
   "invalidPhoneNumber": "Please enter a valid phone number. Only numbers are allowed.",
   "invalidEmail": "Please enter a valid email address.",
-  "invalidBirthdate": "Please enter a valid birthdate in the format YYYY-MM-DD.",
+  "invalidBirthdate": "لطفا تاریخ تولد با فرمت روز-ماه-سال وارد کنید.",
   "invalidNationalCode": "Please enter a valid national code. Only alphanumeric characters are allowed.",
   "Level": "سطح",
   "Language": "زبان",
