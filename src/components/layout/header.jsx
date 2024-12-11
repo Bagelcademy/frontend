@@ -6,8 +6,8 @@ import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 
-const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLanguage }) => {
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
@@ -26,28 +26,28 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const accessToken = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
+  // useEffect(() => {
+  //   const checkLoginStatus = () => {
+  //     const accessToken = localStorage.getItem('accessToken');
+  //     const refreshToken = localStorage.getItem('refreshToken');
   
-      if (!accessToken || !refreshToken) {
-        setIsLoggedIn(false);
-        clearAuthData(); 
-      } else {
-        setIsLoggedIn(true);
-      }
-    };
+  //     if (!accessToken || !refreshToken) {
+  //       setIsLoggedIn(false);
+  //       clearAuthData(); 
+  //     } else {
+  //       setIsLoggedIn(true);
+  //     }
+  //   };
   
-    checkLoginStatus();
-    window.addEventListener('storage', checkLoginStatus);
-    window.addEventListener('loginStateChanged', checkLoginStatus);
+  //   checkLoginStatus();
+  //   window.addEventListener('storage', checkLoginStatus);
+  //   window.addEventListener('loginStateChanged', checkLoginStatus);
   
-    return () => {
-      window.removeEventListener('storage', checkLoginStatus);
-      window.removeEventListener('loginStateChanged', checkLoginStatus);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('storage', checkLoginStatus);
+  //     window.removeEventListener('loginStateChanged', checkLoginStatus);
+  //   };
+  // }, []);
   
 
   const clearAuthData = () => {
@@ -87,6 +87,7 @@ const Header = ({ isDarkTheme, toggleTheme, changeLanguage }) => {
         enqueueSnackbar(t('You have been logged out.'), { variant: 'success' });
         setLogoutAlert(true); // Show logout alert
         setTimeout(() => setLogoutAlert(false), 5000); // Hide alert after 5 seconds
+        setIsLoggedIn(false);
         navigate('/login');
       } else {
         const errorData = await response.json();

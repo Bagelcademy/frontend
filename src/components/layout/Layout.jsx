@@ -6,6 +6,7 @@ import Footer from './footer';
 const Layout = ({ 
   children, 
   isLoggedIn, 
+  setIsLoggedIn,
   isDarkTheme, 
   toggleTheme, 
   handleLogout, 
@@ -23,6 +24,7 @@ const Layout = ({
     <div className={`min-h-screen ${isDarkTheme ? 'dark' : ''} bg-white dark:bg-gray-900 transition-colors duration-300 flex flex-col`}>
       <Header 
         isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
         isDarkTheme={isDarkTheme}
         toggleTheme={toggleTheme}
         handleLogout={handleLogout}
