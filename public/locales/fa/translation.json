@@ -334,5 +334,8 @@
       "title": "۴. اطلاعات تماس",
       "email": "برای نگرانی‌های مربوط به حریم خصوصی، ایمیل: privacy@[yourplatform].com"
     }
-  }
+  },
+  "Invalid or expired discount code": "کد تخفیف نامعتبر یا منقضی شده است",
+  "Discount applied": "تخفیف اعمال شد",
+  "off": "تخفیف"
 }
