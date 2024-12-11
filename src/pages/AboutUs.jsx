@@ -6,7 +6,7 @@ const AboutUs = () => {
   const { t } = useTranslation(); // Call the useTranslation hook
 
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-black dark:text-white">
+    <div className="mt-24 min-h-screen bg-lightBackground dark:bg-darkBackground text-black dark:text-white">
       <div className="max-w-6xl mx-auto p-6">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold border-b-4 border-buttonColor inline-block pb-2">
@@ -14,7 +14,7 @@ const AboutUs = () => {
           </h1>
         </div>
 
-        <div className="space-y-8 bg-white p-6 rounded-lg shadow-lg">
+        <div className="space-y-8 bg-white p-6 rounded-lg shadow-lg text-justify">
           <p className="text-lg">
             {t('Welcome to')} <strong>BagelAcademy</strong>, {t('your go-to platform for engaging, gamified learning!')} 
             {t('Our unique approach to education combines interactive lessons with personalized motivational support from the Bagel family—Dad Bagel, Mom Bagel, and their two enthusiastic kids.')}

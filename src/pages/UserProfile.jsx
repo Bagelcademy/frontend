@@ -28,7 +28,14 @@ const UserProfilePage = () => {
   const [notifications, setNotifications] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  const Notify = Notiflix.Notify;
+  Notiflix.Notify.init({
+    width: '280px',
+    position: 'right-top',
+    distance: '10px',
+    opacity: 0.9,
+    fontSize: '16px',
+  });
+
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -85,7 +92,7 @@ const UserProfilePage = () => {
       }));
 
       // Notify the user that the upload was successful
-      Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
+      Notiflix.Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
     } catch (err) {
       setError(err.message);
       Notify.error(err.message); // Show the error notification
@@ -164,35 +171,32 @@ const UserProfilePage = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
   
-    // Allow empty values to avoid blocking the user from editing
-    if (value === "") {
-      setUser((prev) => ({ ...prev, [name]: value }));
-      return;
-    }
+    // Always update the state first
+    setUser((prev) => ({ ...prev, [name]: value }));
+  
+    // Skip validation if the field is empty
+    if (!value) return;
   
     let isValid = true;
   
-    // Validation rules
+    // Conditional validation rules
     if (name === "first_name" || name === "last_name") {
-      isValid = /^[\u0600-\u06FFa-zA-Z\s]+$/.test(value); // Persian and English letters, and spaces
-      if (!isValid) Notify.error(t("invalidName")); // Translation key for "Invalid name"
+      isValid = /^[\u0600-\u06FFa-zA-Z\s]+$/.test(value);
+      if (!isValid) Notiflix.Notify.failure(t("invalidName"));
     } else if (name === "phone_number") {
-      isValid = /^[0-9]+$/.test(value); // Only numbers allowed
-      if (!isValid) Notify.error(t("invalidPhoneNumber")); // Translation key for "Invalid phone number"
+      isValid = /^[0-9]+$/.test(value);
+      if (!isValid) Notiflix.Notify.failure(t("invalidPhoneNumber"));
     } else if (name === "email") {
-      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); // Simple email regex
-      if (!isValid) Notify.error(t("invalidEmail")); // Translation key for "Invalid email"
+      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      if (!isValid) Notiflix.Notify.failure(t("invalidEmail"));
     } else if (name === "birthdate") {
-      isValid = /^\d{4}-\d{2}-\d{2}$/.test(value); // Format YYYY-MM-DD
-      if (!isValid) Notify.error(t("invalidBirthdate")); // Translation key for "Invalid birthdate format"
+      // Allow partial input but validate only when the full date is entered
+      if (value.length === 10 && !/^\d{2}-\d{2}-\d{4}$/.test(value)) {
+        Notiflix.Notify.failure(t("invalidBirthdate"));
+      }
     } else if (name === "national_code") {
-      isValid = /^[0-9]+$/.test(value); // Only numbers allowed
-      if (!isValid) Notify.error(t("invalidNationalCode")); // Translation key for "Invalid national code"
-    }
-  
-    // Update state only if valid
-    if (isValid) {
-      setUser((prev) => ({ ...prev, [name]: value }));
+      isValid = /^[0-9]+$/.test(value);
+      if (!isValid) Notiflix.Notify.failure(t("invalidNationalCode"));
     }
   };
   

@@ -60,6 +60,10 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handleLoginSuccess = () => {
     localStorage.setItem('isLoggedIn', 'true');
+    
+    // Update the parent App.jsx state
+    setIsLoggedIn(true); 
+    
     // Dispatch the custom event
     window.dispatchEvent(new Event('loginStateChanged'));
     Notify.success(t('loginSuccess'));
