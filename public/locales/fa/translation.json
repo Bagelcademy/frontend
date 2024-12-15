@@ -337,5 +337,7 @@
   },
   "Invalid or expired discount code": "کد تخفیف نامعتبر یا منقضی شده است",
   "Discount applied": "تخفیف اعمال شد",
-  "off": "تخفیف"
+  "off": "تخفیف",
+  "Not Completed": "تکمیل نشده",
+  "Completed": "تکمیل شده"
 }

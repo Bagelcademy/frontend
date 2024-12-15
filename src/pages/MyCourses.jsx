@@ -32,26 +32,25 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org//courses/courses/get_user_courses/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/courses/get_user_courses/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       const data = await response.json();
       setCourses(data);
-      console.log(response)
     } catch (error) {
-      console.error('Failed to fetch courses:', error);
+      // console.error('Failed to fetch courses:', error);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('/api/categories');
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      console.error('Failed to fetch categories:', error);
+      // console.error('Failed to fetch categories:', error);
     }
   };
 
@@ -59,7 +58,7 @@ const MyCourses = () => {
     let filtered = courses;
 
     if (searchTerm) {
-      filtered = filtered.filter(item => 
+      filtered = filtered.filter(item =>
         item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -91,7 +90,7 @@ const MyCourses = () => {
 
   const CourseCard = ({ item }) => {
     const { course, progress } = item;
-    const completionPercentage = (progress.completed_lessons.length / course.total_lessons) * 100;
+    const completed = progress.course_completed;
 
     return (
       <Card className="w-full border border-borderColor dark:border-gray-700 bg-lightBackground dark:bg-gray-800 transition-transform transform hover:scale-105">
@@ -105,8 +104,10 @@ const MyCourses = () => {
             <span className="text-sm text-gray-700 dark:text-gray-300">{course.level} • {course.language}</span>
           </div>
           <div className="mt-4">
-            <Progress value={completionPercentage} className="w-full" />
-            <p className="text-sm mt-2">{t('complete', { percentage: completionPercentage.toFixed(0) })}</p>
+            {/* <Progress value={} className="w-full"  */}
+            <span className={`text-sm mt-1 ${completed ? 'text-green-500' : 'text-red-500'}`}>
+              {completed ? t('Completed') : t('Not Completed')}
+            </span>
           </div>
           <div className="flex items-center justify-between mt-4">
             <div className="flex items-center">
@@ -120,7 +121,7 @@ const MyCourses = () => {
           </div>
         </CardContent>
         <CardFooter>
-          <Button 
+          <Button
             onClick={() => navigate(`/course/${course.id}`)}
             className="w-full bg-buttonColor text-white py-2 px-4 rounded"
           >
@@ -136,14 +137,8 @@ const MyCourses = () => {
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('myCourses')}</h1>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <Input
-            type="text"
-            placeholder={t('searchPlaceholder')}
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="md:w-1/2 border border-borderColor dark:border-gray-700"
-          />
+        <div className="flex flex-col md:flex-row gap-4 mb-8 relative z-[10]">
+
           <Select onValueChange={handleCategoryChange} value={selectedCategory} className="md:w-1/4">
             <SelectTrigger className="border border-borderColor dark:border-gray-700">
               <SelectValue placeholder={t('selectCategory')} />
@@ -155,8 +150,16 @@ const MyCourses = () => {
               ))}
             </SelectContent>
           </Select>
-          <Button 
-            onClick={handleExploreClick} 
+          <Input
+            type="text"
+            placeholder={t('searchPlaceholder')}
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="md:w-1/2 border border-borderColor dark:border-gray-700"
+          />
+
+          <Button
+            onClick={handleExploreClick}
             className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
           >
             {t('exploreCourses')}
@@ -168,8 +171,8 @@ const MyCourses = () => {
           <p className="text-center text-gray-700 dark:text-gray-300">{t('noCourses')}</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {displayedCourses.map(item => (
-              <CourseCard key={item.course.id} item={item} />
+            {displayedCourses.map((item, index) => (
+              <CourseCard key={`${item.course.id}-${index}`} item={item} />
             ))}
           </div>
         )}
