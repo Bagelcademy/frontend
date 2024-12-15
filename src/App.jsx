@@ -1,6 +1,6 @@
 // App.jsx
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
@@ -39,11 +39,41 @@ const App = () => {
   const { i18n } = useTranslation();
   const GOFTINO_KEY = "cD7Gse";
 
+  // const navigate = useNavigate();
+
   // Check login status
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
-    setIsLoggedIn(!!(accessToken && refreshToken));
+    // checks axios access token validity
+    if (accessToken && refreshToken) {
+      fetch('https://bagelapi.bagelcademy.org/account/token/validate-token/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            setIsLoggedIn(true);
+          }
+          else {
+            setIsLoggedIn(false);
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            localStorage.setItem('isLoggedIn', false);
+            // navigate('/login');
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to validate token:', error);
+          setIsLoggedIn(false);
+        });
+    }
+    else {
+      setIsLoggedIn(false);
+    }
   }, []);
 
   const changeLanguage = (lng) => {
@@ -98,8 +128,8 @@ const App = () => {
 
 
             <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn}/> }/>
-            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn}/> }/>
+            <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
