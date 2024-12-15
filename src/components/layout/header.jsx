@@ -139,9 +139,9 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
         <div className="flex items-center gap-4">
           <Link 
             to="/" 
-            className={`text-xl font-bold relative overflow-hidden
+            className={`text-xl font-b6 relative overflow-hidden
               ${isDarkTheme ? 'text-white' : 'text-gray-900'}
-              hover:scale-105 transition-transform duration-300
+              ${isDarkTheme ? 'hover:text-gray-300' : 'hover:text-gray-900'}
             `}
           >
             {t("Bagelcademy")}
