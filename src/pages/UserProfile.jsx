@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Notiflix from 'notiflix';
+import * as Yup from 'yup';
 
 const StatsCard = ({ icon: Icon, label, value, color }) => (
   <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md flex items-center gap-4">
@@ -27,13 +28,15 @@ const UserProfilePage = () => {
   const [bio, setBio] = useState('');
   const [notifications, setNotifications] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [validationErrors, setValidationErrors] = useState({});
 
   Notiflix.Notify.init({
     width: '280px',
     position: 'right-top',
     distance: '10px',
     opacity: 0.9,
-    fontSize: '16px',
+    fontSize: '20px',
+    borderRadius: '5px',
   });
 
 
@@ -134,6 +137,8 @@ const UserProfilePage = () => {
 
   const handleSave = async () => {
     try {
+      await validationSchema.validate(user, { abortEarly: false });
+
       const token = localStorage.getItem("accessToken");
       const response = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
         method: 'POST',
@@ -142,18 +147,13 @@ const UserProfilePage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          first_name: user.first_name,
+          ...user,
           bio,
-          phone_number: user.phone_number,
-          birthdate: user.birthdate,
-          email: user.email,
-          national_code: user.national_code,
           pic_url: user.profile_picture,
         }),
       });
 
       const updatedUserData = await response.json();
-      console.log(t('updateProfileResponse'), updatedUserData);
 
       if (!response.ok) {
         throw new Error(t('updateProfileError'));
@@ -161,45 +161,52 @@ const UserProfilePage = () => {
 
       setUser({ ...user, ...updatedUserData });
       setEditMode(false);
-
-      Notify.success(t('profileUpdated'));
+      Notiflix.Notify.success(t('profileUpdated'));
     } catch (err) {
-      setError(err.message);
+      if (err.name === "ValidationError") {
+        err.inner.forEach((error) => {
+          Notiflix.Notify.failure(error.message);
+        });
+      } else {
+        setError(err.message);
+        Notiflix.Notify.failure(err.message);
+      }
     }
   };
 
-  const handleInputChange = (e) => {
+  const validationSchema = Yup.object().shape({
+    first_name: Yup.string()
+      .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
+      .required(t("required")),
+    phone_number: Yup.number()
+      .max(99999999999, t("invalidPhoneNumber"))
+      .required(t("required")),
+    email: Yup.string()
+      .email(t("invalidEmail"))
+      .required(t("required")),
+    birthdate: Yup.date()
+      .nullable()
+      .min(new Date(1900, 0, 1))
+      .max(new Date(), t("invalidBirthdate"))
+      .required(t("required")),
+    national_code: Yup.string()
+      .matches(/^[0-9]{10}$/, t("invalidNationalCode"))
+      .required(t("required")),
+  });
+
+
+  const handleInputChange = async (e) => {
     const { name, value } = e.target;
-  
-    // Always update the state first
     setUser((prev) => ({ ...prev, [name]: value }));
-  
-    // Skip validation if the field is empty
-    if (!value) return;
-  
-    let isValid = true;
-  
-    // Conditional validation rules
-    if (name === "first_name" || name === "last_name") {
-      isValid = /^[\u0600-\u06FFa-zA-Z\s]+$/.test(value);
-      if (!isValid) Notiflix.Notify.failure(t("invalidName"));
-    } else if (name === "phone_number") {
-      isValid = /^[0-9]+$/.test(value);
-      if (!isValid) Notiflix.Notify.failure(t("invalidPhoneNumber"));
-    } else if (name === "email") {
-      isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-      if (!isValid) Notiflix.Notify.failure(t("invalidEmail"));
-    } else if (name === "birthdate") {
-      // Allow partial input but validate only when the full date is entered
-      if (value.length === 10 && !/^\d{2}-\d{2}-\d{4}$/.test(value)) {
-        Notiflix.Notify.failure(t("invalidBirthdate"));
-      }
-    } else if (name === "national_code") {
-      isValid = /^[0-9]+$/.test(value);
-      if (!isValid) Notiflix.Notify.failure(t("invalidNationalCode"));
+
+    try {
+      await validationSchema.validateAt(name, { [name]: value });
+      setValidationErrors((prev) => ({ ...prev, [name]: null }));
+    } catch (err) {
+      setValidationErrors((prev) => ({ ...prev, [name]: err.message }));
     }
   };
-  
+
 
 
   if (loading) return <div className="text-center p-4 text-gray-500">{t('loading')}</div>;
@@ -301,43 +308,45 @@ const UserProfilePage = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input
-                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className={`w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border ${validationErrors.first_name ? 'border-red-500' : 'border-gray-300'
+                    } focus:ring-2 focus:ring-buttonColor focus:border-transparent`}
                   placeholder={t('enterName')}
                   value={user.first_name}
                   name="first_name"
                   onChange={handleInputChange}
+                  onBlur={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className={`w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border ${validationErrors.phone_number ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-buttonColor focus:border-transparent`}
                   placeholder={t('enterPhoneNumber')}
-                  value={user.phone_number}
+                  value={user?.phone_number || ''}
                   name="phone_number"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className={`w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border ${validationErrors.email ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-buttonColor focus:border-transparent`}
                   placeholder={t('enterEmail')}
-                  value={user.email}
+                  value={user?.email || ''}
                   name="email"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className={`w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border ${validationErrors.birthdate ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-buttonColor focus:border-transparent`}
                   placeholder={t('enterBirthdate')}
-                  value={user.birthdate}
+                  value={user?.birthdate || ''}
                   name="birthdate"
                   onChange={handleInputChange}
                 />
                 <input
-                  className="w-full px-4 py-2 rounded-lg border ${isValid ? 'border-gray-300' : 'border-red-500'} focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                  className={`w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border ${validationErrors.national_code ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-buttonColor focus:border-transparent`}
                   placeholder={t('enterNationalCode')}
-                  value={user.national_code}
+                  value={user?.national_code || ''}
                   name="national_code"
                   onChange={handleInputChange}
                 />
               </div>
               <textarea
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
+                className="w-full bg-white dark:bg-gray-800 text-black dark:text-white px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-buttonColor focus:border-transparent"
                 placeholder={t('enterBio')}
                 value={bio}
                 onChange={handleBioChange}
