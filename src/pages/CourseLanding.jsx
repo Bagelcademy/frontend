@@ -26,8 +26,8 @@ const CourseLandingPage = () => {
         setCourse(data);
         setLoading(false);
 
-        const enrollmentResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
-          method: 'POST',
+        const enrollmentResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
+          method: 'GET',
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
@@ -35,12 +35,13 @@ const CourseLandingPage = () => {
           },
         });
 
-        console.log('enrolment response.ok:', enrollmentResponse.ok);
-        console.log('enrolment response.status:', enrollmentResponse.status);
+        const enrollmentData = await enrollmentResponse.json();
 
-        if (!enrollmentResponse.ok && enrollmentResponse.status === 400) {
+        if (enrollmentResponse.ok && enrollmentData.is_enrolled) {
           setIsEnrolled(true);
-          console.log('Enrolled:', isEnrolled);
+        }
+        else {
+          setIsEnrolled(false);
         }
       } catch (error) {
         console.error("Error fetching course:", error);

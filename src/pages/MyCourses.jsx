@@ -132,7 +132,7 @@ const MyCourses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+    <div className="mt-24 lg:mt-16 min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('myCourses')}</h1>
 
