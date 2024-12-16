@@ -80,6 +80,7 @@ const Listbox = ({ value, onChange, options }) => {
 
 const CourseCard = ({ course }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="bg-white bg-opacity-10 rounded-lg p-4 mb-4">
