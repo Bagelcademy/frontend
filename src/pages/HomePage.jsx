@@ -69,42 +69,44 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
         </motion.div>
       </section>
 
-      {/* Popular Courses */}
       <section className={`py-12 sm:py-20 px-4 sm:px-8 dark:bg-zinc-900 bg-gray-100`}>
         <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center dark:text-white text-black">
           {t('PopularCourses')}
         </h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {courses.map((course) => (
-            <motion.div
-              key={course.id}
-              whileHover={{ y: -5 }}
-              className="relative overflow-hidden rounded-2xl"
-            >
-              <Card className="border-cyan-500 dark:bg-zinc-800/50 dark:text-white bg-gray-100 text-black shadow-lg overflow-hidden h-full">
-                <div className="relative aspect-video">
-                  <img
-                    src={course.image_url}
-                    alt={course.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className={gradientOverlay} />
-                </div>
-                <div className="flex flex-col p-4 sm:p-6 justify-between">
-                  <div>
-                    <h3 className="font-bold text-base sm:text-lg dark:text-white text-black mb-2">
-                      {course.title}
-                    </h3>
+            <Link to={`/course/${course.id}`} key={course.id}>
+              <motion.div
+                whileHover={{ y: -5 }}
+                className="relative overflow-hidden rounded-2xl h-full"
+              >
+                <Card className="border-cyan-500 dark:bg-zinc-800/50 dark:text-white bg-gray-100 text-black shadow-lg overflow-hidden h-full flex flex-col">
+                  <div className="relative aspect-video">
+                    <img
+                      src={course.image_url}
+                      alt={course.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className={gradientOverlay} />
                   </div>
-                  <div className="flex">
-                    <span className="text-blue-400">{t('Learn More')}</span>
+                  <div className="flex flex-col p-4 sm:p-6 justify-between flex-grow">
+                    <div>
+                      <h3 className="font-bold text-base sm:text-lg dark:text-white text-black mb-2">
+                        {course.title}
+                      </h3>
+                    </div>
+                    <div className="flex mt-auto">
+                      <span className="text-blue-400">{t('Learn More')}</span>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </motion.div>
+                </Card>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </section>
+
+
 
       {/* Features Grid */}
       <section className={`py-12 sm:py-20 px-4 sm:px-8 dark:bg-zinc-800 bg-white`}>
@@ -146,7 +148,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
                 <p className="mb-4 sm:mb-6 dark:text-zinc-300 text-gray-700">{feature.description}</p>
                 <Link to={feature.link}>
                   <Button
-                    className="dark:bg-white/10 dark:hover:bg-white/20 dark:text-white bg-blue-500 hover:bg-blue-600 text-white text-sm sm:text-base"
+                    className="dark:bg-white/20 dark:text-white from-slate-700 to-slate-800 text-white text-sm sm:text-base"
                   >
                     {feature.buttonText}
                   </Button>
@@ -170,7 +172,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           <Link to="/signup">
             <Button
               size="lg"
-              className={`bg-gradient-to-r from-blue-400 to-cyan-400 hover:opacity-90 font-bold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg ${isDarkTheme ? 'text-black' : 'text-white'}`}
+              className={`bg-gradient-to-r from-slate-500 to-slate-700 hover:opacity-90 font-bold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg ${isDarkTheme ? 'text-black' : 'text-white'}`}
             >
               {t('Sign Up')}
             </Button>
