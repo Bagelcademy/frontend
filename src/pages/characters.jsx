@@ -7,40 +7,40 @@ import img6 from '../assets/6.png';
 import img7 from '../assets/7.png';
 
 const characters = [
-  { 
-    id: 1, 
-    nameKey: "mama_bagel", 
-    image: img4, 
+  {
+    id: 1,
+    nameKey: "mama_bagel",
+    image: img4,
     backstoryKey: "mama_bagel_backstory",
     role: "The Heart of the Family",
     specialty: "Master Baker",
     favoriteQuote: "A bagel made with love tastes twice as good!",
     funFact: "Can braid challah with her eyes closed"
   },
-  { 
-    id: 2, 
-    nameKey: "papa_bagel", 
-    image: img5, 
+  {
+    id: 2,
+    nameKey: "papa_bagel",
+    image: img5,
     backstoryKey: "papa_bagel_backstory",
     role: "The Family Jokester",
     specialty: "Seasoning Expert",
     favoriteQuote: "Everything's better with everything seasoning!",
     funFact: "Holds the record for fastest bagel rolling"
   },
-  { 
-    id: 3, 
-    nameKey: "emily_bagel", 
-    image: img6, 
+  {
+    id: 3,
+    nameKey: "emily_bagel",
+    image: img6,
     backstoryKey: "emily_bagel_backstory",
     role: "The Creative Spirit",
     specialty: "Innovative Flavors",
     favoriteQuote: "Who says bagels can't be adventurous?",
     funFact: "Created a rainbow bagel that went viral"
   },
-  { 
-    id: 4, 
-    nameKey: "jackie_bagel", 
-    image: img7, 
+  {
+    id: 4,
+    nameKey: "jackie_bagel",
+    image: img7,
     backstoryKey: "jackie_bagel_backstory",
     role: "The Tech-Savvy Sibling",
     specialty: "making a mess everywhere",
@@ -89,26 +89,26 @@ const CharacterModal = ({ character, onClose }) => {
         {/* Left side - Content */}
         <div className="w-1/2 p-6 overflow-y-auto">
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">{t(character.nameKey)}</h2>
-          
+
           <div className="space-y-4">
             <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{character.role}</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{t(character.role)}</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm">{t(character.backstoryKey)}</p>
             </div>
 
             <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Specialty</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">{character.specialty}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{t('Specialty')}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">{t(character.specialty)}</p>
             </div>
 
             <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Favorite Quote</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm italic">"{character.favoriteQuote}"</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{t('Favorite Quote')}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm italic">"{t(character.favoriteQuote)}"</p>
             </div>
 
             <div className="bg-gray-50 dark:bg-darkBase p-3 rounded-lg">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Fun Fact</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">{character.funFact}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{t('Fun Fact')}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">{t(character.funFact)}</p>
             </div>
           </div>
 
@@ -119,12 +119,12 @@ const CharacterModal = ({ character, onClose }) => {
             {t('close')}
           </button>
         </div>
-        
+
         {/* Right side - Image */}
         <div className="w-1/2 bg-gray-100 dark:bg-gray-900">
-          <img 
-            src={character.image} 
-            alt={t(character.nameKey)} 
+          <img
+            src={character.image}
+            alt={t(character.nameKey)}
             className="w-full h-full object-cover"
           />
         </div>
@@ -138,7 +138,7 @@ const CharacterIntroPage = () => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground py-12 px-4">
+    <div className="mt-24 min-h-screen bg-lightBackground dark:bg-darkBackground py-12 px-4">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white text-center mb-8">{t('meet our characters')}</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
