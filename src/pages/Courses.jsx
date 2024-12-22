@@ -6,7 +6,7 @@ import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import CourseCard from '../components/ui/coursecard';
 import '../css/courses.css';
-import { useTranslation } from 'react-i18next'; 
+import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 
 const ITEMS_PER_PAGE = 20;
@@ -57,7 +57,7 @@ const Courses = () => {
     let filtered = courses;
 
     if (searchTerm) {
-      filtered = filtered.filter(course => 
+      filtered = filtered.filter(course =>
         course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -95,7 +95,7 @@ const Courses = () => {
   const selectRef = useRef(null);
 
   return (
-     <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
       <div className="pt-24 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
 
@@ -105,10 +105,9 @@ const Courses = () => {
               <SelectTrigger className="w-full border border-borderColor dark:border-gray-700">
                 <SelectValue placeholder={t('Select Category')} />
               </SelectTrigger>
-              <SelectContent 
+              <SelectContent
                 className="absolute bg-lightBackground dark:bg-darkBackground shadow-lg rounded-md overflow-hidden"
                 style={{
-                  // zIndex: 1001,
                   minWidth: '100%',
                   top: 'calc(100% + 5px)',
                   left: 0,
@@ -116,9 +115,12 @@ const Courses = () => {
               >
                 <SelectItem value="">{t('All Categories')}</SelectItem>
                 {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id}>{category.name}</SelectItem>
+                  <SelectItem key={category.id} value={category.id}>
+                    {t(`categories.${category.name}`)}
+                  </SelectItem>
                 ))}
               </SelectContent>
+
             </Select>
           </div>
           <Input
@@ -128,8 +130,8 @@ const Courses = () => {
             onChange={handleSearchChange}
             className="md:w-1/2 border border-borderColor dark:border-gray-700"
           />
-          <Button 
-            onClick={handleAskClick} 
+          <Button
+            onClick={handleAskClick}
             className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
           >
             {t("Didn't you find what you were looking for?")}
