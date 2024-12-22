@@ -315,7 +315,8 @@ const LessonPage = () => {
               )}
               <button
                 type="submit"
-                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition duration-300 flex items-center mt-auto"
+                disabled={quizzes.length === 0 || Object.keys(selectedAnswers).length === 0}
+                className="bg-red-600 text-white py-2 px-4 rounded-lg flex items-center mt-auto"
               >
                 <Send className="w-4 h-4 mr-2" />
                 {t('Submit Answer')}
