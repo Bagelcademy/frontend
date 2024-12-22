@@ -93,18 +93,32 @@ const MyCourses = () => {
     const completed = progress.course_completed;
 
     return (
-      <Card className="w-full border border-borderColor dark:border-gray-700 bg-lightBackground dark:bg-gray-800 transition-transform transform hover:scale-105">
+      <Card className="flex flex-col justify-between w-full h-full border border-borderColor dark:border-gray-700 bg-lightBackground dark:bg-gray-800 transition-transform transform hover:scale-105">
         <CardHeader>
-          <img src={course.image_url} alt={course.title} className="w-full h-32 object-cover rounded-t-md" />
-          <CardTitle>{course.title}</CardTitle>
+          <img
+            src={course.image_url}
+            alt={course.title}
+            className="w-full h-32 object-cover rounded-t-md"
+          />
+          <div className="h-16 flex items-center justify-center">
+            <CardTitle
+              className="text-center text-sm sm:text-base font-bold truncate overflow-hidden"
+              style={{ lineHeight: "1.5em", maxHeight: "4.5em" }} // Two-line max
+              // three-line max
+              // style={{ lineHeight: "1.5em", maxHeight: "6.75em" }}
+            >
+              {course.title}
+            </CardTitle>
+          </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col justify-between flex-grow">
           <div className="flex items-center mt-2">
             <BookOpen className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">{course.level} • {course.language}</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              {course.level} • {course.language}
+            </span>
           </div>
           <div className="mt-4">
-            {/* <Progress value={} className="w-full"  */}
             <span className={`text-sm mt-1 ${completed ? 'text-green-500' : 'text-red-500'}`}>
               {completed ? t('Completed') : t('Not Completed')}
             </span>
