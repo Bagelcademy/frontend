@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
+import AIIcon from '../../assets/AIIcon.png';
 
 const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLanguage }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -164,6 +165,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             >
               {t('getting PRO')}
             </Button>
+          </Link>
+          <Link to="/ask">
+            {/* this is the AI icon png */}
+            <img src={AIIcon} alt="AI Icon" className="h-8 w-8" />
+
+              
           </Link>
         </div>
 

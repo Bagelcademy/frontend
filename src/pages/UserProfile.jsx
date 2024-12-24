@@ -46,7 +46,7 @@ const UserProfilePage = () => {
 
     try {
       // Notify the user that the upload is in progress
-      Notify.info(t('uploadInProgress')); // Translation key for "Upload in progress"
+      Notiflix.Notify.info(t('uploadInProgress')); // Translation key for "Upload in progress"
 
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
@@ -98,7 +98,7 @@ const UserProfilePage = () => {
       Notiflix.Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
     } catch (err) {
       setError(err.message);
-      Notify.error(err.message); // Show the error notification
+      Notiflix.Notify.failure(err.message); // Show the error notification
     }
   };
 

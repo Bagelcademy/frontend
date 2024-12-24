@@ -148,7 +148,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
                 <p className="mb-4 sm:mb-6 dark:text-zinc-300 text-gray-700">{feature.description}</p>
                 <Link to={feature.link}>
                   <Button
-                    className="dark:bg-white/20 dark:text-white from-slate-700 to-slate-800 text-white text-sm sm:text-base"
+                    className="dark:bg-white/20 dark:text-white bg-slate-800 text-white text-sm sm:text-base"
                   >
                     {feature.buttonText}
                   </Button>
