@@ -10,6 +10,8 @@ import { Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '../components/ui/loading';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { GlowingButton, Modal } from '../components/ui/glowButton';
+import AIChatComponent from '../components/dialog/chat';
 
 
 const LessonPage = () => {
@@ -28,6 +30,7 @@ const LessonPage = () => {
   const [dialogMessage, setDialogMessage] = useState('');
   const { courseId, lessonId, quizId } = useParams();
   const [isLastLesson, setIsLastLesson] = useState(false);
+  const [isAIChatOpen, setIsAIChatOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -263,6 +266,7 @@ const LessonPage = () => {
     <div
       className={`mt-24 flex flex-col h-screen bg-gray-100 dark:bg-gray-900 ${isPersian ? 'rtl' : 'ltr'}`}
     >
+ 
       <div className="flex flex-grow overflow-hidden">
         {/* Left side: Lesson Content */}
         <div className="w-full md:w-1/2 p-6 overflow-y-auto bg-white dark:bg-darkBackground">
@@ -334,6 +338,7 @@ const LessonPage = () => {
             </div>
           )}
         </div>
+
       </div>
 
       {/* Navigation buttons */}
@@ -346,6 +351,7 @@ const LessonPage = () => {
           <ArrowLeft className="w-4 h-4 mr-2" />
           {t('Previous Lesson')}
         </button>
+        <GlowingButton onClick={() => setIsAIChatOpen(true)} />
         <button
           onClick={() => handleNavigation('next')}
           disabled={!isNextAvailable && quizzes[0]?.questions?.length > 0}
@@ -459,6 +465,9 @@ const LessonPage = () => {
           }
         }
       `}</style>
+      <Modal isOpen={isAIChatOpen} onClose={() => setIsAIChatOpen(false)}>
+  <AIChatComponent />
+</Modal>
     </div>
   );
 };
