@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next'; 
 
-const GlowingButton = ({ onClick }) => (
-  <button
-    onClick={onClick}
-    className="relative bg-red-600 text-white px-6 py-2 rounded-lg transition-all duration-300 
-    before:absolute before:inset-0 before:-z-10 before:rounded-lg before:bg-red-500
-    before:animate-pulse before:blur-md hover:bg-red-700"
-  >
-    <span className="flex items-center gap-2">
-      <Sparkles className="w-4 h-4" />
-      Ask AI
-    </span>
-  </button>
-);
+const GlowingButton = ({ onClick }) => {
+  const { t } = useTranslation();
+
+  return (
+    <button
+      onClick={onClick}
+      className="relative bg-red-600 text-white px-6 py-2 rounded-lg transition-all duration-300 
+      before:absolute before:inset-0 before:-z-10 before:rounded-lg before:bg-red-500
+      before:animate-pulse before:blur-md hover:bg-red-700"
+    >
+      <span className="flex items-center gap-2">
+        <Sparkles className="w-4 h-4" />
+        {t('askAI')} {'از هوش مصنوعی بپرس'}
+      </span>
+    </button>
+  );
+};
 
 const Modal = ({ isOpen, onClose, children }) => {
   const [mounted, setMounted] = useState(false);

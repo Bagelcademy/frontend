@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import CourseCard from '../components/ui/coursecard'; // Import CourseCard component
 
 const questions = [
@@ -61,8 +62,8 @@ const questions = [
   }
 ];
 
-
 const QuizComponent = () => {
+  const { t } = useTranslation();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -122,7 +123,7 @@ const QuizComponent = () => {
       }
 
       const data = await response.json();
-      setResult({ feedback: `Your recommended category is: ${preferredCategory}` });
+      setResult({ feedback: t("Your recommended category is:") + ` ${t(preferredCategory)}` });
       setRecommendedCourses(data);  // Store the recommended courses
       setQuizCompleted(true);
     } catch (error) {
@@ -133,8 +134,7 @@ const QuizComponent = () => {
   const allQuestionsAnswered = answers.every((answer) => answer !== null);
 
   return (
-   
-    <div className="mt-24 max-w-2xl mx-auto p-6 ">
+    <div className="mt-24 max-w-2xl mx-auto p-6 dark:text-white">
       <AnimatePresence mode="wait">
         {!quizCompleted ? (
           <motion.div
@@ -144,8 +144,8 @@ const QuizComponent = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl font-bold mb-4">Question {currentQuestion + 1} of {questions.length}</h2>
-            <p className="text-lg mb-4">{questions[currentQuestion].question}</p>
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">{t("Question")} {currentQuestion + 1} {t("of")} {questions.length}</h2>
+            <p className="text-lg mb-4 dark:text-white">{t(questions[currentQuestion].question)}</p>
             <div className="space-y-2">
               {questions[currentQuestion].options.map((option, index) => (
                 <motion.button
@@ -154,12 +154,12 @@ const QuizComponent = () => {
                   whileTap={{ scale: 0.95 }}
                   className={`w-full p-2 rounded-lg text-left ${
                     answers[currentQuestion] === option
-                      ? 'bg-buttonColor text-white'
-                      : 'bg-gray-200 hover:bg-gray-300'
+                      ? 'bg-buttonColor text-white dark:bg-buttonColor-dark'
+                      : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
                   }`}
                   onClick={() => handleAnswer(option)}
                 >
-                  {option}
+                  {t(option)}
                 </motion.button>
               ))}
             </div>
@@ -167,27 +167,27 @@ const QuizComponent = () => {
               <button
                 onClick={handlePrevious}
                 disabled={currentQuestion === 0}
-                className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50"
+                className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
               >
                 <ChevronLeft className="w-5 h-5 mr-2" />
-                Previous
+                {t("Previous")}
               </button>
               {currentQuestion < questions.length - 1 ? (
                 <button
                   onClick={handleNext}
                   disabled={answers[currentQuestion] === null}
-                  className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50"
+                  className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
                 >
-                  Next
+                  {t("Next")}
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </button>
               ) : (
                 <button
                   onClick={handleSubmit}
                   disabled={!allQuestionsAnswered}
-                  className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50"
+                  className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
                 >
-                  Submit
+                  {t("Submit")}
                   <Send className="w-5 h-5 ml-2" />
                 </button>
               )}
@@ -199,10 +199,10 @@ const QuizComponent = () => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center"
+            className="text-center dark:text-white"
           >
-            <h2 className="text-2xl font-bold mb-4">Quiz Completed!</h2>
-            <p className="text-lg mb-4">{result.feedback}</p>
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">{t("Quiz Completed!")}</h2>
+            <p className="text-lg mb-4 dark:text-white">{result.feedback}</p>
 
             {/* Render recommended courses using CourseCard */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -214,7 +214,6 @@ const QuizComponent = () => {
         )}
       </AnimatePresence>
     </div>
-    
   );
 };
 

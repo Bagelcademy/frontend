@@ -366,10 +366,8 @@ const LessonPage = () => {
         <DialogTitle>{t('Congratulations')}</DialogTitle>
         <DialogContent>
           <img src={mama} alt="Congratulations" />
-          <p>{t('Would you like to get a certificate for this course?')}</p>
-          <Button variant="contained" color="primary" onClick={() => alert('Certificate generated!')}>
-            {t('Get Certificate')}
-          </Button>
+          <p>{t('you finished a whole course!')}</p>
+
         </DialogContent>
       </Dialog>
       {openDialog && <Confetti />}

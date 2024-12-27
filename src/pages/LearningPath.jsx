@@ -1,65 +1,93 @@
-// LearningPath.jsx
 import React, { useState, useEffect } from 'react';
 import { Search, Clock, BookOpen, Star, Filter, Briefcase } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
+import { Input } from "../components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'notistack';
 
 const CareerPathsPage = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const { enqueueSnackbar } = useSnackbar();
   const [paths, setPaths] = useState([]);
+  const [displayedPaths, setDisplayedPaths] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const categories = [
-    { id: 'all', name: t('All Paths') },
-    { id: 'web', name: t('Web Development') },
-    { id: 'data', name: t('Data Science') },
-    { id: 'mobile', name: t('Mobile Development') },
-    { id: 'ai', name: t('AI & Machine Learning') }
-  ];
-
   useEffect(() => {
-    const fetchPaths = async () => {
-      try {
-        const response = await fetch('https://bagelapi.bagelcademy.org/courses/learning-paths/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch paths');
-        }
-        const data = await response.json();
-        // Transform API data to match your UI structure
-        const transformedData = data.map(path => ({
-          id: path.id,
-          title: path.title,
-          category: path.category || 'other',
-          description: path.description,
-          duration: path.duration || '6 months',
-          lessons: path.lessons || 0,
-          level: path.level,
-          popular: path.popular || false,
-          image: path.image || '/api/placeholder/400/200'
-        }));
-        setPaths(transformedData);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPaths();
+    fetchCategories();
   }, []);
 
-  const filteredPaths = activeFilter === 'all' 
-    ? paths 
-    : paths.filter(path => path.category === activeFilter);
+  useEffect(() => {
+    filterPaths();
+  }, [searchTerm, selectedCategory, paths]);
 
-  const handlePathClick = (pathId) => {
-    navigate(`/learning-path/${pathId}`);
+  const fetchPaths = async () => {
+    try {
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/learning-paths/');
+      if (!response.ok) throw new Error('Failed to fetch paths');
+      const data = await response.json();
+      const transformedData = data.map(path => ({
+        id: path.id,
+        title: path.title,
+        category: path.category || 'other',
+        description: path.description,
+        duration: path.duration || '6 months',
+        lessons: path.lessons || 0,
+        level: path.level,
+        popular: path.popular || false,
+        image: path.image || '/api/placeholder/400/200'
+      }));
+      setPaths(transformedData);
+      setDisplayedPaths(transformedData);
+    } catch (error) {
+      console.error("Error fetching paths:", error);
+      enqueueSnackbar(t('Failed to fetch paths. Please try again later.'), { variant: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      enqueueSnackbar(t('Failed to fetch categories. Please try again later.'), { variant: 'error' });
+    }
+  };
+
+  const filterPaths = () => {
+    let filtered = paths;
+
+    if (searchTerm) {
+      filtered = filtered.filter(path =>
+        path.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (selectedCategory) {
+      filtered = filtered.filter(path => path.category === selectedCategory);
+    }
+
+    setDisplayedPaths(filtered);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleCategoryChange = (key) => {
+    setSelectedCategory(key);
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -67,7 +95,6 @@ const CareerPathsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-24 dark:bg-darkBase">
-      {/* Header */}
       <div className="bg-white border-b dark:bg-zinc-800">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <h1 className="text-4xl font-bold mb-4">{t("Career Paths")}</h1>
@@ -75,47 +102,47 @@ const CareerPathsPage = () => {
             {t("Choose path")}
           </p>
           
-          {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row gap-4 items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder={t("Search path")}
-                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black bg-gray-100 dark:bg-gray-800 dark:text-white" 
-              />
+          <div className="flex flex-col md:flex-row gap-4 mb-8">
+            <div className="md:w-1/4 relative z-[10]">
+              <Select onValueChange={handleCategoryChange} value={selectedCategory}>
+                <SelectTrigger className="w-full border border-borderColor dark:border-gray-700">
+                  <SelectValue placeholder={t('Select Category')} />
+                </SelectTrigger>
+                <SelectContent
+                  className="absolute bg-lightBackground dark:bg-darkBackground shadow-lg rounded-md overflow-hidden"
+                  style={{
+                    minWidth: '100%',
+                    top: 'calc(100% + 5px)',
+                    left: 0,
+                  }}
+                >
+                  <SelectItem value="">{t('All Categories')}</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {t(`categories.${category.name}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <Button variant="outline" className="flex items-center gap-2 bg-slate-600">
-              <Filter className="w-4 h-4" />
-              {t("Filters")}
-            </Button>
+            <Input
+              type="text"
+              placeholder={t('Search paths...')}
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="md:w-1/2 border border-borderColor dark:border-gray-700"
+            />
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
-        {/* Category Tabs */}
-        <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
-          {categories.map(category => (
-            <Button
-              key={category.id}
-              variant={activeFilter === category.id ? "default" : "outline"}
-              onClick={() => setActiveFilter(category.id)}
-              className="whitespace-nowrap bg-gray-500 text-white"
-            >
-              {category.name}
-            </Button>
-          ))}
-        </div>
-
-        {/* Paths Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPaths.map(path => (
+          {displayedPaths.map(path => (
             <Card 
               key={path.id} 
               className="group hover:shadow-lg transition-shadow cursor-pointer"
-              onClick={() => handlePathClick(path.id)}
+              onClick={() => navigate(`/learning-path/${path.id}`)}
             >
               <CardHeader className="p-0">
                 <img
@@ -164,4 +191,3 @@ const CareerPathsPage = () => {
 };
 
 export default CareerPathsPage;
-
