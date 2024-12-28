@@ -43,19 +43,26 @@ const UserProfilePage = () => {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
+  
+    // Check file size (5 MB = 5 * 1024 * 1024 bytes)
+    const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+    if (file.size > maxSizeInBytes) {
+      Notiflix.Notify.failure(t('fileTooLarge')); // Notify the user
+      return;
+    }
+  
     try {
       // Notify the user that the upload is in progress
       Notiflix.Notify.info(t('uploadInProgress')); // Translation key for "Upload in progress"
-
+  
       const token = localStorage.getItem("accessToken");
       const formData = new FormData();
       formData.append("image", file);
-
+  
       // Show the selected file as a preview before uploading
       const filePreview = URL.createObjectURL(file);
       setUser((prev) => ({ ...prev, profile_picture: filePreview }));
-
+  
       // Upload the image to the MyImage endpoint
       const uploadResponse = await fetch('https://bagelapi.bagelcademy.org/account/MyImage/', {
         method: 'POST',
@@ -64,13 +71,13 @@ const UserProfilePage = () => {
         },
         body: formData,
       });
-
+  
       if (!uploadResponse.ok) {
         throw new Error(t('uploadProfilePicError')); // Translation key for "Error uploading profile picture"
       }
-
+  
       const uploadData = await uploadResponse.json();
-
+  
       // Update the user profile with the new image URL
       const updateProfileResponse = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
         method: 'POST',
@@ -83,24 +90,24 @@ const UserProfilePage = () => {
           pic_url: uploadData.image, // Make sure the API returns the correct field
         }),
       });
-
+  
       if (!updateProfileResponse.ok) {
         throw new Error(t('updateProfileError')); // Translation key for "Error updating profile"
       }
-
+  
       const updatedUserData = await updateProfileResponse.json();
       setUser((prev) => ({
         ...prev,
         profile_picture: updatedUserData.profile_picture || uploadData.image, // Update the profile picture
       }));
-
+  
       // Notify the user that the upload was successful
       Notiflix.Notify.success(t('profilePictureUpdated')); // Translation key for "Profile picture updated successfully"
     } catch (err) {
       setError(err.message);
       Notiflix.Notify.failure(err.message); // Show the error notification
     }
-  };
+  };  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -177,22 +184,26 @@ const UserProfilePage = () => {
   const validationSchema = Yup.object().shape({
     first_name: Yup.string()
       .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
+      .max(20, t("nameTooLong")) // Ensure name is less than 20 characters
       .required(t("required")),
-    phone_number: Yup.number()
-      .max(99999999999, t("invalidPhoneNumber"))
+    phone_number: Yup.string() // Change to string for length validation
+      .matches(/^\d+$/, t("invalidPhoneNumber")) // Ensure only digits
+      .min(11, t("phoneNumberTooShort")) // At least 11 digits
+      .max(13, t("phoneNumberTooLong")) // At most 13 digits
       .required(t("required")),
     email: Yup.string()
       .email(t("invalidEmail"))
       .required(t("required")),
     birthdate: Yup.date()
       .nullable()
-      .min(new Date(1900, 0, 1))
+      .min(new Date(1900, 0, 1), t("invalidBirthdate"))
       .max(new Date(), t("invalidBirthdate"))
       .required(t("required")),
     national_code: Yup.string()
       .matches(/^[0-9]{10}$/, t("invalidNationalCode"))
       .required(t("required")),
   });
+  
 
 
   const handleInputChange = async (e) => {

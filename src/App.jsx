@@ -26,7 +26,7 @@ import LoginPagee from './pages/t';
 import ExamPage from './pages/Exam';
 import PrivacyPolicy from './pages/privacy';
 import TermsOfService from './pages/terms';
-import { GoftinoSnippet } from '@mohsen007/react-goftino/dist/index.js';
+import { GoftinoSnippet } from '@mohsen007/react-goftino';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 
 const App = () => {

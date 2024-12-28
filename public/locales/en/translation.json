@@ -249,5 +249,17 @@
   "jackie_bagel_backstory": "Jackie Bagel is the tech-savvy sibling who loves gaming during breaks.",
   "Specialty": "Specialty",
   "Favorite Quote": "Favorite Quote",
-  "Fun Fact": "Fun Fact"
+  "Fun Fact": "Fun Fact",
+  "nameTooLong": "Name must be less than 20 characters.",
+  "phoneNumberTooShort": "Phone number must be at least 11 digits.",
+  "phoneNumberTooLong": "Phone number must be no more than 13 digits.",
+  "usernameInvalid": "Username can only contain letters, numbers, or underscores, and must not contain spaces.",
+  "usernameRequired": "Username is required.",
+  "emailInvalid": "Please enter a valid email address.",
+  "emailRequired": "Email is required.",
+  "passwordTooShort": "Password must be at least 8 characters long.",
+  "passwordNoUpperCase": "Password must contain at least one uppercase letter.",
+  "passwordRequired": "Password is required.",
+  "registrationSuccessful": "Registration successful! Please log in.",
+  "fileTooLarge": "The file is too large. Please upload a file smaller than 5 MB."
 }

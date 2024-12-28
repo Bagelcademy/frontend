@@ -6,6 +6,8 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { AlertDialog, AlertDialogDescription } from '../components/ui/alert-dialog';
+import * as Yup from 'yup';
+import Notiflix from 'notiflix';
 
 const Signup = () => {
   const { t } = useTranslation();
@@ -120,73 +122,83 @@ const Signup = () => {
   };
 
   const verifyAndRegister = async () => {
-    try {
-      setIsLoading(true);
-      setError('');
+  try {
+    setIsLoading(true);
+    setError('');
 
-      // First verify the code
-      const verifyResponse = await fetch('https://bagelapi.bagelcademy.org/account/email/verify_code/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          verification_code: verificationCode
-        }),
-      });
+    // First verify the code
+    const verifyResponse = await fetch('https://bagelapi.bagelcademy.org/account/email/verify_code/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        verification_code: verificationCode
+      }),
+    });
 
-      if (!verifyResponse.ok) {
-        const data = await verifyResponse.json();
-        throw new Error(data.error || t('verificationFailed'));
-      }
-
-      // Get reCAPTCHA token
-      const token = await executeRecaptcha();
-
-      // Complete registration
-      const registerResponse = await fetch('https://bagelapi.bagelcademy.org/account/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          recaptcha_token: token
-        }),
-      });
-
-      const data = await registerResponse.json();
-
-      if (!registerResponse.ok) {
-        throw new Error(data.error || t('registrationFailed'));
-      }
-
-      // Save auth tokens and redirect
-      localStorage.setItem('accessToken', data.data.access);
-      localStorage.setItem('refreshToken', data.data.refresh);
-      localStorage.setItem('userRole', data.data.role);
-      localStorage.setItem('isLoggedIn', 'true');
-      navigate('/survey');
-
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
+    if (!verifyResponse.ok) {
+      const data = await verifyResponse.json();
+      throw new Error(data.error || t('verificationFailed'));
     }
-  };
+
+    // Get reCAPTCHA token
+    const token = await executeRecaptcha();
+
+    // Complete registration
+    const registerResponse = await fetch('https://bagelapi.bagelcademy.org/account/register/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        recaptcha_token: token
+      }),
+    });
+
+    const data = await registerResponse.json();
+
+    if (!registerResponse.ok) {
+      throw new Error(data.error || t('registrationFailed'));
+    }
+
+    // Redirect to login page after successful registration
+    Notiflix.Notify.success(t('registrationSuccessful'));
+    navigate('/login');
+
+  } catch (error) {
+    setError(error.message);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!showVerification) {
-      await sendVerificationEmail();
-    } else {
-      await verifyAndRegister();
+    setError('');
+  
+    try {
+      // Validate form values
+      await validationSchema.validate({ username, email, password }, { abortEarly: false });
+  
+      if (!showVerification) {
+        await sendVerificationEmail();
+      } else {
+        await verifyAndRegister();
+      }
+    } catch (validationErrors) {
+      if (validationErrors instanceof Yup.ValidationError) {
+        // Show the first error
+        setError(validationErrors.errors[0]);
+      }
     }
   };
+  
 
   const handleGoogleSignup = async (response) => {
     try {
@@ -219,6 +231,20 @@ const Signup = () => {
     }
   };
 
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .matches(/^[a-zA-Z0-9_]+$/, t("usernameInvalid")) // Only letters, numbers, and underscores
+    .required(t("usernameRequired")),
+  email: Yup.string()
+    .email(t("emailInvalid"))
+    .required(t("emailRequired")),
+  password: Yup.string()
+    .min(8, t("passwordTooShort")) // At least 8 characters
+    .matches(/[A-Z]/, t("passwordNoUpperCase")) // At least one uppercase letter
+    .required(t("passwordRequired")),
+});
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
@@ -228,8 +254,8 @@ const Signup = () => {
 
         {error && (
           <AlertDialog variant="destructive" className="mb-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDialogDescription>{error}</AlertDialogDescription>
+            <AlertCircle className="h-4 w-4 text-red-600" />
+            <AlertDialogDescription className="text-red-600">{error}</AlertDialogDescription>
           </AlertDialog>
         )}
 

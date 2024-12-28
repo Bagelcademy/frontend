@@ -308,7 +308,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             onClick={toggleMenu} 
             className={`
               p-2 rounded-full
-              ${isDarkTheme ? 'text-white' : 'text-gray-700'}
+              ${isDarkTheme ? 'text-white' : 'text-gray-700 bg-gray-200'}
               hover:bg-gray-200/20 transition-colors duration-300
             `}
           >

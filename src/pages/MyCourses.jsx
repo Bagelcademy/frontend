@@ -17,6 +17,7 @@ const MyCourses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
+  const [filteredCategoryId, setFilteredCategoryId] = useState('');
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
@@ -63,9 +64,9 @@ const MyCourses = () => {
       );
     }
 
-    if (selectedCategory) {
-      filtered = filtered.filter(item => item.course.category === parseInt(selectedCategory));
-    }
+    if (filteredCategoryId) {
+      filtered = filtered.filter(item => item.course.category === filteredCategoryId);
+    }     
 
     setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
   };
@@ -76,9 +77,11 @@ const MyCourses = () => {
   };
 
   const handleCategoryChange = (value) => {
-    setSelectedCategory(value);
+    const selectedCategoryId = categories.find(category => category.name === value)?.id;
+    setSelectedCategory(value); // Store the name for display
     setPage(1);
-  };
+    setFilteredCategoryId(selectedCategoryId || ''); // Store the ID for filtering
+  };  
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
@@ -155,12 +158,12 @@ const MyCourses = () => {
 
           <Select onValueChange={handleCategoryChange} value={selectedCategory} className="md:w-1/4">
             <SelectTrigger className="border border-borderColor dark:border-gray-700">
-              <SelectValue placeholder={t('selectCategory')} />
+            <SelectValue placeholder={t('selectCategory')} value={selectedCategory || t('allCategories')} />
             </SelectTrigger>
             <SelectContent className="bg-lightBackground dark:bg-darkBackground">
               <SelectItem value="">{t('allCategories')}</SelectItem>
               {categories.map(category => (
-                <SelectItem key={category.id} value={category.id.toString()}>{category.name}</SelectItem>
+                <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
               ))}
             </SelectContent>
           </Select>
