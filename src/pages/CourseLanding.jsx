@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, User, BookOpen } from 'lucide-react';
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { useTranslation } from 'react-i18next'; // Importing the translation hook
+import { Calendar, User, BookOpen, Users, Clock, ChevronRight, Trophy, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const CourseLandingPage = () => {
-  const { t } = useTranslation(); // Initialize the translation hook
+  const { t } = useTranslation();
   const [course, setCourse] = useState(null);
+  const [popularCourses, setPopularCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
@@ -18,33 +16,30 @@ const CourseLandingPage = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setCourse(data);
+        const [courseResponse, popularResponse, enrollmentResponse] = await Promise.all([
+          fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`),
+          fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/'),
+          fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+          })
+        ]);
+
+        const [courseData, popularData, enrollmentData] = await Promise.all([
+          courseResponse.json(),
+          popularResponse.json(),
+          enrollmentResponse.json()
+        ]);
+
+        setCourse(courseData);
+        setPopularCourses(popularData);
+        setIsEnrolled(enrollmentResponse.ok && enrollmentData.is_enrolled);
         setLoading(false);
-
-        const enrollmentResponse = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
-
-        const enrollmentData = await enrollmentResponse.json();
-
-        if (enrollmentResponse.ok && enrollmentData.is_enrolled) {
-          setIsEnrolled(true);
-        }
-        else {
-          setIsEnrolled(false);
-        }
       } catch (error) {
-        console.error("Error fetching course:", error);
+        console.error("Error fetching data:", error);
         setError(error.message);
         setLoading(false);
       }
@@ -58,140 +53,161 @@ const CourseLandingPage = () => {
 
   const handleEnrollClick = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
       const response = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
       });
 
       if (response.ok) {
         setIsEnrolled(true);
-      } else {
-        const data = await response.json();
-        console.error("Error enrolling in course:", data);
       }
     } catch (error) {
-      console.error("Error enrolling in course:", error);
+      console.error("Error enrolling:", error);
     }
   };
 
-  const comments = [
-    { name: 'John Doe', comment: t('This course completely changed my perspective on the topic. Highly recommend!') },
-    { name: 'Jane Smith', comment: t('Amazing content and great instructor. Learned a lot!') },
-    { name: 'Samuel Johnson', comment: t('The course was very engaging and informative. Worth every minute.') },
-    { name: 'Emily Davis', comment: t('Great course, very well structured and easy to follow.') },
-    { name: 'Michael Brown', comment: t('Loved the practical examples and exercises. It really helped me understand the concepts.') }
-  ];
-
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        }
-      }
-    ]
+  const StarRating = ({ rating }) => {
+    return (
+      <div className="flex items-center">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-4 h-4 ${
+              star <= rating
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
+            }`}
+          />
+        ))}
+        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
+      </div>
+    );
   };
 
-  if (loading) return <div className="text-center p-4">{t('Loading...')}</div>; // Use translation
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+    </div>
+  );
+  
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
-  if (!course) return <div className="text-center p-4">{t('No course found')}</div>; // Use translation
+  if (!course) return <div className="text-center p-4">{t('No course found')}</div>;
 
   return (
-    <div className="mt-24 bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
-      <section className="relative h-[60vh] overflow-hidden">
-        <img src={course.image_url} alt={course.title} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="text-center px-4 md:px-8">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-2 animate-fade-in-down">{course.title}</h1>
-            <div className="bg-black bg-opacity-60 text-white rounded-lg p-4 md:p-6 animate-fade-in-up mt-8">
-              <p className="text-lg md:text-xl">{course.description}</p>
+    <div className="mt-24 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-[70vh] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-purple-600/80 dark:from-blue-600/80 dark:to-purple-600/80"></div>
+        <img src={course.image_url} alt={course.title} className="w-full h-full object-cover mix-blend-overlay" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-4xl mx-auto text-center px-4">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white animate-fade-in-down">
+              {course.title}
+            </h1>
+            <div className="flex items-center justify-center space-x-8 mb-8 text-white">
+              <div className="flex items-center">
+                <Users className="w-6 h-6 mr-2" />
+                <span>{course.enroll_count || 0} students</span>
+              </div>
+              <div className="flex items-center">
+                <Clock className="w-6 h-6 mr-2" />
+                <span>{course.lessons?.length || 0} lessons</span>
+              </div>
+              <StarRating rating={4.5} />
             </div>
+            <button
+              onClick={handleEnrollClick}
+              disabled={isEnrolled}
+              className={`
+                px-8 py-4 rounded-lg text-lg font-semibold text-white
+                ${isEnrolled 
+                  ? 'bg-gray-600 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
+                }
+              `}
+            >
+              {isEnrolled ? t('Enrolled') : t('Enroll Now')}
+            </button>
           </div>
         </div>
       </section>
 
-
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex items-center space-x-4 mb-6">
-          <div className="flex items-center">
-            <User className="w-5 h-5 mr-2" />
-            <span>{course.teacher}</span>
-          </div>
-          <div className="flex items-center">
-            <Calendar className="w-5 h-5 mr-2" />
-            <span>{new Date(course.updated_at).toLocaleDateString()}</span>
-          </div>
-        </div>
-
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4">{t('Course Content')}</h2> {/* Use translation */}
-          <ul className="space-y-4 flex flex-col">
-            {course.lessons?.map((lesson, index) => (
-
-
-              <li key={index}
-                onClick={() => handleLessonClick(lesson.id)}
-                className="flex cursor-pointer items-center bg-lightBackground dark:bg-darkBase rounded-lg p-4 transition-transform transform hover:scale-105 justify-between">
-
-
-                <div>
-                  <div className="flex items-center">
-                    <span className="font-bold text-lg mr-2">{index + 1}.</span>
-                    <h3 className="font-medium mx-2">{lesson.title}</h3>
+      {/* Course Content */}
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <BookOpen className="w-6 h-6 mr-2 text-blue-400" />
+                {t('Course Content')}
+              </h2>
+              <div className="space-y-4">
+                {course.lessons?.map((lesson, index) => (
+                  <div
+                    key={index}
+                    onClick={() => handleLessonClick(lesson.id)}
+                    className="group bg-white dark:bg-gray-700 rounded-lg p-4 cursor-pointer transform hover:scale-102 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <span className="w-8 h-8 flex items-center justify-center bg-blue-500 text-white rounded-full">
+                          {index + 1}
+                        </span>
+                        <h3 className="font-medium">{lesson.title}</h3>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-2 transition-transform" />
+                    </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-                  {/* <p className="text-sm text-gray-600 dark:text-gray-400">{lesson.description}</p> */}
-                </div>
-
-                <button
-                  className="flex gap-1 bg-gradient-to-r text-white p-2 rounded from-green-500 to-green-400 w-16 h-10 justify-center items-center"
-                >
-                  {t('Go')}
-                  <BookOpen className="flex w-5 h-5 mt-1 justify-center items-center" />
-                </button>
-              </li>
-
-            ))}
-          </ul>
-        </div>
-
-        {/* Enroll Button */}
-        <button
-          onClick={handleEnrollClick}
-          disabled={isEnrolled}
-          className={`py-2 px-4 rounded ${isEnrolled ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-buttonColor to-red-500 text-white transition-transform'}`}
-        >
-          {isEnrolled ? t('You have enrolled already') : t('Enroll in Course')} {/* Use translation */}
-        </button>
-
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4">{t('What Students Are Saying')}</h2> {/* Use translation */}
-          <Slider {...sliderSettings}>
-            {comments.map((comment, index) => (
-              <Comment key={index} name={comment.name} text={comment.comment} />
-            ))}
-          </Slider>
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
+              <h2 className="text-2xl font-bold mb-6 flex items-center">
+                <Trophy className="w-6 h-6 mr-2 text-yellow-400" />
+                {t('Popular Courses')}
+              </h2>
+              <div className="space-y-4">
+                {popularCourses.slice(0, 3).map((course, index) => (
+                  <div 
+                    key={index}
+                    onClick={() => navigate(`/course/${course.id}`)}
+                    className="group bg-white dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="relative h-32">
+                      <img 
+                        src={course.image_url} 
+                        alt={course.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-medium mb-2 line-clamp-2">{course.title}</h3>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                          <Users className="w-4 h-4 mr-1" />
+                          <span>{course.enroll_count || 0}</span>
+                        </div>
+                        <StarRating rating={4.2} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-const Comment = ({ name, text }) => (
-  <div className="p-4 rounded-lg mx-2 bg-white dark:bg-gray-600 text-gray-900 dark:text-gray-200 transition-transform transform hover:scale-105">
-    <p className="text-lg font-semibold">{name}</p>
-    <p className="text-gray-700 dark:text-gray-300">{text}</p>
-  </div>
-);
 
 export default CourseLandingPage;
