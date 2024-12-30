@@ -1,15 +1,9 @@
-// Courses.jsx
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Input } from "../components/ui/input";
-import { Button } from "../components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
-import CourseCard from '../components/ui/coursecard';
-import '../css/courses.css';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Search, BookOpen, Users, Star, Filter, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
-
-const ITEMS_PER_PAGE = 20;
+import CourseCard from '../components/ui/coursecard'
 
 const Courses = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -17,10 +11,16 @@ const Courses = () => {
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
   const [categories, setCategories] = useState([]);
+  const [languages, setLanguages] = useState(['English', 'Persian']);
   const [page, setPage] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  const ITEMS_PER_PAGE = 20;
 
   useEffect(() => {
     fetchCourses();
@@ -29,7 +29,7 @@ const Courses = () => {
 
   useEffect(() => {
     filterCourses();
-  }, [searchTerm, selectedCategory, courses, page]);
+  }, [searchTerm, selectedCategory, selectedLanguage, courses, page]);
 
   const fetchCourses = async () => {
     try {
@@ -66,21 +66,11 @@ const Courses = () => {
       filtered = filtered.filter(course => course.category === selectedCategory);
     }
 
+    if (selectedLanguage) {
+      filtered = filtered.filter(course => course.language === selectedLanguage);
+    }
+
     setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setPage(1);
-  };
-
-  const handleCategoryChange = (key) => {
-    setSelectedCategory(key);
-    setPage(1);
-  };
-
-  const handleLoadMore = () => {
-    setPage(prevPage => prevPage + 1);
   };
 
   const handleAskClick = () => {
@@ -92,53 +82,117 @@ const Courses = () => {
       navigate('/ask');
     }
   };
-  const selectRef = useRef(null);
 
   return (
-    <div className="min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
-      <div className="pt-24 container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('Courses')}</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+        <div className="container mx-auto px-4 py-16 pt-32">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
+            {t('Discover Your Next Learning Journey')}
+          </h1>
+          
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder={t('Search courses...')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full py-4 px-6 pl-12 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            </div>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="md:w-1/4 relative z-[10]">
-            <Select onValueChange={handleCategoryChange} value={selectedCategory}>
-              <SelectTrigger className="w-full border border-borderColor dark:border-gray-700">
-                <SelectValue placeholder={t('Select Category')} />
-              </SelectTrigger>
-              <SelectContent
-                className="absolute bg-lightBackground dark:bg-darkBackground shadow-lg rounded-md overflow-hidden"
-                style={{
-                  minWidth: '100%',
-                  top: 'calc(100% + 5px)',
-                  left: 0,
-                }}
+            <div className="flex flex-wrap gap-4 justify-center">
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <Filter className="w-4 h-4" />
+                  <span>{selectedCategory ? t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`) : t('All Categories')}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
+                    <div className="py-2">
+                      <button
+                        onClick={() => {
+                          setSelectedCategory('');
+                          setIsDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {t('All Categories')}
+                      </button>
+                      {categories.map(category => (
+                        <button
+                          key={category.id}
+                          onClick={() => {
+                            setSelectedCategory(category.id);
+                            setIsDropdownOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          {t(`categories.${category.name}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                  className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                >
+                  <span>{selectedLanguage || t('All Languages')}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+                
+                {isLanguageDropdownOpen && (
+                  <div className="absolute mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
+                    <div className="py-2">
+                      <button
+                        onClick={() => {
+                          setSelectedLanguage('');
+                          setIsLanguageDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {t('All Languages')}
+                      </button>
+                      {languages.map(language => (
+                        <button
+                          key={language}
+                          onClick={() => {
+                            setSelectedLanguage(language);
+                            setIsLanguageDropdownOpen(false);
+                          }}
+                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                        >
+                          {language}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={handleAskClick}
+                className="bg-white dark:bg-gray-800 px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow text-blue-600 dark:text-blue-400"
               >
-                <SelectItem value="">{t('All Categories')}</SelectItem>
-                {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {t(`categories.${category.name}`)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-
-            </Select>
+                {t("Didn't find what you're looking for?")}
+              </button>
+            </div>
           </div>
-          <Input
-            type="text"
-            placeholder={t('Search courses...')}
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="md:w-1/2 border border-borderColor dark:border-gray-700"
-          />
-          <Button
-            onClick={handleAskClick}
-            className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
-          >
-            {t("Didn't you find what you were looking for?")}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-light-move"></span>
-          </Button>
         </div>
+      </div>
 
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {displayedCourses.map(course => (
             <CourseCard key={course.id} course={course} />
@@ -146,10 +200,13 @@ const Courses = () => {
         </div>
 
         {displayedCourses.length < courses.length && (
-          <div className="mt-8 text-center">
-            <Button onClick={handleLoadMore} className="bg-buttonColor text-white py-2 px-4 rounded">
-              {t('Load More')}
-            </Button>
+          <div className="mt-12 text-center">
+            <button
+              onClick={() => setPage(prev => prev + 1)}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              {t('Load More Courses')}
+            </button>
           </div>
         )}
       </div>

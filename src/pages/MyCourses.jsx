@@ -1,17 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { 
+  BookOpen, Award, Zap, Search, Users, 
+  Clock, ChevronRight, Star, Filter
+} from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-import { Progress } from "../components/ui/progress";
-import { BookOpen, Award, Zap } from 'lucide-react';
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 12;
+const TOTAL_LESSONS = 15; // Total lessons per course
+
+const motivationalQuotes = [
+  { quote: "Every bagel was once just flour and water. Your potential is limitless!", author: "Mama Bagel" },
+  { quote: "Rise and shine like a fresh-baked bagel!", author: "Papa Bagel" },
+  { quote: "Keep rolling through your lessons, you're on a roll!", author: "Mama Bagel" },
+  { quote: "A journey of a thousand miles begins with a single bite!", author: "Papa Bagel" },
+  { quote: "You're getting more well-rounded every day!", author: "Mama Bagel" }
+];
+
+const StarRating = ({ rating }) => (
+  <div className="flex items-center">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <Star
+        key={star}
+        className={`w-3 h-3 ${
+          star <= rating
+            ? 'fill-yellow-400 text-yellow-400'
+            : 'fill-gray-300 text-gray-300'
+        }`}
+      />
+    ))}
+    <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">
+      {rating.toFixed(1)}
+    </span>
+  </div>
+);
 
 const MyCourses = () => {
-  const { t } = useTranslation(); // Use translation hook
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,16 +49,37 @@ const MyCourses = () => {
   const [categories, setCategories] = useState([]);
   const [filteredCategoryId, setFilteredCategoryId] = useState('');
   const [page, setPage] = useState(1);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [userProfile, setUserProfile] = useState(null);
+  const [quote, setQuote] = useState(motivationalQuotes[0]);
 
   useEffect(() => {
     fetchMyCourses();
     fetchCategories();
+    fetchUserProfile();
+    setQuote(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
   }, []);
 
   useEffect(() => {
     filterCourses();
   }, [searchTerm, selectedCategory, courses, page]);
+
+
+  const fetchUserProfile = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      setUserProfile(data);
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+    }
+  };
+
 
   const fetchMyCourses = async () => {
     try {
@@ -40,8 +91,9 @@ const MyCourses = () => {
       });
       const data = await response.json();
       setCourses(data);
+      setIsLoading(false);
     } catch (error) {
-      // console.error('Failed to fetch courses:', error);
+      setIsLoading(false);
     }
   };
 
@@ -51,143 +103,202 @@ const MyCourses = () => {
       const data = await response.json();
       setCategories(data);
     } catch (error) {
-      // console.error('Failed to fetch categories:', error);
+      console.error('Failed to fetch categories:', error);
     }
   };
 
   const filterCourses = () => {
     let filtered = courses;
-
     if (searchTerm) {
       filtered = filtered.filter(item =>
         item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-
     if (filteredCategoryId) {
       filtered = filtered.filter(item => item.course.category === filteredCategoryId);
     }     
-
     setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setPage(1);
-  };
-
   const handleCategoryChange = (value) => {
+    setSelectedCategory(value);
     const selectedCategoryId = categories.find(category => category.name === value)?.id;
-    setSelectedCategory(value); // Store the name for display
+    setFilteredCategoryId(selectedCategoryId || '');
     setPage(1);
-    setFilteredCategoryId(selectedCategoryId || ''); // Store the ID for filtering
-  };  
-
-  const handleLoadMore = () => {
-    setPage(prevPage => prevPage + 1);
   };
 
-  const handleExploreClick = () => {
-    navigate('/courses');
-  };
 
   const CourseCard = ({ item }) => {
     const { course, progress } = item;
-    const completed = progress.course_completed;
+    const completedLessons = progress.completed_lessons.length;
+    const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
 
     return (
-      <Card className="flex flex-col justify-between w-full h-full border border-borderColor dark:border-gray-700 bg-lightBackground dark:bg-gray-800 transition-transform transform hover:scale-105">
-        <CardHeader>
+      <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+        <div className="relative h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
           <img
             src={course.image_url}
             alt={course.title}
-            className="w-full h-32 object-cover rounded-t-md"
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
           />
-          <div className="h-16 flex items-center justify-center">
-            <CardTitle
-              className="text-center text-sm sm:text-base font-bold truncate overflow-hidden"
-              style={{ lineHeight: "1.5em", maxHeight: "4.5em" }} // Two-line max
-              // three-line max
-              // style={{ lineHeight: "1.5em", maxHeight: "6.75em" }}
-            >
-              {course.title}
-            </CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="flex flex-col justify-between flex-grow">
-          <div className="flex items-center mt-2">
-            <BookOpen className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              {course.level} • {course.language}
-            </span>
-          </div>
-          <div className="mt-4">
-            <span className={`text-sm mt-1 ${completed ? 'text-green-500' : 'text-red-500'}`}>
-              {completed ? t('Completed') : t('Not Completed')}
-            </span>
-          </div>
-          <div className="flex items-center justify-between mt-4">
-            <div className="flex items-center">
-              <Award className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />
-              <span className="text-sm">{t('points', { points: progress.points_earned })}</span>
+          <div className="absolute bottom-4 left-4 right-4 z-20">
+            <div className="flex items-center space-x-2 text-white mb-2">
+              <StarRating rating={4.5} />
             </div>
-            <div className="flex items-center">
-              <Zap className="w-4 h-4 mr-2 text-gray-700 dark:text-gray-300" />
-              <span className="text-sm">{t('streak', { streak: progress.streak })}</span>
+          </div>
+        </div>
+        
+        <CardContent className="relative p-6">
+          <div className="flex flex-col h-full">
+            <h3 className="text-lg font-semibold mb-3 line-clamp-2">
+              {course.title}
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  <span>{course.level}</span>
+                </div>
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Clock className="w-4 h-4 mr-2" />
+                  <span>{course.language}</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center">
+                  <Award className="w-4 h-4 mr-2 text-purple-500" />
+                  <span>{progress.points_earned} pts</span>
+                </div>
+                <div className="flex items-center">
+                  <Zap className="w-4 h-4 mr-2 text-yellow-500" />
+                  <span>{progress.streak} streak</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                  <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} lessons</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>
-        <CardFooter>
+
+        <CardFooter className="p-6 pt-0">
           <Button
             onClick={() => navigate(`/course/${course.id}`)}
-            className="w-full bg-buttonColor text-white py-2 px-4 rounded"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
           >
-            {t('continueLearning')}
+            <span className="mr-2">
+              {progress.course_completed ? t('Review Course') : t('Continue Learning')}
+            </span>
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </CardFooter>
       </Card>
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500" />
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-24 lg:mt-16 min-h-screen bg-lightBackground dark:bg-darkBackground text-gray-900 dark:text-white">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8 animate-fade-in-down">{t('myCourses')}</h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+        <div className="container mx-auto px-4 py-16 pt-32">
+          <div className="flex flex-col items-center mb-8">
+            <div className="relative">
+              <img
+                src={userProfile?.profile_picture}
+                alt="Profile"
+                className="w-20 h-20 rounded-full border-4 border-white shadow-lg"
+              />
+              <div className="absolute -bottom-2 -right-2 bg-green-500 rounded-full p-2">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <h2 className="text-white mt-4 text-xl font-semibold">Welcome back, {userProfile?.username}!</h2>
+            
+            {/* Motivational Quote */}
+            <div className="mt-4 text-center max-w-2xl">
+              <p className="text-white/90 italic">"{quote.quote}"</p>
+              <p className="text-white/70 text-sm mt-2">- {quote.author}</p>
+            </div>
+          </div>
 
-        <div className="flex flex-col md:flex-row gap-4 mb-8 relative z-[10]">
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Input
+                type="text"
+                placeholder={t('searchPlaceholder')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full py-4 px-6 pl-12 rounded-lg bg-white dark:bg-gray-800 border-0 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
 
-          <Select onValueChange={handleCategoryChange} value={selectedCategory} className="md:w-1/4">
-            <SelectTrigger className="border border-borderColor dark:border-gray-700">
-            <SelectValue placeholder={t('selectCategory')} value={selectedCategory || t('allCategories')} />
-            </SelectTrigger>
-            <SelectContent className="bg-lightBackground dark:bg-darkBackground">
-              <SelectItem value="">{t('allCategories')}</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category.id} value={category.name}>{category.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Input
-            type="text"
-            placeholder={t('searchPlaceholder')}
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="md:w-1/2 border border-borderColor dark:border-gray-700"
-          />
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Select 
+                onValueChange={handleCategoryChange} 
+                value={selectedCategory}
+                className="w-full md:w-64"
+              >
+                <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
+                  <Filter className="w-4 h-4 mr-2" />
+                  <SelectValue placeholder={t('selectCategory')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">{t('allCategories')}</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category.id} value={category.name}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-          <Button
-            onClick={handleExploreClick}
-            className="md:w-1/4 bg-buttonColor text-white py-2 px-4 rounded relative overflow-hidden animate-light-effect"
-          >
-            {t('exploreCourses')}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50 animate-light-move"></span>
-          </Button>
+              <Button
+                onClick={() => navigate('/courses')}
+                className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
+              >
+                {t('Explore More Courses')}
+              </Button>
+            </div>
+          </div>
         </div>
+      </div>
 
+      {/* Course Grid */}
+      <div className="container mx-auto px-4 py-12">
         {displayedCourses.length === 0 ? (
-          <p className="text-center text-gray-700 dark:text-gray-300">{t('noCourses')}</p>
+          <div className="text-center py-12">
+            <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
+              <BookOpen className="w-6 h-6 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-medium mb-2">{t('noCourses')}</h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              {t('Try adjusting your search or filters')}
+            </p>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedCourses.map((item, index) => (
               <CourseCard key={`${item.course.id}-${index}`} item={item} />
             ))}
@@ -195,8 +306,11 @@ const MyCourses = () => {
         )}
 
         {displayedCourses.length < courses.length && (
-          <div className="mt-8 text-center">
-            <Button onClick={handleLoadMore} className="bg-buttonColor text-white py-2 px-4 rounded">
+          <div className="mt-12 text-center">
+            <Button
+              onClick={() => setPage(p => p + 1)}
+              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
               {t('loadMore')}
             </Button>
           </div>
