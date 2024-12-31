@@ -1,12 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Button } from '../components/ui/button';
-import { Card } from '../components/ui/card';
-import heroImage from '../assets/137.png';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import CourseCard from '../components/ui/coursecard';
+import { 
+  BookOpen, Award, Zap, Search, Users, 
+  Clock, ChevronRight, Star, Filter, Rocket,
+  Brain, Target, Gift
+} from 'lucide-react';
+import heroImage from '../assets/137.png';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardFooter } from '../components/ui/card';
+import { motion } from 'framer-motion';
+const CourseCard = ({ course }) => {
+  return (
+    <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+      <div className="relative h-48 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+        <img
+          src={course.image_url}
+          alt={course.title}
+          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+        />
+        <div className="absolute bottom-4 left-4 right-4 z-20">
+          <div className="flex items-center space-x-2 text-white mb-2">
+            <div className="flex items-center">
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+              <span className="ml-1 text-sm">4.5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <CardContent className="relative p-6">
+        <div className="flex flex-col h-full">
+          <h3 className="text-lg font-semibold mb-3 line-clamp-2">
+            {course.title}
+          </h3>
+          
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center text-gray-600 dark:text-gray-400">
+                <BookOpen className="w-4 h-4 mr-2" />
+                <span>{course.level || 'Beginner'}</span>
+              </div>
+              <div className="flex items-center text-gray-600 dark:text-gray-400">
+                <Clock className="w-4 h-4 mr-2" />
+                <span>{course.language || 'English'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="p-6 pt-0">
+        <Button
+          className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+        >
+          <span className="mr-2">Start Learning</span>
+          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+const FeatureCard = ({ icon: Icon, title, description, gradient }) => (
+  <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300">
+    <CardContent className="p-6">
+      <div className={`p-3 rounded-lg ${gradient} mb-4 w-12 h-12 flex items-center justify-center`}>
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
+      <p className="text-gray-600 dark:text-gray-400">{description}</p>
+    </CardContent>
+  </Card>
+);
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
@@ -28,10 +96,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
     fetchCourses();
   }, []);
 
-  const gradientOverlay = "absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent";
-
   return (
-    <main className={`pt-24 min-h-screen dark:bg-zinc-900 bg-white`}>
+    <div className="min-h-screen mt-24 bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
       <section className="relative min-h-[60vh] md:h-[90vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0">
@@ -40,9 +106,9 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             alt="Hero"
             className="w-full h-full object-cover object-center"
           />
-          <div className={`absolute inset-0 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-zinc-900/90 bg-gradient-to-b from-blue-500/10 to-white/90`} />
-          <div className={`absolute inset-0 dark:bg-[#00ff9d]/5 bg-[#00ff9d]/10`} />
-          <div className={`absolute inset-0 dark:bg-gradient-to-t dark:from-zinc-900 dark:via-transparent dark:to-transparent bg-gradient-to-t from-gray-100 via-transparent to-transparent`} />
+          <div className="absolute inset-0 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-zinc-900/90 bg-gradient-to-b from-blue-500/10 to-purple-800" />
+          <div className="absolute inset-0 dark:bg-[#00ff9d]/5 bg-[#00ff9d]/10" />
+          <div className="absolute inset-0 dark:bg-gradient-to-t dark:from-zinc-900 dark:via-transparent dark:to-transparent bg-gradient-to-t from-gray-100 via-transparent to-transparent}\" />
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,8 +121,9 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             </span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl dark:text-zinc-300 text-gray-700 max-w-2xl mx-auto px-4">
-            {/* {t('Ready to start learning?')} */}
-          </p>
+  {t('Ready to start learning?')}
+</p>
+
           <div className="flex gap-4 justify-center">
             <Link to="/courses">
               <Button size="lg"
@@ -69,117 +136,71 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
         </motion.div>
       </section>
 
-      <section className={`py-12 sm:py-20 px-4 sm:px-8 dark:bg-zinc-900 bg-gray-100`}>
-        <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 text-center dark:text-white text-black">
-          {t('PopularCourses')}
-        </h2>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {courses.map((course) => (
-            <Link to={`/course/${course.id}`} key={course.id}>
-              <motion.div
-                whileHover={{ y: -5 }}
-                className="relative overflow-hidden rounded-2xl h-full"
-              >
-                <Card className="border-cyan-500 dark:bg-zinc-800/50 dark:text-white bg-gray-100 text-black shadow-lg overflow-hidden h-full flex flex-col">
-                  <div className="relative aspect-video">
-                    <img
-                      src={course.image_url}
-                      alt={course.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className={gradientOverlay} />
-                  </div>
-                  <div className="flex flex-col p-4 sm:p-6 justify-between flex-grow">
-                    <div>
-                      <h3 className="font-bold text-base sm:text-lg dark:text-white text-black mb-2">
-                        {course.title}
-                      </h3>
-                    </div>
-                    <div className="flex mt-auto">
-                      <span className="text-blue-400">{t('Learn More')}</span>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            </Link>
-          ))}
+      {/* Popular Courses */}
+      <div className="container mx-auto px-4 py-16 -mt-16">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            {t('PopularCourses')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course) => (
+              <Link key={course.id} to={`/course/${course.id}`}>
+                <CourseCard course={course} />
+              </Link>
+            ))}
+          </div>
         </div>
-      </section>
+      </div>
 
-
-
-      {/* Features Grid */}
-      <section className={`py-12 sm:py-20 px-4 sm:px-8 dark:bg-zinc-800 bg-white`}>
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {[
-            {
-              title: t('Ready to design your own course?'),
-              description: t('Design a course based on any subject or any languages you want!'),
-              gradient: 'from-blue-500 to-cyan-500',
-              link: '/ask',
-              buttonText: t('go to AI')
-            },
-            {
-              title: t('Not sure what to learn?'),
-              description: t('Take our quiz to find the perfect course for you!'),
-              gradient: 'from-cyan-500 to-blue-500',
-              link: '/quiz',
-              buttonText: t('Take Quiz')
-            },
-            {
-              title: t('Meet the Bagel Family'),
-              description: t('Learn with our friendly characters!'),
-              gradient: 'from-blue-400 to-cyan-500',
-              link: '/cha',
-              buttonText: t('meet our characters')
-            }
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="relative overflow-hidden rounded-2xl p-6 sm:p-8 min-h-[250px] sm:min-h-[300px] flex flex-col justify-between dark:bg-zinc-800 dark:text-white bg-white text-black"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-90`} />
-              <div className={gradientOverlay} />
-              <div className="flex flex-col justify-between h-full relative z-10">
-                <h3 className="text-xl sm:text-2xl font-bold mb-2">{feature.title}</h3>
-                <p className="mb-4 sm:mb-6 dark:text-zinc-300 text-gray-700">{feature.description}</p>
-                <Link to={feature.link}>
-                  <Button
-                    className="dark:bg-white/20 dark:text-white bg-slate-800 text-white text-sm sm:text-base"
-                  >
-                    {feature.buttonText}
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+      {/* Features */}
+      <div className="container mx-auto px-4 py-16 bg-gray-100 dark:bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+            {t('Why Choose Us')}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FeatureCard
+              icon={Rocket}
+              title={t('Design Your Course')}
+              description={t('Design a course based on any subject or any languages you want!')}
+              gradient="bg-gradient-to-r from-blue-500 to-blue-600"
+            />
+            <FeatureCard
+              icon={Brain}
+              title={t('Not sure what to learn?')}
+              description={t('Take our quiz to find the perfect course for you!')}
+              gradient="bg-gradient-to-r from-purple-500 to-purple-600"
+            />
+            <FeatureCard
+              icon={Gift}
+              title={t('Meet the Bagel Family')}
+              description={t('Learn with our friendly characters!')}
+              gradient="bg-gradient-to-r from-blue-500 to-purple-600"
+            />
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* Sign Up CTA */}
-      <section className="relative py-20 sm:py-32 px-4">
-        <div className={`absolute inset-0 dark:bg-gradient-to-r dark:from-zinc-700 dark:to-zinc-800 bg-gradient-to-r from-blue-500/10 to-gray-100`} />
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8 dark:text-white text-black">
+      {/* CTA Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-4xl mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-12 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
             {t('Ready to start learning?')}
           </h2>
-          <p className="text-lg sm:text-xl mb-6 sm:mb-8 dark:text-zinc-300 text-gray-700">
+          <p className="text-white/80 mb-8 text-lg">
             {t('Sign up now and get access to all our courses!')}
           </p>
-          <Link to="/signup">
-            <Button
-              size="lg"
-              className={`bg-gradient-to-r from-slate-500 to-slate-700 hover:opacity-90 font-bold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg ${isDarkTheme ? 'text-black' : 'text-white'}`}
-            >
-              {t('Sign Up')}
-            </Button>
-          </Link>
+          <Button
+            onClick={() => navigate('/signup')}
+            className="bg-white text-blue-600 hover:bg-white/90 text-lg px-8 py-4"
+          >
+            {t('Sign Up Now')}
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </Button>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
+
   );
 };
 
