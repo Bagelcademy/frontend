@@ -12,7 +12,7 @@ import QuizComponent from './pages/WhatToLearnQuiz';
 import RequestPage from './pages/CourseRequest';
 import Layout from './components/layout/Layout';
 import Courses from './pages/Courses';
-import CharacterIntroPage from './pages/characters';
+import CharacterIntroPage from './pages/characters1';
 import AboutUs from './pages/AboutUs';
 import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
@@ -28,6 +28,7 @@ import PrivacyPolicy from './pages/privacy';
 import TermsOfService from './pages/terms';
 import { GoftinoSnippet } from '@mohsen007/react-goftino';
 import ProtectedRoute from './components/layout/ProtectedRoute';
+import DonutCatcherGame from './pages/game1';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -120,6 +121,7 @@ const App = () => {
             <Route path="/exam/:id" element={<ExamPage />} />
             <Route path="/payment_status" element={<PaymentStatusPage />} />
             <Route path="/quiz" element={<QuizComponent />} />
+            <Route path="/game" element={<DonutCatcherGame />} />
             <Route path="/ask" element={<RequestPage />} />
             <Route path="/cha" element={<CharacterIntroPage />} />
             <Route path="/lo" element={<LoginPagee />} />

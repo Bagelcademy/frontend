@@ -64,17 +64,28 @@ const CourseCard = ({ course }) => {
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description, gradient }) => (
-  <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300">
-    <CardContent className="p-6">
-      <div className={`p-3 rounded-lg ${gradient} mb-4 w-12 h-12 flex items-center justify-center`}>
-        <Icon className="w-6 h-6 text-white" />
-      </div>
-      <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400">{description}</p>
-    </CardContent>
-  </Card>
-);
+const FeatureCard = ({ icon: Icon, title, description, gradient, buttonText, linkTo }) => {
+  const navigate = useNavigate();
+  
+  return (
+    <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300">
+      <CardContent className="p-6 flex flex-col h-full">
+        <div className={`p-3 rounded-lg ${gradient} mb-4 w-12 h-12 flex items-center justify-center transform group-hover:scale-110 transition-all duration-300`}>
+          <Icon className="w-6 h-6 text-white" />
+        </div>
+        <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">{description}</p>
+        <Button
+          onClick={() => navigate(linkTo)}
+          className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+        >
+          {buttonText}
+          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
@@ -158,28 +169,35 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
             {t('Why Choose Us')}
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FeatureCard
               icon={Rocket}
               title={t('Design Your Course')}
-              description={t('Design a course based on any subject or any languages you want!')}
+              description={t('Design a course based on any subject or any languages you want! Our intuitive course builder makes it easy to create engaging content.')}
               gradient="bg-gradient-to-r from-blue-500 to-blue-600"
+              buttonText={t('Create Course')}
+              linkTo="/ask"
             />
             <FeatureCard
               icon={Brain}
               title={t('Not sure what to learn?')}
-              description={t('Take our quiz to find the perfect course for you!')}
+              description={t('Take our personalized learning quiz to discover courses that match your interests, goals, and learning style.')}
               gradient="bg-gradient-to-r from-purple-500 to-purple-600"
+              buttonText={t('Take Quiz')}
+              linkTo="/quiz"
             />
             <FeatureCard
               icon={Gift}
               title={t('Meet the Bagel Family')}
-              description={t('Learn with our friendly characters!')}
+              description={t('Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey.')}
               gradient="bg-gradient-to-r from-blue-500 to-purple-600"
+              buttonText={t('Meet Characters')}
+              linkTo="/cha"
             />
           </div>
         </div>
       </div>
+
 
       {/* CTA Section */}
       <div className="container mx-auto px-4 py-16">
