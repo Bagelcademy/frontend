@@ -2,28 +2,51 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Trophy, Heart } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 600;
-const BUCKET_WIDTH = 100;
-const BUCKET_HEIGHT = 80;
-const ITEM_SIZE = 40;
-const FALLING_SPEED = 3;
-const REWARD_SCORE = 50;
+// Make game dimensions responsive
+const getGameDimensions = () => {
+  const isMobile = window.innerWidth < 768;
+  return {
+    width: isMobile ? window.innerWidth - 32 : 800, // 32px for padding
+    height: isMobile ? 400 : 600,
+    itemSize: isMobile ? 30 : 40,
+    bucketWidth: isMobile ? 70 : 100,
+    bucketHeight: isMobile ? 56 : 80,
+    fallingSpeed: isMobile ? 2 : 3
+  };
+};
 
+const REWARD_SCORE = 50;
 const FRUIT_IMAGES = ['1.png', '2.png', '3.png', '4.png', '5.png'];
 const DONUT_IMAGES = ['6.png', '7.png', '8.png'];
 
 const DonutCatcherGame = () => {
+  const [dimensions, setDimensions] = useState(getGameDimensions());
   const [gameStarted, setGameStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
-  const [bucketPosition, setBucketPosition] = useState(GAME_WIDTH / 2);
+  const [bucketPosition, setBucketPosition] = useState(dimensions.width / 2);
   const [fallingItems, setFallingItems] = useState([]);
   const [gameOver, setGameOver] = useState(false);
   const [rewardClaimed, setRewardClaimed] = useState(false);
   const gameRef = useRef(null);
   const animationFrameRef = useRef();
   const lastSpawnTimeRef = useRef(0);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      const newDimensions = getGameDimensions();
+      setDimensions(newDimensions);
+      // Adjust bucket position for new dimensions
+      setBucketPosition(prev => 
+        Math.min(Math.max(newDimensions.bucketWidth / 2, prev), 
+        newDimensions.width - newDimensions.bucketWidth / 2)
+      );
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getRandomImage = (type) => {
     const images = type === 'donut' ? DONUT_IMAGES : FRUIT_IMAGES;
@@ -34,11 +57,19 @@ const DonutCatcherGame = () => {
     if (!gameStarted || gameOver) return;
     
     const gameRect = gameRef.current.getBoundingClientRect();
-    let x = e.type.startsWith('touch') ? 
-      e.touches[0].clientX - gameRect.left : 
-      e.clientX - gameRect.left;
+    let x;
     
-    x = Math.max(BUCKET_WIDTH / 2, Math.min(x, GAME_WIDTH - BUCKET_WIDTH / 2));
+    if (e.type.startsWith('touch')) {
+      e.preventDefault(); // Prevent scrolling while playing
+      x = e.touches[0].clientX - gameRect.left;
+    } else {
+      x = e.clientX - gameRect.left;
+    }
+    
+    x = Math.max(
+      dimensions.bucketWidth / 2, 
+      Math.min(x, dimensions.width - dimensions.bucketWidth / 2)
+    );
     setBucketPosition(x);
   };
 
@@ -52,8 +83,8 @@ const DonutCatcherGame = () => {
         const itemType = Math.random() > 0.3 ? 'donut' : 'fruit';
         const newItem = {
           id: now,
-          x: Math.random() * (GAME_WIDTH - ITEM_SIZE),
-          y: -ITEM_SIZE,
+          x: Math.random() * (dimensions.width - dimensions.itemSize),
+          y: -dimensions.itemSize,
           type: itemType,
           image: getRandomImage(itemType)
         };
@@ -62,11 +93,11 @@ const DonutCatcherGame = () => {
       }
 
       setFallingItems(prev => prev.map(item => {
-        const newY = item.y + FALLING_SPEED;
+        const newY = item.y + dimensions.fallingSpeed;
         
-        if (newY + ITEM_SIZE > GAME_HEIGHT - BUCKET_HEIGHT &&
-            item.x + ITEM_SIZE > bucketPosition - BUCKET_WIDTH / 2 &&
-            item.x < bucketPosition + BUCKET_WIDTH / 2) {
+        if (newY + dimensions.itemSize > dimensions.height - dimensions.bucketHeight &&
+            item.x + dimensions.itemSize > bucketPosition - dimensions.bucketWidth / 2 &&
+            item.x < bucketPosition + dimensions.bucketWidth / 2) {
           
           if (item.type === 'donut') {
             setScore(s => s + 10);
@@ -78,7 +109,7 @@ const DonutCatcherGame = () => {
           return null;
         }
         
-        if (newY > GAME_HEIGHT) {
+        if (newY > dimensions.height) {
           if (item.type === 'donut') {
             setLives(l => l - 1);
           }
@@ -98,7 +129,7 @@ const DonutCatcherGame = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [gameStarted, gameOver, bucketPosition]);
+  }, [gameStarted, gameOver, bucketPosition, dimensions]);
 
   useEffect(() => {
     if (lives <= 0) {
@@ -153,43 +184,53 @@ const DonutCatcherGame = () => {
 
       <div
         ref={gameRef}
-        className="relative w-full max-w-4xl h-[600px] rounded-lg overflow-hidden shadow-2xl"
-        onMouseMove={handleMove}
-        onTouchMove={handleMove}
+        className="relative w-full rounded-lg overflow-hidden shadow-2xl touch-none"
         style={{
+          width: dimensions.width,
+          height: dimensions.height,
           background: 'url(9.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
+        onMouseMove={handleMove}
+        onTouchMove={handleMove}
       >
         {fallingItems.map(item => (
           <div
             key={item.id}
-            className="absolute w-10 h-10"
             style={{
+              position: 'absolute',
               left: item.x,
               top: item.y,
+              width: dimensions.itemSize,
+              height: dimensions.itemSize,
               backgroundImage: `url(${item.image})`,
-              backgroundSize: 'cover'
+              backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center'
             }}
           />
         ))}
 
         <div
-          className="absolute bottom-0 w-24 h-20 transition-transform"
           style={{
-            left: bucketPosition - BUCKET_WIDTH / 2,
+            position: 'absolute',
+            bottom: 0,
+            left: bucketPosition - dimensions.bucketWidth / 2,
+            width: dimensions.bucketWidth,
+            height: dimensions.bucketHeight,
             backgroundImage: 'url(10.png)',
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center bottom'
+            backgroundPosition: 'center bottom',
+            transition: 'left 0.1s ease-out'
           }}
         />
 
         {!gameStarted && !gameOver && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/70">
             <button
-              className="px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg text-xl font-bold hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all"
+              className="px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg text-lg md:text-xl font-bold hover:from-pink-600 hover:to-purple-600 transform hover:scale-105 transition-all"
               onClick={() => setGameStarted(true)}
             >
               Start Game
@@ -199,19 +240,19 @@ const DonutCatcherGame = () => {
 
         {gameOver && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/70">
-            <div className="bg-white/90 p-8 rounded-lg shadow-xl text-center">
-              <h2 className="text-2xl font-bold mb-4">Game Over!</h2>
-              <p className="text-xl mb-4">Final Score: {score}</p>
+            <div className="bg-white/90 p-6 md:p-8 rounded-lg shadow-xl text-center w-4/5 max-w-sm">
+              <h2 className="text-xl md:text-2xl font-bold mb-4">Game Over!</h2>
+              <p className="text-lg md:text-xl mb-4">Final Score: {score}</p>
               {score >= REWARD_SCORE && !rewardClaimed && (
                 <button
-                  className="mb-4 px-6 py-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white rounded-lg font-bold hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-all"
+                  className="mb-4 px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white rounded-lg font-bold hover:from-yellow-500 hover:to-yellow-700 transform hover:scale-105 transition-all w-full"
                   onClick={claimReward}
                 >
                   Claim Reward!
                 </button>
               )}
               <button
-                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-bold hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all"
+                className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-bold hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all w-full"
                 onClick={resetGame}
               >
                 Play Again
@@ -221,7 +262,7 @@ const DonutCatcherGame = () => {
         )}
       </div>
 
-      <div className="mt-4 max-w-4xl bg-white/10 p-4 rounded-lg shadow-lg text-white">
+      <div className="mt-4 w-full max-w-4xl bg-white/10 p-4 rounded-lg shadow-lg text-white text-sm md:text-base">
         <h3 className="font-bold mb-2">How to Play</h3>
         <p>
           Move your bucket left and right to catch falling donuts. Avoid catching fruits!
