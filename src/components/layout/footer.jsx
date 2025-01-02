@@ -50,7 +50,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-buttonColor text-center text-gray-400">
-          <p>&copy; 2024 Bagelcademy. {t('All rights reserved.')}</p>
+          <p>&copy;2025 Bagelcademy. {t('All rights reserved.')}</p>
         </div>
       </div>
     </footer>

@@ -109,9 +109,9 @@ const Courses = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <Filter className="w-4 h-4" />
-                  <span>{selectedCategory ? t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`) : t('All Categories')}</span>
-                  <ChevronDown className="w-4 h-4" />
+                  <Filter className="w-4 h-4 text-black dark:text-white" />
+                  <span className="text-black dark:text-white">{selectedCategory ? t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`) : t('All Categories')}</span>
+                  <ChevronDown className="w-4 h-4 text-black dark:text-white" />
                 </button>
                 
                 {isDropdownOpen && (
@@ -122,7 +122,7 @@ const Courses = () => {
                           setSelectedCategory('');
                           setIsDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                       >
                         {t('All Categories')}
                       </button>
@@ -133,7 +133,7 @@ const Courses = () => {
                             setSelectedCategory(category.id);
                             setIsDropdownOpen(false);
                           }}
-                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                         >
                           {t(`categories.${category.name}`)}
                         </button>
@@ -148,8 +148,8 @@ const Courses = () => {
                   onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                   className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <span>{selectedLanguage || t('All Languages')}</span>
-                  <ChevronDown className="w-4 h-4" />
+                  <span className="text-black dark:text-white">{selectedLanguage || t('All Languages')}</span>
+                  <ChevronDown className="w-4 h-4 text-black dark:text-white" />
                 </button>
                 
                 {isLanguageDropdownOpen && (
@@ -160,7 +160,7 @@ const Courses = () => {
                           setSelectedLanguage('');
                           setIsLanguageDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                       >
                         {t('All Languages')}
                       </button>
@@ -171,7 +171,7 @@ const Courses = () => {
                             setSelectedLanguage(language);
                             setIsLanguageDropdownOpen(false);
                           }}
-                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                         >
                           {language}
                         </button>

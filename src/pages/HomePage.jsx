@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import { 
-  BookOpen, Award, Zap, Search, Users, 
+import {
+  BookOpen, Award, Zap, Search, Users,
   Clock, ChevronRight, Star, Filter, Rocket,
-  Brain, Target, Gift
+  Brain, Target, Gift, Globe2
 } from 'lucide-react';
 import heroImage from '../assets/137.png';
 import { Button } from '../components/ui/button';
@@ -30,21 +30,21 @@ const CourseCard = ({ course }) => {
           </div>
         </div>
       </div>
-      
+
       <CardContent className="relative p-6">
         <div className="flex flex-col h-full">
           <h3 className="text-lg font-semibold mb-3 line-clamp-2">
             {course.title}
           </h3>
-          
+
           <div className="space-y-4">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center text-gray-600 dark:text-gray-400">
-                <BookOpen className="w-4 h-4 mr-2" />
+                <BookOpen className="w-4 h-4 mx-1" />
                 <span>{course.level || 'Beginner'}</span>
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
-                <Clock className="w-4 h-4 mr-2" />
+                <Globe2 className="w-4 h-4 mx-1 " />
                 <span>{course.language || 'English'}</span>
               </div>
             </div>
@@ -66,7 +66,7 @@ const CourseCard = ({ course }) => {
 
 const FeatureCard = ({ icon: Icon, title, description, gradient, buttonText, linkTo }) => {
   const navigate = useNavigate();
-  
+
   return (
     <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300">
       <CardContent className="p-6 flex flex-col h-full">
@@ -132,8 +132,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             </span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl dark:text-zinc-300 text-gray-700 max-w-2xl mx-auto px-4">
-  {t('Ready to start learning?')}
-</p>
+            {t('Ready to start learning?')}
+          </p>
 
           <div className="flex gap-4 justify-center">
             <Link to="/courses">
@@ -148,9 +148,9 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       </section>
 
       {/* Popular Courses */}
-      <div className="container mx-auto px-4 py-16 -mt-16">
+      <div className=" mx-auto px-4 p-16 mt-6 mb-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-4xl font-b5 text-gray-900 dark:text-white my-8 text-center">
             {t('PopularCourses')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -164,9 +164,9 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       </div>
 
       {/* Features */}
-      <div className="container mx-auto px-4 py-16 bg-gray-100 dark:bg-gray-800/50">
+      <div className=" mx-auto px-4 py-16 bg-gray-100 dark:bg-gray-800/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
+          <h2 className="text-4xl font-b5 text-gray-900 dark:text-white mb-8 text-center">
             {t('Why Choose Us')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -261,5 +261,11 @@
   "passwordNoUpperCase": "Password must contain at least one uppercase letter.",
   "passwordRequired": "Password is required.",
   "registrationSuccessful": "Registration successful! Please log in.",
-  "fileTooLarge": "The file is too large. Please upload a file smaller than 5 MB."
+  "fileTooLarge": "The file is too large. Please upload a file smaller than 5 MB.",
+  "technology": "Technology",
+  "arts": "Arts",
+  "science": "Science",
+  "business": "Business",
+  "health": "Health",
+  "allCategories": "All Categories"
 }

@@ -427,5 +427,14 @@
   "passwordNoUpperCase": "رمز عبور باید حداقل شامل یک حرف بزرگ باشد.",
   "passwordRequired": "رمز عبور الزامی است.",
   "registrationSuccessful": "ثبت‌نام با موفقیت انجام شد! لطفاً وارد شوید.",
-  "fileTooLarge": "فایل بیش از حد بزرگ است. لطفاً فایلی کمتر از ۵ مگابایت بارگذاری کنید."
+  "fileTooLarge": "فایل بیش از حد بزرگ است. لطفاً فایلی کمتر از ۵ مگابایت بارگذاری کنید.",
+  "Why Choose Us": "چرا ما را انتخاب کنید",
+  "Didn't find what you're looking for?": "چیزی که به دنبال آن هستید را پیدا نکردید؟",
+  "All Languages": "همه زبان‌ها",
+  "Discover Your Next Learning Journey": "مسیر یادگیری بعدی خود را کشف کنید",
+  "technology": "فناوری",
+  "arts": "هنر",
+  "science": "علم",
+  "business": "کسب و کار",
+  "health": "سلامت"
 }

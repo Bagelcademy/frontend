@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  BookOpen, Award, Zap, Search, Users, 
-  Clock, ChevronRight, Star, Filter
+import {
+  BookOpen, Award, Zap, Search, Users,
+  Clock, ChevronRight, Star, Filter, Globe2
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -26,11 +26,10 @@ const StarRating = ({ rating }) => (
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
-        className={`w-3 h-3 ${
-          star <= rating
+        className={`w-3 h-3 ${star <= rating
             ? 'fill-yellow-400 text-yellow-400'
             : 'fill-gray-300 text-gray-300'
-        }`}
+          }`}
       />
     ))}
     <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">
@@ -101,11 +100,17 @@ const MyCourses = () => {
     try {
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
       const data = await response.json();
-      setCategories(data);
+      // Map categories with translated names
+      const translatedCategories = data.map(category => ({
+        ...category,
+        translatedName: t(`categories.${category.name}`)
+      }));
+      setCategories(translatedCategories);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
     }
   };
+
 
   const filterCourses = () => {
     let filtered = courses;
@@ -116,7 +121,7 @@ const MyCourses = () => {
     }
     if (filteredCategoryId) {
       filtered = filtered.filter(item => item.course.category === filteredCategoryId);
-    }     
+    }
     setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
   };
 
@@ -148,32 +153,32 @@ const MyCourses = () => {
             </div>
           </div>
         </div>
-        
+
         <CardContent className="relative p-6">
           <div className="flex flex-col h-full">
             <h3 className="text-lg font-semibold mb-3 line-clamp-2">
               {course.title}
             </h3>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <BookOpen className="w-4 h-4 mr-2" />
+                  <BookOpen className="w-4 h-4 mx-1" />
                   <span>{course.level}</span>
                 </div>
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <Clock className="w-4 h-4 mr-2" />
+                  <Globe2 className="w-4 h-4 mx-1" />
                   <span>{course.language}</span>
                 </div>
               </div>
-              
+
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center">
-                  <Award className="w-4 h-4 mr-2 text-purple-500" />
+                  <Award className="w-4 h-4 mx-1 text-purple-500" />
                   <span>{progress.points_earned} pts</span>
                 </div>
                 <div className="flex items-center">
-                  <Zap className="w-4 h-4 mr-2 text-yellow-500" />
+                  <Zap className="w-4 h-4 mx-1 text-yellow-500" />
                   <span>{progress.streak} streak</span>
                 </div>
               </div>
@@ -184,7 +189,7 @@ const MyCourses = () => {
                   <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} lessons</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${progressPercentage}%` }}
                   />
@@ -234,7 +239,7 @@ const MyCourses = () => {
               </div>
             </div>
             <h2 className="text-white mt-4 text-xl font-semibold">Welcome back, {userProfile?.username}!</h2>
-            
+
             {/* Motivational Quote */}
             <div className="mt-4 text-center max-w-2xl">
               <p className="text-white/90 italic">"{quote.quote}"</p>
@@ -255,8 +260,8 @@ const MyCourses = () => {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <Select 
-                onValueChange={handleCategoryChange} 
+              <Select
+                onValueChange={handleCategoryChange}
                 value={selectedCategory}
                 className="w-full md:w-64"
               >
@@ -268,7 +273,7 @@ const MyCourses = () => {
                   <SelectItem value="">{t('allCategories')}</SelectItem>
                   {categories.map(category => (
                     <SelectItem key={category.id} value={category.name}>
-                      {category.name}
+                      {category.translatedName}
                     </SelectItem>
                   ))}
                 </SelectContent>
