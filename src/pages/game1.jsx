@@ -168,7 +168,7 @@ const DonutCatcherGame = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-black p-4">
+    <div className="mt-24 flex flex-col items-center justify-center min-h-screen bg-black p-4">
       <Toaster position="top-right" />
       
       <div className="mb-4 flex items-center gap-4">
