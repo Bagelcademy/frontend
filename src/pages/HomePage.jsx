@@ -11,7 +11,12 @@ import heroImage from '../assets/137.png';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardFooter } from '../components/ui/card';
 import { motion } from 'framer-motion';
+
+
 const CourseCard = ({ course }) => {
+
+  const { t } = useTranslation();
+
   return (
     <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
       <div className="relative h-48 overflow-hidden">
@@ -56,7 +61,7 @@ const CourseCard = ({ course }) => {
         <Button
           className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
         >
-          <span className="mr-2">Start Learning</span>
+          <span className="mr-2">{t("Start Learning")}</span>
           <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </CardFooter>
