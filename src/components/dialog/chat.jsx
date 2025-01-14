@@ -1,52 +1,120 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Loader2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { ScrollArea } from '../ui/scroll-area';
+import { Send, Bot, User } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
-const AIChatComponent = () => {
+const Message = ({ isBot, content, timestamp }) => (
+  <div className={`flex gap-3 ${isBot ? 'flex-row' : 'flex-row-reverse'} mb-4`}>
+    <div className={`w-8 h-8 rounded-full flex items-center justify-center 
+      ${isBot ? 'bg-blue-500' : 'bg-slate-700 dark:bg-slate-600'}`}>
+      {isBot ? <Bot size={18} className="text-white" /> : <User size={18} className="text-white" />}
+    </div>
+    <div className={`flex-1 ${isBot ? 'mr-12' : 'ml-12'}`}>
+      <div className={`p-3 rounded-lg ${
+        isBot 
+          ? 'bg-slate-100 dark:bg-slate-800' 
+          : 'bg-blue-500 text-white dark:bg-blue-600'
+      }`}>
+        {isBot ? (
+          <div className="markdown-content prose dark:prose-invert max-w-none prose-pre:my-0 prose-p:my-0 prose-ul:my-0 prose-ol:my-0">
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => <p className="mb-1 last:mb-0">{children}</p>,
+                ul: ({ children }) => <ul className="list-disc ml-4 mb-1 last:mb-0">{children}</ul>,
+                ol: ({ children }) => <ol className="list-decimal ml-4 mb-1 last:mb-0">{children}</ol>,
+                li: ({ children }) => <li className="mb-1 last:mb-0">{children}</li>,
+                code: ({ inline, children }) => 
+                  inline ? (
+                    <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">{children}</code>
+                  ) : (
+                    <pre className="bg-slate-200 dark:bg-slate-700 p-2 rounded overflow-x-auto">
+                      <code className="text-sm">{children}</code>
+                    </pre>
+                  ),
+                h1: ({ children }) => <h1 className="text-xl font-bold mb-2">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-lg font-bold mb-2">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-base font-bold mb-1">{children}</h3>,
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-4 border-slate-300 dark:border-slate-600 pl-4 my-2">
+                    {children}
+                  </blockquote>
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
+          </div>
+        ) : (
+          content
+        )}
+      </div>
+      <div className="text-xs text-slate-400 mt-1">
+        {new Date(timestamp).toLocaleTimeString()}
+      </div>
+    </div>
+  </div>
+);
+
+const AIAssistant = ({ lessonContent }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      alert('Please login first');
-      return;
-    }
+    const newMessage = {
+      id: Date.now(),
+      content: input,
+      isBot: false,
+      timestamp: new Date(),
+    };
 
-    const userMessage = input;
+    setMessages(prev => [...prev, newMessage]);
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
     try {
+      const token = localStorage.getItem('accessToken');
+      const contextMessage = `this is the lesson that i will ask question about and dont answer not related questions: ${lessonContent} \n\n${input}`;
+
       const response = await fetch('https://bagelapi.bagelcademy.org/account/chat/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: contextMessage }),
       });
 
       const data = await response.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+      
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        content: data.response,
+        isBot: true,
+        timestamp: new Date(),
+      }]);
     } catch (error) {
       console.error('Error:', error);
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, I encountered an error. Please try again.' 
+      // Optionally add error message to chat
+      setMessages(prev => [...prev, {
+        id: Date.now(),
+        content: "Sorry, I encountered an error. Please try again.",
+        isBot: true,
+        timestamp: new Date(),
       }]);
     } finally {
       setIsLoading(false);
@@ -54,54 +122,57 @@ const AIChatComponent = () => {
   };
 
   return (
-    <div className="flex flex-col h-[500px] w-full bg-white dark:bg-gray-900 rounded-lg shadow-lg">
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[80%] p-3 rounded-lg ${
-                message.role === 'user'
-                  ? 'bg-red-600 text-white'
-                  : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'
-              }`}
-            >
-              {message.content}
-            </div>
+    <Card className="h-full flex flex-col">
+      <CardHeader className="shrink-0 py-3">
+        <CardTitle className="flex items-center gap-2">
+          <Bot className="w-5 h-5 text-blue-500" />
+          AI Assistant
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1 flex flex-col min-h-0 p-4 pt-0">
+        <ScrollArea className="flex-1 pr-4">
+          <div className="space-y-4">
+            {messages.length === 0 ? (
+              <div className="flex items-center justify-center h-40 text-slate-400">
+                Ask me anything about the lesson!
+              </div>
+            ) : (
+              <>
+                {messages.map((message) => (
+                  <Message key={message.id} {...message} />
+                ))}
+                {isLoading && (
+                  <div className="flex gap-2 justify-center py-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />
+                  </div>
+                )}
+              </>
+            )}
+            <div ref={messagesEndRef} />
           </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-200 dark:bg-gray-800 p-3 rounded-lg">
-              <Loader2 className="w-5 h-5 animate-spin" />
-            </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-      <form onSubmit={handleSubmit} className="p-4 border-t dark:border-gray-700">
-        <div className="flex space-x-2">
-          <input
-            type="text"
+        </ScrollArea>
+        <div className="mt-4 flex gap-2">
+          <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 p-2 border rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            placeholder="Ask AI..."
-            disabled={isLoading}
+            onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
+            placeholder="Type your message..."
+            className="flex-1"
           />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-red-600 text-white p-2 rounded-lg hover:bg-red-700 disabled:opacity-50"
+          <Button 
+            onClick={handleSendMessage} 
+            disabled={isLoading || !input.trim()}
+            className="w-10 h-10 p-0"
+            aria-label="Send message"
           >
-            <Send className="w-5 h-5" />
-          </button>
+            <Send className="w-4 h-4" />
+          </Button>
         </div>
-      </form>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
-export default AIChatComponent;
+export default AIAssistant;

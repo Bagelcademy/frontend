@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-java": "^6.0.1",
+    "@codemirror/lang-python": "^6.1.6",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.1.9",
@@ -18,9 +20,12 @@
     "@mui/material": "^6.1.2",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.4",
     "@shadcn/ui": "^0.0.4",
+    "@tailwindcss/typography": "^0.5.16",
+    "@uiw/react-codemirror": "^4.23.7",
     "axios": "^1.7.7",
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.0",
