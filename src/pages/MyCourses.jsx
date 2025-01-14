@@ -185,7 +185,7 @@ const MyCourses = () => {
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 dark:text-gray-400">Progress</span>
+                  <span className="text-gray-600 dark:text-gray-400">{t("Progress")}</span>
                   <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} lessons</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">

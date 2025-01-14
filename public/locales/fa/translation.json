@@ -436,5 +436,21 @@
   "arts": "هنر",
   "science": "علم",
   "business": "کسب و کار",
-  "health": "سلامت"
+  "health": "سلامت",
+  "Design Your Course": "طراحی دوره شما",
+  "Create Course": "ایجاد دوره",
+  "Sign Up Now": "همین حالا ثبت نام کنید",
+  "Meet Characters": "آشنایی با شخصیت‌ها",
+  "Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey." : "بپیوندید به جامعه پرانرژی یادگیرندگان ما و با شخصیت‌های دوست‌داشتنی ما آشنا شوید که در طول مسیر یادگیری‌تان از شما حمایت خواهند کرد.",
+  "Take our personalized learning quiz to discover courses that match your interests, goals, and learning style." : "در آزمون شخصی‌سازی‌شده یادگیری ما شرکت کنید تا دوره‌هایی را پیدا کنید که با علایق، اهداف و سبک یادگیری شما سازگار هستند.",
+  "Design a course based on any subject or any languages you want! Our intuitive course builder makes it easy to create engaging content." : "یک دوره بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید! سازنده دوره کاربرپسند ما ایجاد محتوای جذاب را برای شما آسان می‌کند.",
+  "Begginer": "مبتدی",
+  "Load More Courses": "دوره‌های بیشتر",
+  "Choose your learning journey and advance your career": "مسیر یادگیری خود را انتخاب کنید و حرفه‌ای پیش بروید",
+  "Explore More Courses": "بررسی دوره‌های بیشتر",
+  "Continue Learning": "ادامه یادگیری",
+  "Enroll Now": "همین حالا ثبت نام کنید",
+  "Enrolled": "ثبت‌نام کردید",
+  "Progress": "پیشرفت",
+  "Search paths...": "جستجوی مسیرها..."
 }
