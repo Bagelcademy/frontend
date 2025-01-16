@@ -12,7 +12,7 @@ import QuizComponent from './pages/WhatToLearnQuiz';
 import RequestPage from './pages/CourseRequest';
 import Layout from './components/layout/Layout';
 import Courses from './pages/Courses';
-import CharacterIntroPage from './pages/characters1';
+import CharacterIntroPage from './pages/cha';
 import AboutUs from './pages/AboutUs';
 import MyCourses from './pages/MyCourses';
 import Survey from './pages/Survey';
@@ -123,7 +123,7 @@ const App = () => {
             <Route path="/quiz" element={<QuizComponent />} />
             <Route path="/game" element={<DonutCatcherGame />} />
             <Route path="/ask" element={<RequestPage />} />
-            <Route path="/cha" element={<CharacterIntroPage />} />
+            <Route path="/characters" element={<CharacterIntroPage />} />
             <Route path="/lo" element={<LoginPagee />} />
             <Route path="/survey" element={<Survey />} />
             <Route path="/course/:id" element={<CourseLandingPage />} />
