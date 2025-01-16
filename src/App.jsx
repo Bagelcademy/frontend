@@ -29,6 +29,7 @@ import TermsOfService from './pages/terms';
 import { GoftinoSnippet } from '@mohsen007/react-goftino';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import DonutCatcherGame from './pages/game1';
+import FAQ from './pages/FAQ';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -126,7 +127,9 @@ const App = () => {
             <Route path="/characters" element={<CharacterIntroPage />} />
             <Route path="/lo" element={<LoginPagee />} />
             <Route path="/survey" element={<Survey />} />
+          
             <Route path="/course/:id" element={<CourseLandingPage />} />
+            <Route path="/FAQ" element={<FAQ />} />
 
 
             <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
