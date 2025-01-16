@@ -38,12 +38,7 @@ const Footer = () => {
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Contact')}</h4>
             <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@bagelcademy.com</p>
             <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052676</p>
-            <div className="mt-4 text-black">
-            <img referrerpolicy='origin' id='rgvjjzpeapfuoeukapfuwlao' style={{cursor: 'pointer'}} 
-              onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=375854&p=xlaojyoedshwmcsidshwaods", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")} 
-              alt='logo-samandehi' 
-              src='https://logo.samandehi.ir/logo.aspx?id=375854&p=qftiyndtujynaqgwujynshwl' />
-          </div>
+
           </div>
           <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
@@ -53,6 +48,12 @@ const Footer = () => {
               <a href="#" className="hover:text-buttonColor transition-colors"><Instagram /></a>
               <a href="#" className="hover:text-buttonColor transition-colors"><Linkedin /></a>
             </div>
+            <div className="mt-4 text-black">
+            <img referrerpolicy='origin' id='rgvjjzpeapfuoeukapfuwlao' style={{cursor: 'pointer'}} 
+              onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=375854&p=xlaojyoedshwmcsidshwaods", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")} 
+              alt='logo-samandehi' 
+              src='https://logo.samandehi.ir/logo.aspx?id=375854&p=qftiyndtujynaqgwujynshwl' />
+          </div>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-buttonColor text-center text-gray-400">
