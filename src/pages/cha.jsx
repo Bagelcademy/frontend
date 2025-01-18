@@ -128,7 +128,7 @@ const BagelFamilyIntro = () => {
       name: 'Bagel Papa',
       role: 'STEM Solutions Architect',
       description: 'A seasoned engineer turned educator who brings real-world tech experience to the classroom. His blend of industry expertise and dad jokes creates an engaging learning environment where complex concepts become surprisingly simple and memorable.',
-      image: img1,
+      image: img5,
       expertise: [
         'Data Structures',
         'Algorithm Design',
@@ -158,7 +158,7 @@ const BagelFamilyIntro = () => {
       name: 'Jill',
       role: 'Creative Tech Guide',
       description: 'A dynamic educator who specializes in creative coding and interactive design. She bridges the gap between art and technology, helping students discover the beauty in both worlds while building impressive digital projects that showcase their creativity.',
-      image: img2,
+      image: img6,
       expertise: [
         'Creative Coding',
         'UI/UX Design',
@@ -213,66 +213,6 @@ const BagelFamilyIntro = () => {
       ],
       icon: Lightbulb,
       color: 'from-orange-500 to-amber-500'
-    },
-    {
-      name: 'Java Joe',
-      role: 'Backend Specialist',
-      description: 'A methodical and passionate educator specializing in server-side technologies and database design. He brews up perfect analogies that help students understand complex backend concepts, making distributed systems and data structures as smooth as his morning coffee.',
-      image: img5,
-      expertise: [
-        'Java Development',
-        'Database Design',
-        'API Architecture',
-        'Microservices',
-        'Performance Optimization',
-        'Security Best Practices'
-      ],
-      stats: {
-        teachingSkills: 95,
-        techExpertise: 97,
-        problemSolving: 94,
-        studentSupport: 93
-      },
-      achievements: [
-        'Database Design Expert',
-        'Security Certification Trainer',
-        'Backend Excellence Award',
-        'Open Source Contributor',
-        'Enterprise Architecture Guru',
-        'Performance Optimization Specialist'
-      ],
-      icon: Code,
-      color: 'from-blue-600 to-cyan-500'
-    },
-    {
-      name: 'Ruby Rachel',
-      role: 'Full-Stack Mentor',
-      description: 'A versatile educator who excels at teaching both frontend and backend development. Her holistic approach to web development education helps students build complete, production-ready applications while understanding the interconnections between all system components.',
-      image: img6,
-      expertise: [
-        'Ruby on Rails',
-        'Full-Stack Development',
-        'DevOps Practices',
-        'Testing Strategies',
-        'Web Security',
-        'Deployment Automation'
-      ],
-      stats: {
-        teachingSkills: 97,
-        techExpertise: 95,
-        problemSolving: 96,
-        studentSupport: 95
-      },
-      achievements: [
-        'Full-Stack Development Lead',
-        'Testing Framework Creator',
-        'DevOps Education Pioneer',
-        'Continuous Integration Expert',
-        'Agile Team Leader',
-        'Mentorship Excellence Award'
-      ],
-      icon: Rocket,
-      color: 'from-red-500 to-pink-500'
     }
   ];
 

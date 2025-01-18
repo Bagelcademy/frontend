@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import i18n from '../i18n';
 import {
   BookOpen, Award, Zap, Search, Users,
@@ -14,7 +15,6 @@ import { motion } from 'framer-motion';
 
 
 const CourseCard = ({ course }) => {
-
   const { t } = useTranslation();
 
   return (
@@ -114,6 +114,17 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
 
   return (
     <div className="min-h-screen mt-24 bg-gray-50 dark:bg-gray-900">
+      <Helmet>
+        <title>{t('Welcome')} | Bagelcademy</title>
+        <meta name="description" content={t('Ready to start learning?')} />
+        <meta property="og:title" content={`${t('Welcome')} | Bagelcademy`} />
+        <meta property="og:description" content={t('Ready to start learning?')} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${t('Welcome')} | Bagelcademy`} />
+        <meta name="twitter:description" content={t('Ready to start learning?')} />
+      </Helmet>
+
       {/* Hero Section */}
       <section className="relative min-h-[60vh] md:h-[90vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0">
@@ -197,12 +208,11 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
               description={t('Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey.')}
               gradient="bg-gradient-to-r from-blue-500 to-purple-600"
               buttonText={t('Meet Characters')}
-              linkTo="/cha"
+              linkTo="/characters"
             />
           </div>
         </div>
       </div>
-
 
       {/* CTA Section */}
       <div className="container mx-auto px-4 py-16">
@@ -223,7 +233,6 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
         </div>
       </div>
     </div>
-
   );
 };
 

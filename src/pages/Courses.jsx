@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { Search, BookOpen, Users, Star, Filter, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
@@ -85,6 +86,20 @@ const Courses = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <Helmet>
+        <title>{t('Discover Your Next Learning Journey')} | Bagelcademy</title>
+        <meta name="description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
+        <meta property="og:title" content={`${t('Discover Your Next Learning Journey')} | Bagelcademy`} />
+        <meta property="og:description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${t('Discover Your Next Learning Journey')} | Bagelcademy`} />
+        <meta name="twitter:description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
+        {selectedCategory && categories.find(c => c.id === selectedCategory)?.name && (
+          <meta name="keywords" content={`courses, learning, education, ${t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`)}, ${selectedLanguage || 'all languages'}`} />
+        )}
+      </Helmet>
+
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
         <div className="container mx-auto px-4 py-16 pt-32">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">

@@ -30,6 +30,8 @@ import { GoftinoSnippet } from '@mohsen007/react-goftino';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import DonutCatcherGame from './pages/game1';
 import FAQ from './pages/FAQ';
+import Interviewer from './pages/interviewer';
+import AISurvey from './pages/survey2';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -130,7 +132,9 @@ const App = () => {
           
             <Route path="/course/:id" element={<CourseLandingPage />} />
             <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/AIservey" element={<AISurvey />} />
 
+            <Route path="/interview" element={<Interviewer />} />
 
             <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
