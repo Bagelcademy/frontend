@@ -81,8 +81,9 @@ const Footer = () => {
 
         {/* Additional Links */}
         <div className="flex justify-center gap-4 mb-6 text-sm">
-          <Link to="/about-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('About us')}</Link>
-          <Link to="/FAQ" className="text-gray-600 hover:text-buttonColor transition-colors">{t('FAQ')}</Link>
+        <Link to="/about-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('About us')}</Link>
+        <Link to="/contact-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Contact us')}</Link>
+        <Link to="/FAQ" className="text-gray-600 hover:text-buttonColor transition-colors">{t('FAQ')}</Link>
           <Link to="/terms" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Terms')}</Link>
           <Link to="/privacy" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Privacy')}</Link>
         </div>

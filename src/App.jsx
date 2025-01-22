@@ -32,6 +32,7 @@ import DonutCatcherGame from './pages/game1';
 import FAQ from './pages/FAQ';
 import Interviewer from './pages/interviewer';
 import AISurvey from './pages/survey2';
+import ContactPage from './pages/ContacUs';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -132,6 +133,8 @@ const App = () => {
           
             <Route path="/course/:id" element={<CourseLandingPage />} />
             <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/contact-us" element={<ContactPage />} />
+
             <Route path="/AIservey" element={<AISurvey />} />
 
             <Route path="/interview" element={<Interviewer />} />
