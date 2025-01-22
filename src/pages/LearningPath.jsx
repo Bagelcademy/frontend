@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
-
+import { Link } from "react-router-dom";
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
     {[1, 2, 3, 4, 5].map((star) => (
@@ -199,13 +199,17 @@ const CareerPathsPage = () => {
                         <span>{path.enrolledCount.toLocaleString()} enrolled</span>
                       </div>
                     </div>
-
+          <Link 
+            to={`/learning-paths/${path.id}`}
+            className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
+          >         
                     <Button 
                       className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
                     >
                       <span className="mr-2">{t("Start Learning")}</span>
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
