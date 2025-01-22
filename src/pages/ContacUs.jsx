@@ -54,7 +54,7 @@ const ContactPage = () => {
                     <Smartphone className="w-6 h-6 text-blue-500" />
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">همراه</p>
-                      <p className="text-gray-600 dark:text-gray-400">09391242565</p>
+                      <p className="text-gray-600 dark:text-gray-400">09039179491</p>
                     </div>
                   </div>
 
