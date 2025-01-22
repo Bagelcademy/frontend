@@ -71,7 +71,7 @@ const ContactPage = () => {
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">آدرس</p>
                       <p className="text-gray-600 dark:text-gray-400">
-                        دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویر
+                        دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویرا
                       </p>
                     </div>
                   </div>
