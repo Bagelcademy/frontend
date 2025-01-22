@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import senfi from "../../assets/senfi.png";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -73,7 +74,8 @@ const Footer = () => {
 
           {/* Senfi Logo */}
           <img 
-            src="../../assets/senfi.png"
+            src={senfi}
+            
             alt="Senfi Logo"
             className="w-16 h-16 object-contain"
           />
