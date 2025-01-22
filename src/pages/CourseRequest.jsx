@@ -4,44 +4,7 @@ import { motion } from 'framer-motion';
 import { Send, ChevronDown, Loader } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const languages = [
-  { label: 'English', value: 'English' },
-  { label: 'Persian (Farsi)', value: 'Persian' },
-  { label: 'Mandarin Chinese', value: 'Mandarin Chinese' },
-  { label: 'Spanish', value: 'Spanish' },
-  { label: 'Hindi', value: 'Hindi' },
-  { label: 'Arabic', value: 'Arabic' },
-  { label: 'Bengali', value: 'Bengali' },
-  { label: 'Russian', value: 'Russian' },
-  { label: 'Portuguese', value: 'Portuguese' },
-  { label: 'Japanese', value: 'Japanese' },
-  { label: 'German', value: 'German' },
-  { label: 'French', value: 'French' },
-  { label: 'Korean', value: 'Korean' },
-  { label: 'Turkish', value: 'Turkish' },
-  { label: 'Italian', value: 'Italian' },
-  { label: 'Vietnamese', value: 'Vietnamese' },
-  { label: 'Thai', value: 'Thai' },
-  { label: 'Indonesian', value: 'Indonesian' },
-  { label: 'Dutch', value: 'Dutch' },
-  { label: 'Polish', value: 'Polish' },
-  { label: 'Swedish', value: 'Swedish' },
-  { label: 'Greek', value: 'Greek' },
-  { label: 'Romanian', value: 'Romanian' },
-  { label: 'Czech', value: 'Czech' },
-  { label: 'Finnish', value: 'Finnish' },
-  { label: 'Danish', value: 'Danish' },
-  { label: 'Norwegian', value: 'Norwegian' },
-  // { label: 'Hebrew', value: 'he' },
-  { label: 'Hungarian', value: 'Hungarian' },
-  { label: 'Swahili', value: 'Swahili' },
-];
 
-const levels = [
-  { label: 'Beginner', value: 'beginner' },
-  { label: 'Intermediate', value: 'intermediate' },
-  { label: 'Advanced', value: 'advanced' },
-];
 
 const Listbox = ({ value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -98,15 +61,20 @@ const CourseCard = ({ course }) => {
 };
 
 const RequestPage = () => {
+  const { t } = useTranslation();
   const [request, setRequest] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
-  const [selectedLevel, setSelectedLevel] = useState(levels[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState({
+    label: t('English'),
+    value: 'English',
+  });
+  const [selectedLevel, setSelectedLevel] = useState({
+    label: t('Beginner'),
+    value: 'beginner',
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [courses, setCourses] = useState([]);
-  const { t } = useTranslation();
   const navigate = useNavigate();
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
@@ -219,16 +187,58 @@ const RequestPage = () => {
               transition={{ delay: 0.8, duration: 0.5 }}
               className="flex-1"
             >
-              <Listbox value={selectedLanguage} onChange={setSelectedLanguage} options={languages} />
-            </motion.div>
+              <Listbox
+                value={selectedLanguage}
+                onChange={setSelectedLanguage}
+                options={[
+                  { label: t('English'), value: 'English' },
+                  { label: t('Spanish'), value: 'Spanish' },
+                  { label: t('Persian'), value: 'Persian' },
+                  { label: t('Mandarin'), value: 'Mandarin Chinese' },
+                  { label: t('Spanish'), value: 'Spanish' },
+                  { label: t('Hindi'), value: 'Hindi' },
+                  { label: t('Arabic'), value: 'Arabic' },
+                  { label: t('Bengali'), value: 'Bengali' },
+                  { label: t('Russian'), value: 'Russian' },
+                  { label: t('Portuguese'), value: 'Portuguese' },
+                  { label: t('Japanese'), value: 'Japanese' },
+                  { label: t('German'), value: 'German' },
+                  { label: t('French'), value: 'French' },
+                  { label: t('Korean'), value: 'Korean' },
+                  { label: t('Turkish'), value: 'Turkish' },
+                  { label: t('Italian'), value: 'Italian' },
+                  { label: t('Vietnamese'), value: 'Vietnamese' },
+                  { label: t('Thai'), value: 'Thai' },
+                  { label: t('Indonesian'), value: 'Indonesian' },
+                  { label: t('Dutch'), value: 'Dutch' },
+                  { label: t('Polish'), value: 'Polish' },
+                  { label: t('Swedish'), value: 'Swedish' },
+                  { label: t('Greek'), value: 'Greek' },
+                  { label: t('Romanian'), value: 'Romanian' },
+                  { label: t('Czech'), value: 'Czech' },
+                  { label: t('Finnish'), value: 'Finnish' },
+                  { label: t('Danish'), value: 'Danish' },
+                  { label: t('Norwegian'), value: 'Norwegian' },
+                  { label: t('Hungarian'), value: 'Hungarian' },
+                  { label: t('Swahili'), value: 'Swahili' },
+                ]}
+              />            </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.8, duration: 0.5 }}
               className="flex-1"
             >
-              <Listbox value={selectedLevel} onChange={setSelectedLevel} options={levels} />
-            </motion.div>
+              <Listbox
+                value={selectedLevel}
+                onChange={setSelectedLevel}
+                options={[
+                  { label: t('Beginner'), value: 'beginner' },
+                  { label: t('Intermediate'), value: 'intermediate' },
+                  { label: t('Advanced'), value: 'advanced' },
+
+                ]}
+              />            </motion.div>
           </div>
           <button
             disabled={isSubmitting || !request.trim()}

@@ -79,7 +79,7 @@
   "noUserData": "No user data found",
   "cancel": "Cancel",
   "editProfile": "Edit Profile",
-  "name": "Name",
+  "name": "Name and Lastname",
   "phoneNumber": "Phone Number",
   "birthdate": "Birthdate",
   "email": "Email",
@@ -170,7 +170,7 @@
     },
     "contact": {
       "title": "5. Contact",
-      "email": "support@[yourplatform].com"
+      "email": "support@bagelcademy.com"
     }
   },
   "privacy": {
@@ -211,7 +211,7 @@
     },
     "contactInformation": {
       "title": "4. Contact Information",
-      "email": "For privacy concerns, email: privacy@[yourplatform].com"
+      "email": "For privacy concerns, email: privacy@bagelcademy.com"
     }
   },
   "Invalid discount code": "Invalid discount code",

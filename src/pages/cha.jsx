@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   Brain,
   Code,
@@ -31,13 +33,10 @@ import { Button } from "../components/ui/button";
 import img4 from '../assets/4.png';
 import img5 from '../assets/5.png';
 import img6 from '../assets/6.png';
-import img1 from '../assets/7.png';
-import img2 from '../assets/7.png';
 import img3 from '../assets/7.png';
 
 const RainingIcons = () => {
   const [icons, setIcons] = useState([]);
-  
   const availableIcons = [
     Coffee, Heart, Laptop, Monitor, Terminal, 
     Cpu, Radio, Wifi, Binary, Box, Cloud
@@ -91,21 +90,22 @@ const BagelFamilyIntro = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMember, setSelectedMember] = useState(null);
   const [expandedCard, setExpandedCard] = useState(null);
+  const { t } = useTranslation();
 
   // ... rest of the teamMembers data ...
   const teamMembers = [
     {
-      name: 'Bagel Mama',
-      role: 'Tech Education Expert',
-      description: 'A brilliant computer science educator who makes complex coding concepts feel as warm and comforting as freshly baked bread. With her nurturing approach and deep technical expertise, she transforms intimidating programming challenges into digestible, delicious learning experiences.',
+      name: t('team.bagelMama.name'),
+      role: t('team.bagelMama.role'),
+      description: t('team.bagelMama.description'),
       image: img4,
       expertise: [
-        'Programming Fundamentals',
-        'Web Development',
-        'Digital Literacy',
-        'Computer Science Education',
-        'Curriculum Design',
-        'Learning Assessment'
+        t('team.bagelMama.expertise.programming'),
+        t('team.bagelMama.expertise.webDev'),
+        t('team.bagelMama.expertise.digitalLiteracy'),
+        t('team.bagelMama.expertise.csEducation'),
+        t('team.bagelMama.expertise.curriculum'),
+        t('team.bagelMama.expertise.assessment')
       ],
       stats: {
         teachingSkills: 98,
@@ -114,28 +114,28 @@ const BagelFamilyIntro = () => {
         studentSupport: 96
       },
       achievements: [
-        '10,000+ Students Mentored',
-        'Award-Winning Curriculum',
-        'EdTech Innovation Prize',
-        'Best Teaching Practices Award',
-        'Digital Inclusion Champion',
-        'CS Education Researcher of the Year'
+        t('team.bagelMama.achievements.mentored'),
+        t('team.bagelMama.achievements.curriculum'),
+        t('team.bagelMama.achievements.innovation'),
+        t('team.bagelMama.achievements.teaching'),
+        t('team.bagelMama.achievements.inclusion'),
+        t('team.bagelMama.achievements.researcher')
       ],
       icon: Brain,
       color: 'from-blue-500 to-purple-500'
     },
     {
-      name: 'Bagel Papa',
-      role: 'STEM Solutions Architect',
-      description: 'A seasoned engineer turned educator who brings real-world tech experience to the classroom. His blend of industry expertise and dad jokes creates an engaging learning environment where complex concepts become surprisingly simple and memorable.',
+      name: t('team.bagelPapa.name'),
+      role: t('team.bagelPapa.role'),
+      description: t('team.bagelPapa.description'),
       image: img5,
       expertise: [
-        'Data Structures',
-        'Algorithm Design',
-        'Software Engineering',
-        'System Architecture',
-        'Cloud Computing',
-        'Technical Leadership'
+        t('team.bagelPapa.expertise.dataStructures'),
+        t('team.bagelPapa.expertise.algorithms'),
+        t('team.bagelPapa.expertise.softwareEng'),
+        t('team.bagelPapa.expertise.architecture'),
+        t('team.bagelPapa.expertise.cloud'),
+        t('team.bagelPapa.expertise.leadership')
       ],
       stats: {
         teachingSkills: 94,
@@ -144,28 +144,28 @@ const BagelFamilyIntro = () => {
         studentSupport: 92
       },
       achievements: [
-        'Former Tech Lead at BagelSoft',
-        'Created Mentorship Program',
-        'STEM Education Champion',
-        '20+ Years Industry Experience',
-        'Published Technical Author',
-        'Innovation in Teaching Award'
+        t('team.bagelPapa.achievements.techLead'),
+        t('team.bagelPapa.achievements.mentorship'),
+        t('team.bagelPapa.achievements.stemChampion'),
+        t('team.bagelPapa.achievements.experience'),
+        t('team.bagelPapa.achievements.author'),
+        t('team.bagelPapa.achievements.innovation')
       ],
       icon: Code,
       color: 'from-green-500 to-teal-500'
     },
     {
-      name: 'Jill',
-      role: 'Creative Tech Guide',
-      description: 'A dynamic educator who specializes in creative coding and interactive design. She bridges the gap between art and technology, helping students discover the beauty in both worlds while building impressive digital projects that showcase their creativity.',
+      name: t('team.jill.name'),
+      role: t('team.jill.role'),
+      description: t('team.jill.description'),
       image: img6,
       expertise: [
-        'Creative Coding',
-        'UI/UX Design',
-        'Digital Art',
-        'Interactive Media',
-        'Front-end Development',
-        'Design Thinking'
+        t('team.jill.expertise.creativeCoding'),
+        t('team.jill.expertise.uiux'),
+        t('team.jill.expertise.digitalArt'),
+        t('team.jill.expertise.interactive'),
+        t('team.jill.expertise.frontend'),
+        t('team.jill.expertise.designThinking')
       ],
       stats: {
         teachingSkills: 96,
@@ -174,28 +174,28 @@ const BagelFamilyIntro = () => {
         studentSupport: 98
       },
       achievements: [
-        'Youth Coding Camp Leader',
-        'Digital Arts Specialist',
-        'Student Choice Award',
-        'Creative Tech Innovation Prize',
-        'Design Education Excellence',
-        'Community Impact Award'
+        t('team.jill.achievements.campLeader'),
+        t('team.jill.achievements.specialist'),
+        t('team.jill.achievements.studentChoice'),
+        t('team.jill.achievements.innovation'),
+        t('team.jill.achievements.excellence'),
+        t('team.jill.achievements.impact')
       ],
       icon: Rocket,
       color: 'from-pink-500 to-rose-500'
     },
     {
-      name: 'Jackie',
-      role: 'Innovation Coach',
-      description: 'A tech enthusiast who helps students explore cutting-edge technologies. With boundless energy and forward-thinking approach, she guides learners through the exciting frontiers of AI, gaming, and mobile development, turning complex concepts into exciting discoveries.',
+      name: t('team.jackie.name'),
+      role: t('team.jackie.role'),
+      description: t('team.jackie.description'),
       image: img3,
       expertise: [
-        'Artificial Intelligence',
-        'Game Development',
-        'Mobile Apps',
-        'Emerging Technologies',
-        'Project Management',
-        'Agile Methodologies'
+        t('team.jackie.expertise.ai'),
+        t('team.jackie.expertise.gameDev'),
+        t('team.jackie.expertise.mobile'),
+        t('team.jackie.expertise.emerging'),
+        t('team.jackie.expertise.projectMgmt'),
+        t('team.jackie.expertise.agile')
       ],
       stats: {
         teachingSkills: 92,
@@ -204,12 +204,12 @@ const BagelFamilyIntro = () => {
         studentSupport: 94
       },
       achievements: [
-        'Tech Club Founder',
-        'Hackathon Mentor',
-        'Innovation Champion',
-        'AI Education Pioneer',
-        'Game Dev Competition Judge',
-        'Tech Diversity Advocate'
+        t('team.jackie.achievements.clubFounder'),
+        t('team.jackie.achievements.hackathon'),
+        t('team.jackie.achievements.champion'),
+        t('team.jackie.achievements.aiPioneer'),
+        t('team.jackie.achievements.gameJudge'),
+        t('team.jackie.achievements.diversity')
       ],
       icon: Lightbulb,
       color: 'from-orange-500 to-amber-500'
@@ -364,7 +364,7 @@ const BagelFamilyIntro = () => {
                     ) : (
                       <>
                         <ChevronDown className="w-4 h-4 mr-1" />
-                        More
+                        {t('More')}
                       </>
                     )}
                   </Button>

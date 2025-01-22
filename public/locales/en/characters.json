@@ -1,0 +1,141 @@
+{
+    "en":{
+    "hero": {
+    "title": "Meet Your Tech Education Team",
+    "subtitle": "A family of tech-savvy educators dedicated to making your learning journey deliciously engaging"
+  },
+  "search": {
+    "placeholder": "Search by name, role, or expertise...",
+    "noResults": "No team members found",
+    "adjustTerms": "Try adjusting your search terms"
+  },
+  "common": {
+    "more": "More",
+    "less": "Less",
+    "expertise": "Expertise",
+    "stats": "Stats",
+    "achievements": "Achievements",
+    "teaching": "Teaching",
+    "tech": "Tech",
+    "problemSolving": "Problem Solving"
+  },
+  "team": {
+    "bagelMama": {
+      "name": "Bagel Mama",
+      "role": "Tech Education Expert",
+      "description": "A brilliant computer science educator who makes complex coding concepts feel as warm and comforting as freshly baked bread. With her nurturing approach and deep technical expertise, she transforms intimidating programming challenges into digestible, delicious learning experiences.",
+      "expertise": {
+        "programming": "Programming Fundamentals",
+        "webDev": "Web Development",
+        "digitalLiteracy": "Digital Literacy",
+        "csEducation": "Computer Science Education",
+        "curriculum": "Curriculum Design",
+        "assessment": "Learning Assessment"
+      },
+      "achievements": {
+        "mentored": "10,000+ Students Mentored",
+        "curriculum": "Award-Winning Curriculum",
+        "innovation": "EdTech Innovation Prize",
+        "teaching": "Best Teaching Practices Award",
+        "inclusion": "Digital Inclusion Champion",
+        "researcher": "CS Education Researcher of the Year"
+      }
+    },
+    "bagelPapa": {
+      "name": "Bagel Papa",
+      "role": "STEM Solutions Architect",
+      "description": "A seasoned engineer turned educator who brings real-world tech experience to the classroom. His blend of industry expertise and dad jokes creates an engaging learning environment where complex concepts become surprisingly simple and memorable.",
+      "expertise": {
+        "dataStructures": "Data Structures",
+        "algorithms": "Algorithm Design",
+        "softwareEng": "Software Engineering",
+        "architecture": "System Architecture",
+        "cloud": "Cloud Computing",
+        "leadership": "Technical Leadership"
+      },
+      "achievements": {
+        "techLead": "Former Tech Lead at BagelSoft",
+        "mentorship": "Created Mentorship Program",
+        "stemChampion": "STEM Education Champion",
+        "experience": "20+ Years Industry Experience",
+        "author": "Published Technical Author",
+        "innovation": "Innovation in Teaching Award"
+      }
+    },
+    "jill": {
+      "name": "Jill",
+      "role": "Creative Tech Guide",
+      "description": "A dynamic educator who specializes in creative coding and interactive design. She bridges the gap between art and technology, helping students discover the beauty in both worlds while building impressive digital projects that showcase their creativity.",
+      "expertise": {
+        "creativeCoding": "Creative Coding",
+        "uiux": "UI/UX Design",
+        "digitalArt": "Digital Art",
+        "interactive": "Interactive Media",
+        "frontend": "Front-end Development",
+        "designThinking": "Design Thinking"
+      },
+      "achievements": {
+        "campLeader": "Youth Coding Camp Leader",
+        "specialist": "Digital Arts Specialist",
+        "studentChoice": "Student Choice Award",
+        "innovation": "Creative Tech Innovation Prize",
+        "excellence": "Design Education Excellence",
+        "impact": "Community Impact Award"
+      }
+    },
+    "jackie": {
+      "name": "Jackie",
+      "role": "Innovation Coach",
+      "description": "A tech enthusiast who helps students explore cutting-edge technologies. With boundless energy and forward-thinking approach, she guides learners through the exciting frontiers of AI, gaming, and mobile development, turning complex concepts into exciting discoveries.",
+      "expertise": {
+        "ai": "Artificial Intelligence",
+        "gameDev": "Game Development",
+        "mobile": "Mobile Apps",
+        "emerging": "Emerging Technologies",
+        "projectMgmt": "Project Management",
+        "agile": "Agile Methodologies"
+      },
+      "achievements": {
+        "clubFounder": "Tech Club Founder",
+        "hackathon": "Hackathon Mentor",
+        "champion": "Innovation Champion",
+        "aiPioneer": "AI Education Pioneer",
+        "gameJudge": "Game Dev Competition Judge",
+        "diversity": "Tech Diversity Advocate"
+      }
+    }
+  },
+  "stats": {
+    "teachingSkills": {
+      "label": "Teaching Skills",
+      "description": "Ability to convey complex concepts"
+    },
+    "techExpertise": {
+      "label": "Tech Expertise",
+      "description": "Deep knowledge in specialized areas"
+    },
+    "problemSolving": {
+      "label": "Problem Solving",
+      "description": "Ability to tackle complex challenges"
+    },
+    "studentSupport": {
+      "label": "Student Support",
+      "description": "Guidance and support for students"
+    }
+  },
+  "buttons": {
+    "showMore": "Show More",
+    "showLess": "Show Less",
+    "apply": "Apply",
+    "contact": "Contact Us"
+  },
+  "accessibility": {
+    "expandCard": "Expand {name}'s information",
+    "collapseCard": "Collapse {name}'s information",
+    "searchInput": "Search team members",
+    "teamMemberImage": "{name}'s image",
+    "expertiseTag": "Expertise in {field}",
+    "statsGraph": "Statistics graph for {stat}"
+  }
+}
+}
