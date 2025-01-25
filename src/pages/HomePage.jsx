@@ -62,7 +62,7 @@ const CourseCard = ({ course }) => {
           className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
         >
           <span className="mr-2">{t("Start Learning")}</span>
-          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          {/* <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /> */}
         </Button>
       </CardFooter>
     </Card>
@@ -85,7 +85,7 @@ const FeatureCard = ({ icon: Icon, title, description, gradient, buttonText, lin
           className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
         >
           {buttonText}
-          <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          {/* <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /> */}
         </Button>
       </CardContent>
     </Card>

@@ -32,6 +32,14 @@ const CareerPathsPage = () => {
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+    const [Language, setLanguage] = useState({
+      label: t('English'),
+      value: 'English',
+    });
+    const [Level, setLevel] = useState({
+      label: t('Beginner'),
+      value: 'beginner',
+    });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -185,7 +193,7 @@ const CareerPathsPage = () => {
                       </div>
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
                         <BookOpen className="w-4 h-4 mr-2" />
-                        <span>{path.lessons} {t("lessons")}</span>
+                        <span>{path.lessons} </span>
                       </div>
                     </div>
                     
@@ -196,7 +204,7 @@ const CareerPathsPage = () => {
                       </div>
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-2 text-blue-500" />
-                        <span>{path.enrolledCount.toLocaleString()} enrolled</span>
+                        <span>{path.enrolledCount.toLocaleString()} </span>
                       </div>
                     </div>
           <Link 

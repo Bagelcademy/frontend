@@ -49,13 +49,14 @@ const PrivacyPolicy = () => {
             <li>{t('privacy.userRights.item1')}</li>
             <li>{t('privacy.userRights.item2')}</li>
             <li>{t('privacy.userRights.item3')}</li>
-            <li>{t('privacy.userRights.item4')}</li>
+            {/* <li>{t('privacy.userRights.item4')}</li> */}
           </ul>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mb-4">{t('privacy.contactInformation.title')}</h2>
           <p className="text-gray-700 dark:text-gray-300">{t('privacy.contactInformation.email')}</p>
+          <p className="text-gray-700 dark:text-gray-300">{t('privacy.contactInformation.phoneNumber')} : 09039179491</p>
         </section>
       </div>
     </div>

@@ -5,7 +5,7 @@ const FAQ = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="mt-24 bg-gray-100 dark:bg-zinc-800 text-gray-900 dark:text-white py-12">
+    <div className="mt-24 bg-gray-100 text-justify dark:bg-zinc-800 text-gray-900 dark:text-white py-12">
       <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-center text-blue-500 dark:text-blue-400 mb-8">
           {t('Frequently Asked Questions')}

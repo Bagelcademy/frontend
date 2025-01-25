@@ -76,6 +76,8 @@ const TermsOfService = () => {
         <section>
           <h2 className="text-2xl font-semibold mb-4">{t('terms.contact.title')}</h2>
           <p className="text-gray-700 dark:text-gray-300">{t('terms.contact.email')}</p>
+          <p className="text-gray-700 dark:text-gray-300">{t('privacy.contactInformation.phoneNumber')} : 09039179491</p>
+
         </section>
       </div>
     </div>
