@@ -182,7 +182,7 @@ const CareerPathsPage = () => {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
                         <Clock className="w-4 h-4 mr-2" />
-                        <span>{path.duration}</span>
+                        <span>{path.duration} {t("months")}</span>
                       </div>
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
                         <BookOpen className="w-4 h-4 mr-2" />
