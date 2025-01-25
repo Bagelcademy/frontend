@@ -32,14 +32,7 @@ const CareerPathsPage = () => {
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-    const [Language, setLanguage] = useState({
-      label: t('English'),
-      value: 'English',
-    });
-    const [Level, setLevel] = useState({
-      label: t('Beginner'),
-      value: 'beginner',
-    });
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -195,13 +188,7 @@ const CareerPathsPage = () => {
                         <BookOpen className="w-4 h-4 mr-2" />
                         <span>{path.lessons} </span>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center">
-                        <Briefcase className="w-4 h-4 mr-2 text-purple-500" />
-                        <span>{path.level}</span>
-                      </div>
+ 
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-2 text-blue-500" />
                         <span>{path.enrolledCount.toLocaleString()} </span>
@@ -215,7 +202,6 @@ const CareerPathsPage = () => {
                       className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
                     >
                       <span className="mr-2">{t("Start Learning")}</span>
-                      <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     </Link>
                   </div>
