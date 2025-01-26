@@ -144,28 +144,29 @@ const Quiz = ({ lessonId, onComplete }) => {
           </Alert>
         )}
         {!results ? (
-          <div className="space-y-8">
+          <div className="flex flex-col gap-8">
             {questions.map((question, index) => (
-              <div key={question.id} className="space-y-4">
+              <div key={question.id} className="flex flex-col gap-6">
                 <h3 className="font-medium">
                   {index + 1}. {question.text}
                 </h3>
-                <RadioGroup
-                  name={`question-${question.id}`} 
-                  value={selectedAnswers[question.id] || ""} // Currently selected value for this question
-                  onChange={(e) => handleAnswerChange(question.id, e.target.value)} // Update the state on selection
-                  className="space-y-2"
-                >
-                {question.options.map((option) => (
-                  <RadioGroupItem key={option.id} value={option.id}>
-                  {option.text}
-                </RadioGroupItem>
-                ))}
-                </RadioGroup>
-
+                <div className="flex flex-col gap-6">
+                  <RadioGroup
+                    name={`question-${question.id}`}
+                    value={selectedAnswers[question.id] || ""} // Currently selected value for this question
+                    onChange={(e) => handleAnswerChange(question.id, e.target.value)} // Update the state on selection
+                    className="flex flex-col gap-2"
+                  >
+                    {question.options.map((option) => (
+                      <RadioGroupItem key={option.id} value={option.id} className="flex gap-2 mx-4">
+                        {option.text}
+                      </RadioGroupItem>
+                    ))}
+                  </RadioGroup>
+                </div>
               </div>
             ))}
-            <Button className="w-full" onClick={handleSubmit}>
+            <Button className="w-full text-white" onClick={handleSubmit}>
               Submit Quiz
             </Button>
           </div>
@@ -183,11 +184,10 @@ const Quiz = ({ lessonId, onComplete }) => {
                 return (
                   <div
                     key={question.id}
-                    className={`p-4 rounded-lg border ${
-                      isCorrect
+                    className={`p-4 rounded-lg border ${isCorrect
                         ? 'border-green-200 bg-green-50 dark:bg-green-900/20'
                         : 'border-red-200 bg-red-50 dark:bg-red-900/20'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start gap-2">
                       {isCorrect ? (
@@ -200,11 +200,10 @@ const Quiz = ({ lessonId, onComplete }) => {
                         <div className="text-sm mt-1">
                           {isCorrect
                             ? 'Correct!'
-                            : `Correct answer: ${
-                                question.options.find(
-                                  o => o.id === results.answers[question.id]
-                                )?.text
-                              }`}
+                            : `Correct answer: ${question.options.find(
+                              o => o.id === results.answers[question.id]
+                            )?.text
+                            }`}
                         </div>
                       </div>
                     </div>
@@ -213,7 +212,7 @@ const Quiz = ({ lessonId, onComplete }) => {
               })}
             </div>
             {!results.passed && (
-              <Button className="w-full" onClick={() => setResults(null)}>
+              <Button className="w-full text-white" onClick={() => setResults(null)}>
                 Try Again
               </Button>
             )}

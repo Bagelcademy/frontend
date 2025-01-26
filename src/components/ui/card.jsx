@@ -13,7 +13,16 @@ export const CardHeader = ({ children }) => (
 );
 
 export const CardTitle = ({ children }) => (
-  <h2 className="text-xl font-semibold my-1">
+  <h2 
+    className="text-xl font-semibold my-1 line-clamp-2 h-[56px]"
+    style={{
+      display: '-webkit-box',
+      WebkitLineClamp: 2,
+      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    }}
+  >
     {children}
   </h2>
 );
