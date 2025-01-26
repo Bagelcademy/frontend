@@ -90,7 +90,7 @@ const LearningPathDetail = () => {
   }
 
   return (
-    <div className="pt-28 min-h-screen bg-lightBackground dark:bg-darkBackground">
+    <div className="pt-28 min-h-screen bg-lightBackground dark:bg-darkBackground dark:text-white">
       {/* Hero Section */}
       <div className="bg-white dark:bg-gray-800 border-b border-borderColor">
         <div className="max-w-6xl mx-auto px-4 py-12">
@@ -114,7 +114,7 @@ const LearningPathDetail = () => {
                 </div>
               </div>
               <div className="flex justify-center">
-                <button className="bg-buttonColor text-white px-8 py-3 rounded-md font-medium hover:opacity-90 transition-colors">
+                <button className="bg-buttonColor dark:text-white text-white px-8 py-3 rounded-md font-medium hover:opacity-90 transition-colors">
                   {t('Start Career Path')}
                 </button>
               </div>
@@ -148,10 +148,10 @@ const LearningPathDetail = () => {
         <h2 className="text-2xl font-bold mb-8 text-gray-900 dark:text-gray-100">{t('Course Curriculum')}</h2>
         <div className="space-y-4">
           {pathData.courses.map((course, index) => (
-            <div key={course.id} className="bg-white dark:bg-gray-800 rounded-lg border border-borderColor">
+            <div key={course.id} className="bg-white dark:text-white dark:bg-gray-800 rounded-lg border border-borderColor">
               <button
                 onClick={() => toggleCourse(course.id)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-lightBackground dark:bg-darkBackground"
+                className="w-full px-6 py-4 flex items-center  dark:text-white justify-between bg-lightBackground dark:bg-darkBackground"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-8 h-8 bg-buttonColor bg-opacity-10 dark:bg-opacity-20 text-buttonColor rounded-full flex items-center justify-center font-medium">
@@ -176,9 +176,9 @@ const LearningPathDetail = () => {
                     <p className="text-gray-600 dark:text-gray-300 mb-4">{course.description}</p>
                     <Link
                       to={`/course/${course.id}`}
-                      className="inline-flex items-center gap-2 text-buttonColor hover:opacity-90"
+                      className="inline-flex items-center gap-2 text-white hover:opacity-90"
                     >
-                      <Play className="w-4 h-4" />
+                      <Play className="w-4 h-4 text-white" />
                       {t('Start Course')}
                     </Link>
                   </div>

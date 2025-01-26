@@ -108,15 +108,13 @@ const CourseLandingPage = () => {
               {course.title}
             </h1>
             <div className="flex items-center justify-center space-x-8 mb-8 text-white">
-              <div className="flex items-center">
-                <Users className="w-6 h-6 mr-2" />
-                <span>{course.enroll_count || 0} students</span>
-              </div>
+
               <div className="flex items-center">
                 <Clock className="w-6 h-6 mr-2" />
-                <span>{course.lessons?.length || 0} lessons</span>
+                <span>{course.lessons?.length || 0} {t('lessons')}</span>
+                
               </div>
-              <StarRating rating={4.5} />
+              {/* <StarRating rating={4.5} /> */}
             </div>
             <button
               onClick={handleEnrollClick}

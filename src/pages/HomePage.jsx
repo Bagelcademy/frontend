@@ -46,8 +46,8 @@ const CourseCard = ({ course }) => {
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <BookOpen className="w-4 h-4 mx-1" />
-                <span>{course.level || 'Beginner'}</span>
-              </div>
+                <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+                </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <Globe2 className="w-4 h-4 mx-1 " />
                 <span>{course.language || 'English'}</span>
