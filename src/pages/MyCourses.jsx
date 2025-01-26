@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
-  Clock, ChevronRight, Star, Filter, Globe2
+  Clock, ChevronRight, Star, Filter, Globe2 , Briefcase
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -13,13 +13,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../compone
 const ITEMS_PER_PAGE = 12;
 const TOTAL_LESSONS = 15; // Total lessons per course
 
-const motivationalQuotes = [
-  { quote: "Every bagel was once just flour and water. Your potential is limitless!", author: "Mama Bagel" },
-  { quote: "Rise and shine like a fresh-baked bagel!", author: "Papa Bagel" },
-  { quote: "Keep rolling through your lessons, you're on a roll!", author: "Mama Bagel" },
-  { quote: "A journey of a thousand miles begins with a single bite!", author: "Papa Bagel" },
-  { quote: "You're getting more well-rounded every day!", author: "Mama Bagel" }
-];
+
 
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
@@ -50,6 +44,14 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
+  
+  const motivationalQuotes = [
+      { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
+      { quote: t('motivationalQuotes.quote2'), author: t('motivationalQuotes.author2') },
+      { quote: t('motivationalQuotes.quote3'), author: t('motivationalQuotes.author3') },
+      { quote: t('motivationalQuotes.quote4'), author: t('motivationalQuotes.author4') },
+      { quote: t('motivationalQuotes.quote5'), author: t('motivationalQuotes.author5') }
+    ];
   const [quote, setQuote] = useState(motivationalQuotes[0]);
 
   useEffect(() => {
@@ -163,9 +165,9 @@ const MyCourses = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
-                  <BookOpen className="w-4 h-4 mx-1" />
-                  <span>{course.level}</span>
-                </div>
+                  <Briefcase className="w-4 h-4 mx-1" />
+                  <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+                  </div>
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
                   <Globe2 className="w-4 h-4 mx-1" />
                   <span>{course.language}</span>
@@ -175,18 +177,18 @@ const MyCourses = () => {
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center">
                   <Award className="w-4 h-4 mx-1 text-purple-500" />
-                  <span>{progress.points_earned} pts</span>
+                  <span>{progress.points_earned} {t('Points')}</span>
                 </div>
                 <div className="flex items-center">
                   <Zap className="w-4 h-4 mx-1 text-yellow-500" />
-                  <span>{progress.streak} streak</span>
+                  <span>{progress.streak} {t("Streak")}</span>
                 </div>
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600 dark:text-gray-400">{t("Progress")}</span>
-                  <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} lessons</span>
+                  <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} {t("lessons")}</span>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div
@@ -238,7 +240,8 @@ const MyCourses = () => {
                 <Zap className="w-4 h-4 text-white" />
               </div>
             </div>
-            <h2 className="text-white mt-4 text-xl font-semibold">Welcome back, {userProfile?.username}!</h2>
+            <h2 className="text-white mt-4 text-xl font-semibold">      {t('welcomeBack', { username: userProfile?.username })}
+            </h2>
 
             {/* Motivational Quote */}
             <div className="mt-4 text-center max-w-2xl">

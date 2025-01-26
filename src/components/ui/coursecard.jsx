@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Search, BookOpen, Users, Star, Filter, ChevronDown } from 'lucide-react';
+import { Globe2, Briefcase, Users, Star, Filter, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 
@@ -43,17 +43,27 @@ const CourseCard = ({ course }) => {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center text-gray-600 dark:text-gray-400">
-              <BookOpen className="w-4 h-4 mr-2" />
-              <span className="text-sm">{course.lessonCount} {t('lessons')}</span>
-            </div>
+              <Briefcase className="w-4 h-4 mr-2" />
+              <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+              </div>
             <div className="flex items-center text-gray-600 dark:text-gray-400">
               <Users className="w-4 h-4 mr-2" />
               <span className="text-sm">{course.enroll_count || 0}</span>
             </div>
           </div>
           
-          <StarRating rating={4.5} />
-          
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between ">
+                          <div className="flex items-center text-gray-600 dark:text-gray-400">
+                            {/* <Briefcase className="w-4 h-4 mx-1" /> */}
+                            <StarRating rating={4.5} />
+                            </div>
+                          <div className="flex items-center text-gray-600 dark:text-gray-400">
+                            <Globe2 className="w-4 h-4 mr-2" />
+                            <span>{course.language}</span>
+                          </div>
+                        </div>
+                        </div>
           <Link 
             to={`/course/${course.id}`}
             className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"

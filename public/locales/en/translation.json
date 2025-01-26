@@ -224,6 +224,21 @@
     "social_sciences": "Social Sciences",
     "arts": "Arts"
   },
+    
+  "motivationalQuotes": {
+    "quote1": "Every bagel was once just flour and water. Your potential is limitless!",
+    "author1": "Mama Bagel",
+    "quote2": "Rise and shine like a fresh-baked bagel!",
+    "author2": "Papa Bagel",
+    "quote3": "Keep rolling through your lessons, you're on a roll!",
+    "author3": "Mama Bagel",
+    "quote4": "A journey of a thousand miles begins with a single bite!",
+    "author4": "Papa Bagel",
+    "quote5": "You're getting more well-rounded every day!",
+    "author5": "Mama Bagel"
+  },
+  "welcomeBack": "Welcome back, {{username}}!",
+
   "Take The Exam": "Take The Exam",
   "Invalid learning path ID": "Invalid learning path ID",
   "Failed to load learning path data": "Failed to load learning path data",
