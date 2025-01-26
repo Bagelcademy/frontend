@@ -142,20 +142,20 @@ const LessonPage = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Progress Bar */}
-      <div className="fixed top-16 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
+      {/* <div className="fixed top-16 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
         <motion.div
           className="h-full bg-blue-500"
           initial={{ width: 0 }}
           animate={{ width: `${(parseInt(lessonId) / lesson?.totalLessons) * 100}%` }}
           transition={{ duration: 0.5 }}
         />
-      </div>
+      </div> */}
 
       {/* Tab Navigation */}
       <div className="fixed top-20 left-0 right-0 bg-white dark:bg-slate-800 border-b dark:border-slate-700 z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
+        <div className="mx-auto px-4">
+          <div className="flex items-center justify-center h-16">
+            <div className="flex items-center gap-4">
               {TABS.map(({ id, icon: Icon, label }) => (
                 <Button
                   key={id}
@@ -168,15 +168,15 @@ const LessonPage = () => {
                 </Button>
               ))}
             </div>
-            <div className="text-sm font-medium text-slate-500">
+            {/* <div className="text-sm font-medium text-slate-500">
               {t('Lesson')} {lessonId} / {lesson?.totalLessons}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <main className="container mx-auto px-4 pt-40 pb-24 flex-1 min-h-0">
+      <main className="container mx-auto px-4 pt-16 pb-24 flex-1 min-h-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -228,7 +228,7 @@ const LessonPage = () => {
             disabled={parseInt(lessonId) === 1}
             className="w-24"
           >
-            <ArrowLeft className="w-5 h-5" />
+            {t('Previous')}
           </Button>
           <div className="text-center text-sm text-slate-500 dark:text-slate-400">
             {t('Lesson')} {lessonId} / {lesson?.totalLessons}
@@ -238,7 +238,7 @@ const LessonPage = () => {
             disabled={!isNextAvailable}
             className="w-24"
           >
-            <ArrowRight className="w-5 h-5" />
+            {t('Next')}
           </Button>
         </div>
       </div>

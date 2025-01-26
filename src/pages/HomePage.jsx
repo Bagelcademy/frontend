@@ -38,7 +38,17 @@ const CourseCard = ({ course }) => {
 
       <CardContent className="relative p-6">
         <div className="flex flex-col h-full">
-          <h3 className="text-lg font-semibold mb-3 line-clamp-2">
+          {/* Updated Title Section */}
+          <h3
+            className="text-lg font-semibold mb-3 line-clamp-2 h-[48px]"
+            style={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
             {course.title}
           </h3>
 
@@ -47,9 +57,9 @@ const CourseCard = ({ course }) => {
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <BookOpen className="w-4 h-4 mx-1" />
                 <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
-                </div>
+              </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
-                <Globe2 className="w-4 h-4 mx-1 " />
+                <Globe2 className="w-4 h-4 mx-1" />
                 <span>{course.language || 'English'}</span>
               </div>
             </div>
@@ -62,7 +72,6 @@ const CourseCard = ({ course }) => {
           className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
         >
           <span className="mr-2">{t("Start Learning")}</span>
-          {/* <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /> */}
         </Button>
       </CardFooter>
     </Card>

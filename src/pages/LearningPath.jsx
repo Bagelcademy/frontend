@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Clock, BookOpen,Users, Star, Filter, Briefcase, Award, Zap, ChevronRight } from 'lucide-react';
+import { Search, Clock, BookOpen, Users, Star, Filter, Briefcase, Award, Zap, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from "../components/ui/input";
@@ -13,11 +13,10 @@ const StarRating = ({ rating }) => (
     {[1, 2, 3, 4, 5].map((star) => (
       <Star
         key={star}
-        className={`w-3 h-3 ${
-          star <= rating
-            ? 'fill-yellow-400 text-yellow-400'
-            : 'fill-gray-300 text-gray-300'
-        }`}
+        className={`w-3 h-3 ${star <= rating
+          ? 'fill-yellow-400 text-yellow-400'
+          : 'fill-gray-300 text-gray-300'
+          }`}
       />
     ))}
     <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">
@@ -116,7 +115,7 @@ const CareerPathsPage = () => {
           <p className="text-xl text-white/80 mb-8">
             {t("Choose your learning journey and advance your career")}
           </p>
-          
+
           <div className="max-w-4xl space-y-6">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -151,8 +150,8 @@ const CareerPathsPage = () => {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedPaths.map(path => (
-            <Card 
-              key={path.id} 
+            <Card
+              key={path.id}
               className="group h-full overflow-hidden border-0 bg-white dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102"
               onClick={() => navigate(`/learning-path/${path.id}`)}
             >
@@ -167,17 +166,37 @@ const CareerPathsPage = () => {
                   <StarRating rating={parseFloat(path.rating)} />
                 </div>
               </div>
-              
+
               <CardContent className="p-6">
                 <div className="flex flex-col h-full">
-                  <h3 className="text-lg font-semibold mb-2 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                  {/* Title: Restrict to 2 lines */}
+                  <h3
+                    className="text-lg font-semibold mb-2 line-clamp-2 h-[52px] group-hover:text-blue-600 dark:group-hover:text-blue-400"
+                    style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {path.title}
                   </h3>
-                  
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+
+                  {/* Description: Restrict to 2 lines */}
+                  <p
+                    className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 h-[42px]"
+                    style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
                     {path.description}
                   </p>
-                  
+
                   <div className="space-y-4 mt-auto">
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
@@ -186,23 +205,22 @@ const CareerPathsPage = () => {
                       </div>
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
                         <BookOpen className="w-4 h-4 mr-2" />
-                        <span>{path.lessons} </span>
+                        <span>{path.lessons}</span>
                       </div>
- 
                       <div className="flex items-center">
                         <Users className="w-4 h-4 mr-2 text-blue-500" />
-                        <span>{path.enrolledCount.toLocaleString()} </span>
+                        <span>{path.enrolledCount.toLocaleString()}</span>
                       </div>
                     </div>
-          <Link 
-            to={`/learning-paths/${path.id}`}
-            className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
-          >         
-                    <Button 
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+                    <Link
+                      to={`/learning-paths/${path.id}`}
+                      className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
                     >
-                      <span className="mr-2">{t("Start Learning")}</span>
-                    </Button>
+                      <Button
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+                      >
+                        <span className="mr-2">{t("Start Learning")}</span>
+                      </Button>
                     </Link>
                   </div>
                 </div>
