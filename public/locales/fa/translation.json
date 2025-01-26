@@ -115,6 +115,15 @@
   "intermediate": "متوسط",
   "advanced": "پیشرفته"
 },
+
+
+  "Code": "کد",
+  "for 30% off": "برای ۳۰٪ تخفیف",
+  "Expired": "منقضی شده",
+  "Use code": "از کد استفاده کنید",
+  "BAGEL": "BAGEL",
+  "to get 30% off! Limited time offer!": "برای دریافت ۳۰٪ تخفیف! زمان محدود!",
+
   "signupTitle": "ثبت نام",
   "username": "نام کاربری",
   "password": "رمز عبور",

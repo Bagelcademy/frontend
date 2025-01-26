@@ -238,7 +238,9 @@
     "author5": "Mama Bagel"
   },
   "welcomeBack": "Welcome back, {{username}}!",
-
+  "Code": "Code",
+  "for 30% off": "for 30% off",
+  "Expired": "Expired",
   "Take The Exam": "Take The Exam",
   "Invalid learning path ID": "Invalid learning path ID",
   "Failed to load learning path data": "Failed to load learning path data",

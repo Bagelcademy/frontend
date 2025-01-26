@@ -113,7 +113,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   }, []);
 
   return (
-    <div className="min-h-screen mt-24 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen  bg-gray-50 dark:bg-gray-900">
       <Helmet>
         <title>{t('Welcome')} | Bagelcademy</title>
         <meta name="description" content={t('Ready to start learning?')} />

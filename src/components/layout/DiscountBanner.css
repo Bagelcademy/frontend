@@ -1,0 +1,47 @@
+.discount-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    /* border: 2px solid blue; */
+    color: white;
+    cursor: pointer;
+    animation: fadeIn 1.5s ease-in-out;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 400%;
+    animation: rainbowBackground 3s ease infinite;
+  }
+  
+  .banner-text {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .bagel {
+    color: red;
+    font-weight: 900;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.6);
+    animation: lampEffect 1.5s ease-in-out infinite;
+  }
+  
+  .timer {
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  
+  @keyframes rainbowBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes lampEffect {
+    0%, 100% { text-shadow: 0 0 8px rgba(255, 0, 0, 0.8), 0 0 15px rgba(255, 0, 0, 0.6); }
+    50% { text-shadow: 0 0 15px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.9); }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
