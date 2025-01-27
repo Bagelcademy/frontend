@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Dialog, DialogContent} from '../components/dialog/dialog';
+import { Dialog, DialogContent } from '../components/dialog/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -45,7 +45,9 @@ const LessonPage = () => {
   const [isNextAvailable, setIsNextAvailable] = useState(false);
   const [isLastLesson, setIsLastLesson] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [noQuiz, setNoQuiz] = useState(false); // New state for no quiz scenario
   const [contentGenerating, setContentGenerating] = useState(false);
+
   useEffect(() => {
     const checkAndFetchLesson = async () => {
       const token = localStorage.getItem('accessToken');
@@ -83,8 +85,25 @@ const LessonPage = () => {
         }
         const data = await lessonResponse.json();
         setLesson(data);
-        if (data.is_last_lesson) {
-          setIsLastLesson(true);
+        setIsLastLesson(data.is_last_lesson);
+
+        if (data.has_quiz === false) {
+          setNoQuiz(true);
+          setIsNextAvailable(true); // Enable next button if no quiz exists
+
+          // Automatically complete the lesson if no quiz exists
+          await fetch(
+            `https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+        } else {
+          setNoQuiz(false);
         }
         setIsNextAvailable(data.isCompleted);
       } catch (err) {
@@ -119,6 +138,7 @@ const LessonPage = () => {
         if (isLastLesson) {
           setOpenDialog(true);
         } else {
+          setActiveTab('content');
           navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
         }
       } catch (err) {
@@ -211,8 +231,8 @@ const LessonPage = () => {
             )}
 
             {activeTab === 'ai' && (
-              <div className="h-full"> 
-              <AIAssistant lessonContent={lesson?.content} />
+              <div className="h-full">
+                <AIAssistant lessonContent={lesson?.content} />
               </div>
             )}
           </motion.div>
@@ -273,7 +293,7 @@ const LessonPage = () => {
           numberOfPieces={200}
         />
       )}
-    
+
 
 
       <style jsx global>{`

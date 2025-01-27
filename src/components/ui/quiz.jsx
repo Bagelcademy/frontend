@@ -47,6 +47,9 @@ const Quiz = ({ lessonId, onComplete }) => {
         }));
         setQuestions(formattedQuestions);
       }
+      else {
+        onComplete?.();
+      }
     } catch (error) {
       console.error('Failed to fetch questions:', error);
     } finally {
@@ -205,10 +208,10 @@ const Quiz = ({ lessonId, onComplete }) => {
                           {isCorrect
                             ? t('quiz.correctAnswer')
                             : t('quiz.correctAnswerWas', {
-                                answer: question.options.find(
-                                  o => o.id === results.answers[question.id]
-                                )?.text
-                              })
+                              answer: question.options.find(
+                                o => o.id === results.answers[question.id]
+                              )?.text
+                            })
                           }
                         </div>
                       </div>
