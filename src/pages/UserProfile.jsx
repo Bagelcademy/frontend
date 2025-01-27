@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Flame, Mail, Calendar, Edit3, Upload, Bell,
-  Trophy, Target, CircleSlash, Gift, CreditCard, Clock,BookOpen, Award, Zap
+  Trophy, Target, CircleSlash, Gift, CreditCard, Clock, BookOpen, Award, Zap
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Notiflix from 'notiflix';
@@ -35,6 +35,11 @@ const UserProfilePage = () => {
   const [notifications, setNotifications] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [validationErrors, setValidationErrors] = useState({});
+  const [birthDate, setBirthDate] = useState({
+    day: '',
+    month: '',
+    year: ''
+  });
 
   Notiflix.Notify.init({
     width: '280px',
@@ -43,6 +48,36 @@ const UserProfilePage = () => {
     opacity: 0.9,
     fontSize: '20px',
     borderRadius: '5px',
+  });
+
+  const validationSchema = Yup.object().shape({
+    first_name: Yup.string()
+      .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
+      .max(20, t("nameTooLong"))
+      .required(t("required")),
+    phone_number: Yup.string()
+      .matches(/^\d+$/, t("invalidPhoneNumber"))
+      .min(11, t("phoneNumberTooShort"))
+      .max(13, t("phoneNumberTooLong"))
+      .required(t("required")),
+    email: Yup.string()
+      .email(t("invalidEmail"))
+      .required(t("required")),
+    birthDay: Yup.number()
+      .min(1, t("invalidDay"))
+      .max(31, t("invalidDay"))
+      .required(t("required")),
+    birthMonth: Yup.number()
+      .min(1, t("invalidMonth"))
+      .max(12, t("invalidMonth"))
+      .required(t("required")),
+    birthYear: Yup.number()
+      .min(1300, t("invalidYear"))
+      .max(2020, t("invalidYear"))
+      .required(t("required")),
+    national_code: Yup.string()
+      .matches(/^[0-9]{10}$/, t("invalidNationalCode"))
+      .required(t("required")),
   });
 
   useEffect(() => {
@@ -62,6 +97,16 @@ const UserProfilePage = () => {
 
         const userData = await userResponse.json();
         const notificationsData = await notificationsResponse.json();
+
+        // Parse birthdate into separate fields
+        if (userData.birthdate) {
+          const [year, month, day] = userData.birthdate.split('-');
+          setBirthDate({
+            day: parseInt(day),
+            month: parseInt(month),
+            year: parseInt(year)
+          });
+        }
 
         setUser(userData);
         setBio(userData.bio || '');
@@ -139,29 +184,6 @@ const UserProfilePage = () => {
     }
   };
 
-  const validationSchema = Yup.object().shape({
-    first_name: Yup.string()
-      .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
-      .max(20, t("nameTooLong"))
-      .required(t("required")),
-    phone_number: Yup.string()
-      .matches(/^\d+$/, t("invalidPhoneNumber"))
-      .min(11, t("phoneNumberTooShort"))
-      .max(13, t("phoneNumberTooLong"))
-      .required(t("required")),
-    email: Yup.string()
-      .email(t("invalidEmail"))
-      .required(t("required")),
-    birthdate: Yup.date()
-      .nullable()
-      .min(new Date(1900, 0, 1), t("invalidBirthdate"))
-      .max(new Date(), t("invalidBirthdate"))
-      .required(t("required")),
-    national_code: Yup.string()
-      .matches(/^[0-9]{10}$/, t("invalidNationalCode"))
-      .required(t("required")),
-  });
-
   const handleInputChange = async (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
@@ -174,11 +196,48 @@ const UserProfilePage = () => {
     }
   };
 
+  const handleBirthDateChange = (field) => (e) => {
+    const value = e.target.value;
+    setBirthDate(prev => ({
+      ...prev,
+      [field]: value
+    }));
+
+    // Update the main user object with the combined date
+    const updatedBirthDate = {
+      ...birthDate,
+      [field]: value
+    };
+    
+    const formattedDate = `${updatedBirthDate.year}-${
+      String(updatedBirthDate.month).padStart(2, '0')
+    }-${String(updatedBirthDate.day).padStart(2, '0')}`;
+    
+    setUser(prev => ({
+      ...prev,
+      birthdate: formattedDate
+    }));
+
+    // Validate the individual field
+    try {
+      validationSchema.validateAt(`birth${field.charAt(0).toUpperCase() + field.slice(1)}`, { [`birth${field.charAt(0).toUpperCase() + field.slice(1)}`]: value });
+      setValidationErrors(prev => ({ ...prev, [field]: null }));
+    } catch (err) {
+      setValidationErrors(prev => ({ ...prev, [field]: err.message }));
+    }
+  };
+
   const handleBioChange = (e) => setBio(e.target.value);
 
   const handleSave = async () => {
     try {
-      await validationSchema.validate(user, { abortEarly: false });
+      // Validate birth date fields separately
+      await validationSchema.validate({
+        ...user,
+        birthDay: birthDate.day,
+        birthMonth: birthDate.month,
+        birthYear: birthDate.year
+      }, { abortEarly: false });
 
       const token = localStorage.getItem("accessToken");
       const response = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
@@ -214,6 +273,50 @@ const UserProfilePage = () => {
       }
     }
   };
+
+  const renderBirthDateInputs = () => (
+    <div className="grid grid-cols-3 gap-2">
+      <div>
+        <input
+          type="number"
+          className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
+            validationErrors.day ? 'border-red-500' : 'border-gray-300'
+          } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+          placeholder={t('day')}
+          value={birthDate.day}
+          onChange={handleBirthDateChange('day')}
+          min="1"
+          max="31"
+        />
+      </div>
+      <div>
+        <input
+          type="number"
+          className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
+            validationErrors.month ? 'border-red-500' : 'border-gray-300'
+          } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+          placeholder={t('month')}
+          value={birthDate.month}
+          onChange={handleBirthDateChange('month')}
+          min="1"
+          max="12"
+        />
+      </div>
+      <div>
+        <input
+          type="number"
+          className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
+            validationErrors.year ? 'border-red-500' : 'border-gray-300'
+          } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+          placeholder={t('year')}
+          value={birthDate.year}
+          onChange={handleBirthDateChange('year')}
+          min="1300"
+          max="2020"
+        />
+      </div>
+    </div>
+  );
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -332,15 +435,13 @@ const UserProfilePage = () => {
                     name="email"
                     onChange={handleInputChange}
                   />
-                  <input
-                    className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
-                      validationErrors.birthdate ? 'border-red-500' : 'border-gray-300'
-                    } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    placeholder={t('enterBirthdate')}
-                    value={user?.birthdate || ''}
-                    name="birthdate"
-                    onChange={handleInputChange}
-                  />
+                  {/* Replace single birthdate input with separated inputs */}
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      {t('birthdate')}
+                    </label>
+                    {renderBirthDateInputs()}
+                  </div>
                   <input
                     className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
                       validationErrors.national_code ? 'border-red-500' : 'border-gray-300'

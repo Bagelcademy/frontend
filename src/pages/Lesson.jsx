@@ -25,19 +25,19 @@ import Quiz from '../components/ui/quiz';
 import Notes from '../components/ui/notes';
 import LoadingSpinner from '../components/ui/loading';
 // Tabs configuration for cleaner code
-const TABS = [
-  { id: 'content', icon: BookOpen, label: 'Content' },
-  { id: 'quiz', icon: Trophy, label: 'Quiz' },
-  { id: 'notes', icon: Pencil, label: 'Notes' },
-  { id: 'code', icon: Terminal, label: 'Code Lab' },
-  { id: 'ai', icon: BrainCircuit, label: 'AI Assistant' },
-];
+
 
 const LessonPage = () => {
   const { t } = useTranslation();
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
-  
+  const TABS = [
+    { id: 'content', icon: BookOpen, label: t('Content') },
+    { id: 'quiz', icon: Trophy, label: t('Quiz') },
+    { id: 'notes', icon: Pencil, label: t('Notes') },
+    { id: 'code', icon: Terminal, label: t('Code Lab') },
+    { id: 'ai', icon: BrainCircuit, label: t('AI Assistant') },
+  ];
   const [activeTab, setActiveTab] = useState('content');
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);

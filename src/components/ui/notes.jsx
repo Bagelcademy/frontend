@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { Save, Trash2, XCircle } from 'lucide-react';
 
 const Notes = ({ lessonId, courseId }) => {
+  const { t } = useTranslation();
   const [note, setNote] = useState('');
-  const [noteId, setnoteId] = useState('');
+  const [noteId, setNoteId] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
-
-  
   const fetchNotesApi = 'https://bagelapi.bagelcademy.org/courses/user-notes/get-notes/';
   const createNoteApi = 'https://bagelapi.bagelcademy.org/courses/user-notes/create-note/';
   const deleteNoteApi = (noteId) => `https://bagelapi.bagelcademy.org/courses/user-notes/${noteId}/delete-note/`;
@@ -39,12 +38,18 @@ const Notes = ({ lessonId, courseId }) => {
       }
 
       const data = await response.json();
-      setNote(data?.[0].content || '');
-      setnoteId(data?.[0].id)
+      // Only set note content if there's actual data
+      if (data && data.length > 0) {
+        setNote(data[0].content);
+        setNoteId(data[0].id);
+      } else {
+        setNote('');
+        setNoteId('');
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching note:', error);
-      setError('Failed to fetch note. Please try again.');
+      setError(t('notes.errors.fetchError'));
       setLoading(false);
     }
   };
@@ -74,7 +79,7 @@ const Notes = ({ lessonId, courseId }) => {
       setError(null);
     } catch (error) {
       console.error('Error saving note:', error);
-      setError('Failed to save note. Please try again.');
+      setError(t('notes.errors.saveError'));
     }
   };
 
@@ -93,11 +98,12 @@ const Notes = ({ lessonId, courseId }) => {
       }
 
       setNote('');
+      setNoteId('');
       setIsEditing(false);
       setError(null);
     } catch (error) {
       console.error('Error deleting note:', error);
-      setError('Failed to delete note. Please try again.');
+      setError(t('notes.errors.fetchError'));
     }
   };
 
@@ -108,11 +114,11 @@ const Notes = ({ lessonId, courseId }) => {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Lesson Notes</CardTitle>
+        <CardTitle>{t('notes.title')}</CardTitle>
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p>Loading...</p>
+          <p>{t('notes.loading')}</p>
         ) : (
           <>
             {error && (
@@ -127,7 +133,7 @@ const Notes = ({ lessonId, courseId }) => {
               onChange={(e) => setNote(e.target.value)}
               disabled={!isEditing}
               className="w-full mb-4"
-              placeholder="Add your note here..."
+              placeholder={t('notes.placeholder')}
             />
 
             <div className="flex gap-2">
@@ -135,20 +141,20 @@ const Notes = ({ lessonId, courseId }) => {
                 <>
                   <Button onClick={saveNote} disabled={!note.trim()}>
                     <Save className="w-4 h-4" />
-                    Save
+                    {t('notes.buttons.save')}
                   </Button>
                   <Button variant="ghost" onClick={() => setIsEditing(false)}>
-                    Cancel
+                    {t('notes.buttons.cancel')}
                   </Button>
                 </>
               ) : (
                 <>
                   <Button onClick={() => setIsEditing(true)}>
-                    Edit
+                    {t('notes.buttons.edit')}
                   </Button>
                   <Button variant="ghost" onClick={deleteNote} className="text-red-500">
                     <Trash2 className="w-4 h-4" />
-                    Delete
+                    {t('notes.buttons.delete')}
                   </Button>
                 </>
               )}

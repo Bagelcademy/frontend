@@ -237,6 +237,48 @@
     "quote5": "You're getting more well-rounded every day!",
     "author5": "Mama Bagel"
   },
+  "quiz": {
+    "title": "Knowledge Check",
+    "noQuestions": "This lesson has no quiz.",
+    "answerAllAlert": "Please answer all questions before submitting.",
+    "submitButton": "Submit Quiz",
+    "congratulations": "Congratulations! 🎉",
+    "keepLearning": "Keep Learning! 📚",
+    "scoreMessage": "You scored {{score}}%",
+    "correctAnswer": "Correct!",
+    "correctAnswerWas": "Correct answer: {{answer}}",
+    "tryAgainButton": "Try Again"
+  },
+    "notes": {
+      "title": "Lesson Notes",
+      "placeholder": "Add your note here...",
+      "loading": "Loading...",
+      "buttons": {
+        "save": "Save",
+        "cancel": "Cancel", 
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "errors": {
+        "fetchError": "Failed to fetch note. Please try again.",
+        "saveError": "Failed to save note. Please try again."
+      }
+    },
+  
+  "Content": "Content",
+  "Quiz": "Quiz",
+  "Notes": "Notes",
+  "Code Lab": "Code Lab",
+  "AI Assistant": "AI Assistant",
+  "chat": {
+    "title": "AI Assistant",
+    "emptyState": "Ask me anything about the lesson!",
+    "inputPlaceholder": "Type your message...",
+    "errorMessage": "Sorry, I encountered an error. Please try again.",
+    "welcomeMessage": "Hi! I'm here to help you understand this lesson even better. Feel free to ask any questions!",
+    "aria": {
+      "sendButton": "Send message"
+    }},
   "welcomeBack": "Welcome back, {{username}}!",
   "Code": "Code",
   "for 30% off": "for 30% off",

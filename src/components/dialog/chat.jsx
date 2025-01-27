@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -59,6 +60,7 @@ const Message = ({ isBot, content, timestamp }) => (
 );
 
 const AIAssistant = ({ lessonContent }) => {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -67,6 +69,16 @@ const AIAssistant = ({ lessonContent }) => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    // Add welcome message when component mounts
+    setMessages([{
+      id: Date.now(),
+      content: t('chat.welcomeMessage'),
+      isBot: true,
+      timestamp: new Date(),
+    }]);
+  }, [t]); // Add t as dependency since we're using it in the effect
 
   useEffect(() => {
     scrollToBottom();
@@ -109,10 +121,9 @@ const AIAssistant = ({ lessonContent }) => {
       }]);
     } catch (error) {
       console.error('Error:', error);
-      // Optionally add error message to chat
       setMessages(prev => [...prev, {
         id: Date.now(),
-        content: "Sorry, I encountered an error. Please try again.",
+        content: t('chat.errorMessage'),
         isBot: true,
         timestamp: new Date(),
       }]);
@@ -126,7 +137,7 @@ const AIAssistant = ({ lessonContent }) => {
       <CardHeader className="shrink-0 py-3">
         <CardTitle className="flex items-center gap-2">
           <Bot className="w-5 h-5 text-blue-500" />
-          AI Assistant
+          {t('chat.title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col min-h-0 p-4 pt-0">
@@ -134,7 +145,7 @@ const AIAssistant = ({ lessonContent }) => {
           <div className="space-y-4">
             {messages.length === 0 ? (
               <div className="flex items-center justify-center h-40 text-slate-400">
-                Ask me anything about the lesson!
+                {t('chat.emptyState')}
               </div>
             ) : (
               <>
@@ -158,14 +169,14 @@ const AIAssistant = ({ lessonContent }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
-            placeholder="Type your message..."
+            placeholder={t('chat.inputPlaceholder')}
             className="flex-1"
           />
           <Button 
             onClick={handleSendMessage} 
             disabled={isLoading || !input.trim()}
             className="w-10 h-10 p-0"
-            aria-label="Send message"
+            aria-label={t('chat.aria.sendButton')}
           >
             <Send className="w-4 h-4" />
           </Button>

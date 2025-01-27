@@ -5,8 +5,10 @@ import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Label } from '../ui/label';
 import { Trophy, CheckCircle, XCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '../ui/alert';
+import { useTranslation } from 'react-i18next';
 
 const Quiz = ({ lessonId, onComplete }) => {
+  const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [results, setResults] = useState(null);
@@ -121,7 +123,7 @@ const Quiz = ({ lessonId, onComplete }) => {
     return (
       <Card className="w-full">
         <CardContent className="flex items-center justify-center h-32">
-          <p className="text-slate-500">This lesson has no quiz.</p>
+          <p className="text-slate-500">{t('quiz.noQuestions')}</p>
         </CardContent>
       </Card>
     );
@@ -132,14 +134,14 @@ const Quiz = ({ lessonId, onComplete }) => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-5 h-5 text-yellow-500" />
-          Knowledge Check
+          {t('quiz.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {showAlert && (
           <Alert variant="destructive" className="mb-4">
             <AlertDescription>
-              Please answer all questions before submitting.
+              {t('quiz.answerAllAlert')}
             </AlertDescription>
           </Alert>
         )}
@@ -153,8 +155,8 @@ const Quiz = ({ lessonId, onComplete }) => {
                 <div className="flex flex-col gap-6">
                   <RadioGroup
                     name={`question-${question.id}`}
-                    value={selectedAnswers[question.id] || ""} // Currently selected value for this question
-                    onChange={(e) => handleAnswerChange(question.id, e.target.value)} // Update the state on selection
+                    value={selectedAnswers[question.id] || ""}
+                    onChange={(e) => handleAnswerChange(question.id, e.target.value)}
                     className="flex flex-col gap-2"
                   >
                     {question.options.map((option) => (
@@ -167,16 +169,18 @@ const Quiz = ({ lessonId, onComplete }) => {
               </div>
             ))}
             <Button className="w-full text-white" onClick={handleSubmit}>
-              Submit Quiz
+              {t('quiz.submitButton')}
             </Button>
           </div>
         ) : (
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <div className="text-2xl font-bold">
-                {results.passed ? 'Congratulations! 🎉' : 'Keep Learning! 📚'}
+                {results.passed ? t('quiz.congratulations') : t('quiz.keepLearning')}
               </div>
-              <div className="text-slate-500">You scored {results.total_score}%</div>
+              <div className="text-slate-500">
+                {t('quiz.scoreMessage', { score: results.total_score })}
+              </div>
             </div>
             <div className="space-y-4">
               {questions.map(question => {
@@ -185,8 +189,8 @@ const Quiz = ({ lessonId, onComplete }) => {
                   <div
                     key={question.id}
                     className={`p-4 rounded-lg border ${isCorrect
-                        ? 'border-green-200 bg-green-50 dark:bg-green-900/20'
-                        : 'border-red-200 bg-red-50 dark:bg-red-900/20'
+                      ? 'border-green-200 bg-green-50 dark:bg-green-900/20'
+                      : 'border-red-200 bg-red-50 dark:bg-red-900/20'
                       }`}
                   >
                     <div className="flex items-start gap-2">
@@ -199,11 +203,13 @@ const Quiz = ({ lessonId, onComplete }) => {
                         <div className="font-medium">{question.text}</div>
                         <div className="text-sm mt-1">
                           {isCorrect
-                            ? 'Correct!'
-                            : `Correct answer: ${question.options.find(
-                              o => o.id === results.answers[question.id]
-                            )?.text
-                            }`}
+                            ? t('quiz.correctAnswer')
+                            : t('quiz.correctAnswerWas', {
+                                answer: question.options.find(
+                                  o => o.id === results.answers[question.id]
+                                )?.text
+                              })
+                          }
                         </div>
                       </div>
                     </div>
@@ -213,7 +219,7 @@ const Quiz = ({ lessonId, onComplete }) => {
             </div>
             {!results.passed && (
               <Button className="w-full text-white" onClick={() => setResults(null)}>
-                Try Again
+                {t('quiz.tryAgainButton')}
               </Button>
             )}
           </div>
