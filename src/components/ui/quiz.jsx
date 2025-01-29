@@ -7,7 +7,7 @@ import { Trophy, CheckCircle, XCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '../ui/alert';
 import { useTranslation } from 'react-i18next';
 
-const Quiz = ({ lessonId, onComplete }) => {
+const Quiz = ({ courseId,lessonId, onComplete }) => {
   const { t } = useTranslation();
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -16,8 +16,34 @@ const Quiz = ({ lessonId, onComplete }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    fetchQuestions();
+    initializeQuiz();
   }, [lessonId]);
+
+  const initializeQuiz = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    try {
+      setLoading(true);
+      // First API call to generate quiz content
+      const generationResponse = await fetch(
+        `https://bagelapi.bagelcademy.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      await generationResponse.json(); // Wait for the response
+      
+      // Then fetch questions
+      await fetchQuestions();
+    } catch (error) {
+      console.error('Failed to initialize quiz:', error);
+      setLoading(false);
+    }
+  };
 
   const fetchQuestions = async () => {
     const token = localStorage.getItem('accessToken');
@@ -171,7 +197,7 @@ const Quiz = ({ lessonId, onComplete }) => {
                 </div>
               </div>
             ))}
-            <Button className="w-full text-white" onClick={handleSubmit}>
+            <Button className="w-full text-white bg-gray-800 " onClick={handleSubmit}>
               {t('quiz.submitButton')}
             </Button>
           </div>
@@ -182,7 +208,7 @@ const Quiz = ({ lessonId, onComplete }) => {
                 {results.passed ? t('quiz.congratulations') : t('quiz.keepLearning')}
               </div>
               <div className="text-slate-500">
-                {t('quiz.scoreMessage', { score: results.points_earned })}
+                {t('quiz.scoreMessage', { score: results.total_score })}
               </div>
             </div>
             <div className="space-y-4">
@@ -224,7 +250,7 @@ const Quiz = ({ lessonId, onComplete }) => {
               })}
             </div>
             {!results.passed && (
-              <Button className="w-full text-white" onClick={() => setResults(null)}>
+              <Button className="w-full text-white bg-gray-800" onClick={() => setResults(null)}>
                 {t('quiz.tryAgainButton')}
               </Button>
             )}

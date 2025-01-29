@@ -80,7 +80,7 @@ const CodeEditor = () => {
           <Button
             onClick={executeCode}
             disabled={isExecuting || !code.trim()}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-gray-800 text-white"
           >
             <Play className="w-4 h-4" />
             {isExecuting ? 'Running...' : 'Execute'}
