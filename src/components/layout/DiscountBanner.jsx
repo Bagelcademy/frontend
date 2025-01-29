@@ -126,7 +126,7 @@ const DiscountBanner = () => {
           {t('30% off')}
         </div>
       </div>
-      <div className="text-xl font-b5 text-shadow-sm">{formatTime()}</div>
+      <div className="text-lg font-b5 text-shadow-sm">{formatTime()}</div>
     </div>
   );
 };

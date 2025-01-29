@@ -47,6 +47,9 @@ const Quiz = ({ lessonId, onComplete }) => {
         }));
         setQuestions(formattedQuestions);
       }
+      else {
+        onComplete?.();
+      }
     } catch (error) {
       console.error('Failed to fetch questions:', error);
     } finally {

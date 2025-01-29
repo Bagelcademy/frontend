@@ -105,12 +105,12 @@ const RequestPage = () => {
       const recaptchaToken = await executeRecaptcha();
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        setError(t('User not found, please log in.'));
+        setSubmitStatus('user_not_logged_in');
         return;
-      }      
+      }
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/course-generation/generate_gpt_course/', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
@@ -260,13 +260,14 @@ const RequestPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`mt-4 p-3 rounded-lg text-center ${
-              submitStatus === 'success'
+            className={`mt-4 p-3 rounded-lg text-center ${submitStatus === 'success'
                 ? 'bg-green-500 text-white'
                 : submitStatus === 'no_credit'
-                ? 'bg-yellow-500 text-white'
-                : 'bg-red-500 text-white'
-            }`}
+                  ? 'bg-yellow-500 text-white'
+                  : submitStatus === 'user_not_logged_in'
+                    ? 'bg-red-500 text-white'
+                    : 'bg-red-500 text-white'
+              }`}
           >
             {submitStatus === 'success' ? (
               t('Your quest for knowledge has begun!')
@@ -280,11 +281,14 @@ const RequestPage = () => {
                   {t('Go to Shop')}
                 </button>
               </>
+            ) : submitStatus === 'user_not_logged_in' ? (
+              t('User not found, please log in.')
             ) : (
               t('Oops! There was an error. Please try again.')
             )}
           </motion.div>
         )}
+
         {courses.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
