@@ -179,20 +179,19 @@ const Quiz = ({ lessonId, onComplete }) => {
                 {results.passed ? t('quiz.congratulations') : t('quiz.keepLearning')}
               </div>
               <div className="text-slate-500">
-                {t('quiz.scoreMessage', { score: results.points_earned })}
+                {t('quiz.scoreMessage', { score: results.total_score })}
               </div>
             </div>
             <div className="space-y-4">
-              {results.answers.map((answer) => {
-                const isCorrect = answer.is_correct;
+              {questions.map(question => {
+                const isCorrect = results.answers[question.id];
                 return (
                   <div
-                    key={answer.question_id}
-                    className={`p-4 rounded-lg border ${
-                      isCorrect
-                        ? 'border-green-200 bg-green-50 dark:bg-green-900/20'
-                        : 'border-red-200 bg-red-50 dark:bg-red-900/20'
-                    }`}
+                    key={question.id}
+                    className={`p-4 rounded-lg border ${isCorrect
+                      ? 'border-green-200 bg-green-50 dark:bg-green-900/20'
+                      : 'border-red-200 bg-red-50 dark:bg-red-900/20'
+                      }`}
                   >
                     <div className="flex items-start gap-2">
                       {isCorrect ? (
@@ -201,18 +200,16 @@ const Quiz = ({ lessonId, onComplete }) => {
                         <XCircle className="w-5 h-5 text-red-500 mt-1" />
                       )}
                       <div>
-                        <div className="font-medium">
-                          {questions.find(q => q.id === answer.question_id)?.text}
-                        </div>
+                        <div className="font-medium">{question.text}</div>
                         <div className="text-sm mt-1">
-                          <div className="mb-1">
-                            {t('quiz.yourAnswer')}: {answer.selected_option}
-                          </div>
-                          {!isCorrect && (
-                            <div className="text-red-600">
-                              {t('quiz.correctAnswerWas')}: {answer.correct_option}
-                            </div>
-                          )}
+                          {isCorrect
+                            ? t('quiz.correctAnswer')
+                            : t('quiz.correctAnswerWas', {
+                                answer: question.options.find(
+                                  o => o.id === results.answers[question.id]
+                                )?.text
+                              })
+                          }
                         </div>
                       </div>
                     </div>

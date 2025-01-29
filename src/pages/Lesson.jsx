@@ -199,7 +199,7 @@ const LessonPage = () => {
             )}
 
             {activeTab === 'quiz' && (
-              <Quiz lessonId={lessonId} onComplete={handleQuizComplete} />
+              <Quiz lessonId={lessonId} courseId={courseId} onComplete={handleQuizComplete} />
             )}
 
             {activeTab === 'notes' && (
