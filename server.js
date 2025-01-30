@@ -18,7 +18,7 @@ async function createServer() {
         });
         app.use(vite.middlewares);
     } else {
-        app.use(express.static(path.resolve(__dirname, '/var/www/bagel/dist')));
+        app.use(express.static(path.resolve(__dirname, 'dist')));
     }
 
     app.use('*', async (req, res) => {
