@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
@@ -6,8 +6,7 @@ import i18n from '../i18n';
 import {
   BookOpen, Award, Zap, Search, Users,
   Clock, ChevronRight, Star, Filter, Rocket,
-  Brain, Target, Gift, Globe2
-} from 'lucide-react';
+  Brain, Target, Gift, Globe2, GraduationCap, UserCheck} from 'lucide-react';
 import heroImage from '../assets/137.png';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardFooter } from '../components/ui/card';
@@ -75,6 +74,62 @@ const CourseCard = ({ course }) => {
         </Button>
       </CardFooter>
     </Card>
+  );
+};
+
+const CounterCard = ({ icon: Icon, value, label }) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          const duration = 2000; // 2 seconds
+          const steps = 60;
+          const increment = value / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= value) {
+              setCount(value);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+
+    return () => {
+      if (countRef.current) {
+        observer.unobserve(countRef.current);
+      }
+    };
+  }, [value]);
+
+  return (
+    <motion.div
+      ref={countRef}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+    >
+      <div className="mb-4 p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
+        <Icon className="w-8 h-8 text-white" />
+      </div>
+      <h3 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-2">
+        {count.toLocaleString()}+
+      </h3>
+      <p className="text-gray-600 dark:text-gray-300 text-lg">{label}</p>
+    </motion.div>
   );
 };
 
@@ -184,6 +239,24 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
                 <CourseCard course={course} />
               </Link>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Counter Section */}
+      <div className="bg-gray-50 dark:bg-gray-900 py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <CounterCard
+              icon={BookOpen}
+              value={100}
+              label={t('Active Courses')}
+            />
+            <CounterCard
+              icon={UserCheck}
+              value={400}
+              label={t('Active Users')}
+            />
           </div>
         </div>
       </div>

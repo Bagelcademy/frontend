@@ -279,6 +279,9 @@
     "aria": {
       "sendButton": "Send message"
     }},
+  
+  "Active Courses":"Active Courses",
+  "Active Users":"Active Users",
   "welcomeBack": "Welcome back, {{username}}!",
   "Code": "Code",
   "for 30% off": "for 30% off",
