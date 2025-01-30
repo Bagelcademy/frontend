@@ -13,7 +13,7 @@ export default defineConfig({
     outDir: 'dist/server',
   },
   ssr: {
-    noExternal: ["@uiw/react-codemirror"],
+    noExternal: ["@uiw/react-codemirror", "@uiw/codemirror-extensions-basic-setup"],
     external: ["@mohsen007/react-goftino"],
   },
   define: {
