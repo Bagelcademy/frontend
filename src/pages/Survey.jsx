@@ -91,6 +91,7 @@ const Survey = () => {
   };
 
   const submitSurvey = async () => {
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/Survey/', { 
@@ -116,6 +117,7 @@ const Survey = () => {
     } catch (error) {
       console.error('Error submitting survey:', error);
     }
+  }
   };
 
   return (

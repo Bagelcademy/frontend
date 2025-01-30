@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Dialog, DialogContent } from '../components/dialog/dialog';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import Notiflix from "notiflix";
 import ReactMarkdown from 'react-markdown';
 import Confetti from 'react-confetti';
 import {
@@ -47,9 +47,11 @@ const LessonPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [noQuiz, setNoQuiz] = useState(false); // New state for no quiz scenario
   const [contentGenerating, setContentGenerating] = useState(false);
+  const { Notify } = Notiflix;
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
+      if (typeof window !== "undefined") {
       const token = localStorage.getItem('accessToken');
       if (!token) {
         Notify.failure(t('Please login first.'));
@@ -116,7 +118,9 @@ const LessonPage = () => {
 
   
     checkAndFetchLesson();
-  }, [courseId, lessonId, navigate, t]);
+  }
+  }
+  , [courseId, lessonId, navigate, t]);
 
   const handleNavigation = async (direction) => {
     if (direction === 'next' && !isNextAvailable) {
@@ -125,6 +129,7 @@ const LessonPage = () => {
     }
 
     if (direction === 'next') {
+      if (typeof window !== "undefined") {
       try {
         const token = localStorage.getItem('accessToken');
         await fetch(`https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`, {
@@ -149,6 +154,7 @@ const LessonPage = () => {
         navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) - 1}`);
       }
     }
+  }
   };
 
   const handleQuizComplete = () => {

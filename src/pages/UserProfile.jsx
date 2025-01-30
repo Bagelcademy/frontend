@@ -82,6 +82,7 @@ const UserProfilePage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      if (typeof window !== "undefined") {
       try {
         const token = localStorage.getItem("accessToken");
         const headers = { 'Authorization': `Bearer ${token}` };
@@ -117,11 +118,13 @@ const UserProfilePage = () => {
         setLoading(false);
       }
     };
+    };
 
     fetchUserData();
   }, [t]);
 
   const handleImageUpload = async (e) => {
+    if (typeof window !== "undefined") {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -132,6 +135,7 @@ const UserProfilePage = () => {
     }
 
     try {
+      
       Notiflix.Notify.info(t('uploadInProgress'));
 
       const token = localStorage.getItem("accessToken");
@@ -182,6 +186,7 @@ const UserProfilePage = () => {
       setError(err.message);
       Notiflix.Notify.failure(err.message);
     }
+  }
   };
 
   const handleInputChange = async (e) => {
@@ -230,6 +235,7 @@ const UserProfilePage = () => {
   const handleBioChange = (e) => setBio(e.target.value);
 
   const handleSave = async () => {
+    if (typeof window !== "undefined") {
     try {
       // Validate birth date fields separately
       await validationSchema.validate({
@@ -272,6 +278,7 @@ const UserProfilePage = () => {
         Notiflix.Notify.failure(err.message);
       }
     }
+  }
   };
 
   const renderBirthDateInputs = () => (

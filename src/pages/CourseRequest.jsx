@@ -102,6 +102,7 @@ const RequestPage = () => {
     setIsSubmitting(true);
 
     try {
+      if (typeof window !== "undefined") {
       const recaptchaToken = await executeRecaptcha();
       const token = localStorage.getItem('accessToken');
       if (!token) {
@@ -136,7 +137,9 @@ const RequestPage = () => {
       setSubmitStatus('success');
       setCourses([...courses, data]);
       setRequest('');
-    } catch (error) {
+    }
+    }
+     catch (error) {
       console.error('Error submitting request:', error);
       setSubmitStatus('error');
     } finally {

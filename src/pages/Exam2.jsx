@@ -20,6 +20,7 @@ const ExamPage = () => {
 
   useEffect(() => {
     const fetchExam = async () => {
+      if (typeof window !== "undefined") {
       try {
         const token = localStorage.getItem('accessToken');
         const response = await fetch('https://bagelapi.bagelcademy.org/api/exam', {
@@ -41,6 +42,7 @@ const ExamPage = () => {
         setError(err.message);
         setLoading(false);
       }
+    }
     };
 
     fetchExam();
@@ -85,6 +87,7 @@ const ExamPage = () => {
 
   const handleSubmitExam = async () => {
     setSubmitting(true);
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/api/examAnswer', {
@@ -108,6 +111,7 @@ const ExamPage = () => {
     } finally {
       setSubmitting(false);
     }
+  }
   };
 
   if (loading) return <div>Loading...</div>;

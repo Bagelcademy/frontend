@@ -20,6 +20,7 @@ const AISurvey = () => {
   };
 
   const handleSubmit = async () => {
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('access_token');
 
     if (!token) {
@@ -46,6 +47,7 @@ const AISurvey = () => {
       console.error('Error submitting survey:', error);
       alert('An error occurred. Please try again.');
     }
+  }
   };
 
   return (

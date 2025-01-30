@@ -75,6 +75,7 @@ const Courses = () => {
   };
 
   const handleAskClick = () => {
+    if (typeof window !== "undefined") {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       enqueueSnackbar(t('Please log in to access this feature.'), { variant: 'info' });
@@ -82,6 +83,7 @@ const Courses = () => {
     } else {
       navigate('/ask');
     }
+  }
   };
 
   return (

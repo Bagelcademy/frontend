@@ -4,15 +4,18 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    if (typeof window !== "undefined") {
     // Check localStorage and system preference
     const saved = localStorage.getItem('theme');
     if (saved) {
       return saved === 'dark';
     }
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
   });
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
     // Update document class and localStorage when theme changes
     if (isDarkTheme) {
       document.documentElement.classList.add('dark');
@@ -21,6 +24,7 @@ export const ThemeProvider = ({ children }) => {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  }
   }, [isDarkTheme]);
 
   const toggleTheme = () => {

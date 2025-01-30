@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { useTranslation } from 'react-i18next';
-import { Notify } from 'notiflix';
+import Notiflix from "notiflix";
 import { useNavigate } from 'react-router-dom';
 
 const ExamPage = () => {
@@ -14,10 +14,12 @@ const ExamPage = () => {
   const [result, setResult] = useState(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { Notify } = Notiflix;
 
 
   useEffect(() => {
     const fetchExam = async () => {
+      if (typeof window !== "undefined") {
       try {
         const token = localStorage.getItem('accessToken');
         const response = await fetch('https://bagelapi.bagelcademy.org/courses/paths/1/generate_exam/', {
@@ -40,6 +42,7 @@ const ExamPage = () => {
         setError(err.message);
         setLoading(false);
       }
+    }
     };
 
     fetchExam();
@@ -54,6 +57,7 @@ const ExamPage = () => {
 
   const handleSubmitExam = async () => {
     setSubmitting(true);
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/paths/1/generate_exam/', {
@@ -76,6 +80,7 @@ const ExamPage = () => {
     } finally {
       setSubmitting(false);
     }
+  }
   };
 
   const sampleExam = {

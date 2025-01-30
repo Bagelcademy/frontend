@@ -201,6 +201,7 @@ const Signup = () => {
   
 
   const handleGoogleSignup = async (response) => {
+    if (typeof window !== "undefined") {
     try {
       setIsLoading(true);
       setError('');
@@ -229,6 +230,7 @@ const Signup = () => {
     } finally {
       setIsLoading(false);
     }
+  }
   };
 
 

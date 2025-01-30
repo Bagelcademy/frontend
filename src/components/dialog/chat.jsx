@@ -99,6 +99,7 @@ const AIAssistant = ({ lessonContent }) => {
     setIsLoading(true);
 
     try {
+      if (typeof window !== "undefined") {
       const token = localStorage.getItem('accessToken');
       const contextMessage = `this is the lesson that i will ask question about and dont answer not related questions: ${lessonContent} \n\n${input}`;
 
@@ -118,7 +119,8 @@ const AIAssistant = ({ lessonContent }) => {
         content: data.response,
         isBot: true,
         timestamp: new Date(),
-      }]);
+      }])
+      };
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {

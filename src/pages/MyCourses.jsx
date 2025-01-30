@@ -67,6 +67,7 @@ const MyCourses = () => {
 
 
   const fetchUserProfile = async () => {
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
@@ -79,10 +80,12 @@ const MyCourses = () => {
     } catch (error) {
       console.error('Failed to fetch user profile:', error);
     }
+  }
   };
 
 
   const fetchMyCourses = async () => {
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/courses/get_user_courses/', {
@@ -96,6 +99,7 @@ const MyCourses = () => {
     } catch (error) {
       setIsLoading(false);
     }
+  }
   };
 
   const fetchCategories = async () => {

@@ -4,7 +4,7 @@ import { Clock, Book, Award, ChevronDown, ChevronUp, Play } from 'lucide-react';
 import cimage from "../assets/12.png";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Notify } from 'notiflix';
+import Notiflix from "notiflix";
 import i18n from '../i18n';
 
 const LearningPathDetail = () => {
@@ -13,6 +13,7 @@ const LearningPathDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedCourse, setExpandedCourse] = useState(null);
+  const { Notify } = Notiflix;
 
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -53,6 +54,7 @@ const LearningPathDetail = () => {
   };
 
   const takeExamHandler = async () => {
+    if (typeof window !== "undefined") {
     try {
       const token = localStorage.getItem('accessToken');
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/paths/1/generate_exam/', {
@@ -71,6 +73,7 @@ const LearningPathDetail = () => {
     } catch (err) {
       setError(err.message);
     }
+  }
   };
 
   if (isLoading) {

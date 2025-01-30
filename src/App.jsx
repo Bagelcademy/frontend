@@ -26,7 +26,6 @@ import LoginPagee from './pages/t';
 import ExamPage from './pages/Exam';
 import PrivacyPolicy from './pages/privacy';
 import TermsOfService from './pages/terms';
-import { GoftinoSnippet } from '@mohsen007/react-goftino';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import DonutCatcherGame from './pages/game1';
 import FAQ from './pages/FAQ';
@@ -34,20 +33,29 @@ import Interviewer from './pages/interviewer';
 import AISurvey from './pages/survey2';
 import ContactPage from './pages/ContacUs';
 
-const App = () => {
+const App = ({ Router, routerProps }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    if (typeof window !== "undefined") {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     return !!(accessToken && refreshToken);
+    }
   });
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const { i18n } = useTranslation();
   const GOFTINO_KEY = "cD7Gse";
+  const [GoftinoSnippet, setGoftinoSnippet] = useState(null);
 
-  // const navigate = useNavigate();
+  // Dynamically import GoftinoSnippet to avoid SSR issues
+  useEffect(() => {
+    import('@mohsen007/react-goftino')
+      .then((mod) => setGoftinoSnippet(() => mod.GoftinoSnippet))
+      .catch((err) => console.error("Failed to load GoftinoSnippet:", err));
+  }, []);
 
   // Check login status
   useEffect(() => {
+    if (typeof window !== "undefined") {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
     // checks axios access token validity
@@ -79,6 +87,7 @@ const App = () => {
     else {
       setIsLoggedIn(false);
     }
+  }
   }, []);
 
   const changeLanguage = (lng) => {
@@ -94,11 +103,10 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <GoftinoSnippet
-        goftinoKey={GOFTINO_KEY}
-        onReady={() => window.Goftino.close()}
-      />
+    <Router {...routerProps}>
+      {GoftinoSnippet && (
+        <GoftinoSnippet goftinoKey={GOFTINO_KEY} onReady={() => window.Goftino.close()} />
+      )}
       <div dir={i18n.language === 'fa' ? 'rtl' : 'ltr'}>
         <Layout
           isLoggedIn={isLoggedIn}

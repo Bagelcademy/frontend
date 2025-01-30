@@ -139,6 +139,7 @@ const DonutCatcherGame = () => {
   }, [lives]);
 
   const claimReward = async () => {
+    if (typeof window !== "undefined") {
     try {
       const response = await fetch('api/getreward', {
         method: 'POST',
@@ -156,6 +157,7 @@ const DonutCatcherGame = () => {
     } catch (error) {
       toast.error('Failed to claim reward. Please try again.');
     }
+  }
   };
 
   const resetGame = () => {

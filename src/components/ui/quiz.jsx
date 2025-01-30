@@ -20,6 +20,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
   }, [lessonId]);
 
   const initializeQuiz = async () => {
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
 
@@ -43,9 +44,11 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
       console.error('Failed to initialize quiz:', error);
       setLoading(false);
     }
+  }
   };
 
   const fetchQuestions = async () => {
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
 
@@ -81,6 +84,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
     } finally {
       setLoading(false);
     }
+  }
   };
 
   const handleAnswerChange = (questionId, value) => {
@@ -105,6 +109,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
       return;
     }
 
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
 
@@ -132,6 +137,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
     } catch (error) {
       console.error('Failed to submit quiz:', error);
     }
+  }
   };
 
   if (loading) {

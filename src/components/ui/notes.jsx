@@ -19,6 +19,7 @@ const Notes = ({ lessonId, courseId }) => {
 
   const fetchNote = async () => {
     try {
+      if (typeof window !== "undefined") {
       setLoading(true);
       const token = localStorage.getItem('accessToken');
       const response = await fetch(fetchNotesApi, {
@@ -47,7 +48,9 @@ const Notes = ({ lessonId, courseId }) => {
         setNoteId('');
       }
       setLoading(false);
-    } catch (error) {
+    }
+    } 
+    catch (error) {
       console.error('Error fetching note:', error);
       setError(t('notes.errors.fetchError'));
       setLoading(false);
@@ -56,6 +59,7 @@ const Notes = ({ lessonId, courseId }) => {
 
   const saveNote = async () => {
     try {
+      if (typeof window !== "undefined") {
       const token = localStorage.getItem('accessToken');
       const response = await fetch(createNoteApi, {
         method: 'POST',
@@ -77,7 +81,9 @@ const Notes = ({ lessonId, courseId }) => {
 
       setIsEditing(false);
       setError(null);
-    } catch (error) {
+    }
+    }
+     catch (error) {
       console.error('Error saving note:', error);
       setError(t('notes.errors.saveError'));
     }
@@ -85,6 +91,7 @@ const Notes = ({ lessonId, courseId }) => {
 
   const deleteNote = async () => {
     try {
+      if (typeof window !== "undefined") {
       const token = localStorage.getItem('accessToken');
       const response = await fetch(deleteNoteApi(noteId), {
         method: 'DELETE',
@@ -101,7 +108,9 @@ const Notes = ({ lessonId, courseId }) => {
       setNoteId('');
       setIsEditing(false);
       setError(null);
-    } catch (error) {
+    }
+    }
+     catch (error) {
       console.error('Error deleting note:', error);
       setError(t('notes.errors.fetchError'));
     }

@@ -5,11 +5,12 @@ import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../components/ui/input';
 import { useNavigate } from 'react-router-dom';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import Notiflix from "notiflix";
 import { useEffect } from 'react';
 
 const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => {
   const { t, i18n } = useTranslation();
+  const { Notify } = Notiflix;
 
   return (
     <Card className={`w-72 rounded-3xl overflow-hidden ${isHighlighted ? 'border-2 border-red-500' : ''} relative`}>
@@ -62,6 +63,7 @@ const SubscriptionCards = () => {
   const navigate = useNavigate();
 
   const applyDiscount = async () => {
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       Notify.failure(t('Please login first.'));
@@ -96,9 +98,11 @@ const SubscriptionCards = () => {
     } finally {
       setLoading(false);
     }
+  }
   };
 
   const handleSubscribe = async (amount, planCode) => {
+    if (typeof window !== "undefined") {
     const token = localStorage.getItem('accessToken');
     if (!token) {
       Notify.failure(t('Please login first.'));
@@ -147,6 +151,7 @@ const SubscriptionCards = () => {
     } finally {
       setLoading(false);
     }
+  }
   };
 
   const calculateDiscountedPrice = (originalPrice) => {

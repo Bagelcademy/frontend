@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useTranslation } from 'react-i18next';
-import { Notify } from 'notiflix';
+import Notiflix from "notiflix";
 
 const Login = ({ setIsLoggedIn }) => {
   const { t } = useTranslation();
@@ -12,6 +12,7 @@ const Login = ({ setIsLoggedIn }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { Notify } = Notiflix;
 
   useEffect(() => {
     // Load the reCAPTCHA v3 script
@@ -59,6 +60,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   const handleLoginSuccess = () => {
+    if (typeof window !== "undefined") {
     localStorage.setItem('isLoggedIn', 'true');
     
     // Update the parent App.jsx state
@@ -68,9 +70,11 @@ const Login = ({ setIsLoggedIn }) => {
     window.dispatchEvent(new Event('loginStateChanged'));
     Notify.success(t('loginSuccess'));
     navigate('/');
+  }
   };
 
   const handleSubmit = async (e) => {
+    if (typeof window !== "undefined") {
     e.preventDefault();
     setError('');
     
@@ -98,6 +102,7 @@ const Login = ({ setIsLoggedIn }) => {
     } catch (error) {
       setError(t('invalidCredentials'));
     }
+  }
   };
 
   const executeRecaptcha = () => {
@@ -111,6 +116,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   const handleGoogleLogin = async (response) => {
+    if (typeof window !== "undefined") {
     try {
       const backendResponse = await fetch('https://bagelapi.bagelcademy.org/account/login/google_login/', {
         method: 'POST',
@@ -132,6 +138,7 @@ const Login = ({ setIsLoggedIn }) => {
     } catch (error) {
       setError(t('googleLoginFailed'));
     }
+  }
   };
 
   return (

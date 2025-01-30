@@ -52,15 +52,18 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   
 
   const clearAuthData = () => {
+    if (typeof window !== "undefined") {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.setItem('isLoggedIn', 'false');
     setIsLoggedIn(false);
     window.dispatchEvent(new Event('loginStateChanged'));
+    }
   };
 
   const handleLogoutClick = async () => {
     try {
+      if (typeof window !== "undefined") {
       const refreshToken = localStorage.getItem('refreshToken');
       const accessToken = localStorage.getItem('accessToken');
 
@@ -97,6 +100,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
         enqueueSnackbar(t('Failed to log out properly, but your session has been cleared.'), { variant: 'warning' });
         navigate('/login');
       }
+    }
     } catch (error) {
       console.error('Logout error:', error);
       clearAuthData();

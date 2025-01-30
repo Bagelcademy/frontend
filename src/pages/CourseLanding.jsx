@@ -14,6 +14,7 @@ const CourseLandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
     async function fetchData() {
       try {
         const [courseResponse, popularResponse, enrollmentResponse] = await Promise.all([
@@ -45,6 +46,7 @@ const CourseLandingPage = () => {
       }
     }
     fetchData();
+  }
   }, [id, isEnrolled]);
 
   const handleLessonClick = (lessonId) => {
@@ -52,6 +54,7 @@ const CourseLandingPage = () => {
   };
 
   const handleEnrollClick = async () => {
+    if (typeof window !== "undefined") {
     try {
       const response = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
@@ -67,6 +70,7 @@ const CourseLandingPage = () => {
     } catch (error) {
       console.error("Error enrolling:", error);
     }
+  }
   };
 
   const StarRating = ({ rating }) => {
