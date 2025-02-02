@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import i18n from '../i18n';
 import {
-  BookOpen, Award, Zap, Search, Users,
-  Clock, ChevronRight, Star, Filter, Rocket,
-  Brain, Target, Gift, Globe2, GraduationCap, UserCheck} from 'lucide-react';
+  BookOpen, Award, Check, Search, Users,
+  Clock, Star, Filter, Rocket,
+  Brain, Target, Gift, Globe2, GraduationCap, UserCheck,Route} from 'lucide-react';
 import heroImage from '../assets/137.png';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardFooter } from '../components/ui/card';
@@ -77,7 +77,130 @@ const CourseCard = ({ course }) => {
   );
 };
 
-const CounterCard = ({ icon: Icon, value, label }) => {
+
+const DiagonalDivider = ({ className }) => (
+  <div className={`relative h-24 overflow-hidden ${className}`}>
+    <svg className="absolute inset-0 h-full w-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+      <polygon points="0,0 100,0 100,20 0,100" className="fill-current" />
+    </svg>
+  </div>
+);
+
+const CircuitPattern = ({ className }) => (
+
+  <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>
+    <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <pattern id="circuit" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path
+          d="M 10 0 L 10 10 M 0 10 L 20 10"
+          stroke="currentColor"
+          strokeWidth="0.5"
+          fill="none"
+          className="text-current opacity-10"
+        />
+      </pattern>
+      <rect x="0" y="0" width="100" height="100" fill="url(#circuit)" />
+    </svg>
+  </div>
+);
+
+const FeatureSection = ({ icon: Icon, title, description, gradient, buttonText, linkTo, reversed, imageUrl }) => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+ 
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className={`relative py-24 ${
+        reversed ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'
+      } overflow-hidden`}
+    >
+      <CircuitPattern className="opacity-5" />
+      <div className="max-w-7xl mx-auto px-4">
+        <div className={`flex flex-col ${reversed ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-12`}>
+          <div className="flex-1 z-10">
+            <motion.div
+              initial={{ x: reversed ? 50 : -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mb-6"
+            >
+              <div className={`p-4 rounded-xl inline-block ${gradient} bg-opacity-10 dark:bg-opacity-20`}>
+                <Icon className="w-12 h-12 text-white dark:text-blue-400" />
+              </div>
+            </motion.div>
+            <motion.h2
+              initial={{ x: reversed ? 50 : -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-4xl font-bold mb-6 text-gray-900 dark:text-white"
+            >
+              {title}
+            </motion.h2>
+            <motion.p
+              initial={{ x: reversed ? 50 : -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="text-xl mb-8 text-gray-600 dark:text-gray-300"
+            >
+              {description}
+            </motion.p>
+            <motion.div
+              initial={{ x: reversed ? 50 : -50, opacity: 0 }}
+              whileInView={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Button
+                onClick={() => navigate(linkTo)}
+                className={`${gradient} text-white hover:opacity-90 text-lg px-8 py-6 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl`}
+              >
+                {buttonText}
+              </Button>
+            </motion.div>
+          </div>
+          <motion.div
+            initial={{ x: reversed ? -50 : 50, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex-1 z-10"
+          >
+            <div className="relative group">
+              <div className={`absolute inset-0 ${gradient} opacity-20 dark:opacity-40 blur-xl rounded-2xl transform group-hover:scale-105 transition-transform duration-500`}></div>
+              <div className="relative bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl transform group-hover:scale-102 transition-all duration-500">
+                <img
+                  src={imageUrl || "/api/placeholder/600/400"}
+                  alt={title}
+                  className="w-full h-64 object-cover rounded-lg mb-4"
+                />
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full opacity-20 dark:opacity-40 blur-2xl"></div>
+                <div className="relative z-10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg -mt-16 mx-4 border border-gray-200 dark:border-gray-700">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    {t('Key Features')}
+                  </h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-center text-gray-600 dark:text-gray-300">
+                      <Check className="w-4 h-4 mr-2 text-blue-500" />
+                      Feature 1
+                    </li>
+                    <li className="flex items-center text-gray-600 dark:text-gray-300">
+                      <Check className="w-4 h-4 mr-2 text-blue-500" />
+                      Feature 2
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+
+const CounterCard = ({ icon: Icon, value, label, bgImage, gradient }) => {
   const [count, setCount] = useState(0);
   const countRef = useRef(null);
 
@@ -85,7 +208,7 @@ const CounterCard = ({ icon: Icon, value, label }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          const duration = 2000; // 2 seconds
+          const duration = 2000;
           const steps = 60;
           const increment = value / steps;
           let current = 0;
@@ -120,41 +243,46 @@ const CounterCard = ({ icon: Icon, value, label }) => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+      className="group relative overflow-hidden rounded-2xl"
     >
-      <div className="mb-4 p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
-        <Icon className="w-8 h-8 text-white" />
+      {/* Background Layer */}
+      <div 
+        className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+        style={{
+          backgroundImage: bgImage ? `url(${bgImage})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      />
+      
+      {/* Gradient Overlay */}
+      <div 
+        className={`absolute inset-0 ${gradient || 'bg-gradient-to-r from-blue-500/90 to-purple-600/90'} 
+        transition-opacity duration-300 group-hover:opacity-95`}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center p-8 backdrop-blur-sm">
+        <div className="mb-4 p-4 rounded-full bg-white/20 backdrop-blur-sm transform transition-transform duration-300 group-hover:scale-110">
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+        
+        <h3 className="text-5xl font-bold text-white mb-2 transition-transform duration-300 group-hover:-translate-y-1">
+          {count.toLocaleString()}+
+        </h3>
+        
+        <p className="text-white/90 text-lg font-medium">
+          {label}
+        </p>
+
+        {/* Decorative Elements */}
+        <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl" />
+        <div className="absolute -top-4 -left-4 w-20 h-20 bg-white/10 rounded-full blur-xl" />
       </div>
-      <h3 className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-2">
-        {count.toLocaleString()}+
-      </h3>
-      <p className="text-gray-600 dark:text-gray-300 text-lg">{label}</p>
     </motion.div>
   );
 };
 
-const FeatureCard = ({ icon: Icon, title, description, gradient, buttonText, linkTo }) => {
-  const navigate = useNavigate();
-
-  return (
-    <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300">
-      <CardContent className="p-6 flex flex-col h-full">
-        <div className={`p-3 rounded-lg ${gradient} mb-4 w-12 h-12 flex items-center justify-center transform group-hover:scale-110 transition-all duration-300`}>
-          <Icon className="w-6 h-6 text-white" />
-        </div>
-        <h3 className="text-xl font-semibold mb-2 dark:text-white">{title}</h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">{description}</p>
-        <Button
-          onClick={() => navigate(linkTo)}
-          className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
-        >
-          {buttonText}
-          {/* <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /> */}
-        </Button>
-      </CardContent>
-    </Card>
-  );
-};
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);
@@ -179,14 +307,16 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   return (
     <div className="min-h-screen  bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>{t('Welcome')} | Bagelcademy</title>
-        <meta name="description" content={t('Ready to start learning?')} />
-        <meta property="og:title" content={`${t('Welcome')} | Bagelcademy`} />
-        <meta property="og:description" content={t('Ready to start learning?')} />
+        <title>{t('Learn, Grow, Succeed | Bagelcademy')}</title>
+        <meta name="description" content="Discover personalized learning paths, interactive courses, and a supportive community at Bagelcademy. Start your learning journey today!" />
+        <meta name="keywords" content="online learning, courses, education, career paths, personalized learning" />
+        <meta property="og:title" content="Learn, Grow, Succeed | Bagelcademy" />
+        <meta property="og:description" content="Transform your future with Bagelcademy's innovative learning platform." />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${t('Welcome')} | Bagelcademy`} />
-        <meta name="twitter:description" content={t('Ready to start learning?')} />
+        <meta name="twitter:title" content="Learn, Grow, Succeed | Bagelcademy" />
+        <meta name="twitter:description" content="Transform your future with Bagelcademy's innovative learning platform." />
+        <link rel="canonical" href="https://bagelcademy.org" />
       </Helmet>
 
       {/* Hero Section */}
@@ -251,49 +381,64 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
               icon={BookOpen}
               value={100}
               label={t('Active Courses')}
+              bgImage="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2Faf240937-9a88-47d2-9a12-66b5abb6e206.png"
+              gradient="bg-gradient-to-r from-blue-600/90 to-blue-800/90"
             />
             <CounterCard
               icon={UserCheck}
               value={400}
               label={t('Active Users')}
+              bgImage="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2Faf240937-9a88-47d2-9a12-66b5abb6e206.png"
+              gradient="bg-gradient-to-r from-purple-600/90 to-purple-800/90"
             />
           </div>
         </div>
       </div>
 
-      {/* Features */}
-      <div className=" mx-auto px-4 py-16 bg-gray-100 dark:bg-gray-800/50">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl font-b5 text-gray-900 dark:text-white mb-8 text-center">
-            {t('Why Choose Us')}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={Rocket}
-              title={t('Design Your Course')}
-              description={t('Design a course based on any subject or any languages you want! Our intuitive course builder makes it easy to create engaging content.')}
-              gradient="bg-gradient-to-r from-blue-500 to-blue-600"
-              buttonText={t('Create Course')}
-              linkTo="/ask"
-            />
-            <FeatureCard
-              icon={Brain}
-              title={t('Not sure what to learn?')}
-              description={t('Take our personalized learning quiz to discover courses that match your interests, goals, and learning style.')}
-              gradient="bg-gradient-to-r from-purple-500 to-purple-600"
-              buttonText={t('Take Quiz')}
-              linkTo="/quiz"
-            />
-            <FeatureCard
-              icon={Gift}
-              title={t('Meet the Bagel Family')}
-              description={t('Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey.')}
-              gradient="bg-gradient-to-r from-blue-500 to-purple-600"
-              buttonText={t('Meet Characters')}
-              linkTo="/characters"
-            />
-          </div>
-        </div>
+
+      {/* Feature Sections */}
+      <div className="relative">
+        <FeatureSection
+          icon={Rocket}
+          title={t('Design Your Dream Course')}
+          description={t('Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.')}
+          gradient="bg-gradient-to-r from-blue-500 to-blue-600"
+          buttonText={t('Start Creating')}
+          linkTo="/ask"
+          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F9253aec3-5d18-4927-8906-9137951601e6.png"
+        />
+
+        <FeatureSection
+          icon={Brain}
+          title={t('Discover Your Perfect Path')}
+          description={t('Not sure where to start? Take our interactive learning assessment to find courses that align perfectly with your interests, goals, and learning style.')}
+          gradient="bg-gradient-to-r from-purple-500 to-purple-600"
+          buttonText={t('Take Assessment')}
+          linkTo="/quiz"
+          reversed={true}
+          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F77a28a1d-6c43-4d0b-b164-6a078ba478a8.png"
+        />
+
+        <FeatureSection
+          icon={Route}
+          title={t('Chart Your Career Journey')}
+          description={t('Explore structured learning paths designed to take you from beginner to professional. Each path is carefully crafted to build your skills progressively.')}
+          gradient="bg-gradient-to-r from-blue-600 to-purple-600"
+          buttonText={t('Explore Paths')}
+          linkTo="/learning-path"
+          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F8be7911c-bd5f-4329-a15d-942e3ccae4c9.png"
+        />
+
+        <FeatureSection
+          icon={Gift}
+          title={t('Join the Bagel Family')}
+          description={t('Become part of our thriving learning community. Meet our friendly character guides who will support and inspire you throughout your educational journey.')}
+          gradient="bg-gradient-to-r from-purple-600 to-blue-600"
+          buttonText={t('Meet the Family')}
+          linkTo="/characters"
+          reversed={true}
+          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F20402def-7f74-4e80-add6-048298adbb54.png"
+        />
       </div>
 
       {/* CTA Section */}
@@ -310,7 +455,6 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
             className="bg-white text-blue-600 hover:bg-white/90 text-lg px-8 py-4"
           >
             {t('Sign Up Now')}
-            <ChevronRight className="w-5 h-5 ml-2" />
           </Button>
         </div>
       </div>

@@ -563,7 +563,6 @@
   "passwordRequired": "رمز عبور الزامی است.",
   "registrationSuccessful": "ثبت‌نام با موفقیت انجام شد! لطفاً وارد شوید.",
   "fileTooLarge": "فایل بیش از حد بزرگ است. لطفاً فایلی کمتر از ۵ مگابایت بارگذاری کنید.",
-  "Why Choose Us": " چرا ما را انتخاب کنید؟",
   "Didn't find what you're looking for?": "چیزی که به دنبال آن هستید را پیدا نکردید؟",
   "All Languages": "همه زبان‌ها",
   "Discover Your Next Learning Journey": "مسیر یادگیری بعدی خود را کشف کنید",
@@ -574,7 +573,6 @@
   "health": "سلامت",
   "Design Your Course": "طراحی دوره شما",
   "Create Course": "ایجاد دوره",
-  "Sign Up Now": "همین حالا ثبت نام کنید",
   "Meet Characters": "آشنایی با شخصیت‌ها",
   "Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey." : "بپیوندید به جامعه پرانرژی یادگیرندگان ما و با شخصیت‌های دوست‌داشتنی ما آشنا شوید که در طول مسیر یادگیری‌تان از شما حمایت خواهند کرد.",
   "Take our personalized learning quiz to discover courses that match your interests, goals, and learning style." : "در آزمون شخصی‌سازی‌شده یادگیری ما شرکت کنید تا دوره‌هایی را پیدا کنید که با علایق، اهداف و سبک یادگیری شما سازگار هستند.",
@@ -588,7 +586,34 @@
   "Enrolled": "ثبت‌نام کردید",
   "Progress": "پیشرفت",
   "Search paths...": "جستجوی مسیرها...",
-
+  "Design Your Dream Course": "دوره رویایی خود را طراحی کنید",
+  "Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.": "خلاقیت و تخصص خود را با طراحی دوره‌های سفارشی آزاد کنید. ابزار ساخت دوره ما به شما امکان می‌دهد محتوای جذاب در هر موضوع و زبانی ایجاد کنید.",
+  "Start Creating": "شروع به ساخت",
+  
+  "Discover Your Perfect Path": "مسیر کامل خود را کشف کنید",
+  "Not sure where to start? Take our interactive learning assessment to find courses that align perfectly with your interests, goals, and learning style.": "مطمئن نیستید از کجا شروع کنید؟ ارزیابی یادگیری تعاملی ما را انجام دهید تا دوره‌هایی را پیدا کنید که کاملاً با علایق، اهداف و سبک یادگیری شما مطابقت دارند.",
+  "Take Assessment": "شروع ارزیابی",
+  
+  "Chart Your Career Journey": "مسیر شغلی خود را ترسیم کنید",
+  "Explore structured learning paths designed to take you from beginner to professional. Each path is carefully crafted to build your skills progressively.": "مسیرهای یادگیری ساختاریافته را کشف کنید که برای پیشرفت شما از مبتدی تا حرفه‌ای طراحی شده‌اند. هر مسیر با دقت برای ساخت تدریجی مهارت‌های شما طراحی شده است.",
+  "Explore Paths": "کشف مسیرها",
+  
+  "Join the Bagel Family": "به خانواده بیگل بپیوندید",
+  "Become part of our thriving learning community. Meet our friendly character guides who will support and inspire you throughout your educational journey.": "بخشی از جامعه پویای یادگیری ما شوید. با راهنماهای شخصیتی دوستانه ما آشنا شوید که در طول سفر آموزشی شما از شما حمایت و الهام‌بخشی می‌کنند.",
+  "Meet the Family": "آشنایی با خانواده",
+  
+  "Ready to Transform Your Future?": "آماده‌اید آینده خود را متحول کنید؟",
+  "Join thousands of learners already achieving their goals with Bagelcademy!": "به هزاران یادگیرنده‌ای بپیوندید که در حال حاضر با بیگل‌کدمی به اهداف خود می‌رسند!",
+  "Begin Your Journey": "سفر خود را آغاز کنید",
+  
+  "Key Features": "ویژگی‌های کلیدی",
+  "Feature 1": "ویژگی ۱",
+  "Feature 2": "ویژگی ۲",
+  
+  "Popular Courses": "دوره‌های محبوب",
+  "Why Choose Us": "چرا ما را انتخاب کنید",
+  
+  "Sign Up Now": "همین حالا ثبت‌نام کنید",
   
     "hero": {
       "title": "با تیم آموزش فنی خود آشنا شوید",

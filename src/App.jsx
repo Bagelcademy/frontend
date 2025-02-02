@@ -33,6 +33,8 @@ import FAQ from './pages/FAQ';
 import Interviewer from './pages/interviewer';
 import AISurvey from './pages/survey2';
 import ContactPage from './pages/ContacUs';
+import AINewsPage from './pages/blog';
+import MetricsDashboard from './pages/chart';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -114,6 +116,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/blog" element={<AINewsPage/>} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
@@ -138,7 +141,8 @@ const App = () => {
             <Route path="/AIservey" element={<AISurvey />} />
 
             <Route path="/interview" element={<Interviewer />} />
-
+            <Route path="/metric" element={<MetricsDashboard />} />
+            
             <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
