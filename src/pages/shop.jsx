@@ -53,6 +53,87 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
   );
 };
 
+
+const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
+  const [credits, setCredits] = useState(1);
+  const { t } = useTranslation();
+
+  const basePrice = 15000;
+  const totalPrice = basePrice * credits;
+  const discountedPrice = discountPercent 
+    ? Math.round(totalPrice * (1 - discountPercent / 100))
+    : totalPrice;
+
+  const handleCreditsChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value >= 1 && value <= 10) {
+      setCredits(value);
+    }
+  };
+
+  return (
+    <Card className="w-72 rounded-3xl overflow-hidden">
+      <CardHeader className="text-center">
+        <CardTitle>{t('AI Credits')}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-center">
+        <div className="mb-4">
+          <label htmlFor="credits" className="block mb-2">{t('Number of AI Credits')}</label>
+          <Input
+            id="credits"
+            type="number"
+            min="1"
+            max="10"
+            value={credits}
+            onChange={handleCreditsChange}
+            className="text-center"
+          />
+        </div>
+        
+        <div className="flex flex-col justify-center">
+          {discountPercent > 0 ? (
+            <>
+              <span className="text-2xl font-bold line-through text-gray-400">
+                {totalPrice} {t('Rial')}
+              </span>
+              <span className="text-3xl font-bold text-green-500">
+                {discountedPrice} {t('Rial')}
+              </span>
+            </>
+          ) : (
+            <span className="text-3xl font-bold">
+              {totalPrice} {t('Rial')}
+            </span>
+          )}
+        </div>
+        
+        <ul className="mt-4 text-left h-32">
+          <li className="flex items-center mb-2">
+            <Check className="mr-2 h-4 w-4 text-green-500" />
+            <span>{t('1 AI Credit = 1 Conversation')}</span>
+          </li>
+          <li className="flex items-center mb-2">
+            <Check className="mr-2 h-4 w-4 text-green-500" />
+            <span>{t('Max 10 Credits per Purchase')}</span>
+          </li>
+          <li className="flex items-center mb-2">
+            <Check className="mr-2 h-4 w-4 text-green-500" />
+            <span>{t('Credits Never Expire')}</span>
+          </li>
+        </ul>
+      </CardContent>
+      <CardFooter className="justify-center">
+        <Button 
+          className="rounded-full text-white bg-gray-800 dark:bg-gray-800" 
+          onClick={() => onBuyCredits(credits, discountedPrice)}
+        >
+          {t('Buy AI Credits')}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
 const SubscriptionCards = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -155,6 +236,57 @@ const SubscriptionCards = () => {
       : null;
   };
 
+  const handleBuyCredits = async (credits, amount) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      Notify.failure(t('Please login first.'));
+      navigate('/login');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const bodyData = {
+        ai_credits: credits,
+        amount: amount,
+      };
+
+      // Add discount_code only if it exists
+      if (discountCode) {
+        bodyData.discount_code = discountCode;
+      }
+
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/BuyCredit/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Credit purchase failed');
+      }
+
+      const data = await response.json();
+      console.log('Credit purchase successful:', data);
+
+      if (data.url) {
+        window.open(data.url, '_blank');
+      } else {
+        throw new Error('No payment URL provided');
+      }
+    } catch (err) {
+      setError(t('An error occurred during credit purchase. Please try again.'));
+      console.error('Credit purchase error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-darkBase p-4">
       <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">{t('Choose Your Subscription')}</h1>
@@ -218,6 +350,10 @@ const SubscriptionCards = () => {
             "Early access to new features"
           ]}
           onSubscribe={() => handleSubscribe(1200000, '12M')}
+        />
+        <AICreditsCard
+          discountPercent={discountPercent}
+          onBuyCredits={handleBuyCredits}
         />
       </div>
       {loading && <p className="mt-4">{t('Processing...')}</p>}

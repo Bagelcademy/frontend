@@ -609,10 +609,14 @@
   "Key Features": "ویژگی‌های کلیدی",
   "Feature 1": "ویژگی ۱",
   "Feature 2": "ویژگی ۲",
-  
+  "Buy AI Credits":"خرید اعتبار هوش مصنوعی",
   "Popular Courses": "دوره‌های محبوب",
   "Why Choose Us": "چرا ما را انتخاب کنید",
-  
+  "AI Credits": "اعتبار هوش مصنوعی",
+  "Number of AI Credits": "تعداد اعتبارهای هوش مصنوعی",
+  "1 AI Credit = 1 Conversation": "۱ اعتبار هوش مصنوعی = ۱ مکالمه",
+  "Max 10 Credits per Purchase": "حداکثر ۱۰ اعتبار در هر خرید",
+  "Credits Never Expire": "اعتبارها هرگز منقضی نمی‌شوند",  
   "Sign Up Now": "همین حالا ثبت‌نام کنید",
   
     "hero": {
