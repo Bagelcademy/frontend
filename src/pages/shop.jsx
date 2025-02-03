@@ -249,7 +249,7 @@ const SubscriptionCards = () => {
 
     try {
       const bodyData = {
-        ai_credits: credits,
+        credits: credits,
         amount: amount,
       };
 
