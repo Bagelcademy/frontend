@@ -341,9 +341,9 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
               {t('Welcome')}
             </span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl dark:text-zinc-300 text-gray-700 max-w-2xl mx-auto px-4">
-            {t('Ready to start learning?')}
-          </p>
+          <h2 className="text-6xl sm:text-xl md:text-4xl dark:text-zinc-300 text-gray-700 max-w-3xl mx-auto px-4">
+            {t('LearnWithAI')}
+          </h2>
 
           <div className="flex gap-4 justify-center">
             <Link to="/courses">
