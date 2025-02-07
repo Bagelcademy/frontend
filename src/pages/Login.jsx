@@ -135,7 +135,7 @@ const Login = ({ setIsLoggedIn }) => {
   };
 
   return (
-    <div className="mt-12 min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="mt-0 min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('login')}</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

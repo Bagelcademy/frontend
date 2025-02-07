@@ -18,8 +18,8 @@
   "PhD": "دکترا",
   "Diploma": "دیپلم",
   "Under High School": "زیر دیپلم",
-  "Active Users":"کاربران فعال",
-  "Active Courses":"دوره های فعال",
+  "Active Users": "کاربران فعال",
+  "Active Courses": "دوره های فعال",
   "Beginner": "مبتدی",
   "Intermediate": "متوسط",
   "Advanced": "پیشرفته",
@@ -70,6 +70,7 @@
   "Not sure what to learn?": "نمی‌دانید چه چیزی را یاد بگیرید؟",
   "Take our quiz to find the perfect course for you!": "به آزمون ما شرکت کنید تا دوره مناسب برای شما پیدا شود!",
   "LearnWithAI": "با هوش مصنوعی هر چیزی یاد بگیرید!",
+  "Ready to start learning?": "آماده شروع یادگیری هستید؟",
   "Sign up now and get access to all our courses!": "همین حالا ثبت نام کنید و به همه دوره‌های ما دسترسی پیدا کنید!",
   "go to AI": "به هوش مصنوعی بروید",
   "Take Quiz": "آزمون را بگیرید",
@@ -87,7 +88,7 @@
   "Home": "خانه",
   "AI course design": "طراحی دوره با هوش مصنوعی",
   "Shop": " خرید اشتراک",
-  "Contact us":"ارتباط با ما",
+  "Contact us": "ارتباط با ما",
   "Contact": "ارتباط با ما",
   "Email": "ایمیل",
   "Phone": "تلفن",
@@ -119,11 +120,10 @@
   "streak": "{{streak}} روز متوالی",
   "Streak": " روز متوالی",
   "courseLevels": {
-  "beginner": "مبتدی",
-  "intermediate": "متوسط",
-  "advanced": "پیشرفته"
-},
-
+    "beginner": "مبتدی",
+    "intermediate": "متوسط",
+    "advanced": "پیشرفته"
+  },
   "quiz": {
     "title": "بررسی دانش",
     "noQuestions": "این درس هیچ آزمونی ندارد.",
@@ -135,18 +135,18 @@
     "correctAnswer": "درست است!",
     "correctAnswerWas": "پاسخ صحیح: ",
     "tryAgainButton": "دوباره امتحان کنید",
-    "yourAnswer":"جواب شما"
-    },
-"This lesson has no quiz.":"این درس هیچ آزمونی ندارد.",
-"Content": "محتوا",
-"Notes": "یادداشت‌ها",
+    "yourAnswer": "جواب شما"
+  },
+  "This lesson has no quiz.": "این درس هیچ آزمونی ندارد.",
+  "Content": "محتوا",
+  "Notes": "یادداشت‌ها",
   "notes": {
     "title": "یادداشت‌های درس",
     "placeholder": "یادداشت خود را اینجا اضافه کنید...",
     "loading": "در حال بارگذاری...",
     "buttons": {
       "save": "ذخیره",
-      "cancel": "لغو", 
+      "cancel": "لغو",
       "edit": "ویرایش",
       "delete": "حذف"
     },
@@ -155,9 +155,8 @@
       "saveError": "ذخیره یادداشت ناموفق بود. لطفاً دوباره تلاش کنید."
     }
   },
-"Code Lab": "آزمایشگاه کد",
-"AI Assistant": "دستیار هوش مصنوعی",
-
+  "Code Lab": "آزمایشگاه کد",
+  "AI Assistant": "دستیار هوش مصنوعی",
   "chat": {
     "title": "دستیار هوش مصنوعی",
     "emptyState": "هر چیزی درباره درس از من بپرسید!",
@@ -176,7 +175,6 @@
   "to get 30% off! Limited time offer!": "برای دریافت ۳۰٪ تخفیف! زمان محدود!",
   "30% off": "۳۰٪ تخفیف",
   "for": "برای",
-
   "signupTitle": "ثبت نام",
   "username": "نام کاربری",
   "password": "رمز عبور",
@@ -251,7 +249,7 @@
   "Yearly": "سالانه",
   "month": "ماه",
   "6 months": "۶ ماه",
-  "months":"ماه",
+  "months": "ماه",
   "year": "سال",
   "Full access to all features": "دسترسی کامل به تمام امکانات",
   "24/7 customer support": "پشتیبانی ۲۴/۷ مشتری",
@@ -273,8 +271,8 @@
   "verify": "تأیید",
   "Learn More": "بیشتر بدانید",
   "FAQ": "سوالات متداول",
-  "More":"بیشتر "  ,
-  "English":"انگلیسی",
+  "More": "بیشتر ",
+  "English": "انگلیسی",
   "Developer": "توسعه‌دهنده",
   "Designer": "طراح",
   "Manager": "مدیر",
@@ -353,22 +351,21 @@
   "invalidBirthdate": "لطفا تاریخ تولد با فرمت روز-ماه-سال وارد کنید.",
   "invalidNationalCode": "لطفا کد ملی معتبر وارد کنید.",
   "Level": "سطح",
-"motivationalQuotes": {
-  "quote1": "هر بیگلی زمانی فقط آرد و آب بود. پتانسیل تو بی‌نهایت است!",
-  "author1": "مامان بیگل",
-  "quote2": "مثل یک بیگل تازه‌پخته بدرخش و صبح را آغاز کن!",
-  "author2": "بابا بیگل",
-  "quote3": "به یادگیری‌هایت ادامه بده، تو در مسیری در حال پیشرفت هستی!",
-  "author3": "مامان بیگل",
-  "quote4": "سفری هزار فرسنگی با یک لقمه شروع می‌شود!",
-  "author4": "بابا بیگل",
-  "quote5": "هر روز داری گردتر و کامل‌تر می‌شوی!",
-  "author5": "مامان بیگل"
-},
-"welcomeBack": "خوش آمدی دوباره، {{username}}!",
-
-  "Terms":"شرایط خدمات",
-  "Privacy":" خط مشی رازداری",
+  "motivationalQuotes": {
+    "quote1": "هر بیگلی زمانی فقط آرد و آب بود. پتانسیل تو بی‌نهایت است!",
+    "author1": "مامان بیگل",
+    "quote2": "مثل یک بیگل تازه‌پخته بدرخش و صبح را آغاز کن!",
+    "author2": "بابا بیگل",
+    "quote3": "به یادگیری‌هایت ادامه بده، تو در مسیری در حال پیشرفت هستی!",
+    "author3": "مامان بیگل",
+    "quote4": "سفری هزار فرسنگی با یک لقمه شروع می‌شود!",
+    "author4": "بابا بیگل",
+    "quote5": "هر روز داری گردتر و کامل‌تر می‌شوی!",
+    "author5": "مامان بیگل"
+  },
+  "welcomeBack": "خوش آمدی دوباره، {{username}}!",
+  "Terms": "شرایط خدمات",
+  "Privacy": " خط مشی رازداری",
   "Language": "زبان",
   "terms": {
     "title": "شرایط خدمات",
@@ -467,7 +464,7 @@
     "contactInformation": {
       "title": "۴. اطلاعات تماس",
       "email": "برای نگرانی‌های مربوط به حریم خصوصی، ایمیل: privacy@bagelcademy.com",
-      "phoneNumber":"شماره تلفن"
+      "phoneNumber": "شماره تلفن"
     }
   },
   "Invalid or expired discount code": "کد تخفیف نامعتبر یا منقضی شده است",
@@ -574,9 +571,9 @@
   "Design Your Course": "طراحی دوره شما",
   "Create Course": "ایجاد دوره",
   "Meet Characters": "آشنایی با شخصیت‌ها",
-  "Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey." : "بپیوندید به جامعه پرانرژی یادگیرندگان ما و با شخصیت‌های دوست‌داشتنی ما آشنا شوید که در طول مسیر یادگیری‌تان از شما حمایت خواهند کرد.",
-  "Take our personalized learning quiz to discover courses that match your interests, goals, and learning style." : "در آزمون شخصی‌سازی‌شده یادگیری ما شرکت کنید تا دوره‌هایی را پیدا کنید که با علایق، اهداف و سبک یادگیری شما سازگار هستند.",
-  "Design a course based on any subject or any languages you want! Our intuitive course builder makes it easy to create engaging content." : "یک دوره بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید! سازنده دوره کاربرپسند ما ایجاد محتوای جذاب را برای شما آسان می‌کند.",
+  "Join our vibrant community of learners and meet our friendly character guides who will support you throughout your learning journey.": "بپیوندید به جامعه پرانرژی یادگیرندگان ما و با شخصیت‌های دوست‌داشتنی ما آشنا شوید که در طول مسیر یادگیری‌تان از شما حمایت خواهند کرد.",
+  "Take our personalized learning quiz to discover courses that match your interests, goals, and learning style.": "در آزمون شخصی‌سازی‌شده یادگیری ما شرکت کنید تا دوره‌هایی را پیدا کنید که با علایق، اهداف و سبک یادگیری شما سازگار هستند.",
+  "Design a course based on any subject or any languages you want! Our intuitive course builder makes it easy to create engaging content.": "یک دوره بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید! سازنده دوره کاربرپسند ما ایجاد محتوای جذاب را برای شما آسان می‌کند.",
   "Begginer": "مبتدی",
   "Load More Courses": "دوره‌های بیشتر",
   "Choose your learning journey and advance your career": "مسیر یادگیری خود را انتخاب کنید و حرفه‌ای پیش بروید",
@@ -589,173 +586,178 @@
   "Design Your Dream Course": "دوره رویایی خود را طراحی کنید",
   "Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.": "خلاقیت و تخصص خود را با طراحی دوره‌های سفارشی آزاد کنید. ابزار ساخت دوره ما به شما امکان می‌دهد محتوای جذاب در هر موضوع و زبانی ایجاد کنید.",
   "Start Creating": "شروع به ساخت",
-  
   "Discover Your Perfect Path": "مسیر کامل خود را کشف کنید",
   "Not sure where to start? Take our interactive learning assessment to find courses that align perfectly with your interests, goals, and learning style.": "مطمئن نیستید از کجا شروع کنید؟ ارزیابی یادگیری تعاملی ما را انجام دهید تا دوره‌هایی را پیدا کنید که کاملاً با علایق، اهداف و سبک یادگیری شما مطابقت دارند.",
   "Take Assessment": "شروع ارزیابی",
-  
   "Chart Your Career Journey": "مسیر شغلی خود را ترسیم کنید",
   "Explore structured learning paths designed to take you from beginner to professional. Each path is carefully crafted to build your skills progressively.": "مسیرهای یادگیری ساختاریافته را کشف کنید که برای پیشرفت شما از مبتدی تا حرفه‌ای طراحی شده‌اند. هر مسیر با دقت برای ساخت تدریجی مهارت‌های شما طراحی شده است.",
   "Explore Paths": "کشف مسیرها",
-  
   "Join the Bagel Family": "به خانواده بیگل بپیوندید",
   "Become part of our thriving learning community. Meet our friendly character guides who will support and inspire you throughout your educational journey.": "بخشی از جامعه پویای یادگیری ما شوید. با راهنماهای شخصیتی دوستانه ما آشنا شوید که در طول سفر آموزشی شما از شما حمایت و الهام‌بخشی می‌کنند.",
   "Meet the Family": "آشنایی با خانواده",
-  
   "Ready to Transform Your Future?": "آماده‌اید آینده خود را متحول کنید؟",
   "Join thousands of learners already achieving their goals with Bagelcademy!": "به هزاران یادگیرنده‌ای بپیوندید که در حال حاضر با بیگل‌کدمی به اهداف خود می‌رسند!",
   "Begin Your Journey": "سفر خود را آغاز کنید",
-  
   "Key Features": "ویژگی‌های کلیدی",
   "Feature 1": "ویژگی ۱",
   "Feature 2": "ویژگی ۲",
-  "Buy AI Credits":"خرید اعتبار هوش مصنوعی",
-  "Processing":"در حال پردازش",
+  "Buy AI Credits": "خرید اعتبار هوش مصنوعی",
+  "Processing": "در حال پردازش",
   "Popular Courses": "دوره‌های محبوب",
   "Why Choose Us": "چرا ما را انتخاب کنید",
   "AI Credits": "اعتبار هوش مصنوعی",
   "Number of AI Credits": "تعداد اعتبارهای هوش مصنوعی",
   "1 AI Credit = 1 Conversation": "۱ اعتبار هوش مصنوعی = ۱ مکالمه",
   "Max 10 Credits per Purchase": "حداکثر ۱۰ اعتبار در هر خرید",
-  "Credits Never Expire": "اعتبارها هرگز منقضی نمی‌شوند",  
+  "Credits Never Expire": "اعتبارها هرگز منقضی نمی‌شوند",
   "Sign Up Now": "همین حالا ثبت‌نام کنید",
-  
-    "hero": {
-      "title": "با تیم آموزش فنی خود آشنا شوید",
-      "subtitle": "خانواده‌ای از مربیان فنی که به دنبال ایجاد سفر یادگیری لذت‌بخش برای شما هستند"
-    },
-    "search": {
-      "placeholder": "جستجو بر اساس نام، نقش یا تخصص...",
-      "noResults": "هیچ عضو تیمی یافت نشد",
-      "adjustTerms": "لطفاً عبارات جستجوی خود را تنظیم کنید"
-    },
-    "common": {
-      "more": "بیشتر",
-      "less": "کمتر",
-      "expertise": "تخصص‌ها",
-      "stats": "آمار",
-      "achievements": "دستاوردها",
-      "teaching": "تدریس",
-      "tech": "فناوری",
-      "problemSolving": "حل مسئله"
-    },
-    "team": {
-      "bagelMama": {
-        "name": "مامان بیگل",
-        "role": "متخصص آموزش فناوری",
-        "description": "یک مدرس درخشان علوم کامپیوتر که مفاهیم پیچیده کدنویسی را به اندازه نان تازه پخته شده، گرم و راحت می‌کند. با رویکرد پرورشی و تخصص فنی عمیق خود، چالش‌های برنامه‌نویسی ترسناک را به تجربه‌های یادگیری قابل هضم و لذت‌بخش تبدیل می‌کند.",
-        "expertise": {
-          "programming": "مبانی برنامه‌نویسی",
-          "webDev": "توسعه وب",
-          "digitalLiteracy": "سواد دیجیتال",
-          "csEducation": "آموزش علوم کامپیوتر",
-          "curriculum": "طراحی برنامه درسی",
-          "assessment": "ارزیابی یادگیری"
-        },
-        "achievements": {
-          "mentored": "منتورینگ بیش از ۱۰,۰۰۰ دانشجو",
-          "curriculum": "برنامه درسی برنده جایزه",
-          "innovation": "جایزه نوآوری در آموزش فناوری",
-          "teaching": "جایزه بهترین شیوه‌های تدریس",
-          "inclusion": "قهرمان فراگیری دیجیتال",
-          "researcher": "پژوهشگر برتر سال در آموزش علوم کامپیوتر"
-        }
+  "hero": {
+    "title": "با تیم آموزش فنی خود آشنا شوید",
+    "subtitle": "خانواده‌ای از مربیان فنی که به دنبال ایجاد سفر یادگیری لذت‌بخش برای شما هستند"
+  },
+  "search": {
+    "placeholder": "جستجو بر اساس نام، نقش یا تخصص...",
+    "noResults": "هیچ عضو تیمی یافت نشد",
+    "adjustTerms": "لطفاً عبارات جستجوی خود را تنظیم کنید"
+  },
+  "common": {
+    "more": "بیشتر",
+    "less": "کمتر",
+    "expertise": "تخصص‌ها",
+    "stats": "آمار",
+    "achievements": "دستاوردها",
+    "teaching": "تدریس",
+    "tech": "فناوری",
+    "problemSolving": "حل مسئله"
+  },
+  "team": {
+    "bagelMama": {
+      "name": "مامان بیگل",
+      "role": "متخصص آموزش فناوری",
+      "description": "یک مدرس درخشان علوم کامپیوتر که مفاهیم پیچیده کدنویسی را به اندازه نان تازه پخته شده، گرم و راحت می‌کند. با رویکرد پرورشی و تخصص فنی عمیق خود، چالش‌های برنامه‌نویسی ترسناک را به تجربه‌های یادگیری قابل هضم و لذت‌بخش تبدیل می‌کند.",
+      "expertise": {
+        "programming": "مبانی برنامه‌نویسی",
+        "webDev": "توسعه وب",
+        "digitalLiteracy": "سواد دیجیتال",
+        "csEducation": "آموزش علوم کامپیوتر",
+        "curriculum": "طراحی برنامه درسی",
+        "assessment": "ارزیابی یادگیری"
       },
-      "bagelPapa": {
-        "name": "بابا بیگل",
-        "role": "معمار راهکارهای STEM",
-        "description": "یک مهندس باتجربه که به معلمی روی آورده و تجربه دنیای واقعی فناوری را به کلاس درس می‌آورد. ترکیب تخصص صنعتی و شوخی‌های پدرانه او، محیط یادگیری جذابی ایجاد می‌کند که در آن مفاهیم پیچیده به طور شگفت‌انگیزی ساده و به یاد ماندنی می‌شوند.",
-        "expertise": {
-          "dataStructures": "ساختمان داده‌ها",
-          "algorithms": "طراحی الگوریتم",
-          "softwareEng": "مهندسی نرم‌افزار",
-          "architecture": "معماری سیستم",
-          "cloud": "رایانش ابری",
-          "leadership": "رهبری فنی"
-        },
-        "achievements": {
-          "techLead": "رهبر فنی سابق در BagelSoft",
-          "mentorship": "ایجاد برنامه منتورشیپ",
-          "stemChampion": "قهرمان آموزش STEM",
-          "experience": "۲۰+ سال تجربه صنعتی",
-          "author": "نویسنده فنی منتشر شده",
-          "innovation": "جایزه نوآوری در تدریس"
-        }
-      },
-      "jill": {
-        "name": "جیل",
-        "role": "راهنمای خلاقیت فنی",
-        "description": "یک مربی پویا که در کدنویسی خلاق و طراحی تعاملی تخصص دارد. او پلی بین هنر و فناوری می‌سازد و به دانشجویان کمک می‌کند تا زیبایی هر دو دنیا را کشف کنند و پروژه‌های دیجیتالی تأثیرگذاری بسازند که خلاقیت آنها را به نمایش می‌گذارد.",
-        "expertise": {
-          "creativeCoding": "کدنویسی خلاق",
-          "uiux": "طراحی UI/UX",
-          "digitalArt": "هنر دیجیتال",
-          "interactive": "رسانه تعاملی",
-          "frontend": "توسعه فرانت‌اند",
-          "designThinking": "تفکر طراحی"
-        },
-        "achievements": {
-          "campLeader": "رهبر کمپ کدنویسی جوانان",
-          "specialist": "متخصص هنرهای دیجیتال",
-          "studentChoice": "جایزه انتخاب دانشجویان",
-          "innovation": "جایزه نوآوری فناوری خلاق",
-          "excellence": "برتری در آموزش طراحی",
-          "impact": "جایزه تأثیر اجتماعی"
-        }
-      },
-      "jackie": {
-        "name": "جکی",
-        "role": "مربی نوآوری",
-        "description": "یک علاقه‌مند به فناوری که به دانشجویان کمک می‌کند تا فناوری‌های پیشرفته را کشف کنند. با انرژی بی‌پایان و رویکرد آینده‌نگر خود، یادگیرندگان را در مرزهای هیجان‌انگیز هوش مصنوعی، بازی‌سازی و توسعه موبایل هدایت می‌کند و مفاهیم پیچیده را به کشفیات هیجان‌انگیز تبدیل می‌کند.",
-        "expertise": {
-          "ai": "هوش مصنوعی",
-          "gameDev": "توسعه بازی",
-          "mobile": "اپلیکیشن‌های موبایل",
-          "emerging": "فناوری‌های نوظهور",
-          "projectMgmt": "مدیریت پروژه",
-          "agile": "متدولوژی‌های چابک"
-        },
-        "achievements": {
-          "clubFounder": "بنیانگذار باشگاه فناوری",
-          "hackathon": "منتور هکاتون",
-          "champion": "قهرمان نوآوری",
-          "aiPioneer": "پیشگام آموزش هوش مصنوعی",
-          "gameJudge": "داور مسابقات بازی‌سازی",
-          "diversity": "مدافع تنوع در فناوری"
-        }
+      "achievements": {
+        "mentored": "منتورینگ بیش از ۱۰,۰۰۰ دانشجو",
+        "curriculum": "برنامه درسی برنده جایزه",
+        "innovation": "جایزه نوآوری در آموزش فناوری",
+        "teaching": "جایزه بهترین شیوه‌های تدریس",
+        "inclusion": "قهرمان فراگیری دیجیتال",
+        "researcher": "پژوهشگر برتر سال در آموزش علوم کامپیوتر"
       }
     },
-    "stats": {
-      "teachingSkills": {
-        "label": "مهارت‌های تدریس",
-        "description": "توانایی انتقال مفاهیم پیچیده"
+    "bagelPapa": {
+      "name": "بابا بیگل",
+      "role": "معمار راهکارهای STEM",
+      "description": "یک مهندس باتجربه که به معلمی روی آورده و تجربه دنیای واقعی فناوری را به کلاس درس می‌آورد. ترکیب تخصص صنعتی و شوخی‌های پدرانه او، محیط یادگیری جذابی ایجاد می‌کند که در آن مفاهیم پیچیده به طور شگفت‌انگیزی ساده و به یاد ماندنی می‌شوند.",
+      "expertise": {
+        "dataStructures": "ساختمان داده‌ها",
+        "algorithms": "طراحی الگوریتم",
+        "softwareEng": "مهندسی نرم‌افزار",
+        "architecture": "معماری سیستم",
+        "cloud": "رایانش ابری",
+        "leadership": "رهبری فنی"
       },
-      "techExpertise": {
-        "label": "تخصص فنی",
-        "description": "دانش عمیق در حوزه‌های تخصصی"
-      },
-      "problemSolving": {
-        "label": "حل مسئله",
-        "description": "توانایی حل چالش‌های پیچیده"
-      },
-      "studentSupport": {
-        "label": "پشتیبانی دانشجو",
-        "description": "حمایت و راهنمایی دانشجویان"
+      "achievements": {
+        "techLead": "رهبر فنی سابق در BagelSoft",
+        "mentorship": "ایجاد برنامه منتورشیپ",
+        "stemChampion": "قهرمان آموزش STEM",
+        "experience": "۲۰+ سال تجربه صنعتی",
+        "author": "نویسنده فنی منتشر شده",
+        "innovation": "جایزه نوآوری در تدریس"
       }
     },
-    "buttons": {
-      "showMore": "نمایش بیشتر",
-      "showLess": "نمایش کمتر",
-      "apply": "درخواست",
-      "contact": "تماس با ما"
+    "jill": {
+      "name": "جیل",
+      "role": "راهنمای خلاقیت فنی",
+      "description": "یک مربی پویا که در کدنویسی خلاق و طراحی تعاملی تخصص دارد. او پلی بین هنر و فناوری می‌سازد و به دانشجویان کمک می‌کند تا زیبایی هر دو دنیا را کشف کنند و پروژه‌های دیجیتالی تأثیرگذاری بسازند که خلاقیت آنها را به نمایش می‌گذارد.",
+      "expertise": {
+        "creativeCoding": "کدنویسی خلاق",
+        "uiux": "طراحی UI/UX",
+        "digitalArt": "هنر دیجیتال",
+        "interactive": "رسانه تعاملی",
+        "frontend": "توسعه فرانت‌اند",
+        "designThinking": "تفکر طراحی"
+      },
+      "achievements": {
+        "campLeader": "رهبر کمپ کدنویسی جوانان",
+        "specialist": "متخصص هنرهای دیجیتال",
+        "studentChoice": "جایزه انتخاب دانشجویان",
+        "innovation": "جایزه نوآوری فناوری خلاق",
+        "excellence": "برتری در آموزش طراحی",
+        "impact": "جایزه تأثیر اجتماعی"
+      }
     },
-    "accessibility": {
-      "expandCard": "باز کردن اطلاعات {name}",
-      "collapseCard": "بستن اطلاعات {name}",
-      "searchInput": "جستجوی اعضای تیم",
-      "teamMemberImage": "تصویر {name}",
-      "expertiseTag": "تخصص در {field}",
-      "statsGraph": "نمودار آماری برای {stat}"
+    "jackie": {
+      "name": "جکی",
+      "role": "مربی نوآوری",
+      "description": "یک علاقه‌مند به فناوری که به دانشجویان کمک می‌کند تا فناوری‌های پیشرفته را کشف کنند. با انرژی بی‌پایان و رویکرد آینده‌نگر خود، یادگیرندگان را در مرزهای هیجان‌انگیز هوش مصنوعی، بازی‌سازی و توسعه موبایل هدایت می‌کند و مفاهیم پیچیده را به کشفیات هیجان‌انگیز تبدیل می‌کند.",
+      "expertise": {
+        "ai": "هوش مصنوعی",
+        "gameDev": "توسعه بازی",
+        "mobile": "اپلیکیشن‌های موبایل",
+        "emerging": "فناوری‌های نوظهور",
+        "projectMgmt": "مدیریت پروژه",
+        "agile": "متدولوژی‌های چابک"
+      },
+      "achievements": {
+        "clubFounder": "بنیانگذار باشگاه فناوری",
+        "hackathon": "منتور هکاتون",
+        "champion": "قهرمان نوآوری",
+        "aiPioneer": "پیشگام آموزش هوش مصنوعی",
+        "gameJudge": "داور مسابقات بازی‌سازی",
+        "diversity": "مدافع تنوع در فناوری"
+      }
     }
-  }
-
+  },
+  "stats": {
+    "teachingSkills": {
+      "label": "مهارت‌های تدریس",
+      "description": "توانایی انتقال مفاهیم پیچیده"
+    },
+    "techExpertise": {
+      "label": "تخصص فنی",
+      "description": "دانش عمیق در حوزه‌های تخصصی"
+    },
+    "problemSolving": {
+      "label": "حل مسئله",
+      "description": "توانایی حل چالش‌های پیچیده"
+    },
+    "studentSupport": {
+      "label": "پشتیبانی دانشجو",
+      "description": "حمایت و راهنمایی دانشجویان"
+    }
+  },
+  "buttons": {
+    "showMore": "نمایش بیشتر",
+    "showLess": "نمایش کمتر",
+    "apply": "درخواست",
+    "contact": "تماس با ما"
+  },
+  "accessibility": {
+    "expandCard": "باز کردن اطلاعات {name}",
+    "collapseCard": "بستن اطلاعات {name}",
+    "searchInput": "جستجوی اعضای تیم",
+    "teamMemberImage": "تصویر {name}",
+    "expertiseTag": "تخصص در {field}",
+    "statsGraph": "نمودار آماری برای {stat}"
+  },
+  "Create engaging courses": "ایجاد دوره‌های جذاب",
+  "Multi-language support": "پشتیبانی از چندین زبان",
+  "Interactive course builder": "سازنده دوره تعاملی",
+  "Personalized recommendations": "توصیه‌های شخصی‌سازی‌شده",
+  "Expert guidance": "راهنمایی توسط متخصصان",
+  "Adaptive learning paths": "مسیرهای یادگیری تطبیقی",
+  "Structured learning paths": "مسیرهای یادگیری ساختاریافته",
+  "Industry-relevant curriculum": "برنامه درسی مرتبط با صنعت",
+  "Certification & career support": "گواهینامه و پشتیبانی شغلی",
+  "Community-driven learning": "یادگیری مبتنی بر جامعه",
+  "Interactive support system": "سیستم پشتیبانی تعاملی",
+  "Live Q&A and discussion groups": "پرسش و پاسخ زنده و گروه‌های بحث"
+}

@@ -104,18 +104,16 @@ const CircuitPattern = ({ className }) => (
   </div>
 );
 
-const FeatureSection = ({ icon: Icon, title, description, gradient, buttonText, linkTo, reversed, imageUrl }) => {
+const FeatureSection = ({ icon: Icon, title, description, gradient, buttonText, linkTo, reversed, imageUrl, features }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
- 
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className={`relative py-24 ${
-        reversed ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'
-      } overflow-hidden`}
+      className={`relative py-24 ${reversed ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'} overflow-hidden`}
     >
       <CircuitPattern className="opacity-5" />
       <div className="max-w-7xl mx-auto px-4">
@@ -180,14 +178,12 @@ const FeatureSection = ({ icon: Icon, title, description, gradient, buttonText, 
                     {t('Key Features')}
                   </h4>
                   <ul className="space-y-2">
-                    <li className="flex items-center text-gray-600 dark:text-gray-300">
-                      <Check className="w-4 h-4 mr-2 text-blue-500" />
-                      Feature 1
-                    </li>
-                    <li className="flex items-center text-gray-600 dark:text-gray-300">
-                      <Check className="w-4 h-4 mr-2 text-blue-500" />
-                      Feature 2
-                    </li>
+                    {features.map((feature, index) => (
+                      <li key={index} className="flex items-center text-gray-600 dark:text-gray-300">
+                        <Check className="w-4 h-4 mr-2 text-blue-500" />
+                        {feature}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -406,6 +402,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           buttonText={t('Start Creating')}
           linkTo="/ask"
           imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F9253aec3-5d18-4927-8906-9137951601e6.png"
+          features={[t('Create engaging courses'), t('Multi-language support'), t('Interactive course builder')]}
         />
 
         <FeatureSection
@@ -417,6 +414,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           linkTo="/quiz"
           reversed={true}
           imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F77a28a1d-6c43-4d0b-b164-6a078ba478a8.png"
+          features={[t('Personalized recommendations'), t('Expert guidance'), t('Adaptive learning paths')]}
         />
 
         <FeatureSection
@@ -427,6 +425,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           buttonText={t('Explore Paths')}
           linkTo="/learning-path"
           imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F8be7911c-bd5f-4329-a15d-942e3ccae4c9.png"
+          features={[t('Structured learning paths'), t('Industry-relevant curriculum'), t('Certification & career support')]}
         />
 
         <FeatureSection
@@ -438,6 +437,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           linkTo="/characters"
           reversed={true}
           imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F20402def-7f74-4e80-add6-048298adbb54.png"
+          features={[t('Community-driven learning'), t('Interactive support system'), t('Live Q&A and discussion groups')]}
         />
       </div>
 
