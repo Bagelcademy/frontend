@@ -171,9 +171,9 @@ const Login = ({ setIsLoggedIn }) => {
         </div>
         <div id="googleLoginButton" className="mt-4"></div>
         <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
-          {t('signupPrompt')}{' '}
+          {t('Signup Prompt')}{' '}
           <a href="/signup" className="text-blue-500 hover:underline">
-            {t('signupLink')}
+            {t('Signup Link')}
           </a>
         </p> 
           <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
