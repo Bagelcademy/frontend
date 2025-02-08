@@ -245,8 +245,8 @@ const MyCourses = () => {
 
             {/* Motivational Quote */}
             <div className="mt-4 text-center max-w-2xl">
-              <p className="text-white/90 italic">"{quote.quote}"</p>
-              <p className="text-white/70 text-sm mt-2">- {quote.author}</p>
+              <p className="text-white/90 italic">"{t(quote.quote)}"</p>
+              <p className="text-white/70 text-sm mt-2">- {t(quote.author)}</p>
             </div>
           </div>
 

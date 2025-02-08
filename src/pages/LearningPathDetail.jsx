@@ -176,9 +176,9 @@ const LearningPathDetail = () => {
                     <p className="text-gray-600 dark:text-gray-300 mb-4">{course.description}</p>
                     <Link
                       to={`/course/${course.id}`}
-                      className="inline-flex items-center gap-2 text-white hover:opacity-90"
+                      className="inline-flex items-center gap-2 text-black dark:text-white hover:opacity-90"
                     >
-                      <Play className="w-4 h-4 text-white" />
+                      <Play className="w-4 h-4 text-black dark:text-white" />
                       {t('Start Course')}
                     </Link>
                   </div>
