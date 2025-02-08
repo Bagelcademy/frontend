@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Check } from 'lucide-react';
+import { Check, Gift } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Input } from '../components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { useEffect } from 'react';
 
-const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe }) => {
+const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe, subDuration }) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -40,14 +40,18 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
         <ul className="mt-4 text-left h-32">
           {features.map((feature, index) => (
             <li key={index} className="flex items-center mb-2">
-              <Check className="mr-2 h-4 w-4 text-green-500" />
+              {index === features.length - 1 ? (
+                <Gift className="mx-1 h-4 w-4 text-red-500" />
+              ) : (
+                <Check className="mx-1 h-4 w-4 text-green-500" />
+              )}
               <span>{t(feature)}</span>
             </li>
           ))}
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button className="rounded-full text-white bg-gray-800 dark:bg-gray-800:" onClick={onSubscribe}>{t('Subscribe Now')}</Button>
+        <Button className="rounded-full text-white bg-gray-800 dark:bg-gray-800:" onClick={onSubscribe}>{t('Subscribe')} {subDuration} {subDuration > 1 ? t('months') : t('month')}</Button>
       </CardFooter>
     </Card>
   );
@@ -60,7 +64,7 @@ const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
 
   const basePrice = 15000;
   const totalPrice = basePrice * credits;
-  const discountedPrice = discountPercent 
+  const discountedPrice = discountPercent
     ? Math.round(totalPrice * (1 - discountPercent / 100))
     : totalPrice;
 
@@ -77,54 +81,56 @@ const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
         <CardTitle>{t('AI Credits')}</CardTitle>
       </CardHeader>
       <CardContent className="text-center">
-        <div className="mb-4">
-          <label htmlFor="credits" className="block mb-2">{t('Number of AI Credits')}</label>
-          <Input
-            id="credits"
-            type="number"
-            min="1"
-            max="10"
-            value={credits}
-            onChange={handleCreditsChange}
-            className="text-center"
-          />
-        </div>
-        
-        <div className="flex flex-col justify-center">
-          {discountPercent > 0 ? (
-            <>
-              <span className="text-2xl font-bold line-through text-gray-400">
+        <div className="flex justify-between">
+          <div className="flex flex-col justify-center">
+            {discountPercent > 0 ? (
+              <>
+                <span className="text-2xl font-bold line-through text-gray-400">
+                  {totalPrice} {t('Rial')}
+                </span>
+                <span className="text-3xl font-bold text-green-500">
+                  {discountedPrice} {t('Rial')}
+                </span>
+              </>
+            ) : (
+              <span className="text-3xl font-bold">
                 {totalPrice} {t('Rial')}
               </span>
-              <span className="text-3xl font-bold text-green-500">
-                {discountedPrice} {t('Rial')}
-              </span>
-            </>
-          ) : (
-            <span className="text-3xl font-bold">
-              {totalPrice} {t('Rial')}
-            </span>
-          )}
+            )}
+            <p class="text-sm text-gray-500">{t("Number of")}</p>
+          </div>
+
+          <div className="mx-1 mt-5">
+            <Input
+              id="credits"
+              type="number"
+              min="1"
+              max="10"
+              value={credits}
+              onChange={handleCreditsChange}
+              className="text-center"
+            />
+          </div>
         </div>
-        
+
         <ul className="mt-4 text-left h-32">
           <li className="flex items-center mb-2">
-            <Check className="mr-2 h-4 w-4 text-green-500" />
-            <span>{t('1 AI Credit = 1 Conversation')}</span>
+            <Check className="mx-1 h-4 w-4 text-green-500" />
+            <span>{t('1 AI Credit = 1 Course')}</span>
           </li>
           <li className="flex items-center mb-2">
-            <Check className="mr-2 h-4 w-4 text-green-500" />
+            <Check className="mx-1 h-4 w-4 text-green-500" />
             <span>{t('Max 10 Credits per Purchase')}</span>
           </li>
           <li className="flex items-center mb-2">
-            <Check className="mr-2 h-4 w-4 text-green-500" />
+            <Check className="mx-1 h-4 w-4 text-green-500" />
             <span>{t('Credits Never Expire')}</span>
           </li>
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button 
-          className="rounded-full text-white bg-gray-800 dark:bg-gray-800" 
+        <Button
+          className="rounded-full text-white bg-gray-800 dark:bg-gray-800"
           onClick={() => onBuyCredits(credits, discountedPrice)}
         >
           {t('Buy AI Credits')}
@@ -320,9 +326,10 @@ const SubscriptionCards = () => {
           features={[
             "Full access to all features",
             "24/7 customer support",
-            "Cancel anytime"
+            "1 Bonus AI Credits"
           ]}
           onSubscribe={() => handleSubscribe(129000, '1M')}
+          subDuration={1}
         />
         <SubscriptionCard
           title="6 Months"
@@ -333,10 +340,11 @@ const SubscriptionCards = () => {
           features={[
             "All monthly features",
             "Priority support",
-            "Exclusive content",
-            "50% off first month"
+            "50% off first month",
+            "6 Bonus AI Credits"
           ]}
           onSubscribe={() => handleSubscribe(729000, '6M')}
+          subDuration={6}
         />
         <SubscriptionCard
           title="Yearly"
@@ -346,10 +354,11 @@ const SubscriptionCards = () => {
           features={[
             "All 6-month features",
             "2 months free",
-            "Annual performance review",
-            "Early access to new features"
+            "Early access to new features",
+            "12 Bonus AI Credits"
           ]}
           onSubscribe={() => handleSubscribe(1200000, '12M')}
+          subDuration={12}
         />
         <AICreditsCard
           discountPercent={discountPercent}
