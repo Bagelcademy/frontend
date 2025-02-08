@@ -51,11 +51,11 @@ const CourseCard = ({ course }) => {
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center text-gray-600 dark:text-gray-400">
-              <Briefcase className="w-4 h-4 mr-2" />
-              <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+              <Briefcase className="w-4 h-4" />
+              <span className="mx-2">{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
             </div>
             <div className="flex items-center text-gray-600 dark:text-gray-400">
-              <Users className="w-4 h-4 mr-2" />
+              <Users className="w-4 h-4 mx-2" />
               <span className="text-sm">{course.enroll_count || 0}</span>
             </div>
           </div>
@@ -66,7 +66,7 @@ const CourseCard = ({ course }) => {
                 <StarRating rating={4.5} />
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
-                <Globe2 className="w-4 h-4 mr-2" />
+                <Globe2 className="w-4 h-4 mx-1" />
                 <span>{course.language}</span>
               </div>
             </div>
