@@ -302,7 +302,7 @@ const SubscriptionCards = () => {
           placeholder={t('Enter discount code')}
           value={discountCode}
           onChange={(e) => setDiscountCode(e.target.value)}
-          className="mr-2 w-48"
+          className="mx-2 w-48"
         />
         <Button onClick={applyDiscount} disabled={loading}>
           {t('Apply Discount')}
@@ -322,7 +322,7 @@ const SubscriptionCards = () => {
           price="129000"
           discountPrice={calculateDiscountedPrice(129000)}
           period="month"
-          isHighlighted={true}
+          // isHighlighted={true}
           features={[
             "Full access to all features",
             "24/7 customer support",
@@ -337,6 +337,7 @@ const SubscriptionCards = () => {
           discountPrice={calculateDiscountedPrice(729000)}
           period="6 months"
           isBestOffer={true}
+          isHighlighted={true}
           features={[
             "All monthly features",
             "Priority support",
