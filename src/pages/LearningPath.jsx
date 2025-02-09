@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 import { Link } from "react-router-dom";
+
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
     {[1, 2, 3, 4, 5].map((star) => (
@@ -35,12 +36,12 @@ const CareerPathsPage = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     fetchPaths();
     fetchCategories();
-  }, []);
+  }, [i18n.language]);
 
   useEffect(() => {
     filterPaths();
@@ -78,7 +79,14 @@ const CareerPathsPage = () => {
     try {
       const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
       const data = await response.json();
-      setCategories(data);
+  
+      // Translate category names dynamically
+      const translatedCategories = data.map(category => ({
+        id: category.id,
+        name: t(category.name) // Translate category name dynamically
+      }));
+  
+      setCategories(translatedCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
       enqueueSnackbar(t('Failed to fetch categories. Please try again later.'), { variant: 'error' });
