@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
-  Clock, ChevronRight, Star, Filter, Globe2 , Briefcase
+  Clock, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -21,8 +21,8 @@ const StarRating = ({ rating }) => (
       <Star
         key={star}
         className={`w-3 h-3 ${star <= rating
-            ? 'fill-yellow-400 text-yellow-400'
-            : 'fill-gray-300 text-gray-300'
+          ? 'fill-yellow-400 text-yellow-400'
+          : 'fill-gray-300 text-gray-300'
           }`}
       />
     ))}
@@ -44,14 +44,14 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  
+
   const motivationalQuotes = [
-      { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
-      { quote: t('motivationalQuotes.quote2'), author: t('motivationalQuotes.author2') },
-      { quote: t('motivationalQuotes.quote3'), author: t('motivationalQuotes.author3') },
-      { quote: t('motivationalQuotes.quote4'), author: t('motivationalQuotes.author4') },
-      { quote: t('motivationalQuotes.quote5'), author: t('motivationalQuotes.author5') }
-    ];
+    { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
+    { quote: t('motivationalQuotes.quote2'), author: t('motivationalQuotes.author2') },
+    { quote: t('motivationalQuotes.quote3'), author: t('motivationalQuotes.author3') },
+    { quote: t('motivationalQuotes.quote4'), author: t('motivationalQuotes.author4') },
+    { quote: t('motivationalQuotes.quote5'), author: t('motivationalQuotes.author5') }
+  ];
   const [quote, setQuote] = useState(motivationalQuotes[0]);
 
   useEffect(() => {
@@ -134,9 +134,10 @@ const MyCourses = () => {
     setPage(1);
   };
 
-
   const CourseCard = ({ item }) => {
+    const { t, i18n } = useTranslation();
     const { course, progress } = item;
+    const isRtl = i18n.language === 'fa'; // Check if the language is Persian (or any RTL language)
     const completedLessons = progress.completed_lessons.length;
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
 
@@ -156,9 +157,19 @@ const MyCourses = () => {
           </div>
         </div>
 
-        <CardContent className="relative p-6">
+        <CardContent className="relative p-6 flex flex-col justify-between">
           <div className="flex flex-col h-full">
-            <h3 className="text-lg font-semibold mb-3 line-clamp-2">
+            {/* Restrict the title to 2 lines */}
+            <h3
+              className="text-lg font-semibold mb-3 line-clamp-2 h-[52px]"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               {course.title}
             </h3>
 
@@ -167,7 +178,7 @@ const MyCourses = () => {
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
                   <Briefcase className="w-4 h-4 mx-1" />
                   <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
-                  </div>
+                </div>
                 <div className="flex items-center text-gray-600 dark:text-gray-400">
                   <Globe2 className="w-4 h-4 mx-1" />
                   <span>{course.language}</span>
@@ -209,7 +220,11 @@ const MyCourses = () => {
             <span className="mr-2">
               {progress.course_completed ? t('Review Course') : t('Continue Learning')}
             </span>
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {isRtl ? (
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            ) : (
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            )}
           </Button>
         </CardFooter>
       </Card>

@@ -173,8 +173,8 @@ const LessonPage = () => {
 
       {/* Tab Navigation */}
       <div className="fixed top-20 left-0 right-0 bg-white dark:bg-slate-800 border-b dark:border-slate-700 z-40">
-        <div className="mx-auto px-4">
-          <div className="flex items-center justify-center h-16">
+        <div className="mx-auto px-0">
+          <div className="flex items-center justify-center h-20">
             <div className="flex items-center gap-4">
               {TABS.map(({ id, icon: Icon, label }) => (
                 <Button
@@ -184,7 +184,7 @@ const LessonPage = () => {
                   className={activeTab === id ? 'text-blue-500' : ''}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="ml-2 hidden sm:inline">{label}</span>
+                  <span className="mx-2 hidden sm:inline">{label}</span>
                 </Button>
               ))}
             </div>

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 
 
+
 const Listbox = ({ value, onChange, options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -61,7 +62,7 @@ const CourseCard = ({ course }) => {
 };
 
 const RequestPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [request, setRequest] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState({
     label: t('English'),
@@ -71,10 +72,24 @@ const RequestPage = () => {
     label: t('Beginner'),
     value: 'beginner',
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
+  
+
+  useEffect(() => {
+    setSelectedLanguage({
+      label: t('English'), // This updates when language changes
+      value: selectedLanguage.value, // Keep the existing value
+    });
+    setSelectedLevel({
+      label: t('Beginner'), // This updates when language changes
+      value: selectedLevel.value, // Keep the existing value
+    });
+  }, [i18n.language]); // Listen for language changes
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
