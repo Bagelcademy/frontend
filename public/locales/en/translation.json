@@ -286,7 +286,11 @@
     "aria": {
       "sendButton": "Send message"
     }},
-  
+  "courseLevels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
   "Active Courses":"Active Courses",
   "Active Users":"Active Users",
   "welcomeBack": "Welcome back, {{username}}!",
