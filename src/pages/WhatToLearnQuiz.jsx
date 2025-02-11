@@ -63,7 +63,8 @@ const questions = [
 ];
 
 const QuizComponent = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === 'rtl';
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
   const [quizCompleted, setQuizCompleted] = useState(false);
@@ -105,7 +106,7 @@ const QuizComponent = () => {
     });
 
     // Find the most frequent category
-    const preferredCategory = Object.keys(categoryCounts).reduce((a, b) => 
+    const preferredCategory = Object.keys(categoryCounts).reduce((a, b) =>
       categoryCounts[a] > categoryCounts[b] ? a : b
     );
 
@@ -134,7 +135,7 @@ const QuizComponent = () => {
   const allQuestionsAnswered = answers.every((answer) => answer !== null);
 
   return (
-    <div className="mt-24 max-w-2xl mx-auto p-6 dark:text-white">
+    <div className="mt-0 max-w-2xl mx-auto p-6 dark:text-white">
       <AnimatePresence mode="wait">
         {!quizCompleted ? (
           <motion.div
@@ -144,19 +145,18 @@ const QuizComponent = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">{t("Question")} {currentQuestion + 1} {t("of")} {questions.length}</h2>
-            <p className="text-lg mb-4 dark:text-white">{t(questions[currentQuestion].question)}</p>
+            <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">{t("Question")} {currentQuestion + 1} {t("of")} {questions.length}</h2>
+            <p className="text-lg mb-4 text-black dark:text-white">{t(questions[currentQuestion].question)}</p>
             <div className="space-y-2">
               {questions[currentQuestion].options.map((option, index) => (
                 <motion.button
                   key={index}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-full p-2 rounded-lg text-left ${
-                    answers[currentQuestion] === option
-                      ? 'bg-buttonColor text-white dark:bg-buttonColor-dark'
-                      : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
-                  }`}
+                  className={`w-full p-2 rounded-lg text-left ${answers[currentQuestion] === option
+                    ? 'bg-buttonColor text-white dark:bg-buttonColor-dark'
+                    : 'bg-gray-400 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600'
+                    }`}
                   onClick={() => handleAnswer(option)}
                 >
                   {t(option)}
@@ -164,32 +164,68 @@ const QuizComponent = () => {
               ))}
             </div>
             <div className="mt-6 flex justify-between">
-              <button
-                onClick={handlePrevious}
-                disabled={currentQuestion === 0}
-                className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
-              >
-                <ChevronLeft className="w-5 h-5 mr-2" />
-                {t("Previous")}
-              </button>
-              {currentQuestion < questions.length - 1 ? (
-                <button
-                  onClick={handleNext}
-                  disabled={answers[currentQuestion] === null}
-                  className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
-                >
-                  {t("Next")}
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </button>
+              {!isRtl ? (
+                <>
+                  {/* LTR Layout (English, etc.) */}
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentQuestion === 0}
+                    className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
+                  >
+                    <ChevronLeft className="w-5 h-5 mr-2" />
+                    {t("Previous")}
+                  </button>
+                  {currentQuestion < questions.length - 1 ? (
+                    <button
+                      onClick={handleNext}
+                      disabled={answers[currentQuestion] === null}
+                      className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
+                    >
+                      {t("Next")}
+                      <ChevronRight className="w-5 h-5 ml-2" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!allQuestionsAnswered}
+                      className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
+                    >
+                      {t("Submit")}
+                      <Send className="w-5 h-5 ml-2" />
+                    </button>
+                  )}
+                </>
               ) : (
-                <button
-                  onClick={handleSubmit}
-                  disabled={!allQuestionsAnswered}
-                  className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
-                >
-                  {t("Submit")}
-                  <Send className="w-5 h-5 ml-2" />
-                </button>
+                <>
+                  {/* RTL Layout (Persian, etc.) */}
+                  {currentQuestion < questions.length - 1 ? (
+                    <button
+                      onClick={handleNext}
+                      disabled={answers[currentQuestion] === null}
+                      className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
+                    >
+                      <ChevronRight className="w-5 h-5 mr-2" /> {/* Reversed Arrow */}
+                      {t("Next")}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!allQuestionsAnswered}
+                      className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
+                    >
+                      <Send className="w-5 h-5 mr-2" />
+                      {t("Submit")}
+                    </button>
+                  )}
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentQuestion === 0}
+                    className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
+                  >
+                    {t("Previous")}
+                    <ChevronLeft className="w-5 h-5 ml-2" /> {/* Reversed Arrow */}
+                  </button>
+                </>
               )}
             </div>
           </motion.div>

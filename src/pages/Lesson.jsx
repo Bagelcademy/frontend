@@ -181,7 +181,7 @@ const LessonPage = () => {
                   key={id}
                   variant="ghost"
                   onClick={() => setActiveTab(id)}
-                  className={activeTab === id ? 'text-blue-500' : ''}
+                  className={activeTab === id ? 'text-blue-500 bg-gray-300' : 'bg-gray-300'}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="mx-2 hidden sm:inline">{label}</span>
@@ -273,6 +273,7 @@ const LessonPage = () => {
               </h3>
               <p className="text-slate-500">
                 {t("You've completed the entire course!")}
+                {t("A certificate of completion will be emailed to you shortly.")}
               </p>
               <Button
                 className="w-full"

@@ -249,10 +249,10 @@ const BagelFamilyIntro = () => {
               <GraduationCap className="w-16 h-16 text-white" />
             </div>
             <h1 className="text-4xl font-bold text-white mb-4">
-              Meet Your Tech Education Team
+              {t('Meet Your Tech Education Team')}
             </h1>
             <p className="text-xl text-white/90 text-center max-w-2xl">
-              A family of tech-savvy educators dedicated to making your learning journey deliciously engaging
+              {t('A family of tech-savvy educators dedicated to making your learning journey deliciously engaging')}
             </p>
           </div>
 
@@ -261,7 +261,7 @@ const BagelFamilyIntro = () => {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search by name, role, or expertise..."
+                placeholder={t("Search by name, role, or expertise...")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full py-4 px-6 pl-12 rounded-lg bg-white dark:bg-gray-800 border-0 focus:ring-2 focus:ring-blue-500"
@@ -294,11 +294,11 @@ const BagelFamilyIntro = () => {
                     <Icon className="w-6 h-6 text-white" />
                   </div>
                   <div className="absolute bottom-2 left-2 right-2 z-20">
-                    <h3 className="text-sm font-bold text-white mb-1">
+                    <h3 className="text-lg font-bold text-white mb-1">
                       {member.name}
                     </h3>
                     <div className="flex items-center text-white/90 text-xs">
-                      <Target className="w-3 h-3 mr-1" />
+                      <Target className="w-3 h-3 mx-1" />
                       {member.role}
                     </div>
                   </div>
@@ -308,14 +308,14 @@ const BagelFamilyIntro = () => {
                   <div className={`space-y-4 overflow-hidden transition-all duration-300 ${
                     isExpanded ? 'max-h-[1000px]' : 'max-h-0'
                   }`}>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-justify">
                       {member.description}
                     </p>
 
                     <div>
                       <h4 className="text-sm font-semibold mb-2 flex items-center">
-                        <Book className="w-3 h-3 mr-1 text-blue-500" />
-                        Expertise
+                        <Book className="w-3 h-3 mx-1 text-blue-500" />
+                        {t('Expertise')}
                       </h4>
                       <div className="flex flex-wrap gap-1">
                         {member.expertise.map((exp) => (
@@ -330,7 +330,7 @@ const BagelFamilyIntro = () => {
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold mb-2">Stats</h4>
+                      <h4 className="text-sm font-semibold mb-2">{t('Stats')}</h4>
                       <StatBar value={member.stats.teachingSkills} label="Teaching" color={member.color} />
                       <StatBar value={member.stats.techExpertise} label="Tech" color={member.color} />
                       <StatBar value={member.stats.problemSolving} label="Problem Solving" color={member.color} />
@@ -338,13 +338,13 @@ const BagelFamilyIntro = () => {
 
                     <div>
                       <h4 className="text-sm font-semibold mb-2 flex items-center">
-                        <Award className="w-3 h-3 mr-1 text-purple-500" />
-                        Achievements
+                        <Award className="w-3 h-3 mx-1 text-purple-500" />
+                        {t('Achievements')}
                       </h4>
                       <ul className="space-y-1 text-sm">
                         {member.achievements.map((achievement) => (
                           <li key={achievement} className="flex items-center">
-                            <Star className="w-3 h-3 mr-1 text-yellow-500" />
+                            <Star className="w-3 h-3 mx-1 text-yellow-500" />
                             <span className="text-gray-600 dark:text-gray-400">{achievement}</span>
                           </li>
                         ))}
@@ -358,12 +358,12 @@ const BagelFamilyIntro = () => {
                   >
                     {isExpanded ? (
                       <>
-                        <ChevronUp className="w-4 h-4 mr-1" />
-                        Less
+                        <ChevronUp className="w-4 h-4 mx-1" />
+                        {t('Less')}
                       </>
                     ) : (
                       <>
-                        <ChevronDown className="w-4 h-4 mr-1" />
+                        <ChevronDown className="w-4 h-4 mx-1" />
                         {t('More')}
                       </>
                     )}

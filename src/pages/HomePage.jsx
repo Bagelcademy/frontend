@@ -141,7 +141,7 @@ const FeatureSection = ({ icon: Icon, title, description, gradient, buttonText, 
               initial={{ x: reversed ? 50 : -50, opacity: 0 }}
               whileInView={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-xl mb-8 text-gray-600 dark:text-gray-300"
+              className="text-xl mb-8 text-gray-600 dark:text-gray-300 text-justify"
             >
               {description}
             </motion.p>
@@ -423,7 +423,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           description={t('Explore structured learning paths designed to take you from beginner to professional. Each path is carefully crafted to build your skills progressively.')}
           gradient="bg-gradient-to-r from-blue-600 to-purple-600"
           buttonText={t('Explore Paths')}
-          linkTo="/learning-path"
+          linkTo="/learning-paths"
           imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F8be7911c-bd5f-4329-a15d-942e3ccae4c9.png"
           features={[t('Structured learning paths'), t('Industry-relevant curriculum'), t('Certification & career support')]}
         />
