@@ -125,7 +125,7 @@
     "advanced": "پیشرفته"
   },
   "quiz": {
-    "title": "بررسی دانش",
+    "title": "آزمونک",
     "noQuestions": "این درس هیچ آزمونی ندارد.",
     "answerAllAlert": "لطفاً به همه سؤالات پاسخ دهید قبل از ارسال.",
     "submitButton": "ارسال آزمون",
@@ -776,5 +776,19 @@
   "Address": "آدرس",
   "Live Chat": "گفتگوی آنلاین",
   "For online support, use Gofteeno chat. Our team is available during working hours.": "برای پشتیبانی آنلاین، از چت گفتینو استفاده کنید. همکاران ما در ساعات کاری آماده پاسخگویی به شما هستند.",
-  "University of Zanjan, Thecnology Incubator Center - Arman Ertebat Vira Knowledge-Based Company": "دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویرا"
+  "University of Zanjan, Thecnology Incubator Center - Arman Ertebat Vira Knowledge-Based Company": "دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویرا",
+  "You've completed the entire course!": "شما دوره را تمام کرده‌اید!",
+  "Back to Courses": "بازگشت به دوره‌ها",
+  "A certificate of completion will be emailed to you shortly.": "گواهینامه تکمیل دوره به زودی برای شما ایمیل خواهد شد.",
+  "Meet Your Tech Education Team": "با تیم آموزش فنی خود آشنا شوید!",
+  "A family of tech-savvy educators dedicated to making your learning journey deliciously engaging": "خانواده‌ای از متخصصان آموزش فناوری که به ایجاد یک سفر یادگیری لذت‌بخش می‌پردازند.",
+  "Search by name, role, or expertise...": "جستجو بر اساس نام، نقش یا تخصص...",
+  "Expertise": "تخصص",
+  "Stats": "آمار",
+  "Achievements": "دستاوردها",
+  "Less": "کمتر",
+  "Code Laboratory": "آزمایشگاه کدنویسی",
+  "Python": "پایتون",
+  "Java": "جاوا",
+  "Output": "خروجی"
 }
