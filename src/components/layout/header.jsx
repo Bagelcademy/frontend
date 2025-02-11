@@ -16,6 +16,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [logoutAlert, setLogoutAlert] = useState(false); // State for logout alert
+  const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,29 +28,31 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // useEffect(() => {
-  //   const checkLoginStatus = () => {
-  //     const accessToken = localStorage.getItem('accessToken');
-  //     const refreshToken = localStorage.getItem('refreshToken');
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchUserProfile();
+    }
+  }, [isLoggedIn]);
   
-  //     if (!accessToken || !refreshToken) {
-  //       setIsLoggedIn(false);
-  //       clearAuthData(); 
-  //     } else {
-  //       setIsLoggedIn(true);
-  //     }
-  //   };
-  
-  //   checkLoginStatus();
-  //   window.addEventListener('storage', checkLoginStatus);
-  //   window.addEventListener('loginStateChanged', checkLoginStatus);
-  
-  //   return () => {
-  //     window.removeEventListener('storage', checkLoginStatus);
-  //     window.removeEventListener('loginStateChanged', checkLoginStatus);
-  //   };
-  // }, []);
-  
+  const fetchUserProfile = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setProfilePicture(data.profile_picture); // Store the profile picture URL
+      } else {
+        console.error('Failed to fetch user profile');
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
 
   const clearAuthData = () => {
     localStorage.removeItem('accessToken');
@@ -231,18 +234,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               >
                 {t('myCourses')}
               </Link>
-              <Link 
-                to="/profile" 
-                className={`
-                  relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
-                  after:w-0 hover:after:w-full after:transition-all after:duration-300
-                  ${isDarkTheme 
-                    ? 'text-gray-300 hover:text-white after:bg-white' 
-                    : 'text-black hover:text-gray-900 after:bg-gray-900'
-                  }
-                `}
-              >
-                {t('profile')}
+              <Link to="/profile">
+                <img
+                  src={profilePicture || 'https://via.placeholder.com/40'} // Default placeholder
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full border-2 border-black dark:border-white shadow-md cursor-pointer"
+                />
               </Link>
               <Button 
                 onClick={handleLogoutClick} 
@@ -390,19 +387,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               >
                 {t('myCourses')}
               </Link>
-              <Link 
-                to="/profile" 
-                onClick={toggleMenu} 
-                className={`
-                  block py-2 px-3 rounded-lg
-                  ${isDarkTheme 
-                    ? 'text-gray-300 hover:bg-gray-700/50' 
-                    : 'text-black hover:bg-gray-100/50'
-                  }
-                  transition-colors duration-300
-                `}
-              >
-                {t('profile')}
+              <Link to="/profile">
+                <img
+                  src={profilePicture || 'https://via.placeholder.com/40'} // Default placeholder
+                  alt="Profile"
+                  className="w-10 h-10 mb-4 mt-2 mx-3 rounded-full border-2 border-white shadow-md cursor-pointer"
+                />
               </Link>
               <button 
                 onClick={() => {
@@ -410,7 +400,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
                   toggleMenu();
                 }} 
                 className={`
-                  block py-2 px-3 rounded-lg 
+                  block py-2 px-3 rounded-lg mx-3
                   ${i18n.dir() === 'rtl' ? 'text-right' : 'text-left'}
                   ${isDarkTheme 
                     ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50' 
