@@ -1,43 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, User, BookOpen, Users, Clock, ChevronRight, ChevronLeft, Trophy, Star } from 'lucide-react';
+import { Calendar, User, BookOpen, Users, Clock, ChevronRight, Trophy, Star, Lock, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CourseLandingPage = () => {
-  const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'fa'; // Check if the language is Persian (or any RTL language)
+  const { t } = useTranslation();
   const [course, setCourse] = useState(null);
   const [popularCourses, setPopularCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [lastCompletedLessonId, setLastCompletedLessonId] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [courseResponse, popularResponse, enrollmentResponse] = await Promise.all([
+        // Check if user is logged in by checking if access token exists
+        const accessToken = localStorage.getItem('accessToken');
+        setIsLoggedIn(!!accessToken);
+
+        const [courseResponse, popularResponse] = await Promise.all([
           fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`),
-          fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/'),
-          fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-          })
+          fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/')
         ]);
 
-        const [courseData, popularData, enrollmentData] = await Promise.all([
+        const [courseData, popularData] = await Promise.all([
           courseResponse.json(),
-          popularResponse.json(),
-          enrollmentResponse.json()
+          popularResponse.json()
         ]);
+
+        if (accessToken) {
+          // Only fetch enrollment and completion status if user is logged in
+          const [enrollmentResponse, completionResponse] = await Promise.all([
+            fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }),
+            fetch(`https://bagelapi.bagelcademy.org/courses/student-progress/last-completed-lesson/`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+              },
+              body: JSON.stringify({
+                course_id: id
+              })
+            })
+          ]);
+
+          const [enrollmentData, completionData] = await Promise.all([
+            enrollmentResponse.json(),
+            completionResponse.json()
+          ]);
+
+          setIsEnrolled(enrollmentResponse.ok && enrollmentData.is_enrolled);
+          setLastCompletedLessonId(completionData.lesson_id);
+        }
 
         setCourse(courseData);
         setPopularCourses(popularData);
-        setIsEnrolled(enrollmentResponse.ok && enrollmentData.is_enrolled);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -48,11 +76,33 @@ const CourseLandingPage = () => {
     fetchData();
   }, [id, isEnrolled]);
 
-  const handleLessonClick = (lessonId) => {
-    navigate(`/courses/${id}/lessons/${lessonId}`);
+  const handleLessonClick = (lessonId, index) => {
+    if (!isLoggedIn) {
+      // Redirect to login if not logged in
+      navigate('/login');
+      return;
+    }
+
+    if (!isEnrolled && index > 0) {
+      // Only allow first lesson if not enrolled
+      return;
+    }
+
+    // Find the index of the last completed lesson
+    const lastCompletedIndex = course.lessons.findIndex(lesson => lesson.id === lastCompletedLessonId);
+
+    // Allow access to completed lessons and the next unopened lesson
+    if (isEnrolled && (index <= lastCompletedIndex + 1)) {
+      navigate(`/courses/${id}/lessons/${lessonId}`);
+    }
   };
 
   const handleEnrollClick = async () => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+
     try {
       const response = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
@@ -76,13 +126,14 @@ const CourseLandingPage = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`w-4 h-4 ${star <= rating
+            className={`w-4 h-4 ${
+              star <= rating
                 ? 'fill-yellow-400 text-yellow-400'
                 : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
-              }`}
+            }`}
           />
         ))}
-        <span className="mx-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
+        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
       </div>
     );
   };
@@ -92,12 +143,12 @@ const CourseLandingPage = () => {
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
     </div>
   );
-
+  
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   if (!course) return <div className="text-center p-4">{t('No course found')}</div>;
 
   return (
-    <div className="mt-0 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white min-h-screen">
+    <div className=" bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[70vh] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-purple-600/80 dark:from-blue-600/80 dark:to-purple-600/80"></div>
@@ -108,21 +159,18 @@ const CourseLandingPage = () => {
               {course.title}
             </h1>
             <div className="flex items-center justify-center space-x-8 mb-8 text-white">
-
               <div className="flex items-center">
-                <Clock className="w-6 h-6 mx-2" />
+                <Clock className="w-6 h-6 mr-2" />
                 <span>{course.lessons?.length || 0} {t('lessons')}</span>
-
               </div>
-              {/* <StarRating rating={4.5} /> */}
             </div>
             <button
               onClick={handleEnrollClick}
               disabled={isEnrolled}
               className={`
                 px-8 py-4 rounded-lg text-lg font-semibold text-white
-                ${isEnrolled
-                  ? 'bg-gray-600 cursor-not-allowed'
+                ${isEnrolled 
+                  ? 'bg-gray-600 cursor-not-allowed' 
                   : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
                 }
               `}
@@ -140,31 +188,41 @@ const CourseLandingPage = () => {
           <div className="lg:col-span-2">
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
+                <BookOpen className="w-6 h-6 mr-2 text-blue-400" />
                 {t('Course Content')}
               </h2>
               <div className="space-y-4">
-                {course.lessons?.map((lesson, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleLessonClick(lesson.id)}
-                    className="group bg-white dark:bg-gray-700 rounded-lg p-4 cursor-pointer transform hover:scale-102 transition-all duration-300 hover:bg-gray-100 dark:hover:bg-gray-600"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <span className="w-8 h-8 flex items-center justify-center bg-blue-500 text-white rounded-full">
-                          {index + 1}
-                        </span>
-                        <h3 className="font-medium">{lesson.title}</h3>
+                {course.lessons?.map((lesson, index) => {
+                  const lastCompletedIndex = course.lessons.findIndex(l => l.id === lastCompletedLessonId);
+                  const isCompleted = lastCompletedIndex >= 0 && index <= lastCompletedIndex;
+                  const isLocked = !isLoggedIn || (!isEnrolled && index > 0) || (isEnrolled && index > lastCompletedIndex + 1);
+
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => handleLessonClick(lesson.id, index)}
+                      className={`group bg-white dark:bg-gray-700 rounded-lg p-4 ${
+                        isLocked ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600'
+                      } transform hover:scale-102 transition-all duration-300`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <span className={`w-8 h-8 flex items-center justify-center rounded-full ${
+                            isCompleted ? 'bg-green-500' : 'bg-blue-500'
+                          } text-white`}>
+                            {isCompleted ? <Check className="w-5 h-5" /> : index + 1}
+                          </span>
+                          <h3 className="font-medium">{lesson.title}</h3>
+                        </div>
+                        {isLocked ? (
+                          <Lock className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-2 transition-transform" />
+                        )}
                       </div>
-                      {isRtl ? (
-                        <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                      ) : (
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -173,30 +231,35 @@ const CourseLandingPage = () => {
           <div className="lg:col-span-1">
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                <Trophy className="w-6 h-6 mx-2 text-yellow-400" />
+                <Trophy className="w-6 h-6 mr-2 text-yellow-400" />
                 {t('Popular Courses')}
               </h2>
               <div className="space-y-4">
-                {popularCourses.slice(0, 3).map((course, index) => (
-                  <div
+                {popularCourses.slice(0, 3).map((popularCourse, index) => (
+                  <div 
                     key={index}
-                    onClick={() => navigate(`/course/${course.id}`)}
-                    className="group bg-white dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
+                    onClick={() => navigate(`/course/${popularCourse.id}`)}
+                    className="group bg-white dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 relative"
                   >
                     <div className="relative h-32">
-                      <img
-                        src={course.image_url}
-                        alt={course.title}
+                      <img 
+                        src={popularCourse.image_url} 
+                        alt={popularCourse.title}
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                      {!isLoggedIn && (
+                        <div className="absolute top-2 right-2">
+                          <Lock className="w-5 h-5 text-white" />
+                        </div>
+                      )}
                     </div>
                     <div className="p-4">
-                      <h3 className="font-medium mb-2 line-clamp-2">{course.title}</h3>
+                      <h3 className="font-medium mb-2 line-clamp-2">{popularCourse.title}</h3>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                          <Users className="w-4 h-4 mx-1" />
-                          <span>{course.enroll_count || 0}</span>
+                          <Users className="w-4 h-4 mr-1" />
+                          <span>{popularCourse.enroll_count || 0}</span>
                         </div>
                         <StarRating rating={4.2} />
                       </div>
@@ -213,3 +276,48 @@ const CourseLandingPage = () => {
 };
 
 export default CourseLandingPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
