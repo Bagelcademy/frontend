@@ -6,12 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/selectIndex';
 import { Play, Terminal } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const CodeEditor = () => {
   const [code, setCode] = useState('');
   const [codeOutput, setCodeOutput] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const [codeLanguage, setCodeLanguage] = useState('python');
+  const { t } = useTranslation();
 
   const languageIds = {
     python: 71, // Python 3
@@ -62,7 +64,7 @@ const CodeEditor = () => {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <Terminal className="w-5 h-5" />
-          Code Laboratory
+          {t('Code Laboratory')}
         </CardTitle>
         <div className="flex items-center gap-4">
           <Select
@@ -73,8 +75,8 @@ const CodeEditor = () => {
               <SelectValue placeholder="Language" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="python">Python</SelectItem>
-              <SelectItem value="java">Java</SelectItem>
+              <SelectItem value="python">{t('Python')}</SelectItem>
+              <SelectItem value="java">{t('Java')}</SelectItem>
             </SelectContent>
           </Select>
           <Button
@@ -100,7 +102,7 @@ const CodeEditor = () => {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm">Output</CardTitle>
+            <CardTitle className="text-sm">{t('Output')}</CardTitle>
           </CardHeader>
           <CardContent>
             <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg min-h-[100px] max-h-[200px] overflow-auto">
