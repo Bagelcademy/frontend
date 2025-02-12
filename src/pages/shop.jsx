@@ -62,7 +62,7 @@ const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
   const [credits, setCredits] = useState(1);
   const { t } = useTranslation();
 
-  const basePrice = 15000;
+  const basePrice = 29900;
   const totalPrice = basePrice * credits;
   const discountedPrice = discountPercent
     ? Math.round(totalPrice * (1 - discountPercent / 100))
@@ -319,7 +319,7 @@ const SubscriptionCards = () => {
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"
-          price="129000"
+          price="198000"
           discountPrice={calculateDiscountedPrice(129000)}
           period="month"
           // isHighlighted={true}
@@ -333,7 +333,7 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="6 Months"
-          price="729000"
+          price="1089000"
           discountPrice={calculateDiscountedPrice(729000)}
           period="6 months"
           isBestOffer={true}
@@ -349,12 +349,12 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="Yearly"
-          price="1200000"
+          price="2178000"
           discountPrice={calculateDiscountedPrice(1200000)}
           period="year"
           features={[
             "All 6-month features",
-            "2 months free",
+            "1 months free",
             "Early access to new features",
             "12 Bonus AI Credits"
           ]}
