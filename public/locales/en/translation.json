@@ -341,5 +341,13 @@
   "science": "Science",
   "business": "Business",
   "health": "Health",
-  "allCategories": "All Categories"
+  "allCategories": "All Categories",
+  "filterByCompletion": "Filter by Completion",
+  "All Courses": "All Courses",
+  "Finished Courses": "Finished Courses",
+  "Unfinished Courses": "Unfinished Courses",
+  "completionStatus": {
+    "true": "Finished",
+    "false": "Unfinished"
+  }
 }

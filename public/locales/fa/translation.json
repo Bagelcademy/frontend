@@ -260,7 +260,7 @@
   "Exclusive content": "محتوای انحصاری",
   "50% off first month": "۵۰٪ تخفیف برای ماه اول",
   "All 6-month features": "تمام امکانات ۶ ماهه",
-  "2 months free": "۲ ماه رایگان",
+  "1 months free": "۱ ماه رایگان",
   "Annual performance review": "بررسی عملکرد سالانه",
   "1 Bonus AI Credits": "پاداش : ۱ اعتبار هوش مصنوعی",
   "6 Bonus AI Credits": "پاداش : ۷ اعتبار هوش مصنوعی",
@@ -587,7 +587,7 @@
   "Enrolled": "ثبت‌نام کردید",
   "Progress": "پیشرفت",
   "Search paths...": "جستجوی مسیرها...",
-  "Design Your Dream Course": "دوره رویایی خود را طراحی کنید",
+  "Design Courses with AI": "طراحی دوره با هوش مصنوعی",
   "Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.": "خلاقیت و تخصص خود را با طراحی دوره‌های سفارشی آزاد کنید. ابزار ساخت دوره ما به شما امکان می‌دهد محتوای جذاب در هر موضوع و زبانی ایجاد کنید.",
   "Start Creating": "شروع به ساخت",
   "Discover Your Perfect Path": "مسیر کامل خود را کشف کنید",
@@ -790,5 +790,19 @@
   "Code Laboratory": "آزمایشگاه کدنویسی",
   "Python": "پایتون",
   "Java": "جاوا",
-  "Output": "خروجی"
+  "Output": "خروجی",
+  "filterByCompletion": "فیلتر بر اساس وضعیت تکمیل",
+  "All Courses": "همه دوره‌ها",
+  "Finished Courses": "دوره‌های تکمیل شده",
+  "Unfinished Courses": "دوره‌های ناتمام",
+  "completionStatus": {
+    "true": "تکمیل شده",
+    "false": "ناتمام"
+  },
+  "Payment Successful": "پرداخت موفقیت‌آمیز بود",
+  "Payment Failed": "پرداخت ناموفق بود",
+  "We're sorry, but your payment could not be processed at this time.": "متأسفیم، اما پرداخت شما در حال حاضر قابل پردازش نیست.",
+  "Please try again or contact our support team for assistance.": "لطفاً دوباره تلاش کنید یا با تیم پشتیبانی ما تماس بگیرید.",
+  "Authority": "کد پیگیری",
+  "Not provided": "ارائه نشده"
 }
