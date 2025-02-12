@@ -44,6 +44,7 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const motivationalQuotes = [
     { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
@@ -62,8 +63,8 @@ const MyCourses = () => {
   }, []);
 
   useEffect(() => {
-    filterCourses();
-  }, [searchTerm, selectedCategory, courses, page]);
+  filterCourses();
+}, [searchTerm, selectedCategory, selectedStatus, courses, page]); // Now includes selectedStatus
 
 
   const fetchUserProfile = async () => {
@@ -115,16 +116,23 @@ const MyCourses = () => {
 
 
   const filterCourses = () => {
-    let filtered = courses;
+    let filtered = [...courses]; // Copy the courses array
+  
     if (searchTerm) {
       filtered = filtered.filter(item =>
         item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+  
     if (filteredCategoryId) {
       filtered = filtered.filter(item => item.course.category === filteredCategoryId);
     }
-    setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
+  
+    if (selectedStatus !== "") {
+      filtered = filtered.filter(item => item.progress.course_completed.toString() === selectedStatus);
+    }
+  
+    setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE)); // Apply pagination after filtering
   };
 
   const handleCategoryChange = (value) => {
@@ -294,6 +302,25 @@ const MyCourses = () => {
                       {category.translatedName}
                     </SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+
+              <Select
+                onValueChange={(value) => {
+                  setSelectedStatus(value);
+                  setPage(1); // Reset pagination on status change
+                }}
+                value={selectedStatus}
+                className="w-full md:w-64"
+              >
+                <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
+                  <Filter className="w-4 h-4 mr-2" />
+                  <SelectValue placeholder={t('filterByCompletion')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">{t('All Courses')}</SelectItem>
+                  <SelectItem value="true">{t('Finished Courses')}</SelectItem>
+                  <SelectItem value="false">{t('Unfinished Courses')}</SelectItem>
                 </SelectContent>
               </Select>
 

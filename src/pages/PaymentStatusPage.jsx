@@ -23,7 +23,7 @@ const PaymentStatusPage = () => {
             <XCircle className="mx-auto mb-4 text-red-500" size={48} />
           )}
           <h1 className={`text-2xl font-bold mb-2 ${isSuccess ? 'text-green-600' : 'text-red-600'}`}>
-            {isSuccess ? 'Payment Successful' : 'Payment Failed'}
+            {isSuccess ? t('Payment Successful') : t('Payment Failed')}
           </h1>
           <p className="text-gray-600 mb-4">
             {isSuccess
@@ -32,11 +32,11 @@ const PaymentStatusPage = () => {
           </p>
           {!isSuccess && (
             <p className="text-gray-600 mb-4">
-              (t('Please try again or contact our support team for assistance.'))
+              {t('Please try again or contact our support team for assistance.')}
             </p>
           )}
           <p className="text-sm text-gray-500">
-            Authority: <span className="font-mono">{authority || 'Not provided'}</span>
+            {t('Authority')} <span className="font-mono">{authority || t('Not provided')}</span>
           </p>
         </div>
       </div>
