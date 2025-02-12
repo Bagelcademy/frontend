@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import i18n from '../i18n';
 import {
   BookOpen, Award, Check, Search, Users,
-  Clock, Star, Filter, Rocket,
+  Clock, Star, Filter, Rocket, BrainCircuit,
   Brain, Target, Gift, Globe2, GraduationCap, UserCheck,Route} from 'lucide-react';
 import heroImage from '../assets/137.png';
 import { Button } from '../components/ui/button';
@@ -395,8 +395,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       {/* Feature Sections */}
       <div className="relative">
         <FeatureSection
-          icon={Rocket}
-          title={t('Design Your Dream Course')}
+          icon={BrainCircuit}
+          title={t('Design Courses with AI')}
           description={t('Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.')}
           gradient="bg-gradient-to-r from-blue-500 to-blue-600"
           buttonText={t('Start Creating')}

@@ -47,6 +47,7 @@ const LessonPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [noQuiz, setNoQuiz] = useState(false); // New state for no quiz scenario
   const [contentGenerating, setContentGenerating] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
@@ -114,7 +115,7 @@ const LessonPage = () => {
       }
     };
 
-  
+
     checkAndFetchLesson();
   }, [courseId, lessonId, navigate, t]);
 
@@ -123,6 +124,8 @@ const LessonPage = () => {
       Notify.failure(t('Complete the lesson first'));
       return;
     }
+
+    setIsNavigating(true); // Start loading process
 
     if (direction === 'next') {
       try {
@@ -139,10 +142,16 @@ const LessonPage = () => {
           setOpenDialog(true);
         } else {
           setActiveTab('content');
-          navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
+
+          // Simulate loading time before navigating
+          setTimeout(() => {
+            navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
+            setIsNavigating(false); // Stop loading after navigating
+          }, 1500); // Simulating delay
         }
       } catch (err) {
         setError(err.message);
+        setIsNavigating(false); // Stop loading if there's an error
       }
     } else {
       if (parseInt(lessonId) > 1) {
@@ -255,10 +264,14 @@ const LessonPage = () => {
           </div>
           <Button
             onClick={() => handleNavigation('next')}
-            disabled={!isNextAvailable}
-            className="w-24"
+            disabled={!isNextAvailable || isNavigating}
+            className="w-24 flex items-center justify-center"
           >
-            {t('Next')}
+            {isNavigating ? (
+              <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> // Spinner
+            ) : (
+              t('Next')
+            )}
           </Button>
         </div>
       </div>
