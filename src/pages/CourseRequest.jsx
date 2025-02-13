@@ -264,7 +264,7 @@ const RequestPage = () => {
               <Loader className="animate-spin w-5 h-5" />
             ) : (
               <>
-                <span>{t('Launch Your Question')}</span>
+                <span>{t('Create your course')}</span>
                 <Send className="w-5 h-5" />
               </>
             )}

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Calendar, User, BookOpen, Users, Clock, ChevronRight, Trophy, Star, Lock, Check } from 'lucide-react';
+import {
+  Calendar, User, BookOpen, Users, Clock, ChevronRight, Trophy, Star, Lock, Check, ChevronLeft,
+  Share2, ClipboardCheck
+} from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CourseLandingPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [course, setCourse] = useState(null);
   const [popularCourses, setPopularCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,6 +17,8 @@ const CourseLandingPage = () => {
   const [lastCompletedLessonId, setLastCompletedLessonId] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
+  const isRtl = i18n.language === 'fa';
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -97,6 +102,14 @@ const CourseLandingPage = () => {
     }
   };
 
+  const handleShare = () => {
+    const currentURL = window.location.href; // Get the current page URL
+    navigator.clipboard.writeText(currentURL).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset message after 2 sec
+    });
+  };
+
   const handleEnrollClick = async () => {
     if (!isLoggedIn) {
       navigate('/login');
@@ -126,14 +139,13 @@ const CourseLandingPage = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`w-4 h-4 ${
-              star <= rating
-                ? 'fill-yellow-400 text-yellow-400'
-                : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
-            }`}
+            className={`w-4 h-4 ${star <= rating
+              ? 'fill-yellow-400 text-yellow-400'
+              : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
+              }`}
           />
         ))}
-        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
+        <span className="mx-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
       </div>
     );
   };
@@ -143,7 +155,7 @@ const CourseLandingPage = () => {
       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
     </div>
   );
-  
+
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
   if (!course) return <div className="text-center p-4">{t('No course found')}</div>;
 
@@ -160,7 +172,7 @@ const CourseLandingPage = () => {
             </h1>
             <div className="flex items-center justify-center space-x-8 mb-8 text-white">
               <div className="flex items-center">
-                <Clock className="w-6 h-6 mr-2" />
+                <Clock className="w-6 h-6 mx-2" />
                 <span>{course.lessons?.length || 0} {t('lessons')}</span>
               </div>
             </div>
@@ -169,14 +181,32 @@ const CourseLandingPage = () => {
               disabled={isEnrolled}
               className={`
                 px-8 py-4 rounded-lg text-lg font-semibold text-white
-                ${isEnrolled 
-                  ? 'bg-gray-600 cursor-not-allowed' 
+                ${isEnrolled
+                  ? 'bg-gray-600 cursor-not-allowed'
                   : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl'
                 }
               `}
             >
               {isEnrolled ? t('Enrolled') : t('Enroll Now')}
             </button>
+            <div className="flex items-center justify-center space-x-4 mt-4">
+              <button
+                onClick={handleShare}
+                className="flex items-center px-3 py-3 rounded-lg text-sm font-semibold text-white bg-gray-500 hover:bg-gray-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                {copied ? (
+                  <>
+                    <ClipboardCheck className="w-5 h-5 mx-2" />
+                    {t('Copied!')}
+                  </>
+                ) : (
+                  <>
+                    <Share2 className="w-5 h-5 mx-2" />
+                    {t('Share')}
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -188,7 +218,7 @@ const CourseLandingPage = () => {
           <div className="lg:col-span-2">
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg mb-8">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                <BookOpen className="w-6 h-6 mr-2 text-blue-400" />
+                <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
                 {t('Course Content')}
               </h2>
               <div className="space-y-4">
@@ -201,15 +231,13 @@ const CourseLandingPage = () => {
                     <div
                       key={index}
                       onClick={() => handleLessonClick(lesson.id, index)}
-                      className={`group bg-white dark:bg-gray-700 rounded-lg p-4 ${
-                        isLocked ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600'
-                      } transform hover:scale-102 transition-all duration-300`}
+                      className={`group bg-white dark:bg-gray-700 rounded-lg p-4 ${isLocked ? 'cursor-not-allowed opacity-75' : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600'
+                        } transform hover:scale-102 transition-all duration-300`}
                     >
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <span className={`w-8 h-8 flex items-center justify-center rounded-full ${
-                            isCompleted ? 'bg-green-500' : 'bg-blue-500'
-                          } text-white`}>
+                        <div className="flex items-center gap-4">
+                          <span className={`w-8 h-8 flex items-center justify-center rounded-full ${isCompleted ? 'bg-green-500' : 'bg-blue-500'
+                            } text-white`}>
                             {isCompleted ? <Check className="w-5 h-5" /> : index + 1}
                           </span>
                           <h3 className="font-medium">{lesson.title}</h3>
@@ -217,7 +245,11 @@ const CourseLandingPage = () => {
                         {isLocked ? (
                           <Lock className="w-5 h-5 text-gray-400" />
                         ) : (
-                          <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-2 transition-transform" />
+                          isRtl ? (
+                            <ChevronLeft className="w-5 h-5 text-blue-400 group-hover:-translate-x-2 transition-transform" />
+                          ) : (
+                            <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-2 transition-transform" />
+                          )
                         )}
                       </div>
                     </div>
@@ -231,19 +263,19 @@ const CourseLandingPage = () => {
           <div className="lg:col-span-1">
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                <Trophy className="w-6 h-6 mr-2 text-yellow-400" />
+                <Trophy className="w-6 h-6 mx-2 text-yellow-400" />
                 {t('Popular Courses')}
               </h2>
               <div className="space-y-4">
                 {popularCourses.slice(0, 3).map((popularCourse, index) => (
-                  <div 
+                  <div
                     key={index}
                     onClick={() => navigate(`/course/${popularCourse.id}`)}
                     className="group bg-white dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 relative"
                   >
                     <div className="relative h-32">
-                      <img 
-                        src={popularCourse.image_url} 
+                      <img
+                        src={popularCourse.image_url}
                         alt={popularCourse.title}
                         className="w-full h-full object-cover"
                       />
@@ -258,7 +290,7 @@ const CourseLandingPage = () => {
                       <h3 className="font-medium mb-2 line-clamp-2">{popularCourse.title}</h3>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                          <Users className="w-4 h-4 mr-1" />
+                          <Users className="w-4 h-4 mx-1" />
                           <span>{popularCourse.enroll_count || 0}</span>
                         </div>
                         <StarRating rating={4.2} />
@@ -276,48 +308,3 @@ const CourseLandingPage = () => {
 };
 
 export default CourseLandingPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -138,7 +138,7 @@ const CareerPathsPage = () => {
 
             <Select onValueChange={setSelectedCategory} value={selectedCategory}>
               <SelectTrigger className="w-full md:w-64 bg-white dark:bg-gray-800 border-0">
-                <Filter className="w-4 h-4 mr-2" />
+                <Filter className="w-4 h-4 mx-2" />
                 <SelectValue placeholder={t('Select Category')} />
               </SelectTrigger>
               <SelectContent>
@@ -208,15 +208,15 @@ const CareerPathsPage = () => {
                   <div className="space-y-4 mt-auto">
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
-                        <Clock className="w-4 h-4 mr-2" />
+                        <Clock className="w-4 h-4 mx-1" />
                         <span>{path.duration} {t("months")}</span>
                       </div>
                       <div className="flex items-center text-gray-600 dark:text-gray-400">
-                        <BookOpen className="w-4 h-4 mr-2" />
+                        <BookOpen className="w-4 h-4 mx-2" />
                         <span>{path.lessons}</span>
                       </div>
                       <div className="flex items-center">
-                        <Users className="w-4 h-4 mr-2 text-blue-500" />
+                        <Users className="w-4 h-4 mx-2 text-blue-500" />
                         <span>{path.enrolledCount.toLocaleString()}</span>
                       </div>
                     </div>
@@ -227,7 +227,7 @@ const CareerPathsPage = () => {
                       <Button
                         className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
                       >
-                        <span className="mr-2">{t("Start Learning")}</span>
+                        <span className="mx-2">{t("Start Learning")}</span>
                       </Button>
                     </Link>
                   </div>
