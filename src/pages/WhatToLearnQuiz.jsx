@@ -98,64 +98,58 @@ const QuizComponent = () => {
       social_sciences: 0,
     };
 
-    // Tally categories based on the answers
     answers.forEach((answer, index) => {
       const question = questions[index];
       const category = question.categoryMapping[answer];
       categoryCounts[category] += 1;
     });
 
-    // Find the most frequent category
     const preferredCategory = Object.keys(categoryCounts).reduce((a, b) =>
       categoryCounts[a] > categoryCounts[b] ? a : b
     );
 
     try {
-      const response = await fetch('https://bagelapi.bagelcademy.org//courses/Category/popular-courses/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/popular-courses/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category: preferredCategory }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to submit quiz');
-      }
+      if (!response.ok) throw new Error('Failed to submit quiz');
 
       const data = await response.json();
-      setResult({ feedback: t("Your recommended category is:") + ` ${t(preferredCategory)}` });
-      setRecommendedCourses(data);  // Store the recommended courses
+      setResult({ feedback: `${t("Your recommended category is:")} ${t(preferredCategory)}` });
+      setRecommendedCourses(data);
       setQuizCompleted(true);
     } catch (error) {
       console.error('Error submitting quiz:', error);
     }
   };
 
-  const allQuestionsAnswered = answers.every((answer) => answer !== null);
-
   return (
-    <div className="mt-0 max-w-2xl mx-auto p-6 dark:text-white">
+    <div className="max-w-3xl mx-auto p-6 text-center dark:text-white dark:bg-black">
       <AnimatePresence mode="wait">
         {!quizCompleted ? (
           <motion.div
             key="quiz"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5 }}
+            className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg"
           >
             <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">{t("Question")} {currentQuestion + 1} {t("of")} {questions.length}</h2>
-            <p className="text-lg mb-4 text-black dark:text-white">{t(questions[currentQuestion].question)}</p>
-            <div className="space-y-2">
+            <p className="text-lg mb-6 text-black dark:text-white">{t(questions[currentQuestion].question)}</p>
+
+            <div className="space-y-3">
               {questions[currentQuestion].options.map((option, index) => (
                 <motion.button
                   key={index}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`w-full p-2 rounded-lg text-left ${answers[currentQuestion] === option
-                    ? 'bg-buttonColor text-white dark:bg-buttonColor-dark'
-                    : 'bg-gray-400 hover:bg-gray-500 dark:bg-gray-700 dark:hover:bg-gray-600'
+                  className={`w-full px-4 py-3 rounded-lg text-lg font-medium transition-all ${answers[currentQuestion] === option
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                      : 'bg-gray-200 hover:bg-gray-300 text-black dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600'
                     }`}
                   onClick={() => handleAnswer(option)}
                 >
@@ -163,23 +157,25 @@ const QuizComponent = () => {
                 </motion.button>
               ))}
             </div>
+
             <div className="mt-6 flex justify-between">
               {!isRtl ? (
+                // **LTR Layout (English, etc.)**
                 <>
-                  {/* LTR Layout (English, etc.) */}
                   <button
                     onClick={handlePrevious}
                     disabled={currentQuestion === 0}
-                    className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
+                    className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
                   >
                     <ChevronLeft className="w-5 h-5 mr-2" />
                     {t("Previous")}
                   </button>
+
                   {currentQuestion < questions.length - 1 ? (
                     <button
                       onClick={handleNext}
                       disabled={answers[currentQuestion] === null}
-                      className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
                     >
                       {t("Next")}
                       <ChevronRight className="w-5 h-5 ml-2" />
@@ -187,8 +183,7 @@ const QuizComponent = () => {
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      disabled={!allQuestionsAnswered}
-                      className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white"
                     >
                       {t("Submit")}
                       <Send className="w-5 h-5 ml-2" />
@@ -196,34 +191,34 @@ const QuizComponent = () => {
                   )}
                 </>
               ) : (
+                // **RTL Layout (Persian, etc.)**
                 <>
-                  {/* RTL Layout (Persian, etc.) */}
                   {currentQuestion < questions.length - 1 ? (
                     <button
                       onClick={handleNext}
                       disabled={answers[currentQuestion] === null}
-                      className="flex items-center px-4 py-2 bg-buttonColor text-white rounded-lg disabled:opacity-50 dark:bg-buttonColor-dark"
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
                     >
-                      <ChevronRight className="w-5 h-5 mr-2" /> {/* Reversed Arrow */}
+                      <ChevronRight className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Next */}
                       {t("Next")}
                     </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      disabled={!allQuestionsAnswered}
-                      className="flex items-center px-4 py-2 bg-green-800 text-white rounded-lg disabled:opacity-50 dark:bg-green-700"
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white"
                     >
-                      <Send className="w-5 h-5 mr-2" />
+                      <Send className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Submit */}
                       {t("Submit")}
                     </button>
                   )}
+
                   <button
                     onClick={handlePrevious}
                     disabled={currentQuestion === 0}
-                    className="flex items-center px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50 dark:bg-gray-700"
+                    className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
                   >
                     {t("Previous")}
-                    <ChevronLeft className="w-5 h-5 ml-2" /> {/* Reversed Arrow */}
+                    <ChevronLeft className="w-5 h-5 mx-2" /> {/* RTL: Chevron Right on Previous */}
                   </button>
                 </>
               )}
@@ -237,14 +232,10 @@ const QuizComponent = () => {
             transition={{ duration: 0.5 }}
             className="text-center dark:text-white"
           >
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">{t("Quiz Completed!")}</h2>
-            <p className="text-lg mb-4 dark:text-white">{result.feedback}</p>
-
-            {/* Render recommended courses using CourseCard */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedCourses.map((course) => (
-                <CourseCard key={course.id} course={course} />
-              ))}
+            <h2 className="text-2xl font-bold mb-4">{t("Quiz Completed!")}</h2>
+            <p className="text-lg mb-6">{result.feedback}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {recommendedCourses.map((course) => <CourseCard key={course.id} course={course} />)}
             </div>
           </motion.div>
         )}
