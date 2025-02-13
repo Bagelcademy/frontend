@@ -20,9 +20,17 @@ const Layout = ({
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // Wrap children in a container that starts from top
+  // Apply dark mode class to <html> tag when isDarkTheme is true
+  useEffect(() => {
+    if (isDarkTheme) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkTheme]);
+
   return (
-    <div className={`min-h-screen ${isDarkTheme ? 'dark' : ''} bg-white dark:bg-gray-900 transition-colors duration-300 flex flex-col`}>
+    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300 flex flex-col">
       <Header 
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
@@ -33,13 +41,12 @@ const Layout = ({
       />
 
       <main className="flex-grow flex flex-col">
-
         <div className="w-full flex-grow">
-        <DiscountBanner />
-
+          <DiscountBanner />
           {children}
         </div>
       </main>
+
       <Footer />
     </div>
   );
