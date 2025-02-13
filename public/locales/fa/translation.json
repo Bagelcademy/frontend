@@ -93,7 +93,7 @@
   "Email": "ایمیل",
   "Phone": "تلفن",
   "Follow Us": "ما را دنبال کنید",
-  "All rights reserved.": "تمام حقوق محفوظ است.",
+  "All rights reserved.": "تمام حقوق مادی و معنوی محفوظ است.",
   "About us": "درباره ما",
   "Didn't you find what you were looking for?": "چیزی که دنبالشی رو پیدا نکردی؟",
   "Search courses...": "جستجوی آموزش‌ها...",
@@ -103,7 +103,7 @@
   "Explore the Universe of Knowledge": "کاوش در دنیای دانش",
   "Ask what you can't find, and let curiosity be your guide!": "هر آنچه را نمی‌یابید بپرسید و بگذارید کنجکاوی راهنمای شما باشد!",
   "What knowledge are you seeking?": "دنبال چه دانشی هستید؟",
-  "Launch Your Question": "پرسش خود را مطرح کنید",
+  "Create your course": "دوره خود را طراحی کنید",
   "Your quest for knowledge has begun!": "جستجوی شما برای دانش آغاز شد!",
   "Oops! There was an error. Please try again.": "اوه! خطایی رخ داد. لطفاً دوباره تلاش کنید.",
   "Generated Courses": "دوره‌ تولید شده",
@@ -804,5 +804,9 @@
   "We're sorry, but your payment could not be processed at this time.": "متأسفیم، اما پرداخت شما در حال حاضر قابل پردازش نیست.",
   "Please try again or contact our support team for assistance.": "لطفاً دوباره تلاش کنید یا با تیم پشتیبانی ما تماس بگیرید.",
   "Authority": "کد پیگیری",
-  "Not provided": "ارائه نشده"
+  "Not provided": "ارائه نشده",
+  "For the next lesson, complete the exam first.": "برای درس بعدی، ابتدا آزمون را تکمیل کنید.",
+  "Share": "اشتراک‌گذاری",
+  "Copied!": "کپی شد!",
+  "no New Notifications": "هیچ اعلان جدیدی وجود ندارد"
 }
