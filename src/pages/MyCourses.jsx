@@ -44,7 +44,8 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState(t("All Courses")); // Default UI text
+  const [statusFilter, setStatusFilter] = useState(""); // Default filtering value
 
   const motivationalQuotes = [
     { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
@@ -63,8 +64,8 @@ const MyCourses = () => {
   }, []);
 
   useEffect(() => {
-  filterCourses();
-}, [searchTerm, selectedCategory, selectedStatus, courses, page]); // Now includes selectedStatus
+    filterCourses();
+  }, [searchTerm, selectedCategory, selectedStatus, courses, page]); // Now includes selectedStatus
 
 
   const fetchUserProfile = async () => {
@@ -115,25 +116,42 @@ const MyCourses = () => {
   };
 
 
+  const handleStatusChange = (value) => {
+    let displayValue;
+
+    if (value === "true") {
+      displayValue = t("Finished Courses");
+    } else if (value === "false") {
+      displayValue = t("Unfinished Courses");
+    } else {
+      displayValue = t("All Courses"); // Default text for UI
+    }
+
+    setSelectedStatus(displayValue); // Update UI text
+    setStatusFilter(value); // Update filter logic
+    setPage(1); // Reset pagination
+  };
+
   const filterCourses = () => {
-    let filtered = [...courses]; // Copy the courses array
-  
+    let filtered = [...courses];
+
     if (searchTerm) {
       filtered = filtered.filter(item =>
         item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-  
+
     if (filteredCategoryId) {
       filtered = filtered.filter(item => item.course.category === filteredCategoryId);
     }
-  
-    if (selectedStatus !== "") {
-      filtered = filtered.filter(item => item.progress.course_completed.toString() === selectedStatus);
+
+    if (statusFilter !== "") {
+      filtered = filtered.filter(item => item.progress.course_completed.toString() === statusFilter);
     }
-  
-    setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE)); // Apply pagination after filtering
+
+    setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
   };
+
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
@@ -306,21 +324,18 @@ const MyCourses = () => {
               </Select>
 
               <Select
-                onValueChange={(value) => {
-                  setSelectedStatus(value);
-                  setPage(1); // Reset pagination on status change
-                }}
-                value={selectedStatus}
+                onValueChange={handleStatusChange}
+                value={statusFilter} // Ensure value is bound to the filtering logic
                 className="w-full md:w-64"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
                   <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder={t('filterByCompletion')} />
+                  <SelectValue placeholder={selectedStatus} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{t('All Courses')}</SelectItem>
-                  <SelectItem value="true">{t('Finished Courses')}</SelectItem>
-                  <SelectItem value="false">{t('Unfinished Courses')}</SelectItem>
+                  <SelectItem value="">{t("All Courses")}</SelectItem>
+                  <SelectItem value="true">{t("Finished Courses")}</SelectItem>
+                  <SelectItem value="false">{t("Unfinished Courses")}</SelectItem>
                 </SelectContent>
               </Select>
 

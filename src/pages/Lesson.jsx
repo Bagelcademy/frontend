@@ -260,7 +260,7 @@ const LessonPage = () => {
             {t('Previous')}
           </Button>
           <div className="text-center text-sm text-slate-500 dark:text-slate-400">
-            {t('Lesson')} {lessonId} / {lesson?.totalLessons}
+            {t('For the next lesson, complete the exam first.')}
           </div>
           <Button
             onClick={() => handleNavigation('next')}
