@@ -10,7 +10,6 @@ import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 const ITEMS_PER_PAGE = 12;
-const TOTAL_LESSONS = 15; // Total lessons per course
 
 
 
@@ -183,7 +182,6 @@ const MyCourses = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading notes:', error);
-      // You might want to add some user feedback here
     }
   };
   const CourseCard = ({ item }) => {
@@ -191,6 +189,7 @@ const MyCourses = () => {
     const { course, progress } = item;
     const isRtl = i18n.language === 'fa'; // Check if the language is Persian (or any RTL language)
     const completedLessons = progress.completed_lessons.length;
+    const TOTAL_LESSONS = course.lesson_count	
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
 
     return (
