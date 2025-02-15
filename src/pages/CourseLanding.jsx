@@ -27,9 +27,19 @@ const CourseLandingPage = () => {
         const accessToken = localStorage.getItem('accessToken');
         setIsLoggedIn(!!accessToken);
 
+        // Set up fetch requests with appropriate headers
+        const courseRequest = fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`);
+        const popularRequest = accessToken ? 
+          fetch('https://bagelapi.bagelcademy.org/courses/Recommendation/recommend-courses/', {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          }) : 
+          Promise.resolve({ json: () => [] }); // Return empty array if not logged in
+
         const [courseResponse, popularResponse] = await Promise.all([
-          fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`),
-          fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/')
+          courseRequest,
+          popularRequest
         ]);
 
         const [courseData, popularData] = await Promise.all([

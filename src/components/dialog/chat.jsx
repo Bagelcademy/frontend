@@ -64,11 +64,8 @@ const AIAssistant = ({ lessonContent }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollAreaRef = useRef(null);
+  const isNewMessage = useRef(false);
 
   useEffect(() => {
     // Add welcome message when component mounts
@@ -78,14 +75,21 @@ const AIAssistant = ({ lessonContent }) => {
       isBot: true,
       timestamp: new Date(),
     }]);
-  }, [t]); // Add t as dependency since we're using it in the effect
+  }, [t]);
 
   useEffect(() => {
-    scrollToBottom();
+    // Only scroll to bottom when sending a new message
+    if (isNewMessage.current && scrollAreaRef.current) {
+      const scrollArea = scrollAreaRef.current;
+      scrollArea.scrollTop = scrollArea.scrollHeight;
+      isNewMessage.current = false;
+    }
   }, [messages]);
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
+
+    isNewMessage.current = true; // Set flag for new message
 
     const newMessage = {
       id: Date.now(),
@@ -100,7 +104,7 @@ const AIAssistant = ({ lessonContent }) => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const contextMessage = `this is the lesson that i will ask question about and dont answer not related questions: ${lessonContent} \n\n${input}`;
+      const contextMessage = `well ${input}`;
 
       const response = await fetch('https://bagelapi.bagelcademy.org/account/chat/', {
         method: 'POST',
@@ -141,7 +145,10 @@ const AIAssistant = ({ lessonContent }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col min-h-0 p-4 pt-0">
-        <ScrollArea className="flex-1 pr-4">
+        <ScrollArea 
+          className="flex-1 pr-4"
+          ref={scrollAreaRef}
+        >
           <div className="space-y-4">
             {messages.length === 0 ? (
               <div className="flex items-center justify-center h-40 text-slate-400">
@@ -161,7 +168,6 @@ const AIAssistant = ({ lessonContent }) => {
                 )}
               </>
             )}
-            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
         <div className="mt-4 flex gap-2">

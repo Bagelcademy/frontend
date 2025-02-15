@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
-  Clock, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft
+  Download, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-
 const ITEMS_PER_PAGE = 12;
 const TOTAL_LESSONS = 15; // Total lessons per course
 
@@ -160,6 +159,33 @@ const MyCourses = () => {
     setPage(1);
   };
 
+  const handleDownloadNotes = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch('https://bagelapi.bagelcademy.org/courses/user-notes/export-notes-pdf/', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to download notes');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'course-notes.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading notes:', error);
+      // You might want to add some user feedback here
+    }
+  };
   const CourseCard = ({ item }) => {
     const { t, i18n } = useTranslation();
     const { course, progress } = item;
@@ -338,7 +364,13 @@ const MyCourses = () => {
                   <SelectItem value="false">{t("Unfinished Courses")}</SelectItem>
                 </SelectContent>
               </Select>
-
+              <Button
+          onClick={handleDownloadNotes}
+          className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
+        >
+          <Download className="w-4 h-4 mr-2" />
+          {t('Download Notes')}
+        </Button>
               <Button
                 onClick={() => navigate('/courses')}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
