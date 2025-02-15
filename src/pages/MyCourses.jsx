@@ -341,7 +341,7 @@ const MyCourses = () => {
                 <SelectContent>
                   <SelectItem value="">{t('allCategories')}</SelectItem>
                   {categories.map(category => (
-                    <SelectItem key={category.id} value={category.name}>
+                    <SelectItem key={category.id} value={t(category.name)}>
                       {category.translatedName}
                     </SelectItem>
                   ))}
