@@ -388,7 +388,7 @@ const MyCourses = () => {
             <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
               <BookOpen className="w-6 h-6 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium mb-2">{t('noCourses')}</h3>
+            <h3 className="text-lg font-medium mb-2">{t('no Courses')}</h3>
             <p className="text-gray-500 dark:text-gray-400">
               {t('Try adjusting your search or filters')}
             </p>
