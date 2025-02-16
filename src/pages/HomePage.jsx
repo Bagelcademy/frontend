@@ -401,7 +401,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           gradient="bg-gradient-to-r from-blue-500 to-blue-600"
           buttonText={t('Start Creating')}
           linkTo="/ask"
-          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F9253aec3-5d18-4927-8906-9137951601e6.png"
+          imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/5556f361-914c-42fb-9e5c-0577013af010.png"
+          // imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F9253aec3-5d18-4927-8906-9137951601e6.png"
           features={[t('Create engaging courses'), t('Multi-language support'), t('Interactive course builder')]}
         />
 

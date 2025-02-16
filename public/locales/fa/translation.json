@@ -483,7 +483,13 @@
     "How to": "چگونه",
     "business": "کسب و کار",
     "social_sciences": "علوم اجتماعی",
-    "arts": "هنرها"
+    "arts": "هنرها",
+    "Data_science":"علم داده",
+    "artificial_intelligence":"هوش مصنوعی",
+    "Languages":"زبان ها",
+    "programming":"برنامه‌نویسی",
+    "agriculture":"کشاورزی"
+
   },
   "Take The Exam": "امتحان بدهید",
   "Invalid learning path ID": "شناسه مسیر یادگیری نامعتبر است",
@@ -767,6 +773,9 @@
   "history": "تاریخ",
   "math": "ریاضیات",
   "How to": "چگونه",
+  "Data_sience":"علم داده",
+  "artificial_intelligence":"هوش مصنوعی",
+  "languages":"زبان ها",
   "social_sciences": "علوم اجتماعی",
   "Contact Us": "تماس با ما",
   "Get in touch with the Bagelcademy team": "تماس با تیم Bagelcademy",
