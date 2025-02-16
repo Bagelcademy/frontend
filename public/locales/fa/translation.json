@@ -808,5 +808,19 @@
   "For the next lesson, complete the exam first.": "برای درس بعدی، ابتدا آزمون را تکمیل کنید.",
   "Share": "اشتراک‌گذاری",
   "Copied!": "کپی شد!",
-  "no New Notifications": "هیچ اعلان جدیدی وجود ندارد"
+  "no New Notifications": "هیچ اعلان جدیدی وجود ندارد",
+  "no Courses": "هیچ دوره‌ای وجود ندارد",
+  "Try adjusting your search or filters": "تلاش کنید جستجوی خود را یا فیلترها را تنظیم کنید",
+  "false": "ناتمام",
+  "true": "تکمیل شده",
+  "Download Notes": "دانلود یادداشت‌ها",
+  "RecommendedCourses": "دوره‌های پیشنهادی",
+  "Processing...": "در حال پردازش...",
+  "Thanks for your feedback!": "با تشکر از بازخورد شما!",
+  "Failed to submit rating": "ارسال امتیاز ناموفق بود",
+  "Submit Rating": "ارسال امتیاز",
+  "Rating Submitted": "امتیاز ارسال شد",
+  "Please select a rating before submitting.": "لطفاً قبل از ارسال یک امتیاز را انتخاب کنید.",
+  "Rate this Course": "به این دوره امتیاز دهید",
+  "Quiz completed successfully": "آزمون با موفقیت تکمیل شد"
 }

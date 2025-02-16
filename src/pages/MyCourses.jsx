@@ -354,20 +354,20 @@ const MyCourses = () => {
                 className="w-full md:w-64"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
-                  <Filter className="w-4 h-4 mr-2" />
+                  <Filter className="w-4 h-4 mx-2" />
                   <SelectValue placeholder={selectedStatus} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">{t("All Courses")}</SelectItem>
-                  <SelectItem value="true">{t("Finished Courses")}</SelectItem>
-                  <SelectItem value="false">{t("Unfinished Courses")}</SelectItem>
+                  <SelectItem value={t('true')}>{t("Finished Courses")}</SelectItem>
+                  <SelectItem value={t('false')}>{t("Unfinished Courses")}</SelectItem>
                 </SelectContent>
               </Select>
               <Button
           onClick={handleDownloadNotes}
           className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
         >
-          <Download className="w-4 h-4 mr-2" />
+          <Download className="w-4 h-4 mx-2" />
           {t('Download Notes')}
         </Button>
               <Button
@@ -388,7 +388,7 @@ const MyCourses = () => {
             <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
               <BookOpen className="w-6 h-6 text-gray-400" />
             </div>
-            <h3 className="text-lg font-medium mb-2">{t('noCourses')}</h3>
+            <h3 className="text-lg font-medium mb-2">{t('no Courses')}</h3>
             <p className="text-gray-500 dark:text-gray-400">
               {t('Try adjusting your search or filters')}
             </p>

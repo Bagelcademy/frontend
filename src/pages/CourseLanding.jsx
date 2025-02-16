@@ -274,7 +274,7 @@ const CourseLandingPage = () => {
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
                 <Trophy className="w-6 h-6 mx-2 text-yellow-400" />
-                {t('Popular Courses')}
+                {t('RecommendedCourses')}
               </h2>
               <div className="space-y-4">
                 {popularCourses.slice(0, 3).map((popularCourse, index) => (
