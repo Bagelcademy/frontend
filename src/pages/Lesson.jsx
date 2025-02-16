@@ -224,7 +224,7 @@ const LessonPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                    <ReactMarkdown>{lesson?.content}</ReactMarkdown>
+                    <ReactMarkdown className="text-justify">{lesson?.content}</ReactMarkdown>
                   </div>
                 </CardContent>
               </Card>
