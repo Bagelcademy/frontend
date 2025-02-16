@@ -354,20 +354,20 @@ const MyCourses = () => {
                 className="w-full md:w-64"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
-                  <Filter className="w-4 h-4 mr-2" />
+                  <Filter className="w-4 h-4 mx-2" />
                   <SelectValue placeholder={selectedStatus} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">{t("All Courses")}</SelectItem>
-                  <SelectItem value="true">{t("Finished Courses")}</SelectItem>
-                  <SelectItem value="false">{t("Unfinished Courses")}</SelectItem>
+                  <SelectItem value={t('true')}>{t("Finished Courses")}</SelectItem>
+                  <SelectItem value={t('false')}>{t("Unfinished Courses")}</SelectItem>
                 </SelectContent>
               </Select>
               <Button
           onClick={handleDownloadNotes}
           className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
         >
-          <Download className="w-4 h-4 mr-2" />
+          <Download className="w-4 h-4 mx-2" />
           {t('Download Notes')}
         </Button>
               <Button
