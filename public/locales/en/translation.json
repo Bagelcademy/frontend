@@ -229,7 +229,12 @@
     "How to": "How to",
     "business": "Business",
     "social_sciences": "Social Sciences",
-    "arts": "Arts"
+    "arts": "Arts",
+    "Data_science":"Data science",
+    "artificial_intelligence":"artificial intelligence",
+    "Languages":"languages",
+    "programming":"programming",
+    "agriculture":"agriculture"
   },
     
   "motivationalQuotes": {
@@ -324,6 +329,7 @@
   "Specialty": "Specialty",
   "Favorite Quote": "Favorite Quote",
   "Fun Fact": "Fun Fact",
+  "searchPlaceholder":"Search in my courses",
   "nameTooLong": "Name must be less than 20 characters.",
   "phoneNumberTooShort": "Phone number must be at least 11 digits.",
   "phoneNumberTooLong": "Phone number must be no more than 13 digits.",

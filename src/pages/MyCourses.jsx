@@ -122,11 +122,11 @@ const MyCourses = () => {
     } else if (value === "false") {
       displayValue = t("Unfinished Courses");
     } else {
-      displayValue = t("All Courses"); // Default text for UI
+      displayValue = t("All Courses"); 
     }
+    setStatusFilter(value); // Update filter logic
 
     setSelectedStatus(displayValue); // Update UI text
-    setStatusFilter(value); // Update filter logic
     setPage(1); // Reset pagination
   };
 
@@ -359,8 +359,8 @@ const MyCourses = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">{t("All Courses")}</SelectItem>
-                  <SelectItem value={t('true')}>{t("Finished Courses")}</SelectItem>
-                  <SelectItem value={t('false')}>{t("Unfinished Courses")}</SelectItem>
+                  <SelectItem value='true'>{t("Finished Courses")}</SelectItem>
+                  <SelectItem value='false'>{t("Unfinished Courses")}</SelectItem>
                 </SelectContent>
               </Select>
               <Button
