@@ -224,7 +224,27 @@ const LessonPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                    <ReactMarkdown className="text-justify">{lesson?.content}</ReactMarkdown>
+                  <ReactMarkdown className="text-justify"
+                    components={{
+                    code({ node, inline, className, children, ...props }) {
+                      return inline ? (
+            <code {...props}>{children}</code>
+          ) : (
+            <pre
+              style={{
+                direction: "ltr",
+                textAlign: "left",
+              }}
+              {...props}
+            >
+              <code>{children}</code>
+            </pre>
+          );
+        },
+      }}
+    >
+      {lesson?.content}
+    </ReactMarkdown>
                   </div>
                 </CardContent>
               </Card>
@@ -369,6 +389,8 @@ const LessonPage = () => {
           padding: 1rem;
           border-radius: 0.5rem;
           overflow-x: auto;
+                          direction: "ltr",
+                textAlign: "left",
         }
         .prose code {
           color: #e2e8f0;
@@ -376,6 +398,8 @@ const LessonPage = () => {
           padding: 0.2rem 0.4rem;
           border-radius: 0.25rem;
           font-size: 0.875em;
+                          direction: "ltr",
+                textAlign: "left",
         }
         .prose img {
           border-radius: 0.5rem;
@@ -421,10 +445,12 @@ const LessonPage = () => {
           }
           .prose pre {
             padding: 0.75rem;
+              direction: rtl;
           }
           .prose img {
             margin: 1.5rem auto;
           }
+
         }
       `}</style>
     </div>
