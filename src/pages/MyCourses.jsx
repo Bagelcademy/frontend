@@ -44,7 +44,11 @@ const MyCourses = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(t("All Courses")); // Default UI text
   const [statusFilter, setStatusFilter] = useState(""); // Default filtering value
-
+  const completionStatus = {
+    true: t("Finished Courses"),
+    false: t("Unfinished Courses"),
+    "": t("All Courses"),
+  };
   const motivationalQuotes = [
     { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
     { quote: t('motivationalQuotes.quote2'), author: t('motivationalQuotes.author2') },
@@ -350,17 +354,17 @@ const MyCourses = () => {
 
               <Select
                 onValueChange={handleStatusChange}
-                value={statusFilter} // Ensure value is bound to the filtering logic
+                value={statusFilter}
                 className="w-full md:w-64"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
                   <Filter className="w-4 h-4 mx-2" />
-                  <SelectValue placeholder={selectedStatus} />
+                  <span>{completionStatus[statusFilter] || t("Select Status")}</span>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">{t("All Courses")}</SelectItem>
-                  <SelectItem value='true'>{t("Finished Courses")}</SelectItem>
-                  <SelectItem value='false'>{t("Unfinished Courses")}</SelectItem>
+                  <SelectItem value="">{completionStatus[""]}</SelectItem>
+                  <SelectItem value="true">{completionStatus["true"]}</SelectItem>
+                  <SelectItem value="false">{completionStatus["false"]}</SelectItem>
                 </SelectContent>
               </Select>
               <Button
