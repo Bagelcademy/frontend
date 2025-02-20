@@ -5,7 +5,7 @@ import { java } from '@codemirror/lang-java';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/selectIndex';
-import { Play, Terminal } from 'lucide-react';
+import { Play, Terminal, ChevronsLeftRightEllipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CodeEditor = () => {
@@ -60,11 +60,14 @@ const CodeEditor = () => {
   };
 
   return (
-    <Card className="w-full">
+    <Card className="w-full text-left ltr:mr-1">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
-          <Terminal className="w-5 h-5" />
-          {t('Code Laboratory')}
+          <div className="flex gap-4 items-center">
+            <Terminal className="w-5 h-5" />
+            {t('Code Laboratory')}
+          </div>
+
         </CardTitle>
         <div className="flex items-center gap-4">
           <Select
@@ -97,12 +100,17 @@ const CodeEditor = () => {
             extensions={[codeLanguage === 'python' ? python() : java()]}
             onChange={(value) => setCode(value)}
             theme="dark"
-            className="rounded-lg"
+            className="rounded-lg ltr:ml-1 text-left"
           />
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm">{t('Output')}</CardTitle>
+            {/* <CardTitle className="text-sm ">{t('Output')}</CardTitle> */}
+
+            <div className="flex gap-4 items-center">
+            <ChevronsLeftRightEllipsis className="w-5 h-5" />
+            {t('Output')}
+          </div>
           </CardHeader>
           <CardContent>
             <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg min-h-[100px] max-h-[200px] overflow-auto">

@@ -67,7 +67,7 @@ const CourseCard = ({ course }) => {
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <Globe2 className="w-4 h-4 mx-1" />
-                <span>{course.language}</span>
+                <span>{t(course.language)}</span>
               </div>
             </div>
           </div>
