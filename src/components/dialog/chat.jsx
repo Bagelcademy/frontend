@@ -13,12 +13,11 @@ const Message = ({ isBot, content, timestamp }) => (
       ${isBot ? 'bg-blue-500' : 'bg-slate-700 dark:bg-slate-600'}`}>
       {isBot ? <Bot size={18} className="text-white" /> : <User size={18} className="text-white" />}
     </div>
-    <div className={`flex-1 ${isBot ? 'mr-12' : 'ml-12'}`}>
-      <div className={`p-3 rounded-lg ${
-        isBot 
-          ? 'bg-slate-100 dark:bg-slate-800' 
+    <div className={`flex ${isBot ? 'mr-12' : 'ml-12'}`}>
+      <div className={`p-3 rounded-lg ${isBot
+          ? 'bg-slate-100 dark:bg-slate-800'
           : 'bg-blue-500 text-white dark:bg-blue-600'
-      }`}>
+        }`}>
         {isBot ? (
           <div className="markdown-content prose dark:prose-invert max-w-none prose-pre:my-0 prose-p:my-0 prose-ul:my-0 prose-ol:my-0">
             <ReactMarkdown
@@ -27,7 +26,7 @@ const Message = ({ isBot, content, timestamp }) => (
                 ul: ({ children }) => <ul className="list-disc ml-4 mb-1 last:mb-0">{children}</ul>,
                 ol: ({ children }) => <ol className="list-decimal ml-4 mb-1 last:mb-0">{children}</ol>,
                 li: ({ children }) => <li className="mb-1 last:mb-0">{children}</li>,
-                code: ({ inline, children }) => 
+                code: ({ inline, children }) =>
                   inline ? (
                     <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">{children}</code>
                   ) : (
@@ -52,7 +51,7 @@ const Message = ({ isBot, content, timestamp }) => (
           content
         )}
       </div>
-      <div className="text-xs text-slate-400 mt-1">
+      <div className="text-xs flex items-center mx-4 text-slate-400 mt-1">
         {new Date(timestamp).toLocaleTimeString()}
       </div>
     </div>
@@ -116,7 +115,7 @@ const AIAssistant = ({ lessonContent }) => {
       });
 
       const data = await response.json();
-      
+
       setMessages(prev => [...prev, {
         id: Date.now(),
         content: data.response,
@@ -140,12 +139,14 @@ const AIAssistant = ({ lessonContent }) => {
     <Card className="h-full flex flex-col">
       <CardHeader className="shrink-0 py-3">
         <CardTitle className="flex items-center gap-2">
-          <Bot className="w-5 h-5 text-blue-500" />
-          {t('chat.title')}
+          <div className="flex gap-4 items-center">
+            <Bot className="w-5 h-5 text-blue-500" />
+            {t('chat.title')}
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col min-h-0 p-4 pt-0">
-        <ScrollArea 
+        <ScrollArea
           className="flex-1 pr-4"
           ref={scrollAreaRef}
         >
@@ -178,8 +179,8 @@ const AIAssistant = ({ lessonContent }) => {
             placeholder={t('chat.inputPlaceholder')}
             className="flex-1"
           />
-          <Button 
-            onClick={handleSendMessage} 
+          <Button
+            onClick={handleSendMessage}
             disabled={isLoading || !input.trim()}
             className="w-10 h-10 p-0"
             aria-label={t('chat.aria.sendButton')}
