@@ -130,7 +130,7 @@ const Courses = () => {
                 </button>
                 
                 {isDropdownOpen && (
-                  <div className="absolute mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
+                  <div className="absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
                     <div className="py-2">
                       <button
                         onClick={() => {
@@ -168,7 +168,7 @@ const Courses = () => {
                 </button>
                 
                 {isLanguageDropdownOpen && (
-                  <div className="absolute mt-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
+                  <div className="absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
                     <div className="py-2">
                       <button
                         onClick={() => {

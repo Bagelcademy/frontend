@@ -51,6 +51,13 @@ const LessonPage = () => {
   const [rating, setRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
 
+  useEffect(() => {
+    // Scroll to top whenever the activeTab changes
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Optional smooth scrolling effect
+    });
+  }, [activeTab]);  
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
@@ -193,7 +200,7 @@ const LessonPage = () => {
                   key={id}
                   variant="ghost"
                   onClick={() => setActiveTab(id)}
-                  className={activeTab === id ? 'text-blue-500 bg-gray-300' : 'bg-gray-300'}
+                  className={activeTab === id ? 'text-blue-500 bg-gray-300' : 'text-gray-700 bg-gray-300'}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="mx-2 hidden sm:inline">{label}</span>
