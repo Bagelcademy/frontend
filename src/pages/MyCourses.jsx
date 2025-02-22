@@ -126,7 +126,7 @@ const MyCourses = () => {
     } else if (value === "false") {
       displayValue = t("Unfinished Courses");
     } else {
-      displayValue = t("All Courses"); 
+      displayValue = t("All Courses");
     }
     setStatusFilter(value); // Update filter logic
 
@@ -170,7 +170,7 @@ const MyCourses = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to download notes');
       }
@@ -193,7 +193,7 @@ const MyCourses = () => {
     const { course, progress } = item;
     const isRtl = i18n.language === 'fa'; // Check if the language is Persian (or any RTL language)
     const completedLessons = progress.completed_lessons.length;
-    const TOTAL_LESSONS = course.lesson_count	
+    const TOTAL_LESSONS = course.lesson_count
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
 
     return (
@@ -272,7 +272,7 @@ const MyCourses = () => {
             onClick={() => navigate(`/course/${course.id}`)}
             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
           >
-            <span className="mr-2">
+            <span className="mx-2">
               {progress.course_completed ? t('Review Course') : t('Continue Learning')}
             </span>
             {isRtl ? (
@@ -336,7 +336,7 @@ const MyCourses = () => {
               <Select
                 onValueChange={handleCategoryChange}
                 value={selectedCategory}
-                className="w-full md:w-64"
+                className="w-20"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
                   <Filter className="w-4 h-4 mr-2" />
@@ -355,7 +355,7 @@ const MyCourses = () => {
               <Select
                 onValueChange={handleStatusChange}
                 value={statusFilter}
-                className="w-full md:w-64"
+                className="w-20"
               >
                 <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
                   <Filter className="w-4 h-4 mx-2" />
@@ -368,12 +368,12 @@ const MyCourses = () => {
                 </SelectContent>
               </Select>
               <Button
-          onClick={handleDownloadNotes}
-          className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
-        >
-          <Download className="w-4 h-4 mx-2" />
-          {t('Download Notes')}
-        </Button>
+                onClick={handleDownloadNotes}
+                className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
+              >
+                <Download className="w-4 h-4 mx-2" />
+                {t('Download Notes')}
+              </Button>
               <Button
                 onClick={() => navigate('/courses')}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"

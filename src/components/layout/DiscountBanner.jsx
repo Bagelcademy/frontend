@@ -112,7 +112,7 @@ const DiscountBanner = () => {
 
   return (
     <div
-      className="mt-24 relative flex items-center justify-center gap-4 bg-blue-700 bg-opacity-80 text-white py-4 px-6 cursor-pointer shadow-md hover:bg-opacity-100 transition-all duration-300 overflow-hidden"
+      className="mt-24 relative flex items-center justify-center gap-4 bg-blue-700 bg-opacity-80 text-white py-4 px-2 cursor-pointer shadow-md hover:bg-opacity-100 transition-all duration-300 overflow-hidden"
       onClick={handleClick}
     >
       {icons.map(({ id, Icon, top, left, size, opacity }) => (

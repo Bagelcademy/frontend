@@ -32,7 +32,7 @@ const BagelFamilyIntro = () => {
 
   return (
     <div className="app">
-      <h1 className="title">{t('meetTeam')}</h1>
+      <h1 className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text my-4 py-2">{t('meetTeam')}</h1>
       <div className="character-grid">
         {characters.map((character, index) => (
           <div key={index} className="character-card bg-gray-100 dark:bg-gray-900 grid place-items-center">
