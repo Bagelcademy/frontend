@@ -778,7 +778,6 @@
   "Languages":"زبان ها",
   "programming":"برنامه‌نویسی",
   "agriculture":"کشاورزی",
-  "languages":"زبان ها",
   "social_sciences": "علوم اجتماعی",
   "Contact Us": "تماس با ما",
   "Get in touch with the Bagelcademy team": "تماس با تیم Bagelcademy",
@@ -845,6 +844,15 @@
   "false": "ناتمام",
   "true": "تکمیل شده",
   "new":"جدید",
+
+    "languages": {
+      "allLanguages": "همه زبان‌ها",
+      "english": "انگلیسی",
+      "persian": "فارسی"
+    },
+    "Back to Course":"بازگشت به آموزش",
+  "Loading next lesson...":"در حال پردازش درس بعدی",
+  "Loading lesson...":"در حال  پردازش درس",
   "Download Notes": "دانلود یادداشت‌ها",
   "RecommendedCourses": "دوره‌های پیشنهادی",
   "Processing...": "در حال پردازش...",

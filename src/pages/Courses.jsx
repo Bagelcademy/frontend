@@ -14,12 +14,18 @@ const Courses = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [categories, setCategories] = useState([]);
-  const [languages, setLanguages] = useState(['English', 'Persian']);
   const [page, setPage] = useState(1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  // Define the language mapping similar to the completion status
+  const languageMapping = {
+    "English": t("languages.english"),
+    "Persian": t("languages.persian"),
+    "": t("languages.allLanguages")
+  };
 
   const ITEMS_PER_PAGE = 20;
 
@@ -163,7 +169,9 @@ const Courses = () => {
                   onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                   className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <span className="text-black dark:text-white">{selectedLanguage || t('All Languages')}</span>
+                  <span className="text-black dark:text-white">
+                    {languageMapping[selectedLanguage] || languageMapping[""]}
+                  </span>
                   <ChevronDown className="w-4 h-4 text-black dark:text-white" />
                 </button>
                 
@@ -177,20 +185,25 @@ const Courses = () => {
                         }}
                         className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                       >
-                        {t('All Languages')}
+                        {languageMapping[""]}
                       </button>
-                      {languages.map(language => (
-                        <button
-                          key={language}
-                          onClick={() => {
-                            setSelectedLanguage(language);
-                            setIsLanguageDropdownOpen(false);
-                          }}
-                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
-                        >
-                          {language}
-                        </button>
-                      ))}
+                      {Object.entries(languageMapping).map(([key, value]) => {
+                        if (key !== "") {
+                          return (
+                            <button
+                              key={key}
+                              onClick={() => {
+                                setSelectedLanguage(key);
+                                setIsLanguageDropdownOpen(false);
+                              }}
+                              className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                            >
+                              {value}
+                            </button>
+                          );
+                        }
+                        return null;
+                      })}
                     </div>
                   </div>
                 )}

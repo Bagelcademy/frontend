@@ -16,16 +16,14 @@ import {
   Pencil,
   Terminal,
   BrainCircuit,
+  ChevronLeft,
 } from 'lucide-react';
 
-// Import our custom components
 import AIAssistant from '../components/dialog/chat';
 import CodeEditor from '../components/ui/code-editor';
 import Quiz from '../components/ui/quiz';
 import Notes from '../components/ui/notes';
 import LoadingSpinner from '../components/ui/loading';
-// Tabs configuration for cleaner code
-
 
 const LessonPage = () => {
   const { t } = useTranslation();
@@ -38,6 +36,7 @@ const LessonPage = () => {
     { id: 'code', icon: Terminal, label: t('Code Lab') },
     { id: 'ai', icon: BrainCircuit, label: t('AI Assistant') },
   ];
+  
   const [activeTab, setActiveTab] = useState('content');
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,19 +44,23 @@ const LessonPage = () => {
   const [isNextAvailable, setIsNextAvailable] = useState(false);
   const [isLastLesson, setIsLastLesson] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [noQuiz, setNoQuiz] = useState(false); // New state for no quiz scenario
+  const [noQuiz, setNoQuiz] = useState(false);
   const [contentGenerating, setContentGenerating] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const [rating, setRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
+  const [isLoadingNextLesson, setIsLoadingNextLesson] = useState(false);
+
+  const handleBack = () => {
+    navigate(`/course/${courseId}`);
+  };
 
   useEffect(() => {
-    // Scroll to top whenever the activeTab changes
     window.scrollTo({
       top: 0,
-      behavior: 'smooth', // Optional smooth scrolling effect
+      behavior: 'smooth',
     });
-  }, [activeTab]);  
+  }, [activeTab]);
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
@@ -100,9 +103,8 @@ const LessonPage = () => {
 
         if (data.has_quiz === false) {
           setNoQuiz(true);
-          setIsNextAvailable(true); // Enable next button if no quiz exists
+          setIsNextAvailable(true);
 
-          // Automatically complete the lesson if no quiz exists
           await fetch(
             `https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`,
             {
@@ -122,9 +124,9 @@ const LessonPage = () => {
       } finally {
         setLoading(false);
         setContentGenerating(false);
+        setIsLoadingNextLesson(false);
       }
     };
-
 
     checkAndFetchLesson();
   }, [courseId, lessonId, navigate, t]);
@@ -135,7 +137,8 @@ const LessonPage = () => {
       return;
     }
 
-    setIsNavigating(true); // Start loading process
+    setIsNavigating(true);
+    setIsLoadingNextLesson(true);
 
     if (direction === 'next') {
       try {
@@ -150,21 +153,20 @@ const LessonPage = () => {
 
         if (isLastLesson) {
           setOpenDialog(true);
+          setIsLoadingNextLesson(false);
         } else {
           setActiveTab('content');
-
-          // Simulate loading time before navigating
-          setTimeout(() => {
-            navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
-            setIsNavigating(false); // Stop loading after navigating
-          }, 1500); // Simulating delay
+          navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
         }
       } catch (err) {
         setError(err.message);
-        setIsNavigating(false); // Stop loading if there's an error
+        setIsLoadingNextLesson(false);
+      } finally {
+        setIsNavigating(false);
       }
     } else {
       if (parseInt(lessonId) > 1) {
+        setIsLoadingNextLesson(true);
         navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) - 1}`);
       }
     }
@@ -175,20 +177,35 @@ const LessonPage = () => {
     Notify.success(t('Quiz completed successfully'));
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading || isLoadingNextLesson) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-slate-900/50 z-50">
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-8 flex flex-col items-center space-y-4">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+          <p className="text-lg font-medium text-slate-700 dark:text-slate-200">
+            {isLoadingNextLesson ? t('Loading next lesson...') : t('Loading lesson...')}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (error) return <div className="text-center text-red-500 p-4">{error}</div>;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Progress Bar */}
-      {/* <div className="fixed top-16 left-0 right-0 h-1 bg-slate-200 dark:bg-slate-800 z-50">
-        <motion.div
-          className="h-full bg-blue-500"
-          initial={{ width: 0 }}
-          animate={{ width: `${(parseInt(lessonId) / lesson?.totalLessons) * 100}%` }}
-          transition={{ duration: 0.5 }}
-        />
-      </div> */}
+      {/* Back Button */}
+      <div className="fixed top-20 left-4 z-50">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleBack}
+          className="flex items-center gap-2 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
+        >
+          <ChevronLeft className="w-4 h-4" />
+          {t('Back to Course')}
+        </Button>
+      </div>
 
       {/* Tab Navigation */}
       <div className="fixed top-20 left-0 right-0 bg-white dark:bg-slate-800 border-b dark:border-slate-700 z-40">
@@ -207,9 +224,6 @@ const LessonPage = () => {
                 </Button>
               ))}
             </div>
-            {/* <div className="text-sm font-medium text-slate-500">
-              {t('Lesson')} {lessonId} / {lesson?.totalLessons}
-            </div> */}
           </div>
         </div>
       </div>
@@ -231,27 +245,27 @@ const LessonPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                  <ReactMarkdown className="text-justify"
-                    components={{
-                    code({ node, inline, className, children, ...props }) {
-                      return inline ? (
-            <code {...props}>{children}</code>
-          ) : (
-            <pre
-              style={{
-                direction: "ltr",
-                textAlign: "left",
-              }}
-              {...props}
-            >
-              <code>{children}</code>
-            </pre>
-          );
-        },
-      }}
-    >
-      {lesson?.content}
-    </ReactMarkdown>
+                    <ReactMarkdown className="text-justify"
+                      components={{
+                        code({ node, inline, className, children, ...props }) {
+                          return inline ? (
+                            <code {...props}>{children}</code>
+                          ) : (
+                            <pre
+                              style={{
+                                direction: "ltr",
+                                textAlign: "left",
+                              }}
+                              {...props}
+                            >
+                              <code>{children}</code>
+                            </pre>
+                          );
+                        },
+                      }}
+                    >
+                      {lesson?.content}
+                    </ReactMarkdown>
                   </div>
                 </CardContent>
               </Card>
@@ -279,26 +293,30 @@ const LessonPage = () => {
       </main>
 
       {/* Navigation Footer */}
-      <div className=" left-0 right-0 bg-white dark:bg-slate-800 border-t dark:border-slate-700 p-4 z-50">
+      <div className="left-0 right-0 bg-white dark:bg-slate-800 border-t dark:border-slate-700 p-4 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <Button
             variant="outline"
             onClick={() => handleNavigation('previous')}
-            disabled={parseInt(lessonId) === 1}
-            className="w-24"
+            disabled={parseInt(lessonId) === 1 || isLoadingNextLesson}
+            className="w-24 bg-gray-700 hoveer:bg-gray-800 text-white hover:border-blue-700"
           >
-            {t('Previous')}
+            {isLoadingNextLesson ? (
+              <span className="animate-spin border-2 border-slate-500 border-t-transparent rounded-full w-5 h-5"></span>
+            ) : (
+              t('Previous')
+            )}
           </Button>
           <div className="text-center text-sm text-slate-500 dark:text-slate-400">
             {t('For the next lesson, complete the exam first.')}
           </div>
           <Button
             onClick={() => handleNavigation('next')}
-            disabled={!isNextAvailable || isNavigating}
-            className="w-24 flex items-center justify-center"
+            disabled={!isNextAvailable || isNavigating || isLoadingNextLesson}
+            className="w-24 flex items-center justify-center bg-gray-700 hoveer:bg-gray-800 text-white hover:border-blue-700"
           >
-            {isNavigating ? (
-              <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> // Spinner
+            {isLoadingNextLesson ? (
+              <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
             ) : (
               t('Next')
             )}
@@ -319,23 +337,20 @@ const LessonPage = () => {
                 {t("A certificate of completion will be emailed to you shortly.")}
               </p>
 
+              <p className="text-lg font-semibold text-slate-500">{t("Rate this Course")}</p>
+              <div className="flex gap-2 my-2 justify-center">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setRating(star)}
+                    className={` ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
+                    disabled={hasRated}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
 
-                <p className="text-lg font-semibold text-slate-500">{t("Rate this Course")}</p>
-                <div className="flex gap-2 my-2 justify-center">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      onClick={() => setRating(star)}
-                      className={` ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
-                      disabled={hasRated}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
-
-
-              {/* Submit Rating Button */}
               <Button
                 className="w-full mt-4"
                 onClick={() => {
@@ -351,11 +366,10 @@ const LessonPage = () => {
                       'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ rateDigit: rating }),
-
                   })
                     .then(() => {
                       Notify.success(t('Thanks for your feedback!'));
-                      setHasRated(true); // Prevent multiple submissions
+                      setHasRated(true);
                     })
                     .catch(() => Notify.failure(t('Failed to submit rating')));
                 }}
