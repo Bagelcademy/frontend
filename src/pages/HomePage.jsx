@@ -425,7 +425,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           gradient="bg-gradient-to-r from-blue-600 to-purple-600"
           buttonText={t('Explore Paths')}
           linkTo="/learning-paths"
-          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F8be7911c-bd5f-4329-a15d-942e3ccae4c9.png"
+          imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/29e89c2b-5405-4519-9467-f15a0e07d3c4.png"
           features={[t('Structured learning paths'), t('Industry-relevant curriculum'), t('Certification & career support')]}
         />
 
