@@ -195,13 +195,13 @@ const QuizComponent = () => {
                 <>
                   {currentQuestion < questions.length - 1 ? (
                     <button
-                      onClick={handleNext}
-                      disabled={answers[currentQuestion] === null}
-                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
-                    >
-                      <ChevronRight className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Next */}
-                      {t("Next")}
-                    </button>
+                    onClick={handlePrevious}
+                    disabled={currentQuestion === 0}
+                    className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
+                  >
+                    <ChevronRight className="w-5 h-5 mx-2" /> {/* RTL: Chevron Right on Previous */}
+                    {t("Previous")}
+                  </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
@@ -213,13 +213,13 @@ const QuizComponent = () => {
                   )}
 
                   <button
-                    onClick={handlePrevious}
-                    disabled={currentQuestion === 0}
-                    className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
-                  >
-                    {t("Previous")}
-                    <ChevronLeft className="w-5 h-5 mx-2" /> {/* RTL: Chevron Right on Previous */}
-                  </button>
+                      onClick={handleNext}
+                      disabled={answers[currentQuestion] === null}
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
+                    >
+                      {t("Next")}
+                      <ChevronLeft className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Next */}
+                    </button>
                 </>
               )}
             </div>
