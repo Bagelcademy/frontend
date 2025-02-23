@@ -488,7 +488,10 @@
     "artificial_intelligence":"هوش مصنوعی",
     "Languages":"زبان ها",
     "programming":"برنامه‌نویسی",
-    "agriculture":"کشاورزی"
+    "agriculture":"کشاورزی",
+    "philosophy":"فلسفه",
+    "HealthCare":"سلامت",
+    "electrical":"مهندسی برق"
 
   },
   "Take The Exam": "امتحان بدهید",

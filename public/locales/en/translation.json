@@ -234,9 +234,16 @@
     "artificial_intelligence":"artificial intelligence",
     "Languages":"languages",
     "programming":"programming",
-    "agriculture":"agriculture"
+    "agriculture":"agriculture",
+    "philosophy":"philosophy",
+    "HealthCare":"HealthCare",
+    "electrical":"electrical"
   },
-    
+  "languages": {
+    "allLanguages": "all Languages",
+    "english": "English",
+    "persian": "Persian"
+  }, 
   "motivationalQuotes": {
     "quote1": "Every bagel was once just flour and water. Your potential is limitless!",
     "author1": "Mama Bagel",
