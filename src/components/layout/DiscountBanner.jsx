@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Snowflake, GraduationCap, TicketPercent, NotebookPen, LibraryBig } from 'lucide-react';
+import { X, Snowflake, GraduationCap, TicketPercent, NotebookPen, LibraryBig } from 'lucide-react'; // Import X icon
 
 const DiscountBanner = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const [isVisible, setIsVisible] = useState(true); // Keep track of visibility
   const [targetDate, setTargetDate] = useState(null);
   const [timer, setTimer] = useState(null);
   const [icons, setIcons] = useState([]);
@@ -66,6 +67,12 @@ const DiscountBanner = () => {
     navigate('/shop');
   };
 
+  // Close button function
+  const handleClose = (event) => {
+    event.stopPropagation(); // Prevent navigation on close
+    setIsVisible(false);
+  };
+
   // Function to generate random icons
   const generateRandomIcons = () => {
     const newIcons = Array.from({ length: 10 }, () => {
@@ -111,35 +118,49 @@ const DiscountBanner = () => {
   }, []);
 
   return (
-    <div
-      className="mt-24 relative flex items-center justify-center gap-4 bg-blue-700 bg-opacity-80 text-white py-4 px-2 cursor-pointer shadow-md hover:bg-opacity-100 transition-all duration-300 overflow-hidden"
-      onClick={handleClick}
-    >
-      {icons.map(({ id, Icon, top, left, size, opacity }) => (
-        <Icon
-          key={id}
-          className="absolute transition-opacity duration-1000 ease-in-out"
-          style={{
-            top,
-            left,
-            width: `${size}px`,
-            height: `${size}px`,
-            opacity,
-          }}
-        />
-      ))}
+    <div className="mt-24"> {/* This div keeps the space even when banner is hidden */}
+      {isVisible && (
+        <div
+          className="relative flex items-center justify-center gap-4 bg-blue-700 bg-opacity-80 text-white py-4 px-2 cursor-pointer shadow-md hover:bg-opacity-100 transition-all duration-300 overflow-hidden"
+          onClick={handleClick}
+        >
+          {/* Close button */}
+          <button
+            onClick={handleClose}
+            className="absolute top-2 right-2 bg-white bg-opacity-30 hover:bg-opacity-50 text-black rounded-full p-1"
+          >
+            <X size={18} />
+          </button>
 
-      <div className="flex text-lg font-semibold text-shadow-sm gap-1">
-        {t('Code')}
-        <div className="font-bold text-shadow-md bg-orange-700 px-2 rounded-lg">
-          BAGEL
+          {/* Animated Icons */}
+          {icons.map(({ id, Icon, top, left, size, opacity }) => (
+            <Icon
+              key={id}
+              className="absolute transition-opacity duration-1000 ease-in-out"
+              style={{
+                top,
+                left,
+                width: `${size}px`,
+                height: `${size}px`,
+                opacity,
+              }}
+            />
+          ))}
+
+          {/* Discount text */}
+          <div className="flex text-lg font-semibold text-shadow-sm gap-1">
+            {t('Code')}
+            <div className="font-bold text-shadow-md bg-orange-700 px-2 rounded-lg">
+              BAGEL
+            </div>
+            <div className="flex">{t('for')}</div>
+            <div className="font-b5 text-shadow-md px-2 rounded-lg underline underline-offset-8">
+              {t('30% off')}
+            </div>
+          </div>
+          <div className="text-lg font-b5 text-shadow-sm">{formatTime()}</div>
         </div>
-        <div className="flex">{t('for')}</div>
-        <div className="font-b5 text-shadow-md px-2 rounded-lg underline underline-offset-8">
-          {t('30% off')}
-        </div>
-      </div>
-      <div className="text-lg font-b5 text-shadow-sm">{formatTime()}</div>
+      )}
     </div>
   );
 };
