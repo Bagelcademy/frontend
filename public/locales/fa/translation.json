@@ -205,6 +205,7 @@
   "Loading...": "در حال بارگذاری...",
   "No lesson found": "درس پیدا نشد",
   "Failed to fetch lesson data": "خطا در بارگیری داده‌های درس",
+  "You do not have subscription anymore.": "اشتراک شما به پایان رسیده است.",
   "User not found, please log in.": "کاربر پیدا نشد، لطفاً وارد شوید.",
   "No course found": "هیچ دوره‌ای یافت نشد",
   "Course Content": "محتوای دوره",
@@ -807,8 +808,8 @@
   "Output": "خروجی",
   "filterByCompletion": "فیلتر بر اساس وضعیت تکمیل",
   "All Courses": "همه دوره‌ها",
-  "Finished Courses": "دوره‌های تکمیل شده",
-  "Unfinished Courses": "دوره‌های ناتمام",
+  "Finished Courses": "تکمیل شده",
+  "Unfinished Courses": "ناتمام",
   "completionStatus": {
     "true": "تکمیل شده",
     "false": "ناتمام"
