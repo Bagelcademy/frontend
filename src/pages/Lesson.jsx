@@ -94,9 +94,15 @@ const LessonPage = () => {
           }
         );
 
-        if (!lessonResponse.ok) {
-          throw new Error('Failed to fetch lesson data');
+        if (!lessonResponse.ok && lessonResponse.status === 403) {
+          throw new Error(t('You do not have subscription anymore.'));
         }
+
+        if (!lessonResponse.ok) {
+          throw new Error(t('Failed to fetch lesson data'));
+        }
+
+
         const data = await lessonResponse.json();
         setLesson(data);
         setIsLastLesson(data.is_last_lesson);
@@ -195,7 +201,7 @@ const LessonPage = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Back Button */}
-      <div className="fixed top-20 left-4 z-50">
+      <div className="fixed sm:top-28 top-36 left-4 z-50">
         <Button
           variant="ghost"
           size="sm"
@@ -326,24 +332,24 @@ const LessonPage = () => {
 
       {/* Completion Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="bg-white dark:bg-gray-900 sm:max-w-md">
           <div className="flex flex-col items-center">
             <div className="text-center space-y-4">
-              <h3 className="text-2xl font-bold text-slate-500">
+              <h3 className="text-2xl font-bold text-slate-500 dark:text-white">
                 {t("Congratulations")}
               </h3>
-              <p className="text-slate-500">
+              <p className="text-slate-500 dark:text-white">
                 {t("You've completed the entire course!")}
                 {t("A certificate of completion will be emailed to you shortly.")}
               </p>
 
-              <p className="text-lg font-semibold text-slate-500">{t("Rate this Course")}</p>
+              <p className="text-lg font-semibold text-slate-500 dark:text-white">{t("Rate this Course")}</p>
               <div className="flex gap-2 my-2 justify-center">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     onClick={() => setRating(star)}
-                    className={` ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
+                    className={`bg-buttonColor ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
                     disabled={hasRated}
                   >
                     ★
@@ -352,7 +358,7 @@ const LessonPage = () => {
               </div>
 
               <Button
-                className="w-full mt-4"
+                className="bg-slate-700 dark:text-white w-full mt-4"
                 onClick={() => {
                   if (rating === 0) {
                     Notify.failure(t('Please select a rating before submitting.'));
@@ -379,7 +385,7 @@ const LessonPage = () => {
               </Button>
 
               <Button
-                className="w-full"
+                className="bg-slate-700 dark:text-white w-full"
                 onClick={() => navigate('/courses')}
               >
                 {t('Back to Courses')}

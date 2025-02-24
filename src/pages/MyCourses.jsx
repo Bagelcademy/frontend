@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
-  Download, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft
+  Download, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft, ChevronDown
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -31,7 +31,7 @@ const StarRating = ({ rating }) => (
 );
 
 const MyCourses = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [displayedCourses, setDisplayedCourses] = useState([]);
@@ -44,6 +44,10 @@ const MyCourses = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(t("All Courses")); // Default UI text
   const [statusFilter, setStatusFilter] = useState(""); // Default filtering value
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const isRtl = i18n.language === 'fa';
+
   const completionStatus = {
     true: t("Finished Courses"),
     false: t("Unfinished Courses"),
@@ -333,40 +337,99 @@ const MyCourses = () => {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <Select
-                onValueChange={handleCategoryChange}
-                value={selectedCategory}
-                className="w-20"
-              >
-                <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
-                  <Filter className="w-4 h-4 mr-2" />
-                  <SelectValue placeholder={t('selectCategory')} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">{t('allCategories')}</SelectItem>
-                  {categories.map(category => (
-                    <SelectItem key={category.id} value={t(category.name)}>
-                      {category.translatedName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="relative">
+                <button
+                  onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                  className={`text-sm flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow ${isRtl ? 'text-right' : ''}`}
+                >
+                  <Filter className="w-4 h-4 text-black dark:text-white" />
+                  <span className="text-black dark:text-white">
+                    {completionStatus[statusFilter] || t("Select Status")}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-black dark:text-white" />
+                </button>
 
-              <Select
-                onValueChange={handleStatusChange}
-                value={statusFilter}
-                className="w-20"
-              >
-                <SelectTrigger className="bg-white dark:bg-gray-800 border-0">
-                  <Filter className="w-4 h-4 mx-2" />
-                  <span>{completionStatus[statusFilter] || t("Select Status")}</span>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">{completionStatus[""]}</SelectItem>
-                  <SelectItem value="true">{completionStatus["true"]}</SelectItem>
-                  <SelectItem value="false">{completionStatus["false"]}</SelectItem>
-                </SelectContent>
-              </Select>
+                {isStatusDropdownOpen && (
+                  <div className={`absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 ${isRtl ? 'text-right' : 'text-left'}`}>
+                    <div className="py-2">
+                      <button
+                        onClick={() => {
+                          setStatusFilter('');
+                          setSelectedStatus(t("All Courses"));
+                          setIsStatusDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                      >
+                        {completionStatus[""]}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setStatusFilter('true');
+                          setSelectedStatus(t("Finished Courses"));
+                          setIsStatusDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                      >
+                        {completionStatus["true"]}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setStatusFilter('false');
+                          setSelectedStatus(t("Unfinished Courses"));
+                          setIsStatusDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                      >
+                        {completionStatus["false"]}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="relative">
+                <button
+                  onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                  className={`text-sm flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow ${isRtl ? 'text-right' : 'text-left'}`}
+                >
+                  <Filter className="w-4 h-4 text-black dark:text-white" />
+                  <span className="text-black dark:text-white">
+                    {selectedCategory ? t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`) : t('All Categories')}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-black dark:text-white" />
+                </button>
+
+                {isCategoryDropdownOpen && (
+                  <div className={`absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 ${isRtl ? 'text-right' : 'text-left'}`}>
+                    <div className="py-2">
+                      <button
+                        onClick={() => {
+                          setSelectedCategory('');
+                          setIsCategoryDropdownOpen(false);
+                        }}
+                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                      >
+                        {t('All Categories')}
+                      </button>
+                      {categories.map(category => (
+                        <button
+                          key={category.id}
+                          onClick={() => {
+                            setSelectedCategory(category.id);
+                            setIsCategoryDropdownOpen(false);
+                          }}
+                          className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                        >
+                          {t(`categories.${category.name}`)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+
+
               <Button
                 onClick={handleDownloadNotes}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
