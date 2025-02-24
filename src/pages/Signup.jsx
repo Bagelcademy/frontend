@@ -246,7 +246,7 @@ const validationSchema = Yup.object().shape({
 });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="-mt-20 min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
           {t('signupTitle')}
