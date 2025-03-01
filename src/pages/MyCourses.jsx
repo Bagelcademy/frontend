@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -48,6 +48,10 @@ const MyCourses = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const isRtl = i18n.language === 'fa';
 
+  // Refs for dropdown containers
+  const statusDropdownRef = useRef(null);
+  const categoryDropdownRef = useRef(null);
+
   const completionStatus = {
     true: t("Finished Courses"),
     false: t("Unfinished Courses"),
@@ -71,7 +75,36 @@ const MyCourses = () => {
 
   useEffect(() => {
     filterCourses();
-  }, [searchTerm, selectedCategory, selectedStatus, courses, page]); // Now includes selectedStatus
+  }, [searchTerm, filteredCategoryId, statusFilter, courses, page]); // Changed selectedCategory to filteredCategoryId
+
+  // Add click outside event listener to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        statusDropdownRef.current && 
+        !statusDropdownRef.current.contains(event.target) &&
+        isStatusDropdownOpen
+      ) {
+        setIsStatusDropdownOpen(false);
+      }
+      
+      if (
+        categoryDropdownRef.current && 
+        !categoryDropdownRef.current.contains(event.target) &&
+        isCategoryDropdownOpen
+      ) {
+        setIsCategoryDropdownOpen(false);
+      }
+    };
+
+    // Add the event listener to the document
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    // Clean up the event listener when component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isStatusDropdownOpen, isCategoryDropdownOpen]);
 
 
   const fetchUserProfile = async () => {
@@ -147,8 +180,13 @@ const MyCourses = () => {
       );
     }
 
+    // Updated filter logic for category
     if (filteredCategoryId) {
-      filtered = filtered.filter(item => item.course.category === filteredCategoryId);
+      filtered = filtered.filter(item => {
+        // Handle both string and number ID types for robust comparison
+        return item.course.category === parseInt(filteredCategoryId, 10) || 
+               item.course.category === filteredCategoryId;
+      });
     }
 
     if (statusFilter !== "") {
@@ -159,10 +197,9 @@ const MyCourses = () => {
   };
 
 
-  const handleCategoryChange = (value) => {
-    setSelectedCategory(value);
-    const selectedCategoryId = categories.find(category => category.name === value)?.id;
-    setFilteredCategoryId(selectedCategoryId || '');
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    setFilteredCategoryId(categoryId);
     setPage(1);
   };
 
@@ -337,7 +374,7 @@ const MyCourses = () => {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <div className="relative">
+              <div className="relative" ref={statusDropdownRef}>
                 <button
                   onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
                   className={`text-sm flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow ${isRtl ? 'text-right' : ''}`}
@@ -387,14 +424,16 @@ const MyCourses = () => {
                 )}
               </div>
 
-              <div className="relative">
+              <div className="relative" ref={categoryDropdownRef}>
                 <button
                   onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
                   className={`text-sm flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow ${isRtl ? 'text-right' : 'text-left'}`}
                 >
                   <Filter className="w-4 h-4 text-black dark:text-white" />
                   <span className="text-black dark:text-white">
-                    {selectedCategory ? t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`) : t('All Categories')}
+                    {filteredCategoryId ? 
+                      t(`categories.${categories.find(c => c.id === parseInt(filteredCategoryId, 10) || c.id === filteredCategoryId)?.name}`) : 
+                      t('All Categories')}
                   </span>
                   <ChevronDown className="w-4 h-4 text-black dark:text-white" />
                 </button>
@@ -404,7 +443,7 @@ const MyCourses = () => {
                     <div className="py-2">
                       <button
                         onClick={() => {
-                          setSelectedCategory('');
+                          handleCategoryChange('');
                           setIsCategoryDropdownOpen(false);
                         }}
                         className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
@@ -415,7 +454,7 @@ const MyCourses = () => {
                         <button
                           key={category.id}
                           onClick={() => {
-                            setSelectedCategory(category.id);
+                            handleCategoryChange(category.id);
                             setIsCategoryDropdownOpen(false);
                           }}
                           className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"

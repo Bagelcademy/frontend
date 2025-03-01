@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Globe, Moon, Sun, Menu } from 'lucide-react';
+import { Globe, Moon, Sun, Menu, Bot } from 'lucide-react'; // Added Bot icon from lucide-react
 import { Button } from '../ui/button';
 import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
-import AIIcon from '../../assets/AIIcon.png';
+// Removed AIIcon import as we'll use the Lucide icon instead
 
 const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLanguage }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,6 +17,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   const [scrolled, setScrolled] = useState(false);
   const [logoutAlert, setLogoutAlert] = useState(false); // State for logout alert
   const [profilePicture, setProfilePicture] = useState(null);
+  // Add state for sparkle animation
+  const [sparkleAnimate, setSparkleAnimate] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +36,16 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     }
   }, [isLoggedIn]);
   
+  // Add sparkle animation effect
+  useEffect(() => {
+    const sparkleInterval = setInterval(() => {
+      setSparkleAnimate(true);
+      setTimeout(() => setSparkleAnimate(false), 1000);
+    }, 3000);
+    
+    return () => clearInterval(sparkleInterval);
+  }, []);
+
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
@@ -118,6 +130,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     setMenuOpen(!menuOpen);
   };
 
+  // Function to trigger manual sparkle animation
+  const triggerSparkle = () => {
+    setSparkleAnimate(true);
+    setTimeout(() => setSparkleAnimate(false), 1000);
+  };
+
   return (
     <header 
       className={`
@@ -169,11 +187,38 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               {t('getting PRO')}
             </Button>
           </Link>
-          <Link to="/ask">
-            {/* this is the AI icon png */}
-            <img src={AIIcon} alt="AI Icon" className="h-8 w-8" />
+          <Link to="/ask" onClick={triggerSparkle}>
+            {/* Replace the image with Lucide React Bot icon */}
+            <div className="relative group">
+              <Bot 
+                size={32} 
+                className={`
+                  transition-all duration-300
+                  ${isDarkTheme ? 'text-white' : 'text-gray-900'}
+                  ${sparkleAnimate ? 'scale-110' : ''}
+                  hover:scale-105
+                `} 
+              />
+              {/* Add star/sparkle animations around the icon */}
+              <div className={`absolute -inset-1 opacity-0 group-hover:opacity-100 ${sparkleAnimate ? 'opacity-100' : ''} transition-opacity duration-300`}>
+                <div className="absolute top-0 left-0 h-2 w-2 bg-yellow-300 rounded-full animate-pulse"></div>
+                <div className="absolute top-1 right-0 h-1 w-1 bg-blue-400 rounded-full animate-ping"></div>
+                <div className="absolute bottom-0 left-1 h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce"></div>
+                <div className="absolute bottom-1 right-1 h-2 w-2 bg-green-300 rounded-full animate-pulse"></div>
+                <div className="absolute top-3 right-3 h-1 w-1 bg-pink-400 rounded-full animate-ping"></div>
+              </div>
+              <span 
+              className={`
+                absolute -bottom-8 left-1/2 transform -translate-x-1/2 
+                text-xs whitespace-nowrap px-2 py-1 rounded-md opacity-0 
+                group-hover:opacity-100 transition-opacity duration-300
+                ${isDarkTheme ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}
+              `}
+            >
+              {t('AI Assistant')}
+            </span>
+            </div>
 
-              
           </Link>
         </div>
 

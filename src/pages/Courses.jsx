@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { Search, BookOpen, Users, Star, Filter, ChevronDown } from 'lucide-react';
@@ -19,6 +19,10 @@ const Courses = () => {
   const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  
+  // Create refs for the dropdowns
+  const categoryDropdownRef = useRef(null);
+  const languageDropdownRef = useRef(null);
 
   // Define the language mapping similar to the completion status
   const languageMapping = {
@@ -37,6 +41,31 @@ const Courses = () => {
   useEffect(() => {
     filterCourses();
   }, [searchTerm, selectedCategory, selectedLanguage, courses, page]);
+
+  // Add event listener for clicks outside the dropdowns
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close category dropdown if click is outside
+      if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+      
+      // Close language dropdown if click is outside
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
+        setIsLanguageDropdownOpen(false);
+      }
+    };
+
+    // Add event listener when dropdowns are open
+    if (isDropdownOpen || isLanguageDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen, isLanguageDropdownOpen]);
 
   const fetchCourses = async () => {
     try {
@@ -125,7 +154,7 @@ const Courses = () => {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <div className="relative">
+              <div className="relative" ref={categoryDropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"
@@ -164,7 +193,7 @@ const Courses = () => {
                 )}
               </div>
 
-              <div className="relative">
+              <div className="relative" ref={languageDropdownRef}>
                 <button
                   onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
                   className="flex items-center space-x-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow"

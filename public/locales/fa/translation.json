@@ -21,8 +21,11 @@
   "Active Users": "کاربران فعال",
   "Active Courses": "دوره های فعال",
   "Beginner": "مبتدی",
+  "beginner":"مبتدی",
   "Intermediate": "متوسط",
+  "intermediate": "متوسط",
   "Advanced": "پیشرفته",
+  "advanced": "پیشرفته",
   "Persian": "فارسی",
   "Mandarin": "چینی ماندارین",
   "Spanish": "اسپانیایی",
@@ -867,5 +870,38 @@
   "Please select a rating before submitting.": "لطفاً قبل از ارسال یک امتیاز را انتخاب کنید.",
   "Rate this Course": "به این دوره امتیاز دهید",
   "Quiz completed successfully": "آزمون با موفقیت تکمیل شد",
-  "Course Description":"توضیحات"
-}
+  "Course Description":"توضیحات",
+  "Not what you were looking for? Create a new course by submitting your request.":"دوره ای که دنبالش بودی را پیدا نکردی ؟ دوره دلخواه خودت را تولید کن.",
+  "howToUse": "نحوه استفاده از تولیدکننده دوره هوش مصنوعی",
+    
+        "1.Describe Your Learning Goal": "۱. هدف یادگیری خود را توصیف کنید",
+        "Enter what you want to learn in the text area. Be specific about the subject and what aspects you want to focus on. For example: 'Learn Python for data science' or 'Understanding quantum physics basics'.": "آنچه می‌خواهید یاد بگیرید را در قسمت متن وارد کنید. درباره موضوع و جنبه‌هایی که می‌خواهید روی آن‌ها تمرکز کنید، دقیق باشید. به عنوان مثال: یادگیری پایتون برای علم داده یا درک مبانی فیزیک کوانتوم."  
+      ,
+        "2.Check for Similar Courses": "۲. دوره‌های مشابه را بررسی کنید",
+        "As you type (3+ characters), the system automatically searches for similar existing courses. If you find what you're looking for, you can view that course instead of creating a new one.": "هنگام تایپ (۳+ کاراکتر)، سیستم به طور خودکار دوره‌های موجود مشابه را جستجو می‌کند. اگر آنچه را که می‌خواهید پیدا کردید، می‌توانید به جای ایجاد یک دوره جدید، آن دوره را مشاهده کنید."
+      ,
+      
+        "3.Select Language and Level": "۳. زبان و سطح را انتخاب کنید",
+        "Choose your preferred language for the course content and select the appropriate difficulty level (Beginner, Intermediate, or Advanced).": "زبان مورد نظر خود را برای محتوای دوره انتخاب کنید و سطح مناسب دشواری (مبتدی، متوسط، یا پیشرفته) را انتخاب کنید."
+      ,
+      
+        "4.Create Your Course": "۴. دوره خود را ایجاد کنید",
+        "Click the 'Create your course' button to generate a personalized AI-driven course based on your inputs. Each course generation costs 1 credit.": "برای تولید یک دوره شخصی‌سازی شده مبتنی بر هوش مصنوعی بر اساس ورودی‌های خود، روی دکمه 'ایجاد دوره شما' کلیک کنید. هر تولید دوره ۱ اعتبار هزینه دارد."
+      ,
+      
+        "5.Access Your Course": "۵. به دوره خود دسترسی پیدا کنید",
+        "Once generated, your course will appear in the 'Generated Courses' section. Click 'View Course' to start learning!": "پس از تولید، دوره شما در بخش 'دوره‌های تولید شده' ظاهر می‌شود. برای شروع یادگیری روی 'مشاهده دوره' کلیک کنید!"
+      ,
+      "Similar Courses Found":"دوره های مشابه"
+    ,
+      "Tips for Best Results": "نکاتی برای بهترین نتایج",
+      
+        "Be specific in your request to get more targeted content":"در درخواست خود دقیق باشید تا محتوای هدفمندتری دریافت کنید",
+        "Check your available credits before generating (shown at the top of the page)":"قبل از تولید، اعتبارات موجود خود را بررسی کنید (در بالای صفحه نشان داده شده)",
+        "Browse similar courses first to save credits":"ابتدا دوره‌های مشابه را مرور کنید تا در اعتبارات صرفه‌جویی شود",
+        "If you need more credits, visit the Shop through the link in your profile":"اگر به اعتبارات بیشتری نیاز دارید، از طریق لینک در پروفایل خود به فروشگاه مراجعه کنید"
+      
+    ,"Back to Top": "بازگشت به بالا",
+    "How to Use the AI Course Generator":"نحوه استفاده از تولیدکننده دوره هوش مصنوعی",
+    "View":"مشاهده"
+  }
