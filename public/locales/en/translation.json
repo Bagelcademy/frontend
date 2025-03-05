@@ -363,5 +363,23 @@
   "completionStatus": {
     "true": "Finished",
     "false": "Unfinished"
+  },
+  
+    "meetTeam": "Meet your learning support team",
+    "mamaBagel": {
+      "name": "Mama Bagel",
+      "description": "Mama Bagel is a nurturing guide who helps students feel supported and confident on their learning journey. She specializes in emotional intelligence and stress management."
+    },
+    "papaBagel": {
+      "name": "Papa Bagel",
+      "description": "Papa Bagel is a tech wizard who helps students navigate the digital world. He specializes in coding, artificial intelligence, and all things tech-related."
+    },
+    "jill": {
+      "name": "Jill",
+      "description": "Jill is a creative genius who encourages students to think outside the box. She is passionate about art, design, and innovative problem-solving."
+    },
+    "jackie": {
+      "name": "Jackie",
+      "description": "Jackie is a fitness and wellness coach who keeps students energized and focused. She promotes healthy habits and a balanced lifestyle."
+    }
   }
-}

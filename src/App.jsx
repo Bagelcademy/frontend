@@ -35,7 +35,7 @@ import AISurvey from './pages/survey2';
 import ContactPage from './pages/ContacUs';
 import AINewsPage from './pages/blog';
 import MetricsDashboard from './pages/chart';
-import LiliEducationalAI from './pages/ElementrySchool';
+import TeacherPanel from './pages/TeacherPanel';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -140,11 +140,11 @@ const App = () => {
             <Route path="/contact-us" element={<ContactPage />} />
 
             <Route path="/AIservey" element={<AISurvey />} />
-
+            
             <Route path="/interview" element={<Interviewer />} />
             <Route path="/metric" element={<MetricsDashboard />} />
-            <Route path="/Lili" element={<LiliEducationalAI />} />
-            
+            <Route path="/teachpanel" element={<TeacherPanel />} />
+                      
             <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
