@@ -1,26 +1,30 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import translationEN from '../public/locales/en/translation.json'; 
-import translationFA from '../public/locales/fa/translation.json';  // Correct the 'fa' identifier
+
+// ✅ Correct JSON imports from src/locales
+import translationEN from '../public/locales/en/translation.json';
+import translationFA from '../public/locales/fa/translation.json';
 
 const resources = {
-  en: {
-    translation: translationEN,
-  },
-  fa: {
-    translation: translationFA,  // Persian (RTL) language
-  },
+  en: { translation: translationEN },
+  fa: { translation: translationFA }, // Persian (RTL)
 };
 
 i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
+  .use(LanguageDetector) // Detect user's language
+  .use(initReactI18next) // Bind i18n to React
   .init({
     resources,
-    fallbackLng: 'fa',
+    fallbackLng: 'fa', // Default to Persian
+    lng: 'fa', // Set Persian as the initial language
+    debug: true, // Set to false in production
     interpolation: {
-      escapeValue: false,
+      escapeValue: false, // Allows raw HTML in translations
+    },
+    detection: {
+      order: ['localStorage', 'cookie', 'navigator', 'htmlTag'],
+      caches: ['localStorage', 'cookie'],
     },
   });
 
