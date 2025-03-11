@@ -36,6 +36,7 @@ import ContactPage from './pages/ContacUs';
 import AINewsPage from './pages/blog';
 import MetricsDashboard from './pages/chart';
 import TeacherPanel from './pages/TeacherPanel';
+import NoroozPage from './pages/Norooz';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -140,6 +141,7 @@ const App = () => {
             <Route path="/contact-us" element={<ContactPage />} />
 
             <Route path="/AIservey" element={<AISurvey />} />
+            <Route path="/Norooz" element={<NoroozPage />} />
             
             <Route path="/interview" element={<Interviewer />} />
             <Route path="/metric" element={<MetricsDashboard />} />

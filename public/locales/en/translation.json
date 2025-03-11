@@ -381,5 +381,28 @@
     "jackie": {
       "name": "Jackie",
       "description": "Jackie is a fitness and wellness coach who keeps students energized and focused. She promotes healthy habits and a balanced lifestyle."
+    },
+      "norooz": {
+        "title": "Journey of Renewal in Spring",
+        "subtitle": "Celebrate Nowruz with a New Path of Learning",
+        "wishes": "May every day be Nowruz!"
+      },
+      "Ncourses": {
+        "heading": "Your Spring Learning Path",
+        "noDescription": "Explore this course to learn something new for the new year."
+      },
+      "Nbuttons": {
+        "newWay": "New Way",
+        "startNewWay": "Start a New Path"
+      },
+      "facts": {
+        "heading": "Nowruz and Knowledge",
+        "fact1Title": "Ancient Tradition of Learning",
+        "fact1Content": "The first day of spring has been celebrated as a time for new learning and wisdom in Iranian culture for over 3,000 years. Traditionally, new books were given as gifts.",
+        "fact2Title": "Spring and Brain Growth",
+        "fact2Content": "The Haft-Seen table includes 'Senjed' (dried fruit), which symbolizes wisdom and knowledge. This tradition reflects the deep connection between Nowruz and the pursuit of learning and intellectual growth.",
+        "fact3Title": "Spring and Skills",
+        "fact3Content": "In Iranian culture, education and learning have always been highly valued. Nowruz is an opportunity to set educational goals, such as learning a new language, reading more books, or mastering a new skill."
+      }
     }
-  }
+  
