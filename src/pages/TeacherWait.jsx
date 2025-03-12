@@ -59,7 +59,6 @@ const TeacherWaitlist = () => {
       
       if (response.ok) {
         enqueueSnackbar(t('Application submitted successfully! We will contact you soon.'), { variant: 'success' });
-        navigate('/dashboard');
       } else {
         enqueueSnackbar(t(data.detail || 'Failed to submit application. Please try again.'), { variant: 'error' });
       }
