@@ -37,6 +37,7 @@ import AINewsPage from './pages/blog';
 import MetricsDashboard from './pages/chart';
 import TeacherPanel from './pages/TeacherPanel';
 import NoroozPage from './pages/Norooz';
+import TeacherWaitlist from './pages/TeacherWait';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -129,6 +130,7 @@ const App = () => {
             <Route path="/learning-paths/:id" element={<LearningPathDetail />} />
             <Route path="/exam/:id" element={<ExamPage />} />
             <Route path="/payment_status" element={<PaymentStatusPage />} />
+            <Route path="/waitlist" element={<TeacherWaitlist />} />
             <Route path="/quiz" element={<QuizComponent />} />
             <Route path="/game" element={<DonutCatcherGame />} />
             <Route path="/ask" element={<RequestPage />} />

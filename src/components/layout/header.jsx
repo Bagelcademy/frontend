@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Globe, Moon, Sun, Menu, Bot } from 'lucide-react'; // Added Bot icon from lucide-react
+import { Globe, Moon, Sun, Menu, Bot, Flower } from 'lucide-react'; // Added Flower icon from lucide-react
 import { Button } from '../ui/button';
 import '../../css/Header.css';
 import { useTranslation } from 'react-i18next';
@@ -19,6 +19,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   const [profilePicture, setProfilePicture] = useState(null);
   // Add state for sparkle animation
   const [sparkleAnimate, setSparkleAnimate] = useState(false);
+  // Add state for flower animation
+  const [flowerAnimate, setFlowerAnimate] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +46,16 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     }, 3000);
     
     return () => clearInterval(sparkleInterval);
+  }, []);
+  
+  // Add flower animation effect
+  useEffect(() => {
+    const flowerInterval = setInterval(() => {
+      setFlowerAnimate(true);
+      setTimeout(() => setFlowerAnimate(false), 1000);
+    }, 4000);
+    
+    return () => clearInterval(flowerInterval);
   }, []);
 
   const fetchUserProfile = async () => {
@@ -135,6 +147,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     setSparkleAnimate(true);
     setTimeout(() => setSparkleAnimate(false), 1000);
   };
+  
+  // Function to trigger manual flower animation
+  const triggerFlower = () => {
+    setFlowerAnimate(true);
+    setTimeout(() => setFlowerAnimate(false), 1000);
+  };
 
   return (
     <header 
@@ -218,7 +236,39 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               {t('AI Assistant')}
             </span>
             </div>
-
+          </Link>
+          
+          {/* New Norooz Flower Button */}
+          <Link to="/Norooz" onClick={triggerFlower}>
+            <div className="relative group">
+              <Flower 
+                size={32} 
+                className={`
+                  transition-all duration-300
+                  ${isDarkTheme ? 'text-green-400' : 'text-green-600'}
+                  ${flowerAnimate ? 'scale-110' : ''}
+                  hover:scale-105
+                `} 
+              />
+              {/* Add flower/spring animations around the icon */}
+              <div className={`absolute -inset-1 opacity-0 group-hover:opacity-100 ${flowerAnimate ? 'opacity-100' : ''} transition-opacity duration-300`}>
+                <div className="absolute top-0 left-0 h-2 w-2 bg-green-300 rounded-full animate-pulse"></div>
+                <div className="absolute top-1 right-0 h-1 w-1 bg-pink-400 rounded-full animate-ping"></div>
+                <div className="absolute bottom-0 left-1 h-1.5 w-1.5 bg-green-500 rounded-full animate-bounce"></div>
+                <div className="absolute bottom-1 right-1 h-2 w-2 bg-pink-300 rounded-full animate-pulse"></div>
+                <div className="absolute top-3 right-3 h-1 w-1 bg-green-400 rounded-full animate-ping"></div>
+              </div>
+              <span 
+              className={`
+                absolute -bottom-8 left-1/2 transform -translate-x-1/2 
+                text-xs whitespace-nowrap px-2 py-1 rounded-md opacity-0 
+                group-hover:opacity-100 transition-opacity duration-300
+                ${isDarkTheme ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}
+              `}
+            >
+              {t('Norooz')}
+            </span>
+            </div>
           </Link>
         </div>
 
@@ -277,6 +327,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
                   }
                 `}
               >
+
+              
                 {t('myCourses')}
               </Link>
               <Link to="/profile">

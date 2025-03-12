@@ -62,8 +62,8 @@ const RequestPage = () => {
   const { t, i18n } = useTranslation();
   const [request, setRequest] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState({
-    label: t('English'),
-    value: 'English',
+    label: t('Persian'),
+    value: 'Persian',
   });
   const [selectedLevel, setSelectedLevel] = useState({
     label: t('Beginner'),
@@ -110,7 +110,7 @@ const RequestPage = () => {
 
   useEffect(() => {
     setSelectedLanguage({
-      label: t('English'),
+      label: t('Persian'),
       value: selectedLanguage.value,
     });
     setSelectedLevel({
@@ -324,7 +324,7 @@ const RequestPage = () => {
               transition={{ delay: 0.6, duration: 0.5 }}
               value={request}
               onChange={handleInputChange}
-              placeholder={t('What knowledge are you seeking?')}
+              placeholder={t('python programming language for 30 days')}
               className="w-full p-4 bg-white bg-opacity-20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
               rows="4"
             />
@@ -392,9 +392,9 @@ const RequestPage = () => {
                 value={selectedLanguage}
                 onChange={setSelectedLanguage}
                 options={[
+                  { label: t('Persian'), value: 'Persian' },
                   { label: t('English'), value: 'English' },
                   { label: t('Spanish'), value: 'Spanish' },
-                  { label: t('Persian'), value: 'Persian' },
                   { label: t('Mandarin'), value: 'Mandarin Chinese' },
                   { label: t('Spanish'), value: 'Spanish' },
                   { label: t('Hindi'), value: 'Hindi' },
