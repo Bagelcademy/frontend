@@ -24,7 +24,10 @@ const Footer = () => {
               <li><Link to="/" className="hover:text-buttonColor transition-colors">{t('Home')}</Link></li>
               <li><Link to="/ask" className="hover:text-buttonColor transition-colors">{t('AI course design')}</Link></li>
               <li><Link to="/courses" className="hover:text-buttonColor transition-colors">{t('Courses')}</Link></li>
+              <li><Link to="/learningpathes" className="hover:text-buttonColor transition-colors">{t('Career Paths')}</Link></li>
               <li><Link to="/shop" className="hover:text-buttonColor transition-colors">{t('Shop')}</Link></li>
+              <li><Link to="/characters" className="hover:text-buttonColor transition-colors">{t('Meet the Characters')}</Link></li>
+              <li><Link to="/quiz" className="hover:text-buttonColor transition-colors">{t('What to Learn')}</Link></li>
             </ul>
           </div>
 
@@ -39,15 +42,29 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="flex flex-col items-center">
-            <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
+
+            <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Special Pages')}</h4>
+            {/* Special Pages */}
+        <div className="flex justify-center gap-4 mb-6 text-lg">
+        <ul className="space-y-2 text-center text-gray-600 dark:text-gray-400">
+
+          <li><Link to="/norooz" className="hover:text-buttonColor transition-colors">{t('Nowruz')}</Link></li>
+          <li><Link to="/waitlist" className="hover:text-buttonColor transition-colors">{t('Teacher Waitlist')}</Link></li>        
+        </ul>
+        </div>
+          <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
             <div className="flex gap-4">
               <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Facebook size={20} /></a>
               <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Twitter size={20} /></a>
               <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Instagram size={20} /></a>
               <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Linkedin size={20} /></a>
             </div>
-          </div>
+            </div>
+
         </div>
+
+
+
 
         {/* Trust Badges */}
         <div className="flex justify-center items-center gap-4 mb-6">
@@ -75,17 +92,18 @@ const Footer = () => {
           {/* Senfi Logo */}
           <img 
             src={senfi}
-            
             alt="Senfi Logo"
             className="w-16 h-16 object-contain"
           />
         </div>
 
+
+
         {/* Additional Links */}
         <div className="flex justify-center gap-4 mb-6 text-sm">
-        <Link to="/about-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('About us')}</Link>
-        <Link to="/contact-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Contact us')}</Link>
-        <Link to="/FAQ" className="text-gray-600 hover:text-buttonColor transition-colors">{t('FAQ')}</Link>
+          <Link to="/about-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('About us')}</Link>
+          <Link to="/contact-us" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Contact us')}</Link>
+          <Link to="/FAQ" className="text-gray-600 hover:text-buttonColor transition-colors">{t('FAQ')}</Link>
           <Link to="/terms" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Terms')}</Link>
           <Link to="/privacy" className="text-gray-600 hover:text-buttonColor transition-colors">{t('Privacy')}</Link>
         </div>

@@ -354,7 +354,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
       </section>
 
       {/* Popular Courses */}
-      <div className=" mx-auto px-4 p-16 mt-6 mb-8">
+      <div className=" mx-auto px-4 p-16 mt-2 mb-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-b5 text-gray-900 dark:text-white my-8 text-center">
             {t('PopularCourses')}

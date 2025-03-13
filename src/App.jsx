@@ -49,7 +49,6 @@ const App = () => {
   const { i18n } = useTranslation();
   const GOFTINO_KEY = "cD7Gse";
 
-  // const navigate = useNavigate();
 
   // Check login status
   useEffect(() => {
@@ -73,7 +72,6 @@ const App = () => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             localStorage.setItem('isLoggedIn', false);
-            // navigate('/login');
           }
         })
         .catch((error) => {
@@ -115,45 +113,54 @@ const App = () => {
           currentLanguage={i18n.language}
         >
           <Routes>
-            {/* Public Routes */}
+            {/* Login Routes */}
+            <Route path="*" element={<NotFoundPage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/blog" element={<AINewsPage/>} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/shop" element={<SubscriptionCards />} />
             <Route path="/resetpass" element={<ResetPassword />} />
+
+            {/* User pages */}
+            <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
+
+            {/* Public pages */}
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/ask" element={<RequestPage />} />
+            <Route path="/survey" element={<Survey />} />
+            <Route path="/characters" element={<CharacterIntroPage />} />
+            <Route path="/quiz" element={<QuizComponent />} />
+            <Route path="/shop" element={<SubscriptionCards />} />
+            <Route path="/payment_status" element={<PaymentStatusPage />} />
+            
+            {/* courses related pages */}
+            <Route path="/course/:id" element={<CourseLandingPage />} />
+            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/learning-paths" element={<CareerPathsPage />} />
             <Route path="/learning-paths/:id" element={<LearningPathDetail />} />
             <Route path="/exam/:id" element={<ExamPage />} />
-            <Route path="/payment_status" element={<PaymentStatusPage />} />
+
+            {/* Special pages */}
             <Route path="/waitlist" element={<TeacherWaitlist />} />
-            <Route path="/quiz" element={<QuizComponent />} />
-            <Route path="/game" element={<DonutCatcherGame />} />
-            <Route path="/ask" element={<RequestPage />} />
-            <Route path="/characters" element={<CharacterIntroPage />} />
-            <Route path="/lo" element={<LoginPagee />} />
-            <Route path="/survey" element={<Survey />} />
-          
-            <Route path="/course/:id" element={<CourseLandingPage />} />
+            <Route path="/Norooz" element={<NoroozPage />} />        
+            
+            {/* Policy pages */}            
             <Route path="/FAQ" element={<FAQ />} />
             <Route path="/contact-us" element={<ContactPage />} />
-
-            <Route path="/AIservey" element={<AISurvey />} />
-            <Route path="/Norooz" element={<NoroozPage />} />
-            
-            <Route path="/interview" element={<Interviewer />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfService />} />
+             
+            {/* company related pages */}
             <Route path="/metric" element={<MetricsDashboard />} />
-            <Route path="/teachpanel" element={<TeacherPanel />} />
                       
-            <Route path="/profile" element={<UserProfilePage setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/my-courses" element={<MyCourses setIsLoggedIn={setIsLoggedIn} />} />
-            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
-            
-            <Route path="*" element={<NotFoundPage />} />
+            {/* In progress pages */}
+            {/* <Route path="/blog" element={<AINewsPage/>} /> */}
+            {/* <Route path="/game" element={<DonutCatcherGame />} /> */}
+            {/* <Route path="/teachpanel" element={<TeacherPanel />} /> */}
+            {/* <Route path="/interview" element={<Interviewer />} /> */}
+            {/* <Route path="/AIservey" element={<AISurvey />} /> */}
+
           </Routes>
         </Layout>
       </div>
