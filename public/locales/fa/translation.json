@@ -493,14 +493,18 @@
     "business": "کسب و کار",
     "social_sciences": "علوم اجتماعی",
     "arts": "هنرها",
-    "Data_science":"علم داده",
     "artificial_intelligence":"هوش مصنوعی",
     "Languages":"زبان ها",
     "programming":"برنامه‌نویسی",
     "agriculture":"کشاورزی",
     "philosophy":"فلسفه",
     "HealthCare":"سلامت",
-    "electrical":"مهندسی برق"
+    "electrical":"مهندسی برق",
+    "Data_science": "علوم داده",
+    "Physics": "فیزیک",
+    "Psychology": "روان شناسی",
+    "Chemistry": "شیمی",
+    "Economic": "افتصاد"
 
   },
   "Take The Exam": "امتحان بدهید",

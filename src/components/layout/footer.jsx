@@ -37,6 +37,7 @@ const Footer = () => {
             <div className="text-center">
               <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@bagelcademy.com</p>
               <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052676</p>
+              <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 09039179491</p>
             </div>
           </div>
 
