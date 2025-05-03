@@ -469,13 +469,13 @@ const MyCourses = () => {
 
 
 
-              <Button
+              {/* <Button
                 onClick={handleDownloadNotes}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
               >
                 <Download className="w-4 h-4 mx-2" />
                 {t('Download Notes')}
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => navigate('/courses')}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
