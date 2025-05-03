@@ -6,17 +6,17 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { AlertCircle, Loader2 } from 'lucide-react';
 
-const ResetPassword = () => {
+const ResetPasswordByPhone = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   
   // Form states
-  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   
   // UI states
-  const [currentStep, setCurrentStep] = useState('email');
+  const [currentStep, setCurrentStep] = useState('phone');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -54,7 +54,7 @@ const ResetPassword = () => {
     });
   };
 
-  const sendVerificationEmail = async () => {
+  const sendVerificationSMS = async () => {
     try {
       setIsLoading(true);
       setError('');
@@ -62,13 +62,13 @@ const ResetPassword = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/email/email_verification_resetPass/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/phone/send_verification_code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          email,
+          phone_number: phoneNumber,
           recaptcha_token: token 
         }),
       });
@@ -76,41 +76,11 @@ const ResetPassword = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || t('emailVerificationFailed'));
+        throw new Error(data.error || t('phoneVerificationFailed'));
       }
 
       setCurrentStep('verification');
       setTimer(180); // 3 minutes cooldown
-
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const verifyCode = async () => {
-    try {
-      setIsLoading(true);
-      setError('');
-
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/email/verify_code/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          verification_code: verificationCode
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || t('verificationFailed'));
-      }
-
-      setCurrentStep('newPassword');
 
     } catch (error) {
       setError(error.message);
@@ -127,14 +97,14 @@ const ResetPassword = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/reset/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/phone/reset/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email,
-          token: verificationCode,
+          phone_number: phoneNumber,
+          code: verificationCode,
           password: newPassword,
           recaptcha_token: token
         }),
@@ -145,6 +115,7 @@ const ResetPassword = () => {
         throw new Error(data.error || t('passwordResetFailed'));
       }
 
+      // On success, redirect to login page
       navigate('/login');
 
     } catch (error) {
@@ -158,11 +129,11 @@ const ResetPassword = () => {
     e.preventDefault();
     
     switch (currentStep) {
-      case 'email':
-        await sendVerificationEmail();
+      case 'phone':
+        await sendVerificationSMS();
         break;
       case 'verification':
-        await verifyCode();
+        setCurrentStep('newPassword');
         break;
       case 'newPassword':
         await resetPassword();
@@ -174,7 +145,7 @@ const ResetPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">
-          {currentStep === 'email' && t('resetPassword')}
+          {currentStep === 'phone' && t('resetPassword')}
           {currentStep === 'verification' && t('enterVerificationCode')}
           {currentStep === 'newPassword' && t('createNewPassword')}
         </h2>
@@ -187,14 +158,15 @@ const ResetPassword = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {currentStep === 'email' && (
+          {currentStep === 'phone' && (
             <div>
-              <Label className="text-black dark:text-white" htmlFor="reset-email">{t('email')}</Label>
+              <Label className="text-black dark:text-white" htmlFor="reset-phone">{t('phoneNumber')}</Label>
               <Input
-                id="reset-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="reset-phone"
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="+1234567890"
                 required
                 disabled={isLoading}
               />
@@ -218,10 +190,11 @@ const ResetPassword = () => {
                 </p>
               ) : (
                 <Button
+
                   type="button"
                   variant="link"
-                  className="p-0 h-auto mt-2"
-                  onClick={sendVerificationEmail}
+                  className="p-0 h-auto mt-2 text-black dark:text-white "
+                  onClick={sendVerificationSMS}
                   disabled={isLoading}
                 >
                   {t('resendCode')}
@@ -246,7 +219,7 @@ const ResetPassword = () => {
 
           <Button 
             type="submit" 
-            className="w-full" 
+            className="w-full text-black dark:text-white" 
             disabled={isLoading}
           >
             {isLoading ? (
@@ -254,10 +227,10 @@ const ResetPassword = () => {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t('loading')}
               </>
-            ) : currentStep === 'email' ? (
+            ) : currentStep === 'phone' ? (
               t('sendVerificationCode')
             ) : currentStep === 'verification' ? (
-              t('verifyCode')
+              t('continueReset')
             ) : (
               t('resetPassword')
             )}
@@ -277,4 +250,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordByPhone;
