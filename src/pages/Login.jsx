@@ -63,7 +63,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Execute reCAPTCHA with the site key
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,13 +98,13 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/request_otp/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          phone_number: phoneNumber,
+          username: phoneNumber,
           recaptcha_token: token 
         }),
       });
@@ -128,7 +128,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/', {
+      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
