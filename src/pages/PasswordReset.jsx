@@ -62,7 +62,7 @@ const ResetPasswordByPhone = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/phone/send_verification_code/', {
+      const response = await fetch('https://api.tadrisino.org/account/phone/send_verification_code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const ResetPasswordByPhone = () => {
       // Get reCAPTCHA token
       const token = await executeRecaptcha();
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/phone/reset/', {
+      const response = await fetch('https://api.tadrisino.org/account/phone/reset/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

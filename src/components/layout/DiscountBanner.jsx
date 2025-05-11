@@ -16,7 +16,7 @@ const DiscountBanner = () => {
   useEffect(() => {
     const fetchCountdown = async () => {
       try {
-        const response = await fetch('https://bagelapi.bagelcademy.org/shop/Countdown/get-remaining-time/');
+        const response = await fetch('https://api.tadrisino.org/shop/Countdown/get-remaining-time/');
         const data = await response.json();
         
         // Parse the target date from API response

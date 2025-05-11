@@ -63,7 +63,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Execute reCAPTCHA with the site key
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/login/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/sendCode/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = await executeRecaptcha();
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/login/login/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

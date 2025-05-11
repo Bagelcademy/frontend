@@ -17,7 +17,7 @@ const NoroozPage = () => {
     const fetchNcourses = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('https://bagelapi.bagelcademy.org/courses/courses/nowruz/');
+        const response = await axios.get('https://api.tadrisino.org/courses/courses/nowruz/');
         setNcourses(response.data.slice(0, 5)); // Limiting to 5 Ncourses for the milestone
         setLoading(false);
       } catch (err) {

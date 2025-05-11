@@ -61,7 +61,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+      const response = await fetch('https://api.tadrisino.org/account/user-info/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -99,7 +99,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
         return;
       }
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/logout/logout/', {
+      const response = await fetch('https://api.tadrisino.org/account/logout/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

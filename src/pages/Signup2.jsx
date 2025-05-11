@@ -206,7 +206,7 @@ const Signup = () => {
       setLoadingMessage(t('sendingVerificationEmail'));
       setError('');
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/email/email_verification/', {
+      const response = await fetch('https://api.tadrisino.org/account/email/email_verification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -244,7 +244,7 @@ const Signup = () => {
       setError('');
 
       // First verify the code
-      const verifyResponse = await fetch('https://bagelapi.bagelcademy.org/account/email/verify_code/', {
+      const verifyResponse = await fetch('https://api.tadrisino.org/account/email/verify_code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ const Signup = () => {
       const token = await executeRecaptcha();
 
       // Complete registration
-      const registerResponse = await fetch('https://bagelapi.bagelcademy.org/account/register/', {
+      const registerResponse = await fetch('https://api.tadrisino.org/account/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -321,7 +321,7 @@ const Signup = () => {
     try {
       setCheckingUsername(true);
       
-      const response = await fetch(`https://bagelapi.bagelcademy.org/account/check_username/${username}/`, {
+      const response = await fetch(`https://api.tadrisino.org/account/check_username/${username}/`, {
         method: 'GET',
         credentials: 'include'
       });
@@ -349,7 +349,7 @@ const Signup = () => {
     try {
       setCheckingEmail(true);
       
-      const response = await fetch(`https://bagelapi.bagelcademy.org/account/check_email/`, {
+      const response = await fetch(`https://api.tadrisino.org/account/check_email/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -528,7 +528,7 @@ const Signup = () => {
       setLoadingMessage(t('processingGoogleSignup'));
       setError('');
 
-      const backendResponse = await fetch('https://bagelapi.bagelcademy.org/account/login/google_login/', {
+      const backendResponse = await fetch('https://api.tadrisino.org/account/login/google_login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

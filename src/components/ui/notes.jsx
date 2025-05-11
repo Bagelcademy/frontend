@@ -13,9 +13,9 @@ const Notes = ({ lessonId, courseId }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchNotesApi = 'https://bagelapi.bagelcademy.org/courses/user-notes/get-notes/';
-  const createNoteApi = 'https://bagelapi.bagelcademy.org/courses/user-notes/create-note/';
-  const deleteNoteApi = (noteId) => `https://bagelapi.bagelcademy.org/courses/user-notes/${noteId}/delete-note/`;
+  const fetchNotesApi = 'https://api.tadrisino.org/courses/user-notes/get-notes/';
+  const createNoteApi = 'https://api.tadrisino.org/courses/user-notes/create-note/';
+  const deleteNoteApi = (noteId) => `https://api.tadrisino.org/courses/user-notes/${noteId}/delete-note/`;
 
   const fetchNote = async () => {
     try {

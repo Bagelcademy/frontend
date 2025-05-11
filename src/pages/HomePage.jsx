@@ -289,7 +289,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/');
+        const response = await fetch('https://api.tadrisino.org/courses/courses/popular_courses/');
         if (!response.ok) throw new Error('Failed to fetch courses');
         const data = await response.json();
         setCourses(data);

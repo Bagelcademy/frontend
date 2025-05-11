@@ -69,7 +69,7 @@ const Courses = () => {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/courses/get_all_courses/');
+      const response = await fetch('https://api.tadrisino.org/courses/courses/get_all_courses/');
       const data = await response.json();
       setCourses(data);
     } catch (error) {
@@ -80,7 +80,7 @@ const Courses = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
+      const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
       setCategories(data);
     } catch (error) {

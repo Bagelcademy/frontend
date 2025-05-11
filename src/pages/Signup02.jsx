@@ -96,7 +96,7 @@ const Signup = () => {
       setIsLoading(true);
       setError('');
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/phone/phone_verification/', {
+      const response = await fetch('https://api.tadrisino.org/account/phone/phone_verification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const Signup = () => {
     setError('');
 
     // First verify the code
-    const verifyResponse = await fetch('https://bagelapi.bagelcademy.org/account/phone/verify_code/', {
+    const verifyResponse = await fetch('https://api.tadrisino.org/account/phone/verify_code/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ const Signup = () => {
     const token = await executeRecaptcha();
 
     // Complete registration
-    const registerResponse = await fetch('https://bagelapi.bagelcademy.org/account/register/', {
+    const registerResponse = await fetch('https://api.tadrisino.org/account/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ const Signup = () => {
       setIsLoading(true);
       setError('');
 
-      const backendResponse = await fetch('https://bagelapi.bagelcademy.org/account/login/google_login/', {
+      const backendResponse = await fetch('https://api.tadrisino.org/account/login/google_login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

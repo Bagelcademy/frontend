@@ -27,7 +27,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
       setLoading(true);
       // First API call to generate quiz content
       const generationResponse = await fetch(
-        `https://bagelapi.bagelcademy.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
+        `https://api.tadrisino.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
 
     try {
       const response = await fetch(
-        `https://bagelapi.bagelcademy.org/courses/exams/${lessonId}/Qlist/`,
+        `https://api.tadrisino.org/courses/exams/${lessonId}/Qlist/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
 
     try {
       const response = await fetch(
-        `https://bagelapi.bagelcademy.org/courses/quizzes/${lessonId}/submit_answers/`,
+        `https://api.tadrisino.org/courses/quizzes/${lessonId}/submit_answers/`,
         {
           method: 'POST',
           headers: {

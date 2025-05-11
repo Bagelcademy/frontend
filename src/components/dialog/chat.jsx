@@ -105,7 +105,7 @@ const AIAssistant = ({ lessonContent }) => {
       const token = localStorage.getItem('accessToken');
       const contextMessage = `well ${input}`;
 
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/chat/', {
+      const response = await fetch('https://api.tadrisino.org/account/chat/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

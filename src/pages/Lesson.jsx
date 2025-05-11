@@ -74,7 +74,7 @@ const LessonPage = () => {
       try {
         setContentGenerating(true);
         const generationResponse = await fetch(
-          `https://bagelapi.bagelcademy.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
+          `https://api.tadrisino.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
         );
 
         if (generationResponse.status === 201) {
@@ -84,7 +84,7 @@ const LessonPage = () => {
         }
 
         const lessonResponse = await fetch(
-          `https://bagelapi.bagelcademy.org/courses/courses/${courseId}/lessons/${lessonId}/`,
+          `https://api.tadrisino.org/courses/courses/${courseId}/lessons/${lessonId}/`,
           {
             method: 'GET',
             headers: {
@@ -112,7 +112,7 @@ const LessonPage = () => {
           setIsNextAvailable(true);
 
           await fetch(
-            `https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`,
+            `https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`,
             {
               method: 'POST',
               headers: {
@@ -149,7 +149,7 @@ const LessonPage = () => {
     if (direction === 'next') {
       try {
         const token = localStorage.getItem('accessToken');
-        await fetch(`https://bagelapi.bagelcademy.org/courses/student-progress/${lessonId}/complete-lesson/`, {
+        await fetch(`https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -365,7 +365,7 @@ const LessonPage = () => {
                     return;
                   }
 
-                  fetch(`https://bagelapi.bagelcademy.org/courses/CourseRating/${courseId}/set_rate/`, {
+                  fetch(`https://api.tadrisino.org/courses/CourseRating/${courseId}/set_rate/`, {
                     method: 'POST',
                     headers: {
                       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

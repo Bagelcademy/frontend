@@ -46,7 +46,7 @@ const TeacherWaitlist = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/teacher-waiting-list/apply/', {
+      const response = await fetch('https://api.tadrisino.org/account/teacher-waiting-list/apply/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

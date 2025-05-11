@@ -87,8 +87,8 @@ const UserProfilePage = () => {
         const headers = { 'Authorization': `Bearer ${token}` };
 
         const [userResponse, notificationsResponse] = await Promise.all([
-          fetch('https://bagelapi.bagelcademy.org/account/user-info/', { headers }),
-          fetch('https://bagelapi.bagelcademy.org/account/NotifyUser/', { headers })
+          fetch('https://api.tadrisino.org/account/user-info/', { headers }),
+          fetch('https://api.tadrisino.org/account/NotifyUser/', { headers })
         ]);
 
         if (!userResponse.ok || !notificationsResponse.ok) {
@@ -141,7 +141,7 @@ const UserProfilePage = () => {
       const filePreview = URL.createObjectURL(file);
       setUser((prev) => ({ ...prev, profile_picture: filePreview }));
 
-      const uploadResponse = await fetch('https://bagelapi.bagelcademy.org/account/MyImage/', {
+      const uploadResponse = await fetch('https://api.tadrisino.org/account/MyImage/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -155,7 +155,7 @@ const UserProfilePage = () => {
 
       const uploadData = await uploadResponse.json();
 
-      const updateProfileResponse = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
+      const updateProfileResponse = await fetch('https://api.tadrisino.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -240,7 +240,7 @@ const UserProfilePage = () => {
       }, { abortEarly: false });
 
       const token = localStorage.getItem("accessToken");
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/profile/update_profile/', {
+      const response = await fetch('https://api.tadrisino.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

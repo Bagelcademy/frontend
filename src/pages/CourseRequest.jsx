@@ -160,7 +160,7 @@ const RequestPage = () => {
         const token = localStorage.getItem('accessToken');
         if (!token) return;
         
-        const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+        const response = await fetch('https://api.tadrisino.org/account/user-info/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -183,7 +183,7 @@ const RequestPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/', {
+        const response = await fetch('https://api.tadrisino.org/courses/Category/', {
           method: 'GET',
         });
         
@@ -279,7 +279,7 @@ const RequestPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) return;
       
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/course-generation/search_for_existence_course/', {
+      const response = await fetch('https://api.tadrisino.org/courses/course-generation/search_for_existence_course/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -341,7 +341,7 @@ const RequestPage = () => {
         setSubmitStatus('user_not_logged_in');
         return;
       }
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/course-generation/generate_gpt_course/', {
+      const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -375,7 +375,7 @@ const RequestPage = () => {
       setCurrentStep(0);
       
       // Refresh user credits after successful course generation
-      const userInfoResponse = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+      const userInfoResponse = await fetch('https://api.tadrisino.org/account/user-info/', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

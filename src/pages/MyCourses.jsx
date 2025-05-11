@@ -110,7 +110,7 @@ const MyCourses = () => {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org/account/user-info/', {
+      const response = await fetch('https://api.tadrisino.org/account/user-info/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -126,7 +126,7 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/courses/get_user_courses/', {
+      const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -141,7 +141,7 @@ const MyCourses = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/Category/');
+      const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
       // Map categories with translated names
       const translatedCategories = data.map(category => ({
@@ -206,7 +206,7 @@ const MyCourses = () => {
   const handleDownloadNotes = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org/courses/user-notes/export-notes-pdf/', {
+      const response = await fetch('https://api.tadrisino.org/courses/user-notes/export-notes-pdf/', {
         headers: {
           Authorization: `Bearer ${token}`
         }

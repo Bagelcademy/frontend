@@ -22,7 +22,7 @@ const ExamPage = () => {
     const fetchExam = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch('https://bagelapi.bagelcademy.org/api/exam', {
+        const response = await fetch('https://api.tadrisino.org/api/exam', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -87,7 +87,7 @@ const ExamPage = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://bagelapi.bagelcademy.org/api/examAnswer', {
+      const response = await fetch('https://api.tadrisino.org/api/examAnswer', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -27,16 +27,16 @@ const CourseLandingPage = () => {
         setIsLoggedIn(!!accessToken);
   
         // Set up fetch requests with appropriate headers
-        const courseRequest = fetch(`https://bagelapi.bagelcademy.org/courses/courses/${id}/with_lessons/`);
+        const courseRequest = fetch(`https://api.tadrisino.org/courses/courses/${id}/with_lessons/`);
         
         // Fetch popular courses based on authentication status
         const popularRequest = accessToken ? 
-          fetch('https://bagelapi.bagelcademy.org/courses/Recommendation/recommend-courses/', {
+          fetch('https://api.tadrisino.org/courses/Recommendation/recommend-courses/', {
             headers: {
               'Authorization': `Bearer ${accessToken}`
             }
           }) : 
-          fetch('https://bagelapi.bagelcademy.org/courses/courses/popular_courses/'); // Fetch popular courses if not logged in
+          fetch('https://api.tadrisino.org/courses/courses/popular_courses/'); // Fetch popular courses if not logged in
   
         const [courseResponse, popularResponse] = await Promise.all([
           courseRequest,
@@ -51,14 +51,14 @@ const CourseLandingPage = () => {
         if (accessToken) {
           // Only fetch enrollment and completion status if user is logged in
           const [enrollmentResponse, completionResponse] = await Promise.all([
-            fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/check_enroll/`, {
+            fetch(`https://api.tadrisino.org/courses/enroll/${id}/check_enroll/`, {
               credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${accessToken}`,
               },
             }),
-            fetch(`https://bagelapi.bagelcademy.org/courses/student-progress/last-completed-lesson/`, {
+            fetch(`https://api.tadrisino.org/courses/student-progress/last-completed-lesson/`, {
               method: 'POST',
               credentials: 'include',
               headers: {
@@ -128,7 +128,7 @@ const CourseLandingPage = () => {
     }
 
     try {
-      const response = await fetch(`https://bagelapi.bagelcademy.org/courses/enroll/${id}/enroll/`, {
+      const response = await fetch(`https://api.tadrisino.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
