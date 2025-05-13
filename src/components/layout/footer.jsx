@@ -71,12 +71,12 @@ const Footer = () => {
         <div className="flex justify-center items-center gap-4 mb-6">
           {/* eNamad */}
           <a 
-            href="https://trustseal.enamad.ir/?id=535351&amp;Code=skYskz5wo6Y6CbKTJeDAv8nNaxupOMFE" 
+            href="https://trustseal.enamad.ir/?id=609515&Code=6FWmuBO0dYSwQ96O4fc0CUN2NYWe1Hqq" 
             target="_blank"
             className="block"
           >
             <img 
-              src="https://trustseal.enamad.ir/logo.aspx?id=535351&amp;Code=skYskz5wo6Y6CbKTJeDAv8nNaxupOMFE"
+              src="https://trustseal.enamad.ir/logo.aspx?id=609515&Code=6FWmuBO0dYSwQ96O4fc0CUN2NYWe1Hqq"
               alt="eNamad"
               className="w-16 h-16 object-contain"
             />
