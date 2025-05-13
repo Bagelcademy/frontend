@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-6">
           {/* Company Info */}
           <div className="flex flex-col items-center">
-            <h3 className="text-gray-600 dark:text-gray-400 text-xl font-bold mb-4">{t('Bagelcademy')}</h3>
+            <h3 className="text-gray-600 dark:text-gray-400 text-xl font-bold mb-4">{t('Tadrisino')}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-center">{t('Stay Curious. Keep Growing.')}</p>
           </div>
 
@@ -35,7 +35,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Contact')}</h4>
             <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@bagelcademy.com</p>
+              <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@tadrisino.com</p>
               <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052676</p>
               <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 09039179491</p>
             </div>
@@ -111,7 +111,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="text-center text-gray-400 text-sm border-t border-buttonColor pt-4">
-          <p>&copy; 2025 Bagelcademy. {t('All rights reserved.')}</p>
+          <p>&copy; 2025 Tadrisino. {t('All rights reserved.')}</p>
         </div>
       </div>
     </footer>

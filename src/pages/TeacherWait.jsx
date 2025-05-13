@@ -82,14 +82,14 @@ const TeacherWaitlist = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>{t('Join Our Teaching Team')} | Bagelcademy</title>
-        <meta name="description" content={t('Apply to become a teacher at Bagelcademy and share your knowledge with our AI-powered learning platform.')} />
-        <meta property="og:title" content={`${t('Become a Teacher')} | Bagelcademy`} />
-        <meta property="og:description" content={t('Apply to become a teacher at Bagelcademy and share your knowledge with our AI-powered learning platform.')} />
+        <title>{t('Join Our Teaching Team')} | Tadrisino</title>
+        <meta name="description" content={t('Apply to become a teacher at Tadrisino and share your knowledge with our AI-powered learning platform.')} />
+        <meta property="og:title" content={`${t('Become a Teacher')} | Tadrisino`} />
+        <meta property="og:description" content={t('Apply to become a teacher at Tadrisino and share your knowledge with our AI-powered learning platform.')} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${t('Become a Teacher')} | Bagelcademy`} />
-        <meta name="twitter:description" content={t('Apply to become a teacher at Bagelcademy and share your knowledge with our AI-powered learning platform.')} />
+        <meta name="twitter:title" content={`${t('Become a Teacher')} | Tadrisino`} />
+        <meta name="twitter:description" content={t('Apply to become a teacher at Tadrisino and share your knowledge with our AI-powered learning platform.')} />
         <meta name="keywords" content="teaching, education, online courses, AI learning, technology education" />
       </Helmet>
 
@@ -242,7 +242,7 @@ const TeacherWaitlist = () => {
 
         <div className="mt-16 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">
-            {t('The Bagelcademy Teaching Experience')}
+            {t('The Tadrisino Teaching Experience')}
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

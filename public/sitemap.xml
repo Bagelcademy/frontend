@@ -3,7 +3,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://www.bagelcademy.org/</loc>
+    <loc>https://www.tadrisino.org/</loc>
     <lastmod>2024-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
 
   <!-- Courses Page -->
   <url>
-    <loc>https://www.bagelcademy.org/courses</loc>
+    <loc>https://www.tadrisino.org/courses</loc>
     <lastmod>2024-12-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19,7 +19,7 @@
 
   <!-- Course Request Page -->
   <url>
-    <loc>https://www.bagelcademy.org/ask</loc>
+    <loc>https://www.tadrisino.org/ask</loc>
     <lastmod>2024-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -27,7 +27,7 @@
 
   <!-- About Us Page -->
   <url>
-    <loc>https://www.bagelcademy.org/about-us</loc>
+    <loc>https://www.tadrisino.org/about-us</loc>
     <lastmod>2024-12-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

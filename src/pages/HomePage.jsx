@@ -303,16 +303,16 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   return (
     <div className="min-h-screen  bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>{t('Learn, Grow, Succeed | Bagelcademy')}</title>
-        <meta name="description" content="Discover personalized learning paths, interactive courses, and a supportive community at Bagelcademy. Start your learning journey today!" />
+        <title>{t('Learn, Grow, Succeed | Tadrisino')}</title>
+        <meta name="description" content="Discover personalized learning paths, interactive courses, and a supportive community at Tadrisino. Start your learning journey today!" />
         <meta name="keywords" content="online learning, courses, education, career paths, personalized learning" />
-        <meta property="og:title" content="Learn, Grow, Succeed | Bagelcademy" />
-        <meta property="og:description" content="Transform your future with Bagelcademy's innovative learning platform." />
+        <meta property="og:title" content="Learn, Grow, Succeed | Tadrisino" />
+        <meta property="og:description" content="Transform your future with Tadrisino's innovative learning platform." />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Learn, Grow, Succeed | Bagelcademy" />
-        <meta name="twitter:description" content="Transform your future with Bagelcademy's innovative learning platform." />
-        <link rel="canonical" href="https://bagelcademy.org" />
+        <meta name="twitter:title" content="Learn, Grow, Succeed | Tadrisino" />
+        <meta name="twitter:description" content="Transform your future with Tadrisino's innovative learning platform." />
+        <link rel="canonical" href="https://tadrisino.org" />
       </Helmet>
 
       {/* Hero Section */}

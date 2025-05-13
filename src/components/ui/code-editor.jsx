@@ -24,7 +24,7 @@ const CodeEditor = () => {
     setIsExecuting(true);
     try {
       // Step 1: Submit the code to Judge0
-      const submissionResponse = await fetch('https://judge.bagelcademy.org/submissions?base64_encoded=true', {
+      const submissionResponse = await fetch('https://judge.tadrisino.org/submissions?base64_encoded=true', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -45,7 +45,7 @@ const CodeEditor = () => {
 
       do {
         await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
-        resultResponse = await fetch(`https://judge.bagelcademy.org/submissions/${token}?base64_encoded=true`);
+        resultResponse = await fetch(`https://judge.tadrisino.org/submissions/${token}?base64_encoded=true`);
         result = await resultResponse.json();
       } while (resultResponse.status === 204); // Status 204 indicates processing
 

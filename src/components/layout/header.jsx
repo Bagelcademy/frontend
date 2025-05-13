@@ -184,7 +184,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               ${isDarkTheme ? 'hover:text-gray-300' : 'hover:text-gray-900'}
             `}
           >
-            {t("Bagelcademy")}
+            {t("Tadrisino")}
           </Link>
           <Link to="/shop">
             <Button 

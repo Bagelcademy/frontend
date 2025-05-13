@@ -10,8 +10,8 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>{t("Contact Us")} | Bagelcademy</title>
-        <meta name="description" content={t("Get in touch with the Bagelcademy team")} />
+        <title>{t("Contact Us")} | Tadrisino</title>
+        <meta name="description" content={t("Get in touch with the Tadrisino team")} />
       </Helmet>
 
       <div className="container mx-auto px-4 py-16">
@@ -34,7 +34,7 @@ const ContactPage = () => {
                     <Mail className="w-6 h-6 text-blue-500" />
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">{t("Email")}</p>
-                      <p className="text-gray-600 dark:text-gray-400">support@bagelcademy.org</p>
+                      <p className="text-gray-600 dark:text-gray-400">support@tadrisino.org</p>
                     </div>
                   </div>
 

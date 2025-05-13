@@ -122,13 +122,13 @@ const Courses = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Helmet>
-        <title>{t('Discover Your Next Learning Journey')} | Bagelcademy</title>
+        <title>{t('Discover Your Next Learning Journey')} | Tadrisino</title>
         <meta name="description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
-        <meta property="og:title" content={`${t('Discover Your Next Learning Journey')} | Bagelcademy`} />
+        <meta property="og:title" content={`${t('Discover Your Next Learning Journey')} | Tadrisino`} />
         <meta property="og:description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${t('Discover Your Next Learning Journey')} | Bagelcademy`} />
+        <meta name="twitter:title" content={`${t('Discover Your Next Learning Journey')} | Tadrisino`} />
         <meta name="twitter:description" content={t('Browse through our extensive collection of courses and find your perfect learning path.')} />
         {selectedCategory && categories.find(c => c.id === selectedCategory)?.name && (
           <meta name="keywords" content={`courses, learning, education, ${t(`categories.${categories.find(c => c.id === selectedCategory)?.name}`)}, ${selectedLanguage || 'all languages'}`} />
