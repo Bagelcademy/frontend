@@ -7,7 +7,11 @@ import {
   BookOpen, Award, Check, Search, Users,
   Clock, Star, Filter, Rocket, BrainCircuit,
   Brain, Target, Gift, Globe2, GraduationCap, UserCheck,Route} from 'lucide-react';
-import heroImage from '../assets/137.png';
+import heroImage from '../assets/007.jpeg';
+import Image1 from '../assets/007.jpeg';
+import Image2 from '../assets/004.jpeg';
+import Image3 from '../assets/009.jpeg';
+import Image4 from '../assets/012.jpeg';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardFooter } from '../components/ui/card';
 import { motion } from 'framer-motion';
@@ -401,7 +405,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           gradient="bg-gradient-to-r from-blue-500 to-blue-600"
           buttonText={t('Start Creating')}
           linkTo="/ask"
-          imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/5556f361-914c-42fb-9e5c-0577013af010.png"
+          imageUrl= {Image1}
+          // imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/5556f361-914c-42fb-9e5c-0577013af010.png"
           // imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F9253aec3-5d18-4927-8906-9137951601e6.png"
           features={[t('Create engaging courses'), t('Multi-language support'), t('Interactive course builder')]}
         />
@@ -414,7 +419,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           buttonText={t('Take Assessment')}
           linkTo="/quiz"
           reversed={true}
-          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F77a28a1d-6c43-4d0b-b164-6a078ba478a8.png"
+          imageUrl= {Image2}
+          // imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F77a28a1d-6c43-4d0b-b164-6a078ba478a8.png"
           features={[t('Personalized recommendations'), t('Expert guidance'), t('Adaptive learning paths')]}
         />
 
@@ -425,7 +431,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           gradient="bg-gradient-to-r from-blue-600 to-purple-600"
           buttonText={t('Explore Paths')}
           linkTo="/learning-paths"
-          imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/29e89c2b-5405-4519-9467-f15a0e07d3c4.png"
+          imageUrl= {Image3}
+          // imageUrl="https://test1-emgndhaqd0c9h2db.a01.azurefd.net/images/29e89c2b-5405-4519-9467-f15a0e07d3c4.png"
           features={[t('Structured learning paths'), t('Industry-relevant curriculum'), t('Certification & career support')]}
         />
 
@@ -437,7 +444,8 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           buttonText={t('Meet the Family')}
           linkTo="/characters"
           reversed={true}
-          imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F20402def-7f74-4e80-add6-048298adbb54.png"
+          imageUrl= {Image4}
+          // imageUrl="https://www.krea.ai/api/img?f=webp&i=https%3A%2F%2Ftest1-emgndhaqd0c9h2db.a01.azurefd.net%2Fimages%2F20402def-7f74-4e80-add6-048298adbb54.png"
           features={[t('Community-driven learning'), t('Interactive support system'), t('Live Q&A and discussion groups')]}
         />
       </div>
