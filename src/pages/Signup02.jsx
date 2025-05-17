@@ -29,7 +29,7 @@ const Signup = () => {
   useEffect(() => {
     // Load reCAPTCHA script
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -84,7 +84,7 @@ const Signup = () => {
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'signup' })
+        window.grecaptcha.execute('6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm', { action: 'signup' })
           .then(token => resolve(token))
           .catch(error => reject(error));
       });

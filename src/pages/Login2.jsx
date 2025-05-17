@@ -16,7 +16,7 @@ const Login = ({ setIsLoggedIn }) => {
   useEffect(() => {
     // Load the reCAPTCHA v3 script
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -103,7 +103,7 @@ const Login = ({ setIsLoggedIn }) => {
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'login' })
+        window.grecaptcha.execute('6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm', { action: 'login' })
           .then(token => resolve(token))
           .catch(error => reject(error));
       });

@@ -239,7 +239,7 @@ const RequestPage = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -260,7 +260,7 @@ const RequestPage = () => {
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6Lea3F0qAAAAANYONoP3SokfRw6_uttL5OGhYGqI', { action: 'generate_gpt_course' })
+        window.grecaptcha.execute('6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm', { action: 'generate_gpt_course' })
           .then(token => resolve(token))
           .catch(error => reject(error));
       });
