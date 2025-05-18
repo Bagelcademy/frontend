@@ -7,7 +7,7 @@ import {
   BookOpen, Award, Check, Search, Users,
   Clock, Star, Filter, Rocket, BrainCircuit,
   Brain, Target, Gift, Globe2, GraduationCap, UserCheck,Route} from 'lucide-react';
-import heroImage from '../assets/007.jpeg';
+import heroImage from '../assets/0001.jpeg';
 import Image1 from '../assets/007.jpeg';
 import Image2 from '../assets/004.jpeg';
 import Image3 from '../assets/009.jpeg';
