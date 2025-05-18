@@ -2,20 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Send, 
-  ChevronDown, 
-  Loader, 
-  Info, 
-  Search, 
-  X, 
-  ChevronsDown,
-  Check,
-  BookOpen,
-  ListFilter,
-  Globe,
-  BarChart,
-  Zap,
-  ArrowRight
+  Send,ChevronDown,Loader,Info, 
+  Search,X,ChevronsDown,Check,BookOpen,
+  ListFilter,Globe,BarChart,Zap,ArrowRight
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -236,10 +225,116 @@ const RequestPage = () => {
       });
     }
   }, [i18n.language, categories]);
+  // reCAPTCHA v2 integration
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const recaptchaRef = useRef(null);
 
   useEffect(() => {
+    // Only load v2 script if not already present
+    if (!window.grecaptcha) {
+      const script = document.createElement('script');
+      script.src = 'https://www.google.com/recaptcha/api.js';
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, []);
+
+  // Callback for reCAPTCHA
+  window.onRecaptchaSuccess = (token) => {
+    setRecaptchaToken(token);
+  };
+
+  // Render reCAPTCHA box when on last step
+  useEffect(() => {
+    if (currentStep === 3 && window.grecaptcha && recaptchaRef.current) {
+      window.grecaptcha.render(recaptchaRef.current, {
+        sitekey: '6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA',
+        callback: window.onRecaptchaSuccess,
+      });
+    }
+    // Reset token when step changes
+    setRecaptchaToken(null);
+  }, [currentStep]);
+
+  // Override handleSubmit to require recaptcha on last step
+  const originalHandleSubmit = handleSubmit;
+  const handleSubmitWithRecaptcha = async (e) => {
+    e.preventDefault();
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+      return;
+    }
+    if (!recaptchaToken) {
+      setSubmitStatus('recaptcha_required');
+      return;
+    }
+    // Patch: inject recaptcha_token into request
+    setIsSubmitting(true);
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        setSubmitStatus('user_not_logged_in');
+        return;
+      }
+      const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: request,
+          language: selectedLanguage.value,
+          level: selectedLevel.value,
+          lesson_count: selectedLessonCount.value,
+          category: selectedCategory.value,
+          recaptcha_token: recaptchaToken,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (response.status === 403 && errorData.detail === "you do not have enough credit") {
+          setSubmitStatus("no_credit");
+        } else {
+          throw new Error('Failed to submit request');
+        }
+        return;
+      }
+
+      const data = await response.json();
+      setSubmitStatus('success');
+      setCourses([...courses, data]);
+      setRequest('');
+      setSearchResults([]);
+      setCurrentStep(0);
+
+      // Refresh user credits after successful course generation
+      const userInfoResponse = await fetch('https://api.tadrisino.org/account/user-info/', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (userInfoResponse.ok) {
+        const userData = await userInfoResponse.json();
+        setUserCredits(userData.credit);
+      }
+    } catch (error) {
+      console.error('Error submitting request:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -260,7 +355,7 @@ const RequestPage = () => {
   const executeRecaptcha = () => {
     return new Promise((resolve, reject) => {
       window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj', { action: 'generate_gpt_course' })
+        window.grecaptcha.execute('6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA', { action: 'generate_gpt_course' })
           .then(token => resolve(token))
           .catch(error => reject(error));
       });

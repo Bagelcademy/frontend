@@ -336,6 +336,8 @@
   "Specialty": "Specialty",
   "Favorite Quote": "Favorite Quote",
   "Fun Fact": "Fun Fact",
+  "verificationSMSSent":"verification SMS sent",
+  "didntReceiveCode" : "didnt receive code",
   "searchPlaceholder":"Search in my courses",
   "nameTooLong": "Name must be less than 20 characters.",
   "phoneNumberTooShort": "Phone number must be at least 11 digits.",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui/button';
@@ -12,6 +12,8 @@ import Notiflix from 'notiflix';
 const Signup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const recaptchaRef = useRef(null);
+  const recaptchaWidgetId = useRef(null);
 
   // Form states
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -26,16 +28,23 @@ const Signup = () => {
   const [currentStep, setCurrentStep] = useState(1); // 1: Phone, 2: Code, 3: Password
   const [isSmsSent, setIsSmsSent] = useState(false);
   const [timer, setTimer] = useState(0);
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   // Password validation states
   const [hasMinLength, setHasMinLength] = useState(false);
   const [hasNumber, setHasNumber] = useState(false);
   const [hasLetter, setHasLetter] = useState(false);
 
+  // Load reCAPTCHA script
   useEffect(() => {
-    // Load reCAPTCHA script
+    // Define callback that Google will call when reCAPTCHA is ready
+    window.onRecaptchaLoaded = function() {
+      setRecaptchaLoaded(true);
+    };
+
+    // Load reCAPTCHA v2 script
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj`;
+    script.src = 'https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoaded&render=explicit';
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -44,8 +53,41 @@ const Signup = () => {
       if (document.body.contains(script)) {
         document.body.removeChild(script);
       }
+      // Clean up the global callback
+      delete window.onRecaptchaLoaded;
     };
   }, []);
+
+  // Render reCAPTCHA when it's loaded and we're on step 1
+  useEffect(() => {
+    if (recaptchaLoaded && currentStep === 1 && window.grecaptcha && !recaptchaWidgetId.current) {
+      // Short timeout to ensure DOM is ready
+      setTimeout(() => {
+        try {
+          if (recaptchaRef.current) {
+            recaptchaWidgetId.current = window.grecaptcha.render(recaptchaRef.current, {
+              'sitekey': '6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA',
+              'theme': 'light',
+              'size': 'normal'
+            });
+          }
+        } catch (error) {
+          console.error('Error rendering reCAPTCHA:', error);
+        }
+      }, 100);
+    }
+  }, [recaptchaLoaded, currentStep]);
+
+  // Reset reCAPTCHA when returning to step 1
+  useEffect(() => {
+    if (currentStep === 1 && recaptchaWidgetId.current !== null && window.grecaptcha) {
+      try {
+        window.grecaptcha.reset(recaptchaWidgetId.current);
+      } catch (error) {
+        console.error('Error resetting reCAPTCHA:', error);
+      }
+    }
+  }, [currentStep]);
 
   // Timer effect for resending verification code
   useEffect(() => {
@@ -97,19 +139,17 @@ const Signup = () => {
     }
   }, [password, t]);
 
-  const executeRecaptcha = () => {
-    return new Promise((resolve, reject) => {
-      if (!window.grecaptcha) {
-        reject(new Error('reCAPTCHA not loaded'));
-        return;
-      }
-      
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj', { action: 'signup' })
-          .then(token => resolve(token))
-          .catch(error => reject(error));
-      });
-    });
+  const getRecaptchaResponse = () => {
+    if (!window.grecaptcha || recaptchaWidgetId.current === null) {
+      return Promise.reject('reCAPTCHA not loaded');
+    }
+    
+    const response = window.grecaptcha.getResponse(recaptchaWidgetId.current);
+    if (response) {
+      return Promise.resolve(response);
+    } else {
+      return Promise.reject('Please complete the reCAPTCHA challenge');
+    }
   };
 
   const validatePhoneNumber = (phone) => {
@@ -130,7 +170,7 @@ const Signup = () => {
       setError('');
 
       // Get reCAPTCHA token
-      const token = await executeRecaptcha();
+      const token = await getRecaptchaResponse();
 
       // Send phone number to sendCode API
       const response = await fetch('https://api.tadrisino.org/account/register/sendCode/', {
@@ -330,9 +370,12 @@ const Signup = () => {
               className="mb-1"
               autoComplete="tel"
             />
-            {/* <p className="text-xs text-gray-500 mb-4">
-              {t('phoneNumberFormat')}
-            </p> */}
+            
+            {/* reCAPTCHA container */}
+            <div className="my-4">
+              <div ref={recaptchaRef}></div>
+            </div>
+            
             <Button
               type="submit"
               className="w-full text-black dark:text-white"

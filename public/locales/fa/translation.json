@@ -238,6 +238,8 @@
   "Lessons":"تعداد درس ها",
   "Course Language":"انتخاب زبان",
   "Review and Create Course":"بررسی و ساخت دوره",
+  "verificationSMSSent":"کد به  همراه شما ارسال شد.",
+  "didntReceiveCode" : "کد ارسال نشد؟",
   "Course Summary":"جزئیات دوره",
   "Learning Level":"انتخاب سطح دشواری",
   "Select Course Details":"تکمیل جزئیات",

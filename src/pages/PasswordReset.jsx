@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../components/ui/button';
@@ -9,6 +9,7 @@ import { AlertCircle, Loader2 } from 'lucide-react';
 const ResetPasswordByPhone = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const recaptchaRef = useRef(null);
   
   // Form states
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -21,10 +22,13 @@ const ResetPasswordByPhone = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
 
+  // reCAPTCHA site key
+  const RECAPTCHA_SITE_KEY = '6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA';
+
   useEffect(() => {
-    // Load reCAPTCHA script
+    // Load reCAPTCHA v2 script
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj`;
+    script.src = `https://www.google.com/recaptcha/api.js`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -44,14 +48,25 @@ const ResetPasswordByPhone = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const executeRecaptcha = () => {
+  const getRecaptchaToken = () => {
     return new Promise((resolve, reject) => {
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj', { action: 'reset_password' })
-          .then(token => resolve(token))
-          .catch(error => reject(error));
-      });
+      if (window.grecaptcha && recaptchaRef.current) {
+        const token = window.grecaptcha.getResponse();
+        if (token) {
+          resolve(token);
+        } else {
+          reject(new Error(t('pleaseCompleteRecaptcha')));
+        }
+      } else {
+        reject(new Error(t('recaptchaNotLoaded')));
+      }
     });
+  };
+
+  const resetRecaptcha = () => {
+    if (window.grecaptcha) {
+      window.grecaptcha.reset();
+    }
   };
 
   const sendVerificationSMS = async () => {
@@ -60,7 +75,7 @@ const ResetPasswordByPhone = () => {
       setError('');
 
       // Get reCAPTCHA token
-      const token = await executeRecaptcha();
+      const token = await getRecaptchaToken();
 
       const response = await fetch('https://api.tadrisino.org/account/phone/send_verification_code/', {
         method: 'POST',
@@ -81,6 +96,7 @@ const ResetPasswordByPhone = () => {
 
       setCurrentStep('verification');
       setTimer(180); // 3 minutes cooldown
+      resetRecaptcha();
 
     } catch (error) {
       setError(error.message);
@@ -95,7 +111,7 @@ const ResetPasswordByPhone = () => {
       setError('');
 
       // Get reCAPTCHA token
-      const token = await executeRecaptcha();
+      const token = await getRecaptchaToken();
 
       const response = await fetch('https://api.tadrisino.org/account/phone/reset/', {
         method: 'POST',
@@ -128,16 +144,21 @@ const ResetPasswordByPhone = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    switch (currentStep) {
-      case 'phone':
-        await sendVerificationSMS();
-        break;
-      case 'verification':
-        setCurrentStep('newPassword');
-        break;
-      case 'newPassword':
-        await resetPassword();
-        break;
+    try {
+      switch (currentStep) {
+        case 'phone':
+          await sendVerificationSMS();
+          break;
+        case 'verification':
+          setCurrentStep('newPassword');
+          resetRecaptcha();
+          break;
+        case 'newPassword':
+          await resetPassword();
+          break;
+      }
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -190,7 +211,6 @@ const ResetPasswordByPhone = () => {
                 </p>
               ) : (
                 <Button
-
                   type="button"
                   variant="link"
                   className="p-0 h-auto mt-2 text-black dark:text-white "
@@ -216,6 +236,11 @@ const ResetPasswordByPhone = () => {
               />
             </div>
           )}
+          
+          {/* reCAPTCHA v2 widget */}
+          <div className="flex justify-center mb-4">
+            <div ref={recaptchaRef} className="g-recaptcha" data-sitekey={RECAPTCHA_SITE_KEY}></div>
+          </div>
 
           <Button 
             type="submit" 
