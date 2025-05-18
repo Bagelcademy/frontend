@@ -100,7 +100,7 @@ const Signup = () => {
   // Load reCAPTCHA script
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm`;
+    script.src = `https://www.google.com/recaptcha/api.js?render=6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj`;
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
@@ -184,7 +184,7 @@ const Signup = () => {
   };
 
   const executeRecaptcha = () => {
-    const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY || '6LfAXDcrAAAAAJAtWAtAIiqfepFXtMl3KaVVc9qm';
+    const recaptchaSiteKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY || '6LfAXDcrAAAAAKGP7OFfXy27UTg2LEteUahzULYj';
     
     return new Promise((resolve, reject) => {
       if (!window.grecaptcha) {
