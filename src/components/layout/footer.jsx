@@ -84,10 +84,10 @@ const Footer = () => {
 
           {/* Samandehi */}
           <img 
-            src="https://logo.samandehi.ir/logo.aspx?id=375854&p=qftiyndtujynaqgwujynshwl"
+            src="https://logo.samandehi.ir/logo.aspx?id=380155&p=qftiaqgwlymanbpdujynujyn"
             alt="Samandehi"
             className="w-16 h-16 object-contain cursor-pointer"
-            onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=375854&p=xlaojyoedshwmcsidshwaods", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")}
+            onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=380155&p=xlaomcsiobpdrfthdshwdshw", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")}
           />
 
           {/* Senfi Logo */}
