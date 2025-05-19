@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import Notiflix from 'notiflix';
 
 const Survey = () => {
   const { t } = useTranslation();
@@ -43,6 +44,21 @@ const Survey = () => {
   const [points, setPoints] = useState(0);
   const [levelUp, setLevelUp] = useState(false);
   const navigate = useNavigate();
+
+  // Check authentication on component mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const accessToken = localStorage.getItem('accessToken');
+      
+      if (!isLoggedIn || !accessToken) {
+        // If not logged in, redirect to login page
+        navigate('/login');
+      }
+    };
+    
+    checkAuth();
+  }, [navigate]);
 
   const iconMap = {
     // Job icons
@@ -212,6 +228,14 @@ const Survey = () => {
   const submitSurvey = async () => {
     try {
       const token = localStorage.getItem('accessToken');
+      
+      if (!token) {
+        console.error('No access token found');
+        Notiflix.Notify.failure(t('authenticationError'));
+        navigate('/login');
+        return;
+      }
+      
       const response = await fetch('https://api.tadrisino.org/account/user-info/Survey/', { 
         method: 'POST',
         headers: {
@@ -229,13 +253,38 @@ const Survey = () => {
       });
 
       if (response.ok) {
-        console.log('Survey submitted successfully');
-        navigate('/');
+        // Refresh user data in localStorage
+        const userData = await response.json();
+        // Helper to safely set localStorage items if value is defined
+        const safeSet = (key, value) => {
+          if (typeof value !== 'undefined' && value !== null) {
+            localStorage.setItem(key, value);
+          }
+        };
+
+        // Set tokens and user info if present
+        if (userData.data) {
+          safeSet('userRole', userData.data.role);
+          safeSet('streak', userData.data.streak);
+          safeSet('userName', userData.data.name);
+          safeSet('accessToken', userData.data.access);
+          safeSet('refreshToken', userData.data.refresh);
+        }
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('completedSurvey', 'true');
+      
+        
+        Notiflix.Notify.success(t('surveyCompleted'));
+        // Redirect to profile page instead of home
+        navigate('/login');
       } else {
-        console.error('Failed to submit survey');
+        const errorData = await response.json();
+        console.error('Failed to submit survey:', errorData);
+        Notiflix.Notify.failure(errorData.error || t('surveySubmissionFailed'));
       }
     } catch (error) {
       console.error('Error submitting survey:', error);
+      Notiflix.Notify.failure(t('networkError'));
     }
   };
 
