@@ -261,88 +261,7 @@ const RequestPage = () => {
   }, [currentStep]);
 
   // Override handleSubmit to require recaptcha on last step
-  const originalHandleSubmit = handleSubmit;
-  const handleSubmitWithRecaptcha = async (e) => {
-    e.preventDefault();
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1);
-      return;
-    }
-    if (!recaptchaToken) {
-      setSubmitStatus('recaptcha_required');
-      return;
-    }
-    // Patch: inject recaptcha_token into request
-    setIsSubmitting(true);
-    try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        setSubmitStatus('user_not_logged_in');
-        return;
-      }
-      const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: request,
-          language: selectedLanguage.value,
-          level: selectedLevel.value,
-          lesson_count: selectedLessonCount.value,
-          category: selectedCategory.value,
-          recaptcha_token: recaptchaToken,
-        }),
-      });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        if (response.status === 403 && errorData.detail === "you do not have enough credit") {
-          setSubmitStatus("no_credit");
-        } else {
-          throw new Error('Failed to submit request');
-        }
-        return;
-      }
-
-      const data = await response.json();
-      setSubmitStatus('success');
-      setCourses([...courses, data]);
-      setRequest('');
-      setSearchResults([]);
-      setCurrentStep(0);
-
-      // Refresh user credits after successful course generation
-      const userInfoResponse = await fetch('https://api.tadrisino.org/account/user-info/', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (userInfoResponse.ok) {
-        const userData = await userInfoResponse.json();
-        setUserCredits(userData.credit);
-      }
-    } catch (error) {
-      console.error('Error submitting request:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js?render=6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA`;
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   // Scroll to guidance section when button is clicked
   const scrollToGuidance = () => {
@@ -352,15 +271,7 @@ const RequestPage = () => {
     }, 100);
   };
 
-  const executeRecaptcha = () => {
-    return new Promise((resolve, reject) => {
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA', { action: 'generate_gpt_course' })
-          .then(token => resolve(token))
-          .catch(error => reject(error));
-      });
-    });
-  };
+//delete
 
   // Search for existing courses as user types
   const searchForExistingCourses = async (prompt) => {
@@ -426,31 +337,38 @@ const RequestPage = () => {
       setCurrentStep(currentStep + 1);
       return;
     }
-    
+
+      // Check if recaptcha token is available on the last step
+  if (currentStep === 3 && !recaptchaToken) {
+    alert(t("Please verify that you are not a robot"));
+    return;
+  }
+  
     setIsSubmitting(true);
 
-    try {
-      const recaptchaToken = await executeRecaptcha();
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        setSubmitStatus('user_not_logged_in');
-        return;
-      }
-      const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: request,
-          language: selectedLanguage.value,
-          level: selectedLevel.value,
-          lesson_count: selectedLessonCount.value,
-          category: selectedCategory.value,
-          recaptcha_token: recaptchaToken,
-        }),
-      });
+
+  try {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      setSubmitStatus('user_not_logged_in');
+      return;
+    }
+    
+    const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: request,
+        language: selectedLanguage.value,
+        level: selectedLevel.value,
+        lesson_count: selectedLessonCount.value,
+        category: selectedCategory.value,
+        recaptcha_token: recaptchaToken,
+      }),
+    });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -715,7 +633,11 @@ const RequestPage = () => {
               </span>
             )}
           </p>
+                  <div className="mt-6">
+          <div id="recaptcha" ref={recaptchaRef}></div>
         </div>
+        </div>
+
       </div>
     </motion.div>
   ];
