@@ -989,6 +989,7 @@
   "setPassword": "رمز عبور",
   "passwordStrong": "رمز عبور قوی است",
   "passwordWeak": "رمز عبور ضعیف است",
+  "passwordMedium": "رمز عبور متوسط است",
   "What's your name?": "اسمت چیه؟",
   "Enter your name": "اسمت رو وارد کن",
   "When's your birthday?": "تاریخ تولدت کیه؟",
