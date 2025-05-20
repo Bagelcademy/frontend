@@ -433,7 +433,7 @@ const RequestPage = () => {
           value={request}
           onChange={handleInputChange}
           placeholder={t('python programming language for 30 days')}
-          className="w-full p-4 bg-white bg-opacity-20 rounded-lg text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 border border-blue-500 border-opacity-30"
+          className="w-full p-4 bg-white bg-opacity-20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 border border-blue-500 border-opacity-30"
           rows="4"
         />
         {isSearching && (
