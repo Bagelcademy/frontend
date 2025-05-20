@@ -351,7 +351,7 @@ const MyCourses = () => {
                 <Zap className="w-4 h-4 text-white" />
               </div>
             </div>
-            <h2 className="text-white mt-4 text-xl font-semibold">      {t('welcomeBack', { username: userProfile?.username })}
+            <h2 className="text-white mt-4 text-xl font-semibold">      {t('welcomeBack', { username: userProfile?.first_name })}
             </h2>
 
             {/* Motivational Quote */}

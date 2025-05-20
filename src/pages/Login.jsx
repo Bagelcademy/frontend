@@ -14,6 +14,7 @@ const Login = ({ setIsLoggedIn }) => {
   const [error, setError] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [activeTab, setActiveTab] = useState('password'); // 'password' or 'otp'
+  const [countdown, setCountdown] = useState(0); // Countdown timer for OTP button
   const navigate = useNavigate();
   
   // Site key for reCAPTCHA v2
@@ -21,7 +22,6 @@ const Login = ({ setIsLoggedIn }) => {
   
   // References for reCAPTCHA containers
   const passwordRecaptchaRef = useRef(null);
-  const otpSendRecaptchaRef = useRef(null);
   const otpVerifyRecaptchaRef = useRef(null);
 
   useEffect(() => {
@@ -54,6 +54,20 @@ const Login = ({ setIsLoggedIn }) => {
     return () => clearTimeout(timer);
   }, [activeTab, isOtpSent]);
   
+  // Countdown timer effect
+  useEffect(() => {
+    let interval;
+    if (countdown > 0) {
+      interval = setInterval(() => {
+        setCountdown(prevCountdown => prevCountdown - 1);
+      }, 1000);
+    }
+    
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [countdown]);
+  
   const renderRecaptchas = () => {
     // Only proceed if grecaptcha is available
     if (window.grecaptcha && window.grecaptcha.render) {
@@ -68,17 +82,6 @@ const Login = ({ setIsLoggedIn }) => {
       if (activeTab === 'password' && passwordRecaptchaRef.current) {
         try {
           window.grecaptcha.render(passwordRecaptchaRef.current, {
-            sitekey: RECAPTCHA_SITE_KEY
-          });
-        } catch (e) {
-          // Already rendered
-        }
-      }
-      
-      // Render reCAPTCHA for OTP send if visible
-      if (activeTab === 'otp' && otpSendRecaptchaRef.current) {
-        try {
-          window.grecaptcha.render(otpSendRecaptchaRef.current, {
             sitekey: RECAPTCHA_SITE_KEY
           });
         } catch (e) {
@@ -120,8 +123,6 @@ const Login = ({ setIsLoggedIn }) => {
     
     // Determine which reCAPTCHA to get token from based on action
     if (activeTab === 'password') {
-      token = window.grecaptcha.getResponse();
-    } else if (activeTab === 'otp' && !isOtpSent && captchaAction === 'sendOtp') {
       token = window.grecaptcha.getResponse();
     } else if (activeTab === 'otp' && isOtpSent && captchaAction === 'verifyOtp') {
       token = window.grecaptcha.getResponse();
@@ -178,16 +179,13 @@ const Login = ({ setIsLoggedIn }) => {
 
     setError('');
     try {
-      const token = getRecaptchaToken('sendOtp');
-      
       const response = await fetch('https://api.tadrisino.org/account/login/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          username: phoneNumber,
-          recaptcha_token: token 
+          username: phoneNumber
         }),
       });
       
@@ -199,8 +197,8 @@ const Login = ({ setIsLoggedIn }) => {
       setIsOtpSent(true);
       Notify.success(t('otpSent'));
       
-      // Reset reCAPTCHA after use
-      window.grecaptcha.reset();
+      // Start countdown timer (2 minutes = 120 seconds)
+      setCountdown(120);
     } catch (error) {
       setError(error.message || t('otpSendFailed'));
     }
@@ -330,18 +328,16 @@ const Login = ({ setIsLoggedIn }) => {
               />
             </div>
             
-            {/* reCAPTCHA v2 for OTP send */}
-            <div className="mb-4 flex justify-center">
-              <div ref={otpSendRecaptchaRef} className="g-recaptcha"></div>
-            </div>
-            
             <div className="mb-4 flex justify-center">
               <Button 
                 type="button" 
                 onClick={handleSendOtp}
-                className="bg-buttonColor text-white w-full"
+                disabled={countdown > 0}
+                className={`w-full text-white ${countdown > 0 ? 'bg-gray-400' : 'bg-buttonColor'}`}
               >
-                {t('sendOtp')}
+                {countdown > 0 
+                  ? `${t('resendIn')} ${Math.floor(countdown / 60)}:${countdown % 60 < 10 ? '0' : ''}${countdown % 60}`
+                  : t('sendOtp')}
               </Button>
             </div>
             
