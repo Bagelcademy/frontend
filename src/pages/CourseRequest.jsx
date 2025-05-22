@@ -225,42 +225,11 @@ const RequestPage = () => {
       });
     }
   }, [i18n.language, categories]);
-  // reCAPTCHA v2 integration
-  const [recaptchaToken, setRecaptchaToken] = useState(null);
-  const recaptchaRef = useRef(null);
 
-  useEffect(() => {
-    // Only load v2 script if not already present
-    if (!window.grecaptcha) {
-      const script = document.createElement('script');
-      script.src = 'https://www.google.com/recaptcha/api.js';
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-      return () => {
-        document.body.removeChild(script);
-      };
-    }
-  }, []);
 
-  // Callback for reCAPTCHA
-  window.onRecaptchaSuccess = (token) => {
-    setRecaptchaToken(token);
-  };
 
-  // Render reCAPTCHA box when on last step
-  useEffect(() => {
-    if (currentStep === 3 && window.grecaptcha && recaptchaRef.current) {
-      window.grecaptcha.render(recaptchaRef.current, {
-        sitekey: '6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA',
-        callback: window.onRecaptchaSuccess,
-      });
-    }
-    // Reset token when step changes
-    setRecaptchaToken(null);
-  }, [currentStep]);
 
-  // Override handleSubmit to require recaptcha on last step
+
 
 
   // Scroll to guidance section when button is clicked
@@ -337,12 +306,6 @@ const RequestPage = () => {
       setCurrentStep(currentStep + 1);
       return;
     }
-
-      // Check if recaptcha token is available on the last step
-  if (currentStep === 3 && !recaptchaToken) {
-    alert(t("Please verify that you are not a robot"));
-    return;
-  }
   
     setIsSubmitting(true);
 
@@ -366,7 +329,6 @@ const RequestPage = () => {
         level: selectedLevel.value,
         lesson_count: selectedLessonCount.value,
         category: selectedCategory.value,
-        recaptcha_token: recaptchaToken,
       }),
     });
 
@@ -633,9 +595,7 @@ const RequestPage = () => {
               </span>
             )}
           </p>
-                  <div className="mt-6">
-          <div id="recaptcha" ref={recaptchaRef}></div>
-        </div>
+
         </div>
 
       </div>

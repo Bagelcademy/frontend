@@ -255,14 +255,14 @@
   "Learn with our friendly characters!": " دوستی با خانواده تدریسینو",
   "meet our characters": "با شخصیت‌های ما آشنا شوید",
   "Meet the Characters":"خانواده تدریسینو",
-  "mama_bagel": "مامان تدریسینو",
-  "mama_bagel_backstory": "یک مامان که می‌خواهد دوره‌های خود را تمام کنید، شغلی خوب پیدا کنید و زندگی خوبی داشته باشید",
-  "papa_bagel": "بابا تدریسینو",
-  "papa_bagel_backstory": "یک پدر که می‌خواهد شما دانش داشته باشید و هر چیزی که می‌خواهید یاد بگیرید",
-  "emily_bagel": "امیلی تدریسینو",
-  "emily_bagel_backstory": "اوه، او فقط به خودش و دوستانش اهمیت می‌دهد! اما حالا شما یکی از دوستان او هستید. پس آماده جشن شوید!",
-  "jackie_bagel": "جکی تدریسینو",
-  "jackie_bagel_backstory": "می‌خواهد استراحت کند و با هم Call of Duty بازی کنیم؟",
+  "mama_tadrisino": "مامان تدریسینو",
+  "mama_tadrisino_backstory": "یک مامان که می‌خواهد دوره‌های خود را تمام کنید، شغلی خوب پیدا کنید و زندگی خوبی داشته باشید",
+  "papa_tadrisino": "بابا تدریسینو",
+  "papa_tadrisino_backstory": "یک پدر که می‌خواهد شما دانش داشته باشید و هر چیزی که می‌خواهید یاد بگیرید",
+  "emily_tadrisino": "امیلی تدریسینو",
+  "emily_tadrisino_backstory": "اوه، او فقط به خودش و دوستانش اهمیت می‌دهد! اما حالا شما یکی از دوستان او هستید. پس آماده جشن شوید!",
+  "jackie_tadrisino": "جکی تدریسینو",
+  "jackie_tadrisino_backstory": "می‌خواهد استراحت کند و با هم Call of Duty بازی کنیم؟",
   "close": "بستن",
   "Design a course based on any subject or any languages you want!": "دوره‌ای را بر اساس هر موضوع یا هر زبانی که می‌خواهید طراحی کنید!",
   "Sign Up": "ثبت نام",
@@ -550,13 +550,13 @@
   "Specialty": "تخصص",
   "Favorite Quote": "نقل قول مورد علاقه",
   "Fun Fact": "نکته جالب",
-  "A bagel made with love tastes twice as good!": "یک تدریسینو ساخته شده با عشق دو برابر خوشمزه است!",
+  "A tadrisino made with love tastes twice as good!": "یک تدریسینو ساخته شده با عشق دو برابر خوشمزه است!",
   "Everything's better with everything seasoning!": "همه چیز با ادویه همه چیز بهتر است!",
-  "Who says bagels can't be adventurous?": "چه کسی می‌گوید تدریسینو‌ها نمی‌توانند ماجراجویی باشند؟",
+  "Who says tadrisinos can't be adventurous?": "چه کسی می‌گوید تدریسینو‌ها نمی‌توانند ماجراجویی باشند؟",
   "here for you to play ageme in your breaks!": "اینجا برای شماست تا در وقت‌های استراحت خود بازی کنید!",
   "Can braid challah with her eyes closed": "می‌تواند با چشمان بسته نان چالا را ببافد!",
-  "Holds the record for fastest bagel rolling": "رکورد سریع‌ترین گرد کردن تدریسینو را دارد!",
-  "Created a rainbow bagel that went viral": "یک تدریسینو رنگین کمانی ساخت که ویروسی شد!",
+  "Holds the record for fastest tadrisino rolling": "رکورد سریع‌ترین گرد کردن تدریسینو را دارد!",
+  "Created a rainbow tadrisino that went viral": "یک تدریسینو رنگین کمانی ساخت که ویروسی شد!",
   "always playing call of duty": "همیشه بازی Call of Duty را بازی می‌کند!",
   "Innovative Flavors": "طعم‌های نوآورانه",
   "Seasoning Expert": "متخصص ادویه",
@@ -680,7 +680,7 @@
 
   },
   "team": {
-    "bagelMama": {
+    "tadrisinoMama": {
       "name": "مامان تدریسینو",
       "role": "متخصص آموزش فناوری",
       "description": "یک مدرس درخشان علوم کامپیوتر که مفاهیم پیچیده کدنویسی را به اندازه نان تازه پخته شده، گرم و راحت می‌کند. با رویکرد پرورشی و تخصص فنی عمیق خود، چالش‌های برنامه‌نویسی ترسناک را به تجربه‌های یادگیری قابل هضم و لذت‌بخش تبدیل می‌کند.",
@@ -701,7 +701,7 @@
         "researcher": "پژوهشگر برتر سال در آموزش علوم کامپیوتر"
       }
     },
-    "bagelPapa": {
+    "tadrisinoPapa": {
       "name": "بابا تدریسینو",
       "role": "معمار راهکارهای STEM",
       "description": "یک مهندس باتجربه که به معلمی روی آورده و تجربه دنیای واقعی فناوری را به کلاس درس می‌آورد. ترکیب تخصص صنعتی و شوخی‌های پدرانه او، محیط یادگیری جذابی ایجاد می‌کند که در آن مفاهیم پیچیده به طور شگفت‌انگیزی ساده و به یاد ماندنی می‌شوند.",

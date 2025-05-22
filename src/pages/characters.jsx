@@ -9,39 +9,39 @@ import img7 from '../assets/7.png';
 const characters = [
   {
     id: 1,
-    nameKey: "mama_bagel",
+    nameKey: "mama_tadrisino",
     image: img4,
-    backstoryKey: "mama_bagel_backstory",
+    backstoryKey: "mama_tadrisino_backstory",
     role: "The Heart of the Family",
     specialty: "Master Baker",
-    favoriteQuote: "A bagel made with love tastes twice as good!",
+    favoriteQuote: "A tadrisino made with love tastes twice as good!",
     funFact: "Can braid challah with her eyes closed"
   },
   {
     id: 2,
-    nameKey: "papa_bagel",
+    nameKey: "papa_tadrisino",
     image: img5,
-    backstoryKey: "papa_bagel_backstory",
+    backstoryKey: "papa_tadrisino_backstory",
     role: "The Family Jokester",
     specialty: "Seasoning Expert",
     favoriteQuote: "Everything's better with everything seasoning!",
-    funFact: "Holds the record for fastest bagel rolling"
+    funFact: "Holds the record for fastest tadrisino rolling"
   },
   {
     id: 3,
-    nameKey: "emily_bagel",
+    nameKey: "emily_tadrisino",
     image: img6,
-    backstoryKey: "emily_bagel_backstory",
+    backstoryKey: "emily_tadrisino_backstory",
     role: "The Creative Spirit",
     specialty: "Innovative Flavors",
-    favoriteQuote: "Who says bagels can't be adventurous?",
-    funFact: "Created a rainbow bagel that went viral"
+    favoriteQuote: "Who says tadrisinos can't be adventurous?",
+    funFact: "Created a rainbow tadrisino that went viral"
   },
   {
     id: 4,
-    nameKey: "jackie_bagel",
+    nameKey: "jackie_tadrisino",
     image: img7,
-    backstoryKey: "jackie_bagel_backstory",
+    backstoryKey: "jackie_tadrisino_backstory",
     role: "The Tech-Savvy Sibling",
     specialty: "making a mess everywhere",
     favoriteQuote: "here for you to play ageme in your breaks!",

@@ -20,7 +20,7 @@
     "problemSolving": "Problem Solving"
   },
   "team": {
-    "bagelMama": {
+    "tadrisinoMama": {
       "name": "Bagel Mama",
       "role": "Tech Education Expert",
       "description": "A brilliant computer science educator who makes complex coding concepts feel as warm and comforting as freshly baked bread. With her nurturing approach and deep technical expertise, she transforms intimidating programming challenges into digestible, delicious learning experiences.",
@@ -41,7 +41,7 @@
         "researcher": "CS Education Researcher of the Year"
       }
     },
-    "bagelPapa": {
+    "tadrisinoPapa": {
       "name": "Bagel Papa",
       "role": "STEM Solutions Architect",
       "description": "A seasoned engineer turned educator who brings real-world tech experience to the classroom. His blend of industry expertise and dad jokes creates an engaging learning environment where complex concepts become surprisingly simple and memorable.",
