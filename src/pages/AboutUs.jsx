@@ -13,7 +13,7 @@ const AboutUs = () => {
       <div className="max-w-6xl mx-auto p-6">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold  text-gray-900 dark:text-white">
-            {t('About BagelCademy')}
+            {t('About Tadrisino')}
           </h1>
         </div>
 
@@ -40,18 +40,18 @@ const AboutUs = () => {
           {/* Text Content Section */}
           <div className="space-y-6 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
             <p className="text-lg text-gray-700 text-justify dark:text-gray-300">
-              {t('Welcome to')} <strong>BagelCademy</strong>, {t('your go-to platform for engaging, gamified learning!')} 
+              {t('Welcome to')} <strong>Tadrisino</strong>, {t('your go-to platform for engaging, gamified learning!')} 
               {t('Our unique approach to education combines interactive lessons with personalized motivational support from the Bagel family—Dad Bagel, Mom Bagel, and their two enthusiastic kids.')}
             </p>
 
             <p className="text-lg text-gray-700 text-justify dark:text-gray-300">
-              {t('At BagelCademy, we believe that learning should be both productive and enjoyable.')}
+              {t('At Tadrisino, we believe that learning should be both productive and enjoyable.')}
               {t('Whether you\'re mastering new skills or perfecting your craft, our virtual Bagel family is here to support you every step of the way.')} 
               {t('Each family member brings their own unique personality and encouragement to help you stay motivated.')}
             </p>
 
             <p className="text-lg text-gray-700 text-justify dark:text-gray-300">
-              {t('Join us at BagelCademy and let our Bagel family guide you through your educational journey, one fun and motivating step at a time!')}
+              {t('Join us at Tadrisino and let our Bagel family guide you through your educational journey, one fun and motivating step at a time!')}
             </p>
           </div>
         </div>

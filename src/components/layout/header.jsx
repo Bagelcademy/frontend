@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
 // Removed AIIcon import as we'll use the Lucide icon instead
 
-const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLanguage }) => {
+const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLanguage }) => {
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
@@ -37,24 +37,24 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
       fetchUserProfile();
     }
   }, [isLoggedIn]);
-  
+
   // Add sparkle animation effect
   useEffect(() => {
     const sparkleInterval = setInterval(() => {
       setSparkleAnimate(true);
       setTimeout(() => setSparkleAnimate(false), 1000);
     }, 3000);
-    
+
     return () => clearInterval(sparkleInterval);
   }, []);
-  
+
   // Add flower animation effect
   useEffect(() => {
     const flowerInterval = setInterval(() => {
       setFlowerAnimate(true);
       setTimeout(() => setFlowerAnimate(false), 1000);
     }, 4000);
-    
+
     return () => clearInterval(flowerInterval);
   }, []);
 
@@ -132,9 +132,14 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     }
   };
 
+  // const toggleLanguage = () => {
+  //   const newLanguage = currentLanguage === 'en' ? 'fa' : 'en';
+  //   setCurrentLanguage(newLanguage);
+  //   changeLanguage(newLanguage);
+  // };
+
   const toggleLanguage = () => {
-    const newLanguage = currentLanguage === 'en' ? 'fa' : 'en';
-    setCurrentLanguage(newLanguage);
+    const newLanguage = i18n.language === 'en' ? 'fa' : 'en';
     changeLanguage(newLanguage);
   };
 
@@ -147,7 +152,7 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
     setSparkleAnimate(true);
     setTimeout(() => setSparkleAnimate(false), 1000);
   };
-  
+
   // Function to trigger manual flower animation
   const triggerFlower = () => {
     setFlowerAnimate(true);
@@ -155,12 +160,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
   };
 
   return (
-    <header 
+    <header
       className={`
         fixed w-full top-0 z-50 transition-all duration-100
         ${scrolled ? 'py-2' : 'py-4'}
-        ${isDarkTheme 
-          ? 'bg-gray-800/70 shadow-lg shadow-gray-900/10' 
+        ${isDarkTheme
+          ? 'bg-gray-800/70 shadow-lg shadow-gray-900/10'
           : 'bg-white/30 shadow-lg shadow-gray-200/10'
         }
         backdrop-blur-xl
@@ -177,8 +182,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
 
       <nav className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`text-xl font-b6 relative overflow-hidden
               ${isDarkTheme ? 'text-white' : 'text-gray-900'}
               ${isDarkTheme ? 'hover:text-gray-300' : 'hover:text-gray-900'}
@@ -187,11 +192,11 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             {t("Tadrisino")}
           </Link>
           <Link to="/shop">
-            <Button 
+            <Button
               className={`
                 relative overflow-hidden bg-gradient-to-r
-                ${isDarkTheme 
-                  ? 'from-gray-700 to-gray-600' 
+                ${isDarkTheme
+                  ? 'from-gray-700 to-gray-600'
                   : 'from-gray-800 to-gray-700'
                 }
                 text-white rounded-lg p-2
@@ -208,14 +213,14 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
           <Link to="/ask" onClick={triggerSparkle}>
             {/* Replace the image with Lucide React Bot icon */}
             <div className="relative group">
-              <Bot 
-                size={32} 
+              <Bot
+                size={32}
                 className={`
                   transition-all duration-300
                   ${isDarkTheme ? 'text-white' : 'text-gray-900'}
                   ${sparkleAnimate ? 'scale-110' : ''}
                   hover:scale-105
-                `} 
+                `}
               />
               {/* Add star/sparkle animations around the icon */}
               <div className={`absolute -inset-1 opacity-0 group-hover:opacity-100 ${sparkleAnimate ? 'opacity-100' : ''} transition-opacity duration-300`}>
@@ -225,43 +230,43 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
                 <div className="absolute bottom-1 right-1 h-2 w-2 bg-green-300 rounded-full animate-pulse"></div>
                 <div className="absolute top-3 right-3 h-1 w-1 bg-pink-400 rounded-full animate-ping"></div>
               </div>
-              <span 
-              className={`
+              <span
+                className={`
                 absolute -bottom-8 left-1/2 transform -translate-x-1/2 
                 text-xs whitespace-nowrap px-2 py-1 rounded-md opacity-0 
                 group-hover:opacity-100 transition-opacity duration-300
                 ${isDarkTheme ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}
               `}
-            >
-              {t('AI Assistant')}
-            </span>
+              >
+                {t('AI Assistant')}
+              </span>
             </div>
           </Link>
-          
+
 
         </div>
 
         <div className="hidden md:flex items-center gap-x-4">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`
               relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
               after:w-0 hover:after:w-full after:transition-all after:duration-300
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:text-white after:bg-white' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:text-white after:bg-white'
                 : 'text-black hover:text-gray-900 after:bg-gray-900'
               }
             `}
           >
             {t('home')}
           </Link>
-          <Link 
-            to="/courses" 
+          <Link
+            to="/courses"
             className={`
               relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
               after:w-0 hover:after:w-full after:transition-all after:duration-300
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:text-white after:bg-white' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:text-white after:bg-white'
                 : 'text-black hover:text-gray-900 after:bg-gray-900'
               }
             `}
@@ -269,13 +274,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             {t('courses')}
           </Link>
 
-          <Link 
-            to="/learning-paths" 
+          <Link
+            to="/learning-paths"
             className={`
               relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
               after:w-0 hover:after:w-full after:transition-all after:duration-300
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:text-white after:bg-white' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:text-white after:bg-white'
                 : 'text-black hover:text-gray-900 after:bg-gray-900'
               }
             `}
@@ -285,19 +290,19 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
 
           {isLoggedIn ? (
             <>
-              <Link 
-                to="/my-courses" 
+              <Link
+                to="/my-courses"
                 className={`
                   relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
                   after:w-0 hover:after:w-full after:transition-all after:duration-300
-                  ${isDarkTheme 
-                    ? 'text-gray-300 hover:text-white after:bg-white' 
+                  ${isDarkTheme
+                    ? 'text-gray-300 hover:text-white after:bg-white'
                     : 'text-black hover:text-gray-900 after:bg-gray-900'
                   }
                 `}
               >
 
-              
+
                 {t('myCourses')}
               </Link>
               <Link to="/profile">
@@ -307,13 +312,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
                   className="w-10 h-10 rounded-full border-2 border-black dark:border-white shadow-md cursor-pointer"
                 />
               </Link>
-              <Button 
-                onClick={handleLogoutClick} 
-                variant="outline" 
+              <Button
+                onClick={handleLogoutClick}
+                variant="outline"
                 className={`
                   backdrop-blur-sm border
-                  ${isDarkTheme 
-                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50' 
+                  ${isDarkTheme
+                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50'
                     : 'text-black border-gray-200 bg-gray-300 hover:bg-gray-100/50'
                   }
                   transition-all duration-300
@@ -323,13 +328,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               </Button>
             </>
           ) : (
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className={`
                 relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
                 after:w-0 hover:after:w-full after:transition-all after:duration-300
-                ${isDarkTheme 
-                  ? 'text-gray-300 hover:text-white after:bg-white' 
+                ${isDarkTheme
+                  ? 'text-gray-300 hover:text-white after:bg-white'
                   : 'text-black hover:text-gray-900 after:bg-gray-900'
                 }
               `}
@@ -338,8 +343,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             </Link>
           )}
 
-          <div 
-            onClick={toggleTheme} 
+          <div
+            onClick={toggleTheme}
             className={`
               cursor-pointer p-2 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
@@ -352,8 +357,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             )}
           </div>
 
-          <div 
-            onClick={toggleLanguage} 
+          <div
+            onClick={toggleLanguage}
             className={`
               cursor-pointer flex items-center p-2 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
@@ -367,8 +372,8 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
         </div>
 
         <div className="md:hidden flex items-center">
-          <button 
-            onClick={toggleMenu} 
+          <button
+            onClick={toggleMenu}
             className={`
               p-2 rounded-full
               ${isDarkTheme ? 'text-white' : 'text-gray-700 bg-gray-200'}
@@ -381,25 +386,25 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
       </nav>
 
       {menuOpen && (
-        <div 
+        <div
           className={`
             md:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
-            ${isDarkTheme 
-              ? 'bg-transparent' 
+            ${isDarkTheme
+              ? 'bg-transparent'
               : 'bg-transparent'
             }
             border-t
             ${isDarkTheme ? 'border-gray-700/30' : 'border-gray-200/30'}
           `}
         >
-          <Link 
-            to="/" 
-            onClick={toggleMenu} 
+          <Link
+            to="/"
+            onClick={toggleMenu}
             className={`
               block py-2 px-3 rounded-lg
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:bg-gray-700/50' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:bg-gray-700/50'
                 : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
@@ -407,13 +412,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
           >
             {t('home')}
           </Link>
-          <Link 
-            to="/courses" 
-            onClick={toggleMenu} 
+          <Link
+            to="/courses"
+            onClick={toggleMenu}
             className={`
               block py-2 px-3 rounded-lg
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:bg-gray-700/50' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:bg-gray-700/50'
                 : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
@@ -422,13 +427,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             {t('courses')}
           </Link>
 
-          <Link 
-            to="/learning-paths" 
-            onClick={toggleMenu} 
+          <Link
+            to="/learning-paths"
+            onClick={toggleMenu}
             className={`
               block py-2 px-3 rounded-lg
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:bg-gray-700/50' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:bg-gray-700/50'
                 : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
@@ -439,13 +444,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
 
           {isLoggedIn ? (
             <>
-              <Link 
-                to="/my-courses" 
-                onClick={toggleMenu} 
+              <Link
+                to="/my-courses"
+                onClick={toggleMenu}
                 className={`
                   block py-2 px-3 rounded-lg
-                  ${isDarkTheme 
-                    ? 'text-gray-300 hover:bg-gray-700/50' 
+                  ${isDarkTheme
+                    ? 'text-gray-300 hover:bg-gray-700/50'
                     : 'text-black hover:bg-gray-100/50'
                   }
                   transition-colors duration-300
@@ -460,16 +465,16 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
                   className="w-10 h-10 mb-4 mt-2 mx-3 rounded-full border-2 border-white shadow-md cursor-pointer"
                 />
               </Link>
-              <button 
+              <button
                 onClick={() => {
-                  handleLogoutClick(); 
+                  handleLogoutClick();
                   toggleMenu();
-                }} 
+                }}
                 className={`
                   block py-2 px-3 rounded-lg mx-3
                   ${i18n.dir() === 'rtl' ? 'text-right' : 'text-left'}
-                  ${isDarkTheme 
-                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50' 
+                  ${isDarkTheme
+                    ? 'text-white border-gray-600 bg-gray-500 hover:bg-gray-700/50'
                     : 'text-black border-gray-200 bg-gray-300 hover:bg-gray-100/50'
                   }
                   transition-colors duration-300
@@ -479,13 +484,13 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
               </button>
             </>
           ) : (
-            <Link 
-              to="/login" 
-              onClick={toggleMenu} 
+            <Link
+              to="/login"
+              onClick={toggleMenu}
               className={`
                 block py-2 px-3 rounded-lg
-                ${isDarkTheme 
-                  ? 'text-gray-300 hover:bg-gray-700/50' 
+                ${isDarkTheme
+                  ? 'text-gray-300 hover:bg-gray-700/50'
                   : 'text-black hover:bg-gray-100/50'
                 }
                 transition-colors duration-300
@@ -495,12 +500,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             </Link>
           )}
 
-          <div 
-            onClick={toggleTheme} 
+          <div
+            onClick={toggleTheme}
             className={`
               block py-2 px-3 rounded-lg cursor-pointer
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:bg-gray-700/50' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:bg-gray-700/50'
                 : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300
@@ -509,12 +514,12 @@ const Header = ({isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLang
             {isDarkTheme ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
           </div>
 
-          <div 
-            onClick={toggleLanguage} 
+          <div
+            onClick={toggleLanguage}
             className={`
               flex items-center py-2 px-3 rounded-lg cursor-pointer
-              ${isDarkTheme 
-                ? 'text-gray-300 hover:bg-gray-700/50' 
+              ${isDarkTheme
+                ? 'text-gray-300 hover:bg-gray-700/50'
                 : 'text-black hover:bg-gray-100/50'
               }
               transition-colors duration-300

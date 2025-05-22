@@ -187,7 +187,7 @@ const ResetPasswordByPhone = () => {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="+1234567890"
+                placeholder="09123456789"
                 required
                 disabled={isLoading}
               />
