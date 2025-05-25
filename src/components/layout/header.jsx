@@ -140,7 +140,8 @@ const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLan
 
   const toggleLanguage = () => {
     const newLanguage = i18n.language === 'en' ? 'fa' : 'en';
-    changeLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage);
+    localStorage.setItem('i18nextLng', newLanguage); // ⬅️ Save it
   };
 
   const toggleMenu = () => {

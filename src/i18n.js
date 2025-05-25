@@ -16,9 +16,9 @@ i18n
   .use(initReactI18next) // Bind i18n to React
   .init({
     resources,
-    fallbackLng: 'fa', // Default to Persian
-    lng: 'fa', // Set Persian as the initial language
-    debug: true, // Set to false in production
+    fallbackLng: 'en', // 🔄 Change to English
+    lng: 'en',          // 🔄 Set English as initial language
+    debug: true,        // Set to false in production
     interpolation: {
       escapeValue: false, // Allows raw HTML in translations
     },

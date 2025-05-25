@@ -408,5 +408,6 @@
   "This username is already taken.": "This username is already taken.",
   "passwordMinLength": "At least 8 characters long.",
   "passwordHasNumber": "At least one number.",
-  "passwordHasLetter": "At least one letter."
+  "passwordHasLetter": "At least one letter.",
+  "invalidIranianPhone": "Invalid Iranian phone number."
 }
