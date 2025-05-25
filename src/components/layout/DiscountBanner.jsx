@@ -151,7 +151,7 @@ const DiscountBanner = () => {
           <div className="flex text-lg font-semibold text-shadow-sm gap-1">
             {t('Code')}
             <div className="font-bold text-shadow-md bg-orange-700 px-2 rounded-lg">
-              BAGEL
+              TADRIS
             </div>
             <div className="flex">{t('for')}</div>
             <div className="font-b5 text-shadow-md px-2 rounded-lg underline underline-offset-8">
