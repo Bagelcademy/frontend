@@ -36,8 +36,8 @@ const Footer = () => {
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Contact')}</h4>
             <div className="text-center">
               <p className="text-gray-600 dark:text-gray-400">{t('Email')}: info@tadrisino.com</p>
-              <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052676</p>
-              <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 09039179491</p>
+              <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 02433052650</p>
+              <p className="text-gray-600 dark:text-gray-400">{t('Phone')}: 09112834604</p>
             </div>
           </div>
 
