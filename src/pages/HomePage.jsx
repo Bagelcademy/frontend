@@ -7,11 +7,11 @@ import {
   BookOpen, Award, Check, Search, Users,
   Clock, Star, Filter, Rocket, BrainCircuit,
   Brain, Target, Gift, Globe2, GraduationCap, UserCheck,Route} from 'lucide-react';
-import heroImage from '../assets/0001.jpeg';
-import Image1 from '../assets/007.jpeg';
-import Image2 from '../assets/004.jpeg';
-import Image3 from '../assets/009.jpeg';
-import Image4 from '../assets/012.jpeg';
+import heroImage from '../assets/5.png';
+import Image1 from '../assets/1.png';
+import Image2 from '../assets/7.png';
+import Image3 from '../assets/10.png';
+import Image4 from '../assets/9.png';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardFooter } from '../components/ui/card';
 import { motion } from 'framer-motion';

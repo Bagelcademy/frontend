@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import famImage from '../assets/fam.png';
+import famImage from '../assets/2.png';
 import { motion } from 'framer-motion';
 
 const AboutUs = () => {

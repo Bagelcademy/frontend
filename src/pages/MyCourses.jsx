@@ -11,8 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 const ITEMS_PER_PAGE = 12;
 
-
-
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
     {[1, 2, 3, 4, 5].map((star) => (
@@ -34,6 +32,7 @@ const MyCourses = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
   const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -42,13 +41,12 @@ const MyCourses = () => {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(t("All Courses")); // Default UI text
-  const [statusFilter, setStatusFilter] = useState(""); // Default filtering value
+  const [selectedStatus, setSelectedStatus] = useState(t("All Courses"));
+  const [statusFilter, setStatusFilter] = useState("");
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const isRtl = i18n.language === 'fa';
 
-  // Refs for dropdown containers
   const statusDropdownRef = useRef(null);
   const categoryDropdownRef = useRef(null);
 
@@ -57,6 +55,7 @@ const MyCourses = () => {
     false: t("Unfinished Courses"),
     "": t("All Courses"),
   };
+
   const motivationalQuotes = [
     { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
     { quote: t('motivationalQuotes.quote2'), author: t('motivationalQuotes.author2') },
@@ -68,6 +67,7 @@ const MyCourses = () => {
 
   useEffect(() => {
     fetchMyCourses();
+    fetchRecommendedCourses();
     fetchCategories();
     fetchUserProfile();
     setQuote(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
@@ -75,9 +75,8 @@ const MyCourses = () => {
 
   useEffect(() => {
     filterCourses();
-  }, [searchTerm, filteredCategoryId, statusFilter, courses, page]); // Changed selectedCategory to filteredCategoryId
+  }, [searchTerm, filteredCategoryId, statusFilter, courses, page]);
 
-  // Add click outside event listener to close dropdowns
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -97,15 +96,12 @@ const MyCourses = () => {
       }
     };
 
-    // Add the event listener to the document
     document.addEventListener('mousedown', handleClickOutside);
     
-    // Clean up the event listener when component unmounts
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isStatusDropdownOpen, isCategoryDropdownOpen]);
-
 
   const fetchUserProfile = async () => {
     try {
@@ -121,7 +117,6 @@ const MyCourses = () => {
       console.error('Failed to fetch user profile:', error);
     }
   };
-
 
   const fetchMyCourses = async () => {
     try {
@@ -139,11 +134,48 @@ const MyCourses = () => {
     }
   };
 
+  const fetchRecommendedCourses = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch('https://api.tadrisino.org/courses/Recommend/shuffled_by_user_interests/', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      
+      // Handle the nested structure from the API
+      let allRecommendations = [];
+      
+      // Extract courses from all categories
+      if (data.technology) {
+        allRecommendations = [...allRecommendations, ...data.technology];
+      }
+      if (data.math) {
+        allRecommendations = [...allRecommendations, ...data.math];
+      }
+      if (data["How to"]) {
+        allRecommendations = [...allRecommendations, ...data["How to"]];
+      }
+      
+      // Remove duplicates based on course ID
+      const uniqueRecommendations = allRecommendations.filter((course, index, self) => 
+        index === self.findIndex((c) => c.id === course.id)
+      );
+      
+      // Sort by enroll_count in descending order
+      const sortedRecommendations = uniqueRecommendations.sort((a, b) => (b.enroll_count || 0) - (a.enroll_count || 0));
+      
+      setRecommendedCourses(sortedRecommendations);
+    } catch (error) {
+      console.error('Failed to fetch recommended courses:', error);
+    }
+  };
+
   const fetchCategories = async () => {
     try {
       const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
-      // Map categories with translated names
       const translatedCategories = data.map(category => ({
         ...category,
         translatedName: t(`categories.${category.name}`)
@@ -153,7 +185,6 @@ const MyCourses = () => {
       console.error('Failed to fetch categories:', error);
     }
   };
-
 
   const handleStatusChange = (value) => {
     let displayValue;
@@ -165,10 +196,9 @@ const MyCourses = () => {
     } else {
       displayValue = t("All Courses");
     }
-    setStatusFilter(value); // Update filter logic
-
-    setSelectedStatus(displayValue); // Update UI text
-    setPage(1); // Reset pagination
+    setStatusFilter(value);
+    setSelectedStatus(displayValue);
+    setPage(1);
   };
 
   const filterCourses = () => {
@@ -180,10 +210,8 @@ const MyCourses = () => {
       );
     }
 
-    // Updated filter logic for category
     if (filteredCategoryId) {
       filtered = filtered.filter(item => {
-        // Handle both string and number ID types for robust comparison
         return item.course.category === parseInt(filteredCategoryId, 10) || 
                item.course.category === filteredCategoryId;
       });
@@ -195,7 +223,6 @@ const MyCourses = () => {
 
     setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
   };
-
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -229,10 +256,11 @@ const MyCourses = () => {
       console.error('Error downloading notes:', error);
     }
   };
+  
   const CourseCard = ({ item }) => {
     const { t, i18n } = useTranslation();
     const { course, progress } = item;
-    const isRtl = i18n.language === 'fa'; // Check if the language is Persian (or any RTL language)
+    const isRtl = i18n.language === 'fa';
     const completedLessons = progress.completed_lessons.length;
     const TOTAL_LESSONS = course.lesson_count
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
@@ -255,7 +283,6 @@ const MyCourses = () => {
 
         <CardContent className="relative p-6 flex flex-col justify-between">
           <div className="flex flex-col h-full">
-            {/* Restrict the title to 2 lines */}
             <h3
               className="text-lg font-semibold mb-3 line-clamp-2 h-[52px]"
               style={{
@@ -327,6 +354,93 @@ const MyCourses = () => {
     );
   };
 
+  const RecommendedCourseCard = ({ course }) => {
+    const { t, i18n } = useTranslation();
+    const isRtl = i18n.language === 'fa';
+
+    return (
+      <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+        <div className="relative h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+          <img
+            src={course.image_url}
+            alt={course.title}
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute top-4 right-4 z-20">
+            <div className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              {t('Recommended')}
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-4 right-4 z-20">
+            <div className="flex items-center justify-between text-white text-sm">
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                <span>{course.enroll_count || 0} {t('Enrolled')}</span>
+              </div>
+              <StarRating rating={4.5} />
+            </div>
+          </div>
+        </div>
+
+        <CardContent className="relative p-6 flex flex-col justify-between">
+          <div className="flex flex-col h-full">
+            <h3
+              className="text-lg font-semibold mb-3 line-clamp-2 h-[52px]"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {course.title}
+            </h3>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Briefcase className="w-4 h-4 mx-1" />
+                  <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+                </div>
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Globe2 className="w-4 h-4 mx-1" />
+                  <span>{t(course.language)}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <BookOpen className="w-4 h-4 mx-1" />
+                  <span>{course.lesson_count} {t("lessons")}</span>
+                </div>
+                <div className="flex items-center text-green-600 dark:text-green-400">
+                  <Award className="w-4 h-4 mx-1" />
+                  <span>{t('Certificate')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+
+        <CardFooter className="p-6 pt-0">
+          <Button
+            onClick={() => navigate(`/course/${course.id}`)}
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white group-hover:scale-105 transition-all duration-300"
+          >
+            <span className="mx-2">{t('Start Learning')}</span>
+            {isRtl ? (
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            ) : (
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -351,10 +465,8 @@ const MyCourses = () => {
                 <Zap className="w-4 h-4 text-white" />
               </div>
             </div>
-            <h2 className="text-white mt-4 text-xl font-semibold">      {t('welcomeBack', { username: userProfile?.first_name })}
-            </h2>
+            <h2 className="text-white mt-4 text-xl font-semibold">{t('welcomeBack', { username: userProfile?.first_name })}</h2>
 
-            {/* Motivational Quote */}
             <div className="mt-4 text-center max-w-2xl">
               <p className="text-white/90 italic">"{t(quote.quote)}"</p>
               <p className="text-white/70 text-sm mt-2">- {t(quote.author)}</p>
@@ -467,15 +579,6 @@ const MyCourses = () => {
                 )}
               </div>
 
-
-
-              {/* <Button
-                onClick={handleDownloadNotes}
-                className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
-              >
-                <Download className="w-4 h-4 mx-2" />
-                {t('Download Notes')}
-              </Button> */}
               <Button
                 onClick={() => navigate('/courses')}
                 className="w-full md:w-auto bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-white/90"
@@ -487,34 +590,53 @@ const MyCourses = () => {
         </div>
       </div>
 
-      {/* Course Grid */}
       <div className="container mx-auto px-4 py-12">
-        {displayedCourses.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
-              <BookOpen className="w-6 h-6 text-gray-400" />
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">{t('My Courses')}</h2>
+          {displayedCourses.length === 0 ? (
+            <div className="text-center py-12">
+              <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
+                <BookOpen className="w-6 h-6 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">{t('no Courses')}</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                {t('Try adjusting your search or filters')}
+              </p>
             </div>
-            <h3 className="text-lg font-medium mb-2">{t('no Courses')}</h3>
-            <p className="text-gray-500 dark:text-gray-400">
-              {t('Try adjusting your search or filters')}
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayedCourses.map((item, index) => (
-              <CourseCard key={`${item.course.id}-${index}`} item={item} />
-            ))}
-          </div>
-        )}
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedCourses.map((item, index) => (
+                <CourseCard key={`${item.course.id}-${index}`} item={item} />
+              ))}
+            </div>
+          )}
 
-        {displayedCourses.length < courses.length && (
-          <div className="mt-12 text-center">
-            <Button
-              onClick={() => setPage(p => p + 1)}
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
-              {t('loadMore')}
-            </Button>
+          {displayedCourses.length < courses.length && (
+            <div className="mt-12 text-center">
+              <Button
+                onClick={() => setPage(p => p + 1)}
+                className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                {t('loadMore')}
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {recommendedCourses.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold">{t('Recommended for You')}</h2>
+              <div className="flex items-center text-orange-600 dark:text-orange-400">
+                <Zap className="w-5 h-5 mr-2" />
+                <span className="text-sm font-medium">{t('Based on your interests')}</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {recommendedCourses.slice(0, 6).map((course) => (
+                <RecommendedCourseCard key={course.id} course={course} />
+              ))}
+            </div>
           </div>
         )}
       </div>

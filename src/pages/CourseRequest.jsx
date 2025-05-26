@@ -328,7 +328,8 @@ const RequestPage = () => {
         language: selectedLanguage.value,
         level: selectedLevel.value,
         lesson_count: selectedLessonCount.value,
-        category: selectedCategory.value,
+        category: selectedCategory.value === 'general' ? 1 : parseInt(selectedCategory.value),
+      
       }),
     });
 

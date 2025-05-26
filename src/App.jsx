@@ -38,6 +38,8 @@ import MetricsDashboard from './pages/chart';
 import TeacherPanel from './pages/TeacherPanel';
 import NoroozPage from './pages/Norooz';
 import TeacherWaitlist from './pages/TeacherWait';
+import RobotCharactersPage from './pages/cha';
+import AIRobotsCharacters from './pages/cha';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -128,7 +130,7 @@ const App = () => {
             <Route path="/courses" element={<Courses />} />
             <Route path="/ask" element={<RequestPage />} />
             <Route path="/survey" element={<Survey />} />
-            <Route path="/characters" element={<CharacterIntroPage />} />
+            <Route path="/characters" element={<AIRobotsCharacters />} />
             <Route path="/quiz" element={<QuizComponent />} />
             <Route path="/shop" element={<SubscriptionCards />} />
             <Route path="/payment_status" element={<PaymentStatusPage />} />
