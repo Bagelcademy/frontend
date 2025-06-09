@@ -236,7 +236,7 @@ const Survey = () => {
         return;
       }
       
-      const response = await fetch('https://api.tadrisino.org/account/user-info/Survey/', { 
+      const response = await fetch('https://api.tadrisino.org/account/user-info/survey/', { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
