@@ -40,6 +40,7 @@ import NoroozPage from './pages/Norooz';
 import TeacherWaitlist from './pages/TeacherWait';
 import RobotCharactersPage from './pages/cha';
 import AIRobotsCharacters from './pages/cha';
+import CVEnhancer from './pages/CVenhancer';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -155,6 +156,7 @@ const App = () => {
              
             {/* company related pages */}
             <Route path="/metric" element={<MetricsDashboard />} />
+            <Route path="/Cve" element={<CVEnhancer />} />
                       
             {/* In progress pages */}
             {/* <Route path="/blog" element={<AINewsPage/>} /> */}
