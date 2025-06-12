@@ -41,11 +41,11 @@ const CVEnhancer = () => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    // if (!accessToken) {
-    //   enqueueSnackbar(t('Please log in to access this feature.'), { variant: 'info' });
-    //   navigate('/login');
-    //   return;
-    // }
+    if (!accessToken) {
+      enqueueSnackbar(t('Please log in to access this feature.'), { variant: 'info' });
+      navigate('/login');
+      return;
+    }
     
     fetchUserCourses();
     fetchUserCredits();
@@ -148,7 +148,7 @@ const CVEnhancer = () => {
       // Add selected courses as array (if the API supports it)
       const selectedCourseNames = userCourses
         .filter(course => selectedCourses.includes(course.id))
-        .map(course => course.title);
+        .map(course => course.course?.title);
       
       selectedCourseNames.forEach(courseName => {
         formData.append('courses[]', courseName);
@@ -451,17 +451,17 @@ const CVEnhancer = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex-1">
                           <h3 className="font-medium text-gray-900 dark:text-white">
-                            {course.title}
+                            {course.course?.title}
                           </h3>
                           <div className="flex items-center space-x-2 mt-2">
                             <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                               <div
-                                className={`h-2 rounded-full ${getProgressColor(course.progress)}`}
-                                style={{ width: `${course.progress}%` }}
+                                className={`h-2 rounded-full ${getProgressColor(course.course?.progress)}`}
+                                style={{ width: `${course.course?.progress}%` }}
                               />
                             </div>
                             <span className="text-sm text-gray-600 dark:text-gray-400">
-                              {course.progress}%
+                              {course.course?.progress}%
                             </span>
                           </div>
                         </div>
