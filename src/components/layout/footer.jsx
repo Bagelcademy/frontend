@@ -49,7 +49,7 @@ const Footer = () => {
         <div className="flex justify-center gap-4 mb-6 text-lg">
         <ul className="space-y-2 text-center text-gray-600 dark:text-gray-400">
 
-          <li><Link to="/norooz" className="hover:text-buttonColor transition-colors">{t('Nowruz')}</Link></li>
+          <li><Link to="/Cve" className="hover:text-buttonColor transition-colors">{t('CV Enhancer')}</Link></li>
           <li><Link to="/waitlist" className="hover:text-buttonColor transition-colors">{t('Teacher Waitlist')}</Link></li>        
         </ul>
         </div>
