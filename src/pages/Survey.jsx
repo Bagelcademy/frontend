@@ -21,7 +21,9 @@ import {
   Laptop,
   Sparkles,
   Trophy,
-  Star
+  Star,
+  Calculator,
+  Atom
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +34,8 @@ const Survey = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loadingCategories, setLoadingCategories] = useState(false);
   const [answers, setAnswers] = useState({
     name: '',
     birthday: '',
@@ -60,6 +64,56 @@ const Survey = () => {
     checkAuth();
   }, [navigate]);
 
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoadingCategories(true);
+      try {
+        const response = await fetch('https://api.tadrisino.org/courses/Category/');
+        if (response.ok) {
+          const data = await response.json();
+          setCategories(data);
+        } else {
+          console.error('Failed to fetch categories');
+          // Fallback to default categories if API fails
+          setCategories([
+            { id: 1, name: "General" },
+            { id: 2, name: "Programming" },
+            { id: 3, name: "Language Learning" },
+            { id: 4, name: "Science" },
+            { id: 5, name: "Mathematics" },
+            { id: 6, name: "Business" }
+          ]);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to default categories if API fails
+        setCategories([
+          { id: 1, name: "General" },
+          { id: 2, name: "Programming" },
+          { id: 3, name: "Language Learning" },
+          { id: 4, name: "Science" },
+          { id: 5, name: "Mathematics" },
+          { id: 6, name: "Business" }
+        ]);
+      } finally {
+        setLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Icon mapping for categories
+  const categoryIconMap = {
+    "General": Sparkles,
+    "Programming": Code,
+    "Language Learning": Languages,
+    "Science": Atom,
+    "Mathematics": Calculator,
+    "Business": ChartBar
+  };
+
   const iconMap = {
     // Job icons
     [t("Developer")]: Code,
@@ -76,16 +130,10 @@ const Survey = () => {
     [t("Diploma")]: BookOpen,
     [t("High School")]: BookOpen,
     
-    // Interest icons
-    [t("Programming")]: Code,
-    [t("Languages")]: Languages,
-    [t("Music")]: Music,
-    [t("Data Science")]: Database,
-    [t("Business")]: ChartBar,
-    [t("Health")]: HeartPulse,
-    [t("Art & Design")]: PenTool,
-    [t("Photography")]: Camera,
-    [t("Technology")]: Laptop
+    // Interest icons (these will be dynamically mapped from API)
+    ...Object.fromEntries(
+      categories.map(category => [category.name, categoryIconMap[category.name] || Sparkles])
+    )
   };
 
   // Calculate progress when current step changes
@@ -143,22 +191,13 @@ const Survey = () => {
       placeholder: t("e.g. Computer Science, Art, Business"),
       icon: BookOpen
     },
-    // Step 6: Interests (Multiple Selection)
+    // Step 6: Interests (Multiple Selection) - Now using API categories
     {
       type: "multiOptions",
       title: t("What are you interested in learning? (Select up to 3)"),
       field: "interests",
-      options: [
-        t("Programming"), 
-        t("Languages"), 
-        t("Music"), 
-        t("Data Science"), 
-        t("Business"), 
-        t("Health"), 
-        t("Art & Design"), 
-        t("Photography"), 
-        t("Technology")
-      ]
+      options: categories.map(category => ({ id: category.id, name: category.name })),
+      isCategory: true // Flag to indicate this uses category objects
     }
   ];
 
@@ -187,8 +226,8 @@ const Survey = () => {
     setAnswers(prev => {
       // Toggle selection
       const currentSelections = prev[field] || [];
-      const newSelections = currentSelections.includes(answer)
-        ? currentSelections.filter(item => item !== answer)
+      const newSelections = currentSelections.find(item => item.id === answer.id)
+        ? currentSelections.filter(item => item.id !== answer.id)
         : [...currentSelections, answer].slice(0, 3); // Limit to 3 selections
         
       return {
@@ -236,6 +275,9 @@ const Survey = () => {
         return;
       }
       
+      // Transform interests to send only the IDs
+      const interestIds = answers.interests.map(interest => interest.id);
+      
       const response = await fetch('https://api.tadrisino.org/account/user-info/survey/', { 
         method: 'POST',
         headers: {
@@ -248,7 +290,7 @@ const Survey = () => {
           job: answers.job,
           education: answers.education,
           major: answers.major,
-          interests: answers.interests,
+          interests: interestIds, // Send only the category IDs
         }),
       });
 
@@ -366,6 +408,15 @@ const Survey = () => {
     }
     
     if (currentStepData.type === "multiOptions") {
+      if (loadingCategories) {
+        return (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">{t("Loading categories...")}</p>
+          </div>
+        );
+      }
+
       const selectedOptions = answers[currentStepData.field] || [];
       const maxSelectionsReached = selectedOptions.length >= 3;
       
@@ -378,10 +429,12 @@ const Survey = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {currentStepData.options.map((option) => {
-              const isSelected = selectedOptions.includes(option);
+              const isSelected = selectedOptions.find(item => item.id === option.id);
+              const Icon = categoryIconMap[option.name] || Sparkles;
+              
               return (
                 <button
-                  key={option}
+                  key={option.id}
                   onClick={() => handleMultiSelect(currentStepData.field, option)}
                   disabled={!isSelected && maxSelectionsReached}
                   className={`p-4 rounded-lg shadow-md transition-all duration-300 relative
@@ -392,12 +445,9 @@ const Survey = () => {
                 >
                   <div className={`w-16 h-16 mx-auto mb-2 rounded-full flex items-center justify-center
                     ${isSelected ? 'bg-white/20' : 'bg-gradient-to-r from-blue-500 to-purple-600'}`}>
-                    {React.createElement(iconMap[option] || Coffee, { 
-                      size: 32, 
-                      className: isSelected ? "text-white" : "text-white" 
-                    })}
+                    <Icon size={32} className="text-white" />
                   </div>
-                  <p className="text-sm font-medium">{option}</p>
+                  <p className="text-sm font-medium">{option.name}</p>
                   {isSelected && (
                     <div className="absolute top-2 right-2">
                       <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
