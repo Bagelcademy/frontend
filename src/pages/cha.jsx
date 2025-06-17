@@ -14,42 +14,31 @@ const robots = [
     image: WhiteRobotImage,
     primaryColor: '#f8fafc',
     accentColor: '#64748b',
-    icon: Brain,
-    personality: 'The Wise Strategist',
-    funFact: 'Loves solving complex puzzles and enjoys classical music',
-    specialPower: 'Advanced analytical thinking and pattern recognition',
+    icon: Brain
   },
   {
     key: 'pinkRobot',
     image: PinkRobotImage,
     primaryColor: '#fce7f3',
     accentColor: '#ec4899',
-    icon: Star,
-    personality: 'The Creative Dreamer',
-    funFact: 'Collects digital art and dreams in technicolor',
-    specialPower: 'Infinite imagination and artistic vision',
+    icon: Star
   },
   {
     key: 'blackRobot',
     image: BlackRobotImage,
     primaryColor: '#1f2937',
     accentColor: '#6b7280',
-    icon: Zap,
-    personality: 'The Lightning Executor',
-    funFact: 'Processes information faster than light travels',
-    specialPower: 'Ultra-speed processing and instant decision making',
+    icon: Zap
   },
   {
     key: 'blueRobot',
     image: BlueRobotImage,
     primaryColor: '#dbeafe',
     accentColor: '#3b82f6',
-    icon: Rocket,
-    personality: 'The Future Explorer',
-    funFact: 'Maps uncharted digital territories in spare time',
-    specialPower: 'Innovation catalyst and future prediction',
-  },
+    icon: Rocket
+  }
 ];
+
 
 const FloatingOrb = ({ color, size, top, left, delay }) => (
   <div
@@ -69,7 +58,7 @@ const FloatingOrb = ({ color, size, top, left, delay }) => (
 const RobotCharacter = ({ robot, onClick, index }) => {
   const { t } = useTranslation();
   const IconComponent = robot.icon;
-  
+
   return (
     <div
       className={`
@@ -84,7 +73,7 @@ const RobotCharacter = ({ robot, onClick, index }) => {
       style={{
         transform: `translateY(${index % 2 === 0 ? '10px' : '-10px'})`,
       }}
-    >      
+    >
       {/* Character Base */}
       <div className="relative">
         <div
@@ -103,7 +92,7 @@ const RobotCharacter = ({ robot, onClick, index }) => {
             className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
           />
         </div>
-        
+
         {/* Name Badge */}
         <div
           className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-3 py-1 rounded-full text-sm font-bold transition-all duration-300 hover:scale-110"
@@ -114,14 +103,14 @@ const RobotCharacter = ({ robot, onClick, index }) => {
         >
           {t(`${robot.key}.name`)}
         </div>
-        
+
         {/* Floating Icon */}
         <div
           className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 hover:animate-bounce animate-pulse"
           style={{ backgroundColor: robot.accentColor }}
         >
-          <IconComponent 
-            size={16} 
+          <IconComponent
+            size={16}
             color={robot.primaryColor === '#1f2937' ? '#fff' : '#000'}
           />
         </div>
@@ -132,27 +121,32 @@ const RobotCharacter = ({ robot, onClick, index }) => {
 
 const CharacterModal = ({ robot, onClose }) => {
   const { t } = useTranslation();
-  
+
   if (!robot) return null;
-  
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div
         className="relative w-full max-w-md p-8 rounded-3xl shadow-2xl backdrop-blur-lg border-2 animate-slideIn"
         style={{
           background: `linear-gradient(135deg, ${robot.primaryColor} 0%, rgba(255,255,255,0.95) 100%)`,
-          borderColor: robot.accentColor,
+          borderColor: robot.accentColor
         }}
       >
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900 transition-colors duration-200 text-xl font-bold"
         >
           ×
         </button>
-        
+
+        {/* Avatar + Name + Personality */}
         <div className="text-center mb-6">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full p-3 shadow-lg" style={{ backgroundColor: robot.primaryColor }}>
+          <div
+            className="w-24 h-24 mx-auto mb-4 rounded-full p-3 shadow-lg"
+            style={{ backgroundColor: robot.primaryColor }}
+          >
             <img
               src={robot.image}
               alt={t(`${robot.key}.name`)}
@@ -163,29 +157,46 @@ const CharacterModal = ({ robot, onClose }) => {
             {t(`${robot.key}.name`)}
           </h3>
           <p className="text-lg text-gray-700 dark:text-gray-300 font-medium">
-            {robot.personality}
+            {t(`${robot.key}.personality`)}
           </p>
         </div>
-        
+
+        {/* Modal Info Blocks */}
         <div className="space-y-4">
           <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-800/50">
-            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">Role:</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{t(`${robot.key}.role`)}</p>
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+              {t('roleLabel', 'Role:')}
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {t(`${robot.key}.role`)}
+            </p>
           </div>
-          
+
           <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-800/50">
-            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">Special Power:</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{robot.specialPower}</p>
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+              {t('specialPowerLabel', 'Special Power:')}
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {t(`${robot.key}.specialPower`)}
+            </p>
           </div>
-          
+
           <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-800/50">
-            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">Fun Fact:</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{robot.funFact}</p>
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+              {t('funFactLabel', 'Fun Fact:')}
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {t(`${robot.key}.funFact`)}
+            </p>
           </div>
-          
+
           <div className="p-3 rounded-lg bg-white/50 dark:bg-gray-800/50">
-            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">Description:</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{t(`${robot.key}.description`)}</p>
+            <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
+              {t('descriptionLabel', 'Description:')}
+            </h4>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              {t(`${robot.key}.description`)}
+            </p>
           </div>
         </div>
       </div>
@@ -237,7 +248,7 @@ const AIRobotsCharacters = () => {
             {t('meetTeam')}
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-            {t('teamIntro')} Click on any character to discover their unique personalities!
+            {t('teamIntro')} {t('clickToDiscover')}
           </p>
         </div>
 
@@ -297,7 +308,7 @@ const AIRobotsCharacters = () => {
             </p>
             <div className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
               <Users size={20} />
-              <span className="font-semibold">Our AI Family Mission</span>
+              <span className="font-semibold">{t("Our AI Family Mission")}</span>
               <Sparkles size={20} />
             </div>
           </div>

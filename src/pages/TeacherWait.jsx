@@ -198,7 +198,7 @@ const TeacherWaitlist = () => {
                     {t('Expected Course Price')}*
                   </label>
                   <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 dark:text-gray-400">$</span>
+                    {/* <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 dark:text-gray-400">$</span> */}
                     <input
                       id="course_price"
                       name="course_price"
