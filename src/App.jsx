@@ -41,6 +41,7 @@ import TeacherWaitlist from './pages/TeacherWait';
 import RobotCharactersPage from './pages/cha';
 import AIRobotsCharacters from './pages/cha';
 import CVEnhancer from './pages/CVenhancer';
+import PixelCityWorld from './pages/test';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -157,6 +158,7 @@ const App = () => {
             {/* company related pages */}
             <Route path="/metric" element={<MetricsDashboard />} />
             <Route path="/Cve" element={<CVEnhancer />} />
+            {/* <Route path="/pix" element={<PixelCityWorld />} /> */}
                       
             {/* In progress pages */}
             {/* <Route path="/blog" element={<AINewsPage/>} /> */}

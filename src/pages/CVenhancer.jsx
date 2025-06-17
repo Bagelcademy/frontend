@@ -109,6 +109,16 @@ const CVEnhancer = () => {
     );
   };
 
+  // Calculate progress percentage based on completed lessons
+  const calculateProgress = (courseData) => {
+    const { course, progress } = courseData;
+    const totalLessons = course.lesson_count || 0;
+    const completedLessons = progress.completed_lessons ? progress.completed_lessons.length : 0;
+    
+    if (totalLessons === 0) return 0;
+    return Math.round((completedLessons / totalLessons) * 100);
+  };
+
   const handleGenerateResume = async () => {
     console.log('Generate button clicked!');
     
@@ -147,8 +157,8 @@ const CVEnhancer = () => {
       
       // Add selected courses as array (if the API supports it)
       const selectedCourseNames = userCourses
-        .filter(course => selectedCourses.includes(course.id))
-        .map(course => course.course?.title);
+        .filter(courseData => selectedCourses.includes(courseData.course.id))
+        .map(courseData => courseData.course.title);
       
       selectedCourseNames.forEach(courseName => {
         formData.append('courses[]', courseName);
@@ -438,44 +448,69 @@ const CVEnhancer = () => {
                 </div>
                 
                 <div className="space-y-3 max-h-60 overflow-y-auto">
-                  {userCourses.map(course => (
-                    <div
-                      key={course.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                        selectedCourses.includes(course.id)
-                          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                          : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
-                      }`}
-                      onClick={() => toggleCourseSelection(course.id)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1">
-                          <h3 className="font-medium text-gray-900 dark:text-white">
-                            {course.course?.title}
-                          </h3>
-                          <div className="flex items-center space-x-2 mt-2">
-                            <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-                              <div
-                                className={`h-2 rounded-full ${getProgressColor(course.course?.progress)}`}
-                                style={{ width: `${course.course?.progress}%` }}
-                              />
+                  {userCourses.map(courseData => {
+                    const progress = calculateProgress(courseData);
+                    const courseId = courseData.course.id;
+                    
+                    return (
+                      <div
+                        key={courseId}
+                        className={`p-4 border rounded-lg cursor-pointer transition-all ${
+                          selectedCourses.includes(courseId)
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                        }`}
+                        onClick={() => toggleCourseSelection(courseId)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-medium text-gray-900 dark:text-white">
+                              {courseData.course.title}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                              {courseData.course.level} • {courseData.course.language} • {courseData.course.lesson_count} lessons
+                            </p>
+                            <div className="flex items-center space-x-2 mt-2">
+                              <div className="flex-1 bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                <div
+                                  className={`h-2 rounded-full ${getProgressColor(progress)}`}
+                                  style={{ width: `${progress}%` }}
+                                />
+                              </div>
+                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                                {progress}%
+                              </span>
                             </div>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                              {course.course?.progress}%
-                            </span>
+                            {courseData.progress.course_completed && (
+                              <div className="flex items-center space-x-1 mt-1">
+                                <CheckCircle2 className="w-4 h-4 text-green-600" />
+                                <span className="text-sm text-green-600 dark:text-green-400">
+                                  {t('Completed')}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="ml-4">
+                            {selectedCourses.includes(courseId) ? (
+                              <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                            ) : (
+                              <Plus className="w-5 h-5 text-gray-400" />
+                            )}
                           </div>
                         </div>
-                        <div className="ml-4">
-                          {selectedCourses.includes(course.id) ? (
-                            <CheckCircle2 className="w-5 h-5 text-blue-600" />
-                          ) : (
-                            <Plus className="w-5 h-5 text-gray-400" />
-                          )}
-                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+                
+                {userCourses.length === 0 && (
+                  <div className="text-center py-8">
+                    <Star className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-500 dark:text-gray-400">
+                      {t('No courses found. Enroll in courses to include them in your CV.')}
+                    </p>
+                  </div>
+                )}
                 
                 {selectedCourses.length > 0 && (
                   <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
