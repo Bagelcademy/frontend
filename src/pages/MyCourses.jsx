@@ -134,43 +134,45 @@ const MyCourses = () => {
     }
   };
 
-  const fetchRecommendedCourses = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/Recommend/shuffled_by_user_interests/', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
-      
-      // Handle the nested structure from the API
-      let allRecommendations = [];
-      
-      // Extract courses from all categories
-      if (data.technology) {
-        allRecommendations = [...allRecommendations, ...data.technology];
+const fetchRecommendedCourses = async () => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const response = await fetch('https://api.tadrisino.org/courses/Recommend/shuffled_by_user_interests/', {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-      if (data.math) {
-        allRecommendations = [...allRecommendations, ...data.math];
+    });
+    const data = await response.json();
+    
+    console.log('API Response:', data); // Debug log to see the actual structure
+    
+    // Handle the nested structure from the API dynamically
+    let allRecommendations = [];
+    
+    // Extract courses from all categories dynamically
+    Object.keys(data).forEach(categoryKey => {
+      if (Array.isArray(data[categoryKey]) && data[categoryKey].length > 0) {
+        allRecommendations = [...allRecommendations, ...data[categoryKey]];
       }
-      if (data["How to"]) {
-        allRecommendations = [...allRecommendations, ...data["How to"]];
-      }
-      
-      // Remove duplicates based on course ID
-      const uniqueRecommendations = allRecommendations.filter((course, index, self) => 
-        index === self.findIndex((c) => c.id === course.id)
-      );
-      
-      // Sort by enroll_count in descending order
-      const sortedRecommendations = uniqueRecommendations.sort((a, b) => (b.enroll_count || 0) - (a.enroll_count || 0));
-      
-      setRecommendedCourses(sortedRecommendations);
-    } catch (error) {
-      console.error('Failed to fetch recommended courses:', error);
-    }
-  };
+    });
+    
+    console.log('All recommendations:', allRecommendations); // Debug log
+    
+    // Remove duplicates based on course ID
+    const uniqueRecommendations = allRecommendations.filter((course, index, self) => 
+      index === self.findIndex((c) => c.id === course.id)
+    );
+    
+    // Sort by enroll_count in descending order
+    const sortedRecommendations = uniqueRecommendations.sort((a, b) => (b.enroll_count || 0) - (a.enroll_count || 0));
+    
+    console.log('Final recommendations:', sortedRecommendations); // Debug log
+    
+    setRecommendedCourses(sortedRecommendations);
+  } catch (error) {
+    console.error('Failed to fetch recommended courses:', error);
+  }
+};
 
   const fetchCategories = async () => {
     try {
