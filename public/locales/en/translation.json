@@ -240,7 +240,13 @@
     "agriculture": "agriculture",
     "philosophy": "philosophy",
     "HealthCare": "HealthCare",
-    "electrical": "electrical"
+    "electrical": "electrical",
+    "General": "General",
+    "Programming": "Programming",
+    "Language Learning": "Language Learning",
+    "Science": "Science",
+    "Mathematics": "Mathematics",
+    "Business": "Business"
   },
   "languages": {
     "allLanguages": "all Languages",

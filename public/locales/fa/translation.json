@@ -525,7 +525,13 @@
     "Physics": "فیزیک",
     "Psychology": "روان شناسی",
     "Chemistry": "شیمی",
-    "Economic": "افتصاد"
+    "Economic": "افتصاد",
+    "General": "عمومی",
+    "Programming": "برنامه‌نویسی",
+    "Language Learning": "یادگیری زبان",
+    "Science": "علوم",
+    "Mathematics": "ریاضیات",
+    "Business": "کسب‌وکار"
   },
   "Take The Exam": "امتحان بدهید",
   "Invalid learning path ID": "شناسه مسیر یادگیری نامعتبر است",
