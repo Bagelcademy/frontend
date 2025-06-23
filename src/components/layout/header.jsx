@@ -38,6 +38,18 @@ const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLan
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    const handleLangChange = (lng) => {
+      setCurrentLanguage(lng);
+    };
+
+    i18n.on('languageChanged', handleLangChange);
+
+    return () => {
+      i18n.off('languageChanged', handleLangChange);
+    };
+  }, []);
+
   // Add sparkle animation effect
   useEffect(() => {
     const sparkleInterval = setInterval(() => {
