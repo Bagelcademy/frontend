@@ -16,11 +16,10 @@ i18n
   .use(initReactI18next) // Bind i18n to React
   .init({
     resources,
-    fallbackLng: 'en', // 🔄 Change to English
-    lng: 'en',          // 🔄 Set English as initial language
-    debug: true,        // Set to false in production
+    fallbackLng: 'en', // fallback if nothing is found
+    debug: true,
     interpolation: {
-      escapeValue: false, // Allows raw HTML in translations
+      escapeValue: false,
     },
     detection: {
       order: ['localStorage', 'cookie', 'navigator', 'htmlTag'],

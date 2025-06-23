@@ -90,6 +90,7 @@ const App = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
+    localStorage.setItem('i18nextLng', lng); // ✅ persist it explicitly
   };
 
   const toggleTheme = () => setIsDarkTheme(!isDarkTheme);
@@ -136,7 +137,7 @@ const App = () => {
             <Route path="/quiz" element={<QuizComponent />} />
             <Route path="/shop" element={<SubscriptionCards />} />
             <Route path="/payment_status" element={<PaymentStatusPage />} />
-            
+
             {/* courses related pages */}
             <Route path="/course/:id" element={<CourseLandingPage />} />
             <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage setIsLoggedIn={setIsLoggedIn} />} />
@@ -146,20 +147,20 @@ const App = () => {
 
             {/* Special pages */}
             <Route path="/waitlist" element={<TeacherWaitlist />} />
-            <Route path="/Norooz" element={<NoroozPage />} />        
-            
-            {/* Policy pages */}            
+            <Route path="/Norooz" element={<NoroozPage />} />
+
+            {/* Policy pages */}
             <Route path="/FAQ" element={<FAQ />} />
             <Route path="/contact-us" element={<ContactPage />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService />} />
-             
+
             {/* company related pages */}
             <Route path="/metric" element={<MetricsDashboard />} />
             <Route path="/Cve" element={<CVEnhancer />} />
             {/* <Route path="/pix" element={<PixelCityWorld />} /> */}
-                      
+
             {/* In progress pages */}
             {/* <Route path="/blog" element={<AINewsPage/>} /> */}
             {/* <Route path="/game" element={<DonutCatcherGame />} /> */}
