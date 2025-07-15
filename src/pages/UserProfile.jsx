@@ -25,6 +25,100 @@ const StatsCard = ({ icon: Icon, label, value, gradient }) => (
   </Card>
 );
 
+// Persian calendar utilities
+const persianMonths = [
+  'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
+  'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
+];
+
+const persianMonthsEn = [
+  'Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar',
+  'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand'
+];
+
+// Helper functions for Persian calendar conversion
+const isLeapYear = (year) => {
+  const breaks = [
+    -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+    1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178
+  ];
+  
+  let jp = breaks[0];
+  let j = 1;
+  let jump = 0;
+  
+  for (let i = 1; i < breaks.length; i++) {
+    const jm = breaks[i];
+    jump = jm - jp;
+    if (year < jm) break;
+    jp = jm;
+    j++;
+  }
+  
+  let n = year - jp;
+  
+  if (n < jump) {
+    if (jump - n < 6) {
+      n = n - jump + ((jump + 4) / 6) * 6;
+    }
+    if (((jump % 6) === 0) && (n >= 0) && (n < 6)) {
+      return true;
+    }
+    return ((n % 33) % 4) === 1;
+  }
+  
+  return false;
+};
+
+const getPersianMonthDays = (month, year) => {
+  if (month <= 6) return 31;
+  if (month <= 11) return 30;
+  return isLeapYear(year) ? 30 : 29;
+};
+
+const convertPersianToGregorian = (pYear, pMonth, pDay) => {
+  // Simplified conversion - for production, use a proper library like moment-jalaali
+  const epbase = pYear - 979;
+  const epyear = 621 + 33 * Math.floor(epbase / 128) + 4 * Math.floor((epbase % 128) / 4) + Math.floor(((epbase % 128) % 4 + 38 + Math.floor(((epbase % 128) % 4) / 4)) / 128) * 128;
+  
+  let aux1, aux2;
+  if (pMonth <= 6) {
+    aux1 = 31 * (pMonth - 1);
+  } else {
+    aux1 = 30 * (pMonth - 1) + 6;
+  }
+  
+  const jd = Math.floor(365.25 * (epyear + 621)) + aux1 + pDay;
+  
+  const a = Math.floor((jd - 1867216.25) / 36524.25);
+  const b = jd + 1 + a - Math.floor(a / 4);
+  const c = b + 1524;
+  const d = Math.floor((c - 122.1) / 365.25);
+  const e = Math.floor(365.25 * d);
+  const f = Math.floor((c - e) / 30.6001);
+  
+  const day = c - e - Math.floor(30.6001 * f);
+  const month = f - 1 - 12 * Math.floor(f / 14);
+  const year = d - 4715 - Math.floor((7 + month) / 10);
+  
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
+
+const convertGregorianToPersian = (gregorianDate) => {
+  // Simplified conversion - for production, use a proper library like moment-jalaali
+  const date = new Date(gregorianDate);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  
+  // Simple approximation - in production, use proper conversion
+  const pYear = year - 621;
+  const pMonth = month;
+  const pDay = day;
+  
+  return { year: pYear, month: pMonth, day: pDay };
+};
+
 const UserProfilePage = () => {
   const { t } = useTranslation();
   const [user, setUser] = useState(null);
@@ -50,34 +144,47 @@ const UserProfilePage = () => {
     borderRadius: '5px',
   });
 
+  // Optional validation schema - only validates if field has value
   const validationSchema = Yup.object().shape({
     first_name: Yup.string()
-      .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
-      .max(20, t("nameTooLong"))
-      .required(t("required")),
-    phone_number: Yup.string()
-      .matches(/^\d+$/, t("invalidPhoneNumber"))
-      .min(11, t("phoneNumberTooShort"))
-      .max(13, t("phoneNumberTooLong"))
-      .required(t("required")),
-    email: Yup.string()
-      .email(t("invalidEmail"))
-      .required(t("required")),
-    birthDay: Yup.number()
-      .min(1, t("invalidDay"))
-      .max(31, t("invalidDay"))
-      .required(t("required")),
-    birthMonth: Yup.number()
-      .min(1, t("invalidMonth"))
-      .max(12, t("invalidMonth"))
-      .required(t("required")),
-    birthYear: Yup.number()
-      .min(1300, t("invalidYear"))
-      .max(2020, t("invalidYear"))
-      .required(t("required")),
+      .when('first_name', {
+        is: (value) => value && value.length > 0,
+        then: (schema) => schema
+          .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
+          .max(20, t("nameTooLong")),
+        otherwise: (schema) => schema.notRequired()
+      }),
     national_code: Yup.string()
-      .matches(/^[0-9]{10}$/, t("invalidNationalCode"))
-      .required(t("required")),
+      .when('national_code', {
+        is: (value) => value && value.length > 0,
+        then: (schema) => schema
+          .matches(/^[0-9]{10}$/, t("invalidNationalCode")),
+        otherwise: (schema) => schema.notRequired()
+      }),
+    birthDay: Yup.number()
+      .when('birthDay', {
+        is: (value) => value && value > 0,
+        then: (schema) => schema
+          .min(1, t("invalidDay"))
+          .max(31, t("invalidDay")),
+        otherwise: (schema) => schema.notRequired()
+      }),
+    birthMonth: Yup.number()
+      .when('birthMonth', {
+        is: (value) => value && value > 0,
+        then: (schema) => schema
+          .min(1, t("invalidMonth"))
+          .max(12, t("invalidMonth")),
+        otherwise: (schema) => schema.notRequired()
+      }),
+    birthYear: Yup.number()
+      .when('birthYear', {
+        is: (value) => value && value > 0,
+        then: (schema) => schema
+          .min(1300, t("invalidYear"))
+          .max(1403, t("invalidYear")), // Current Persian year
+        otherwise: (schema) => schema.notRequired()
+      }),
   });
 
   useEffect(() => {
@@ -98,13 +205,13 @@ const UserProfilePage = () => {
         const userData = await userResponse.json();
         const notificationsData = await notificationsResponse.json();
 
-        // Parse birthdate into separate fields
+        // Parse birthdate into Persian calendar
         if (userData.birthdate) {
-          const [year, month, day] = userData.birthdate.split('-');
+          const persianDate = convertGregorianToPersian(userData.birthdate);
           setBirthDate({
-            day: parseInt(day),
-            month: parseInt(month),
-            year: parseInt(year)
+            day: persianDate.day,
+            month: persianDate.month,
+            year: persianDate.year
           });
         }
 
@@ -188,11 +295,16 @@ const UserProfilePage = () => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
 
-    try {
-      await validationSchema.validateAt(name, { [name]: value });
+    // Optional validation - only validate if field has value
+    if (value && value.trim() !== '') {
+      try {
+        await validationSchema.validateAt(name, { [name]: value });
+        setValidationErrors((prev) => ({ ...prev, [name]: null }));
+      } catch (err) {
+        setValidationErrors((prev) => ({ ...prev, [name]: err.message }));
+      }
+    } else {
       setValidationErrors((prev) => ({ ...prev, [name]: null }));
-    } catch (err) {
-      setValidationErrors((prev) => ({ ...prev, [name]: err.message }));
     }
   };
 
@@ -203,27 +315,42 @@ const UserProfilePage = () => {
       [field]: value
     }));
 
-    // Update the main user object with the combined date
+    // Update the main user object with the converted Gregorian date
     const updatedBirthDate = {
       ...birthDate,
-      [field]: value
+      [field]: parseInt(value) || ''
     };
     
-    const formattedDate = `${updatedBirthDate.year}-${
-      String(updatedBirthDate.month).padStart(2, '0')
-    }-${String(updatedBirthDate.day).padStart(2, '0')}`;
-    
-    setUser(prev => ({
-      ...prev,
-      birthdate: formattedDate
-    }));
+    // Only convert if all fields have values
+    if (updatedBirthDate.year && updatedBirthDate.month && updatedBirthDate.day) {
+      try {
+        const gregorianDate = convertPersianToGregorian(
+          updatedBirthDate.year,
+          updatedBirthDate.month,
+          updatedBirthDate.day
+        );
+        setUser(prev => ({
+          ...prev,
+          birthdate: gregorianDate
+        }));
+      } catch (err) {
+        // Handle conversion error
+        console.error('Date conversion error:', err);
+      }
+    }
 
-    // Validate the individual field
-    try {
-      validationSchema.validateAt(`birth${field.charAt(0).toUpperCase() + field.slice(1)}`, { [`birth${field.charAt(0).toUpperCase() + field.slice(1)}`]: value });
+    // Optional validation
+    if (value && value > 0) {
+      try {
+        validationSchema.validateAt(`birth${field.charAt(0).toUpperCase() + field.slice(1)}`, { 
+          [`birth${field.charAt(0).toUpperCase() + field.slice(1)}`]: parseInt(value) 
+        });
+        setValidationErrors(prev => ({ ...prev, [field]: null }));
+      } catch (err) {
+        setValidationErrors(prev => ({ ...prev, [field]: err.message }));
+      }
+    } else {
       setValidationErrors(prev => ({ ...prev, [field]: null }));
-    } catch (err) {
-      setValidationErrors(prev => ({ ...prev, [field]: err.message }));
     }
   };
 
@@ -231,13 +358,17 @@ const UserProfilePage = () => {
 
   const handleSave = async () => {
     try {
-      // Validate birth date fields separately
-      await validationSchema.validate({
-        ...user,
-        birthDay: birthDate.day,
-        birthMonth: birthDate.month,
-        birthYear: birthDate.year
-      }, { abortEarly: false });
+      // Only validate fields that have values
+      const fieldsToValidate = {};
+      if (user.first_name) fieldsToValidate.first_name = user.first_name;
+      if (user.national_code) fieldsToValidate.national_code = user.national_code;
+      if (birthDate.day) fieldsToValidate.birthDay = birthDate.day;
+      if (birthDate.month) fieldsToValidate.birthMonth = birthDate.month;
+      if (birthDate.year) fieldsToValidate.birthYear = birthDate.year;
+
+      if (Object.keys(fieldsToValidate).length > 0) {
+        await validationSchema.validate(fieldsToValidate, { abortEarly: false });
+      }
 
       const token = localStorage.getItem("accessToken");
       const response = await fetch('https://api.tadrisino.org/account/profile/update_profile/', {
@@ -290,17 +421,20 @@ const UserProfilePage = () => {
         />
       </div>
       <div>
-        <input
-          type="number"
+        <select
           className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
             validationErrors.month ? 'border-red-500' : 'border-gray-300'
           } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-          placeholder={t('month')}
           value={birthDate.month}
           onChange={handleBirthDateChange('month')}
-          min="1"
-          max="12"
-        />
+        >
+          <option value="">{t('month')}</option>
+          {persianMonthsEn.map((month, index) => (
+            <option key={index + 1} value={index + 1}>
+              {month}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         <input
@@ -312,11 +446,21 @@ const UserProfilePage = () => {
           value={birthDate.year}
           onChange={handleBirthDateChange('year')}
           min="1300"
-          max="2020"
+          max="1403"
         />
       </div>
     </div>
   );
+
+  const formatPersianDate = (gregorianDate) => {
+    if (!gregorianDate) return '';
+    try {
+      const persianDate = convertGregorianToPersian(gregorianDate);
+      return `${persianDate.day} ${persianMonthsEn[persianDate.month - 1]} ${persianDate.year}`;
+    } catch (err) {
+      return gregorianDate;
+    }
+  };
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -413,35 +557,10 @@ const UserProfilePage = () => {
                       validationErrors.first_name ? 'border-red-500' : 'border-gray-300'
                     } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     placeholder={t('enterName')}
-                    value={user.first_name}
+                    value={user.first_name || ''}
                     name="first_name"
                     onChange={handleInputChange}
                   />
-                  <input
-                    className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
-                      validationErrors.phone_number ? 'border-red-500' : 'border-gray-300'
-                    } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    placeholder={t('enterPhoneNumber')}
-                    value={user?.phone_number || ''}
-                    name="phone_number"
-                    onChange={handleInputChange}
-                  />
-                  <input
-                    className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
-                      validationErrors.email ? 'border-red-500' : 'border-gray-300'
-                    } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-                    placeholder={t('enterEmail')}
-                    value={user?.email || ''}
-                    name="email"
-                    onChange={handleInputChange}
-                  />
-                  {/* Replace single birthdate input with separated inputs */}
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      {t('birthdate')}
-                    </label>
-                    {renderBirthDateInputs()}
-                  </div>
                   <input
                     className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
                       validationErrors.national_code ? 'border-red-500' : 'border-gray-300'
@@ -451,13 +570,21 @@ const UserProfilePage = () => {
                     name="national_code"
                     onChange={handleInputChange}
                   />
-                  <textarea
-                    className="w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder={t('enterBio')}
-                    value={bio}
-                    onChange={handleBioChange}
-                    rows={3}
-                  />
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      {t('birthdate')} ({t('persianCalendar')})
+                    </label>
+                    {renderBirthDateInputs()}
+                  </div>
+                  <div className="col-span-2">
+                    <textarea
+                      className="w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('enterBio')}
+                      value={bio}
+                      onChange={handleBioChange}
+                      rows={3}
+                    />
+                  </div>
                 </div>
                 <Button
                   onClick={handleSave}
@@ -470,23 +597,15 @@ const UserProfilePage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">{t('name')}</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{user.first_name}</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('phoneNumber')}</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{user.phone_number}</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('email')}</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{user.email}</p>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('birthdate')}</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{user.birthdate}</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{user.first_name || t('notSet')}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">{t('NationalCode')}</p>
-                  <p className="text-gray-900 dark:text-white font-medium">{user.national_code}</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{user.national_code || t('notSet')}</p>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">{t('birthdate')}</p>
+                  <p className="text-gray-900 dark:text-white font-medium">{formatPersianDate(user.birthdate) || t('notSet')}</p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm text-gray-500 dark:text-gray-400">{t('bio')}</p>
@@ -497,54 +616,53 @@ const UserProfilePage = () => {
           </CardContent>
         </Card>
 
-
-{/* Notifications */}
-<Card className="border-0 bg-white dark:bg-gray-800 shadow-md">
-  <CardHeader>
-    <div className="flex items-center gap-2">
-      <Bell className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-      <CardTitle className="text-xl font-bold">
-        {t('myNotifications')}
-      </CardTitle>
-    </div>
-  </CardHeader>
-  <CardContent>
-    {notifications.length > 0 ? (
-      <div className="space-y-4">
-        {notifications
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by date (newest first)
-          .map((notification, index) => (
-            <div
-              key={notification.id}
-              className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-700 ${
-                index === 0 && !notification.message_seen ? 'border-l-4 border-blue-500' : ''
-              }`}
-            >
-              <p className="text-gray-600 dark:text-gray-300">
-                {notification.text}
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {new Date(notification.created_at).toLocaleDateString()}
-                </div>
-                {index === 0 && !notification.message_seen && ( // Only show "new" label for the first notification
-                  <span className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">
-                    {t('new')}
-                  </span>
-                )}
-              </div>
+        {/* Notifications */}
+        <Card className="border-0 bg-white dark:bg-gray-800 shadow-md">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Bell className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+              <CardTitle className="text-xl font-bold">
+                {t('myNotifications')}
+              </CardTitle>
             </div>
-          ))}
-      </div>
-    ) : (
-      <div className="text-center py-8">
-        <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-500 dark:text-gray-400">{t('no New Notifications')}</p>
-      </div>
-    )}
-  </CardContent>
-</Card>
+          </CardHeader>
+          <CardContent>
+            {notifications.length > 0 ? (
+              <div className="space-y-4">
+                {notifications
+                  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                  .map((notification, index) => (
+                    <div
+                      key={notification.id}
+                      className={`p-4 rounded-lg bg-gray-50 dark:bg-gray-700 ${
+                        index === 0 && !notification.message_seen ? 'border-l-4 border-blue-500' : ''
+                      }`}
+                    >
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {notification.text}
+                      </p>
+                      <div className="mt-2 flex items-center gap-2">
+                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                          <Clock className="w-4 h-4 mr-1" />
+                          {new Date(notification.created_at).toLocaleDateString()}
+                        </div>
+                        {index === 0 && !notification.message_seen && (
+                          <span className="px-2 py-1 text-xs font-medium text-blue-600 bg-blue-100 rounded-full">
+                            {t('new')}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">{t('no New Notifications')}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

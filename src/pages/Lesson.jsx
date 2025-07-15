@@ -17,6 +17,14 @@ import {
   Terminal,
   BrainCircuit,
   ChevronLeft,
+  Volume2,
+  VolumeX,
+  Play,
+  Pause,
+  RotateCcw,
+  Loader2,
+  SkipBack,
+  SkipForward,
 } from 'lucide-react';
 
 import AIAssistant from '../components/dialog/chat';
@@ -51,6 +59,18 @@ const LessonPage = () => {
   const [hasRated, setHasRated] = useState(false);
   const [isLoadingNextLesson, setIsLoadingNextLesson] = useState(false);
 
+  // Audio related states
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [audioElement, setAudioElement] = useState(null);
+  const [isBuffering, setIsBuffering] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [playbackRate, setPlaybackRate] = useState(1);
+
   const handleBack = () => {
     navigate(`/course/${courseId}`);
   };
@@ -61,6 +81,139 @@ const LessonPage = () => {
       behavior: 'smooth',
     });
   }, [activeTab]);
+
+  // Audio generation function
+  const generateAudio = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      Notify.failure(t('Please login first.'));
+      return;
+    }
+
+    setIsGeneratingAudio(true);
+    try {
+      const response = await fetch(
+        `https://api.tadrisino.org/courses/lesson-tts/generate_voice/`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ lesson_id: lessonId }),
+        }
+      );
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Construct full URL for the audio file
+      const fullAudioUrl = typeof data.audio_url === 'string' && data.audio_url.startsWith('http') 
+        ? data.audio_url 
+        : `http://localhost:8000${data.audio_url}`;
+        setAudioUrl(fullAudioUrl);
+        Notify.success(t('Audio generated successfully!'));
+      } else {
+        Notify.failure(data.error || t('Failed to generate audio'));
+      }
+    } catch (error) {
+      Notify.failure(t('Error generating audio'));
+      console.error('Audio generation error:', error);
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
+  // Audio control functions
+  const togglePlayPause = () => {
+    if (audioElement) {
+      if (isPlaying) {
+        audioElement.pause();
+      } else {
+        audioElement.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const toggleMute = () => {
+    if (audioElement) {
+      audioElement.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  const resetAudio = () => {
+    if (audioElement) {
+      audioElement.currentTime = 0;
+      setCurrentTime(0);
+      if (isPlaying) {
+        audioElement.play();
+      }
+    }
+  };
+
+  const skipForward = () => {
+    if (audioElement) {
+      audioElement.currentTime = Math.min(audioElement.currentTime + 10, duration);
+    }
+  };
+
+  const skipBackward = () => {
+    if (audioElement) {
+      audioElement.currentTime = Math.max(audioElement.currentTime - 10, 0);
+    }
+  };
+
+  const handleVolumeChange = (e) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (audioElement) {
+      audioElement.volume = newVolume;
+      setIsMuted(newVolume === 0);
+    }
+  };
+
+  const handlePlaybackRateChange = (rate) => {
+    setPlaybackRate(rate);
+    if (audioElement) {
+      audioElement.playbackRate = rate;
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioElement) {
+      setCurrentTime(audioElement.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioElement) {
+      setDuration(audioElement.duration);
+    }
+  };
+
+  const handleSeek = (e) => {
+    if (audioElement) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audioElement.currentTime = pos * duration;
+    }
+  };
+
+  const handleWaiting = () => {
+    setIsBuffering(true);
+  };
+
+  const handleCanPlay = () => {
+    setIsBuffering(false);
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
@@ -102,10 +255,18 @@ const LessonPage = () => {
           throw new Error(t('Failed to fetch lesson data'));
         }
 
-
         const data = await lessonResponse.json();
         setLesson(data);
         setIsLastLesson(data.is_last_lesson);
+
+        // Check if lesson has existing audio and construct full URL
+        if (typeof data.audio === 'string' && data.audio.trim() !== '') {
+          const fullAudioUrl = data.audio.startsWith('http') 
+            ? data.audio 
+            : `http://localhost:8000${data.audio}`;
+          setAudioUrl(fullAudioUrl);
+        }
+
 
         if (data.has_quiz === false) {
           setNoQuiz(true);
@@ -137,10 +298,44 @@ const LessonPage = () => {
     checkAndFetchLesson();
   }, [courseId, lessonId, navigate, t]);
 
+  // Initialize audio element when audioUrl changes
+  useEffect(() => {
+    if (audioUrl) {
+      const audio = new Audio(audioUrl);
+      audio.volume = volume;
+      audio.playbackRate = playbackRate;
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('ended', () => setIsPlaying(false));
+      audio.addEventListener('waiting', handleWaiting);
+      audio.addEventListener('canplay', handleCanPlay);
+      audio.addEventListener('error', (e) => {
+        console.error('Audio error:', e);
+        Notify.failure(t('Failed to load audio'));
+      });
+      setAudioElement(audio);
+
+      return () => {
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('ended', () => setIsPlaying(false));
+        audio.removeEventListener('waiting', handleWaiting);
+        audio.removeEventListener('canplay', handleCanPlay);
+        audio.pause();
+      };
+    }
+  }, [audioUrl, volume, playbackRate]);
+
   const handleNavigation = async (direction) => {
     if (direction === 'next' && !isNextAvailable) {
       Notify.failure(t('Complete the lesson first'));
       return;
+    }
+
+    // Pause audio if playing
+    if (audioElement && isPlaying) {
+      audioElement.pause();
+      setIsPlaying(false);
     }
 
     setIsNavigating(true);
@@ -248,7 +443,144 @@ const LessonPage = () => {
               <Card className="max-w-4xl mx-auto">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">{lesson?.title}</CardTitle>
+                  
+                  {/* Enhanced Audio Section */}
+                  <div className="mt-4 p-6 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg shadow-inner">
+                    {!audioUrl ? (
+                      <div className="flex items-center justify-center">
+                        <Button
+                          onClick={generateAudio}
+                          disabled={isGeneratingAudio}
+                          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-200"
+                        >
+                          {isGeneratingAudio ? (
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                          ) : (
+                            <Volume2 className="w-5 h-5" />
+                          )}
+                          {isGeneratingAudio ? t('Generating Audio...') : t('Generate Audio')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {/* Main Audio Controls */}
+                        <div className="flex items-center justify-center gap-4 mb-4">
+                          <Button
+                            onClick={skipBackward}
+                            size="sm"
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                          >
+                            <SkipBack className="w-4 h-4" />
+                          </Button>
+                          
+                          <Button
+                            onClick={togglePlayPause}
+                            size="lg"
+                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-200"
+                            disabled={isBuffering}
+                          >
+                            {isBuffering ? (
+                              <Loader2 className="w-6 h-6 animate-spin" />
+                            ) : isPlaying ? (
+                              <Pause className="w-6 h-6" />
+                            ) : (
+                              <Play className="w-6 h-6" />
+                            )}
+                          </Button>
+                          
+                          <Button
+                            onClick={skipForward}
+                            size="sm"
+                            variant="outline"
+                            className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                          >
+                            <SkipForward className="w-4 h-4" />
+                          </Button>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="space-y-2">
+                          <div className="relative">
+                            <div
+                              onClick={handleSeek}
+                              className="w-full h-3 bg-gray-200 dark:bg-gray-600 rounded-full cursor-pointer shadow-inner"
+                            >
+                              <div
+                                className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 shadow-sm"
+                                style={{ width: `${(currentTime / duration) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                          
+                          <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
+                            <span>{formatTime(currentTime)}</span>
+                            <span>{formatTime(duration)}</span>
+                          </div>
+                        </div>
+
+                        {/* Secondary Controls */}
+                        <div className="flex items-center justify-between pt-2">
+                          <div className="flex items-center gap-3">
+                            <Button
+                              onClick={resetAudio}
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                            >
+                              <RotateCcw className="w-4 h-4" />
+                            </Button>
+                            
+                            <Button
+                              onClick={toggleMute}
+                              size="sm"
+                              variant="outline"
+                              className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                            >
+                              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                            </Button>
+                            
+                            {/* Volume Control */}
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={volume}
+                                onChange={handleVolumeChange}
+                                className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-600"
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* Playback Speed */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm text-gray-600 dark:text-gray-300">Speed:</span>
+                            <div className="flex gap-1">
+                              {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
+                                <Button
+                                  key={rate}
+                                  onClick={() => handlePlaybackRateChange(rate)}
+                                  size="sm"
+                                  variant={playbackRate === rate ? "default" : "outline"}
+                                  className={`text-xs px-2 py-1 ${
+                                    playbackRate === rate
+                                      ? 'bg-blue-600 text-white'
+                                      : 'border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+                                  }`}
+                                >
+                                  {rate}x
+                                </Button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </CardHeader>
+                
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
                     <ReactMarkdown className="text-justify"
@@ -404,8 +736,6 @@ const LessonPage = () => {
         />
       )}
 
-
-
       <style jsx global>{`
         .prose {
           max-width: none;
@@ -416,8 +746,8 @@ const LessonPage = () => {
           padding: 1rem;
           border-radius: 0.5rem;
           overflow-x: auto;
-                          direction: "ltr",
-                textAlign: "left",
+          direction: ltr;
+          text-align: left;
         }
         .prose code {
           color: #e2e8f0;
@@ -425,8 +755,8 @@ const LessonPage = () => {
           padding: 0.2rem 0.4rem;
           border-radius: 0.25rem;
           font-size: 0.875em;
-                          direction: "ltr",
-                textAlign: "left",
+          direction: ltr;
+          text-align: left;
         }
         .prose img {
           border-radius: 0.5rem;
@@ -466,19 +796,48 @@ const LessonPage = () => {
         .dark .prose tbody tr {
           border-bottom-color: #1e293b;
         }
+        
+        /* Custom Range Slider Styles */
+        input[type="range"]::-webkit-slider-thumb {
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          background: #3b82f6;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+          transition: background-color 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+          background: #2563eb;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          background: #3b82f6;
+          border-radius: 50%;
+          cursor: pointer;
+          border: none;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb:hover {
+          background: #2563eb;
+        }
+        
         @media (max-width: 768px) {
           .prose {
             font-size: 0.925em;
           }
           .prose pre {
             padding: 0.75rem;
-              direction: rtl;
           }
           .prose img {
             margin: 1.5rem auto;
           }
-
-        }
+        
       `}</style>
     </div>
   );
