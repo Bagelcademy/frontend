@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
-  Download, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft, ChevronDown
+  Download, ChevronRight, Star, Filter, Globe2, Briefcase, ChevronLeft, ChevronDown, X
 } from 'lucide-react';
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -28,6 +28,95 @@ const StarRating = ({ rating }) => (
   </div>
 );
 
+const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading }) => {
+  const { t } = useTranslation();
+  const [name, setName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name.trim()) {
+      onSubmit(name.trim());
+    }
+  };
+
+  const handleClose = () => {
+    setName('');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">{t('Request Certificate')}</h3>
+          <button
+            onClick={handleClose}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div className="mb-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            {t('Course')}: <span className="font-medium">{courseName}</span>
+          </p>
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+            <p className="text-sm text-yellow-800 dark:text-yellow-200">
+              <strong>{t('Important')}:</strong> {t('Please enter your name carefully in English. Certificates are issued only once and cannot be changed later.')}
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-sm font-medium mb-2">
+              {t('Your Name (in English)')}
+            </label>
+            <Input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t('Enter your full name in English')}
+              required
+              disabled={isLoading}
+              className="w-full"
+            />
+          </div>
+
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              onClick={handleClose}
+              variant="outline"
+              className="flex-1"
+              disabled={isLoading}
+            >
+              {t('Cancel')}
+            </Button>
+            <Button
+              type="submit"
+              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+              disabled={isLoading || !name.trim()}
+            >
+              {isLoading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  {t('Processing...')}
+                </div>
+              ) : (
+                t('Request Certificate')
+              )}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const MyCourses = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -45,6 +134,12 @@ const MyCourses = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [certificateModal, setCertificateModal] = useState({
+    isOpen: false,
+    courseId: null,
+    courseName: '',
+    isLoading: false
+  });
   const isRtl = i18n.language === 'fa';
 
   const statusDropdownRef = useRef(null);
@@ -258,6 +353,56 @@ const fetchRecommendedCourses = async () => {
       console.error('Error downloading notes:', error);
     }
   };
+
+  const handleCertificateRequest = (courseId, courseName) => {
+    setCertificateModal({
+      isOpen: true,
+      courseId,
+      courseName,
+      isLoading: false
+    });
+  };
+
+  const handleCertificateSubmit = async (name) => {
+    setCertificateModal(prev => ({ ...prev, isLoading: true }));
+    
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch('http://localhost:8000/courses/Certificate/generate_certificate/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          course_id:1, 
+          // certificateModal.courseId,
+          name: name
+        })
+      });
+
+      if (response.ok) {
+        // Success - you might want to show a success message
+        alert(t('Certificate request submitted successfully!'));
+        setCertificateModal({ isOpen: false, courseId: null, courseName: '', isLoading: false });
+      } else {
+        // Handle error
+        const errorData = await response.json();
+        alert(t('Failed to request certificate: ') + (errorData.message || t('Unknown error')));
+      }
+    } catch (error) {
+      console.error('Error requesting certificate:', error);
+      alert(t('Failed to request certificate. Please try again.'));
+    } finally {
+      setCertificateModal(prev => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleCertificateModalClose = () => {
+    if (!certificateModal.isLoading) {
+      setCertificateModal({ isOpen: false, courseId: null, courseName: '', isLoading: false });
+    }
+  };
   
   const CourseCard = ({ item }) => {
     const { t, i18n } = useTranslation();
@@ -266,6 +411,7 @@ const fetchRecommendedCourses = async () => {
     const completedLessons = progress.completed_lessons.length;
     const TOTAL_LESSONS = course.lesson_count
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
+    const isCompleted = completedLessons === TOTAL_LESSONS && TOTAL_LESSONS > 0;
 
     return (
       <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
@@ -281,6 +427,13 @@ const fetchRecommendedCourses = async () => {
               <StarRating rating={4.5} />
             </div>
           </div>
+          {isCompleted && (
+            <div className="absolute top-4 right-4 z-20">
+              <div className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                {t('Completed')}
+              </div>
+            </div>
+          )}
         </div>
 
         <CardContent className="relative p-6 flex flex-col justify-between">
@@ -338,19 +491,31 @@ const fetchRecommendedCourses = async () => {
         </CardContent>
 
         <CardFooter className="p-6 pt-0">
-          <Button
-            onClick={() => navigate(`/course/${course.id}`)}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
-          >
-            <span className="mx-2">
-              {progress.course_completed ? t('Review Course') : t('Continue Learning')}
-            </span>
-            {isRtl ? (
-              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            ) : (
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <div className="w-full space-y-2">
+            <Button
+              onClick={() => navigate(`/course/${course.id}`)}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+            >
+              <span className="mx-2">
+                {progress.course_completed ? t('Review Course') : t('Continue Learning')}
+              </span>
+              {isRtl ? (
+                <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              ) : (
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              )}
+            </Button>
+            
+            {isCompleted && (
+              <Button
+                onClick={() => handleCertificateRequest(course.id, course.title)}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white group-hover:scale-105 transition-all duration-300"
+              >
+                <Award className="w-4 h-4 mx-1" />
+                <span className="mx-2">{t('Request Certificate')}</span>
+              </Button>
             )}
-          </Button>
+          </div>
         </CardFooter>
       </Card>
     );
@@ -453,6 +618,15 @@ const fetchRecommendedCourses = async () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+      {/* Certificate Modal */}
+      <CertificateModal
+        isOpen={certificateModal.isOpen}
+        onClose={handleCertificateModalClose}
+        onSubmit={handleCertificateSubmit}
+        courseName={certificateModal.courseName}
+        isLoading={certificateModal.isLoading}
+      />
+
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
         <div className="container mx-auto px-4 py-16 pt-32">

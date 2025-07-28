@@ -180,7 +180,7 @@ const RequestPage = () => {
           const data = await response.json();
           // Transform data to the format needed for the Listbox
           const formattedCategories = data.map(category => ({
-            label: category.name,
+            label: t(category.name),
             value: category.id.toString(),
           }));
           

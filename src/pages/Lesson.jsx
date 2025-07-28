@@ -664,18 +664,18 @@ const LessonPage = () => {
 
       {/* Completion Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogContent className="bg-white dark:bg-gray-900 sm:max-w-md">
+        <DialogContent className="bg-white dark:bg-gray-200 sm:max-w-md">
           <div className="flex flex-col items-center">
             <div className="text-center space-y-4">
-              <h3 className="text-2xl font-bold text-slate-500 dark:text-white">
+              <h3 className="text-2xl text-black font-bold text-slate-500 dark:text-white">
                 {t("Congratulations")}
               </h3>
-              <p className="text-slate-500 dark:text-white">
+              <p className="text-black dark:text-white">
                 {t("You've completed the entire course!")}
                 {t("A certificate of completion will be emailed to you shortly.")}
               </p>
 
-              <p className="text-lg font-semibold text-slate-500 dark:text-white">{t("Rate this Course")}</p>
+              <p className="text-lg font-semibold text-black dark:text-white">{t("Rate this Course")}</p>
               <div className="flex gap-2 my-2 justify-center">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -690,7 +690,7 @@ const LessonPage = () => {
               </div>
 
               <Button
-                className="bg-slate-700 dark:text-white w-full mt-4"
+                className="bg-slate-700 text-white dark:text-white w-full mt-4"
                 onClick={() => {
                   if (rating === 0) {
                     Notify.failure(t('Please select a rating before submitting.'));
@@ -717,7 +717,7 @@ const LessonPage = () => {
               </Button>
 
               <Button
-                className="bg-slate-700 dark:text-white w-full"
+                className="bg-slate-700 text-white dark:text-white w-full"
                 onClick={() => navigate('/courses')}
               >
                 {t('Back to Courses')}
@@ -735,110 +735,6 @@ const LessonPage = () => {
           numberOfPieces={200}
         />
       )}
-
-      <style jsx global>{`
-        .prose {
-          max-width: none;
-        }
-        .prose pre {
-          background-color: #1e293b;
-          color: #e2e8f0;
-          padding: 1rem;
-          border-radius: 0.5rem;
-          overflow-x: auto;
-          direction: ltr;
-          text-align: left;
-        }
-        .prose code {
-          color: #e2e8f0;
-          background-color: #334155;
-          padding: 0.2rem 0.4rem;
-          border-radius: 0.25rem;
-          font-size: 0.875em;
-          direction: ltr;
-          text-align: left;
-        }
-        .prose img {
-          border-radius: 0.5rem;
-          margin: 2rem auto;
-        }
-        .prose a {
-          color: #3b82f6;
-          text-decoration: none;
-        }
-        .prose a:hover {
-          text-decoration: underline;
-        }
-        .dark .prose {
-          color: #e2e8f0;
-        }
-        .dark .prose strong {
-          color: #f8fafc;
-        }
-        .dark .prose a {
-          color: #60a5fa;
-        }
-        .dark .prose blockquote {
-          border-left-color: #475569;
-        }
-        .dark .prose code {
-          background-color: #1e293b;
-        }
-        .dark .prose pre {
-          background-color: #0f172a;
-        }
-        .dark .prose hr {
-          border-color: #334155;
-        }
-        .dark .prose thead {
-          border-bottom-color: #334155;
-        }
-        .dark .prose tbody tr {
-          border-bottom-color: #1e293b;
-        }
-        
-        /* Custom Range Slider Styles */
-        input[type="range"]::-webkit-slider-thumb {
-          appearance: none;
-          width: 16px;
-          height: 16px;
-          background: #3b82f6;
-          border-radius: 50%;
-          cursor: pointer;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-          transition: background-color 0.2s;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb:hover {
-          background: #2563eb;
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-          width: 16px;
-          height: 16px;
-          background: #3b82f6;
-          border-radius: 50%;
-          cursor: pointer;
-          border: none;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        input[type="range"]::-moz-range-thumb:hover {
-          background: #2563eb;
-        }
-        
-        @media (max-width: 768px) {
-          .prose {
-            font-size: 0.925em;
-          }
-          .prose pre {
-            padding: 0.75rem;
-          }
-          .prose img {
-            margin: 1.5rem auto;
-          }
-        
-      `}</style>
     </div>
   );
 };

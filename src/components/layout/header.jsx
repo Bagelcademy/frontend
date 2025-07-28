@@ -108,6 +108,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLan
         clearAuthData();
         enqueueSnackbar(t('Session expired. Please log in again.'), { variant: 'info' });
         navigate('/login');
+        window.location.reload();
         return;
       }
 

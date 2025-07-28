@@ -103,7 +103,7 @@ const AIAssistant = ({ lessonContent }) => {
 
     try {
       const token = localStorage.getItem('accessToken');
-      const contextMessage = `well ${input}`;
+      const contextMessage = ` ${input}`;
 
       const response = await fetch('https://api.tadrisino.org/account/chat/', {
         method: 'POST',
