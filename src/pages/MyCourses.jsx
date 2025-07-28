@@ -9,7 +9,8 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-const ITEMS_PER_PAGE = 12;
+
+const COURSES_PER_SECTION = 4;
 
 const StarRating = ({ rating }) => (
   <div className="flex items-center">
@@ -28,7 +29,7 @@ const StarRating = ({ rating }) => (
   </div>
 );
 
-const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading }) => {
+const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, certificateUrl }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
 
@@ -59,59 +60,88 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading }) 
           </button>
         </div>
         
-        <div className="mb-4">
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            {t('Course')}: <span className="font-medium">{courseName}</span>
-          </p>
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-            <p className="text-sm text-yellow-800 dark:text-yellow-200">
-              <strong>{t('Important')}:</strong> {t('Please enter your name carefully in English. Certificates are issued only once and cannot be changed later.')}
-            </p>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">
-              {t('Your Name (in English)')}
-            </label>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder={t('Enter your full name in English')}
-              required
-              disabled={isLoading}
-              className="w-full"
-            />
-          </div>
-
-          <div className="flex gap-3">
+        {certificateUrl ? (
+          <div className="text-center">
+            <div className="mb-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <p className="text-green-800 dark:text-green-200 mb-3">
+                  {t('Certificate generated successfully!')}
+                </p>
+                <a
+                  href={certificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t('Download Certificate')}
+                </a>
+              </div>
+            </div>
             <Button
-              type="button"
               onClick={handleClose}
-              variant="outline"
-              className="flex-1"
-              disabled={isLoading}
+              className="w-full"
             >
-              {t('Cancel')}
-            </Button>
-            <Button
-              type="submit"
-              className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
-              disabled={isLoading || !name.trim()}
-            >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  {t('Processing...')}
-                </div>
-              ) : (
-                t('Request Certificate')
-              )}
+              {t('Close')}
             </Button>
           </div>
-        </form>
+        ) : (
+          <>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                {t('Course')}: <span className="font-medium">{courseName}</span>
+              </p>
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  <strong>{t('Important')}:</strong> {t('Please enter your name carefully in English. Certificates are issued only once and cannot be changed later.')}
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">
+                  {t('Your Name (in English)')}
+                </label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t('Enter your full name in English')}
+                  required
+                  disabled={isLoading}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  onClick={handleClose}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={isLoading}
+                >
+                  {t('Cancel')}
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                  disabled={isLoading || !name.trim()}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      {t('Processing...')}
+                    </div>
+                  ) : (
+                    t('Request Certificate')
+                  )}
+                </Button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
@@ -122,34 +152,28 @@ const MyCourses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
-  const [displayedCourses, setDisplayedCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const [filteredCategoryId, setFilteredCategoryId] = useState('');
-  const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [userProfile, setUserProfile] = useState(null);
-  const [selectedStatus, setSelectedStatus] = useState(t("All Courses"));
-  const [statusFilter, setStatusFilter] = useState("");
-  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [certificateModal, setCertificateModal] = useState({
     isOpen: false,
     courseId: null,
     courseName: '',
-    isLoading: false
+    isLoading: false,
+    certificateUrl: null
   });
+  
+  // Pagination states
+  const [completedCoursesPage, setCompletedCoursesPage] = useState(1);
+  const [inProgressCoursesPage, setInProgressCoursesPage] = useState(1);
+  const [recommendedCoursesPage, setRecommendedCoursesPage] = useState(1);
+  
   const isRtl = i18n.language === 'fa';
-
-  const statusDropdownRef = useRef(null);
   const categoryDropdownRef = useRef(null);
-
-  const completionStatus = {
-    true: t("Finished Courses"),
-    false: t("Unfinished Courses"),
-    "": t("All Courses"),
-  };
 
   const motivationalQuotes = [
     { quote: t('motivationalQuotes.quote1'), author: t('motivationalQuotes.author1') },
@@ -169,19 +193,7 @@ const MyCourses = () => {
   }, []);
 
   useEffect(() => {
-    filterCourses();
-  }, [searchTerm, filteredCategoryId, statusFilter, courses, page]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        statusDropdownRef.current && 
-        !statusDropdownRef.current.contains(event.target) &&
-        isStatusDropdownOpen
-      ) {
-        setIsStatusDropdownOpen(false);
-      }
-      
       if (
         categoryDropdownRef.current && 
         !categoryDropdownRef.current.contains(event.target) &&
@@ -196,7 +208,7 @@ const MyCourses = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isStatusDropdownOpen, isCategoryDropdownOpen]);
+  }, [isCategoryDropdownOpen]);
 
   const fetchUserProfile = async () => {
     try {
@@ -283,48 +295,12 @@ const fetchRecommendedCourses = async () => {
     }
   };
 
-  const handleStatusChange = (value) => {
-    let displayValue;
-
-    if (value === "true") {
-      displayValue = t("Finished Courses");
-    } else if (value === "false") {
-      displayValue = t("Unfinished Courses");
-    } else {
-      displayValue = t("All Courses");
-    }
-    setStatusFilter(value);
-    setSelectedStatus(displayValue);
-    setPage(1);
-  };
-
-  const filterCourses = () => {
-    let filtered = [...courses];
-
-    if (searchTerm) {
-      filtered = filtered.filter(item =>
-        item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (filteredCategoryId) {
-      filtered = filtered.filter(item => {
-        return item.course.category === parseInt(filteredCategoryId, 10) || 
-               item.course.category === filteredCategoryId;
-      });
-    }
-
-    if (statusFilter !== "") {
-      filtered = filtered.filter(item => item.progress.course_completed.toString() === statusFilter);
-    }
-
-    setDisplayedCourses(filtered.slice(0, page * ITEMS_PER_PAGE));
-  };
-
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
     setFilteredCategoryId(categoryId);
-    setPage(1);
+    // Reset pagination when filter changes
+    setCompletedCoursesPage(1);
+    setInProgressCoursesPage(1);
   };
 
   const handleDownloadNotes = async () => {
@@ -359,7 +335,8 @@ const fetchRecommendedCourses = async () => {
       isOpen: true,
       courseId,
       courseName,
-      isLoading: false
+      isLoading: false,
+      certificateUrl: null
     });
   };
 
@@ -375,33 +352,92 @@ const fetchRecommendedCourses = async () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          course_id:1, 
-          // certificateModal.courseId,
+          course_id: certificateModal.courseId,
           name: name
         })
       });
 
       if (response.ok) {
-        // Success - you might want to show a success message
-        alert(t('Certificate request submitted successfully!'));
-        setCertificateModal({ isOpen: false, courseId: null, courseName: '', isLoading: false });
+        const responseData = await response.json();
+        setCertificateModal(prev => ({ 
+          ...prev, 
+          isLoading: false,
+          certificateUrl: responseData.url || responseData.certificate_url
+        }));
       } else {
-        // Handle error
         const errorData = await response.json();
         alert(t('Failed to request certificate: ') + (errorData.message || t('Unknown error')));
+        setCertificateModal(prev => ({ ...prev, isLoading: false }));
       }
     } catch (error) {
       console.error('Error requesting certificate:', error);
       alert(t('Failed to request certificate. Please try again.'));
-    } finally {
       setCertificateModal(prev => ({ ...prev, isLoading: false }));
     }
   };
 
   const handleCertificateModalClose = () => {
     if (!certificateModal.isLoading) {
-      setCertificateModal({ isOpen: false, courseId: null, courseName: '', isLoading: false });
+      setCertificateModal({ 
+        isOpen: false, 
+        courseId: null, 
+        courseName: '', 
+        isLoading: false,
+        certificateUrl: null 
+      });
     }
+  };
+
+  // Filter courses based on search and category
+  const getFilteredCourses = () => {
+    let filtered = [...courses];
+
+    if (searchTerm) {
+      filtered = filtered.filter(item =>
+        item.course.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (filteredCategoryId) {
+      filtered = filtered.filter(item => {
+        return item.course.category === parseInt(filteredCategoryId, 10) || 
+               item.course.category === filteredCategoryId;
+      });
+    }
+
+    return filtered;
+  };
+
+  // Separate completed and in-progress courses
+  const getCompletedCourses = () => {
+    return getFilteredCourses().filter(item => item.progress.course_completed);
+  };
+
+  const getInProgressCourses = () => {
+    return getFilteredCourses().filter(item => !item.progress.course_completed);
+  };
+
+  const getFilteredRecommendedCourses = () => {
+    if (!searchTerm && !filteredCategoryId) {
+      return recommendedCourses;
+    }
+
+    let filtered = [...recommendedCourses];
+
+    if (searchTerm) {
+      filtered = filtered.filter(course =>
+        course.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (filteredCategoryId) {
+      filtered = filtered.filter(course => {
+        return course.category === parseInt(filteredCategoryId, 10) || 
+               course.category === filteredCategoryId;
+      });
+    }
+
+    return filtered;
   };
   
   const CourseCard = ({ item }) => {
@@ -616,6 +652,10 @@ const fetchRecommendedCourses = async () => {
     );
   }
 
+  const completedCourses = getCompletedCourses();
+  const inProgressCourses = getInProgressCourses();
+  const filteredRecommendedCourses = getFilteredRecommendedCourses();
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* Certificate Modal */}
@@ -625,6 +665,7 @@ const fetchRecommendedCourses = async () => {
         onSubmit={handleCertificateSubmit}
         courseName={certificateModal.courseName}
         isLoading={certificateModal.isLoading}
+        certificateUrl={certificateModal.certificateUrl}
       />
 
       {/* Hero Section */}
@@ -662,56 +703,6 @@ const fetchRecommendedCourses = async () => {
             </div>
 
             <div className="flex flex-wrap gap-4 justify-center">
-              <div className="relative" ref={statusDropdownRef}>
-                <button
-                  onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
-                  className={`text-sm flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow ${isRtl ? 'text-right' : ''}`}
-                >
-                  <Filter className="w-4 h-4 text-black dark:text-white" />
-                  <span className="text-black dark:text-white">
-                    {completionStatus[statusFilter] || t("Select Status")}
-                  </span>
-                  <ChevronDown className="w-4 h-4 text-black dark:text-white" />
-                </button>
-
-                {isStatusDropdownOpen && (
-                  <div className={`absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 ${isRtl ? 'text-right' : 'text-left'}`}>
-                    <div className="py-2">
-                      <button
-                        onClick={() => {
-                          setStatusFilter('');
-                          setSelectedStatus(t("All Courses"));
-                          setIsStatusDropdownOpen(false);
-                        }}
-                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
-                      >
-                        {completionStatus[""]}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setStatusFilter('true');
-                          setSelectedStatus(t("Finished Courses"));
-                          setIsStatusDropdownOpen(false);
-                        }}
-                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
-                      >
-                        {completionStatus["true"]}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setStatusFilter('false');
-                          setSelectedStatus(t("Unfinished Courses"));
-                          setIsStatusDropdownOpen(false);
-                        }}
-                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
-                      >
-                        {completionStatus["false"]}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
               <div className="relative" ref={categoryDropdownRef}>
                 <button
                   onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
@@ -767,9 +758,56 @@ const fetchRecommendedCourses = async () => {
       </div>
 
       <div className="container mx-auto px-4 py-12">
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">{t('My Courses')}</h2>
-          {displayedCourses.length === 0 ? (
+        {/* Completed Courses Section */}
+        {completedCourses.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{t('Finished Courses')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {completedCourses.slice(0, completedCoursesPage * COURSES_PER_SECTION).map((item, index) => (
+                <CourseCard key={`completed-${item.course.id}-${index}`} item={item} />
+              ))}
+            </div>
+            
+            {completedCourses.length > completedCoursesPage * COURSES_PER_SECTION && (
+              <div className="mt-8 text-center">
+                <Button
+                  onClick={() => setCompletedCoursesPage(p => p + 1)}
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  {t('loadMore')}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* In Progress Courses Section */}
+        {inProgressCourses.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{t('Unfinished Courses')}</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {inProgressCourses.slice(0, inProgressCoursesPage * COURSES_PER_SECTION).map((item, index) => (
+                <CourseCard key={`progress-${item.course.id}-${index}`} item={item} />
+              ))}
+            </div>
+            
+            {inProgressCourses.length > inProgressCoursesPage * COURSES_PER_SECTION && (
+              <div className="mt-8 text-center">
+                <Button
+                  onClick={() => setInProgressCoursesPage(p => p + 1)}
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  {t('loadMore')}
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* No Courses Message */}
+        {completedCourses.length === 0 && inProgressCourses.length === 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">{t('My Courses')}</h2>
             <div className="text-center py-12">
               <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
                 <BookOpen className="w-6 h-6 text-gray-400" />
@@ -779,27 +817,11 @@ const fetchRecommendedCourses = async () => {
                 {t('Try adjusting your search or filters')}
               </p>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedCourses.map((item, index) => (
-                <CourseCard key={`${item.course.id}-${index}`} item={item} />
-              ))}
-            </div>
-          )}
+          </div>
+        )}
 
-          {displayedCourses.length < courses.length && (
-            <div className="mt-12 text-center">
-              <Button
-                onClick={() => setPage(p => p + 1)}
-                className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-              >
-                {t('loadMore')}
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {recommendedCourses.length > 0 && (
+        {/* Recommended Courses Section */}
+        {filteredRecommendedCourses.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('Recommended for You')}</h2>
@@ -809,10 +831,21 @@ const fetchRecommendedCourses = async () => {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedCourses.slice(0, 6).map((course) => (
-                <RecommendedCourseCard key={course.id} course={course} />
+              {filteredRecommendedCourses.slice(0, recommendedCoursesPage * COURSES_PER_SECTION).map((course) => (
+                <RecommendedCourseCard key={`recommended-${course.id}`} course={course} />
               ))}
             </div>
+            
+            {filteredRecommendedCourses.length > recommendedCoursesPage * COURSES_PER_SECTION && (
+              <div className="mt-8 text-center">
+                <Button
+                  onClick={() => setRecommendedCoursesPage(p => p + 1)}
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
+                >
+                  {t('loadMore')}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
