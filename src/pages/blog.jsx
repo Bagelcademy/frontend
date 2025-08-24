@@ -22,10 +22,10 @@ const AINewsPage = () => {
           storiesResponse,
           categoriesResponse
         ] = await Promise.all([
-          fetch('https://api.tadrisino.org/blog/posts/all/'),
-          fetch('https://api.tadrisino.org/blog/posts/newest/'),
-          fetch('https://api.tadrisino.org/blog/posts/all/'),
-          fetch('https://api.tadrisino.org/courses/Category/')
+          fetch('http://localhost:8000/blog/posts/all/'),
+          fetch('http://localhost:8000/blog/posts/newest/'),
+          fetch('http://localhost:8000/blog/posts/all/'),
+          fetch('http://localhost:8000/courses/Category/')
         ]);
 
         // Check if all responses are ok

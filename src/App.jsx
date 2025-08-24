@@ -43,6 +43,7 @@ import AIRobotsCharacters from './pages/cha';
 import CVEnhancer from './pages/CVenhancer';
 import PixelCityWorld from './pages/test';
 import BlogDetailPage from './pages/BlogDetailPage';
+import ChallengePage from './pages/challenger';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -61,7 +62,7 @@ const App = () => {
     const refreshToken = localStorage.getItem('refreshToken');
     // checks axios access token validity
     if (accessToken && refreshToken) {
-      fetch('https://api.tadrisino.org/account/token/validate-token/', {
+      fetch('http://localhost:8000/account/token/validate-token/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -145,7 +146,10 @@ const App = () => {
             <Route path="/learning-paths" element={<CareerPathsPage />} />
             <Route path="/learning-paths/:id" element={<LearningPathDetail />} />
             <Route path="/exam/:id" element={<ExamPage />} />
-
+            <Route 
+                  path="/courses/:courseId/challenges/:challengeNumber" 
+                  element={<ChallengePage setIsLoggedIn={setIsLoggedIn} />} 
+                                                                            />
             {/* Special pages */}
             <Route path="/waitlist" element={<TeacherWaitlist />} />
             <Route path="/Norooz" element={<NoroozPage />} />

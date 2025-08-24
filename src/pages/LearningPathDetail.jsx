@@ -25,7 +25,7 @@ const LearningPathDetail = () => {
       }
 
       try {
-        const url = `https://api.tadrisino.org/courses/learning-paths/${id}/`;
+        const url = `http://localhost:8000/courses/learning-paths/${id}/`;
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,7 +50,7 @@ const LearningPathDetail = () => {
   const takeExamHandler = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/paths/1/generate_exam/', {
+      const response = await fetch('http://localhost:8000/courses/paths/1/generate_exam/', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

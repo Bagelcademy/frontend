@@ -213,7 +213,7 @@ const MyCourses = () => {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/account/user-info/', {
+      const response = await fetch('http://localhost:8000/account/user-info/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -228,7 +228,7 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
+      const response = await fetch('http://localhost:8000/courses/courses/get_user_courses/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -244,7 +244,7 @@ const MyCourses = () => {
 const fetchRecommendedCourses = async () => {
   try {
     const token = localStorage.getItem('accessToken');
-    const response = await fetch('https://api.tadrisino.org/courses/Recommend/shuffled_by_user_interests/', {
+    const response = await fetch('http://localhost:8000/courses/Recommend/shuffled_by_user_interests/', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -283,7 +283,7 @@ const fetchRecommendedCourses = async () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://api.tadrisino.org/courses/Category/');
+      const response = await fetch('http://localhost:8000/courses/Category/');
       const data = await response.json();
       const translatedCategories = data.map(category => ({
         ...category,
@@ -306,7 +306,7 @@ const fetchRecommendedCourses = async () => {
   const handleDownloadNotes = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/user-notes/export-notes-pdf/', {
+      const response = await fetch('http://localhost:8000/courses/user-notes/export-notes-pdf/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -345,7 +345,7 @@ const fetchRecommendedCourses = async () => {
     
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/Certificate/generate_certificate/', {
+      const response = await fetch('http://localhost:8000/courses/Certificate/generate_certificate/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

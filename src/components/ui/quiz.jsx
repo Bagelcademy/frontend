@@ -27,7 +27,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
       setLoading(true);
       // First API call to generate quiz content
       const generationResponse = await fetch(
-        `https://api.tadrisino.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
+        `http://localhost:8000/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +51,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
 
     try {
       const response = await fetch(
-        `https://api.tadrisino.org/courses/exams/${lessonId}/Qlist/`,
+        `http://localhost:8000/courses/exams/${lessonId}/Qlist/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,7 +110,7 @@ const Quiz = ({ courseId,lessonId, onComplete }) => {
 
     try {
       const response = await fetch(
-        `https://api.tadrisino.org/courses/quizzes/${lessonId}/submit_answers/`,
+        `http://localhost:8000/courses/quizzes/${lessonId}/submit_answers/`,
         {
           method: 'POST',
           headers: {

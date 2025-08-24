@@ -173,7 +173,7 @@ const Signup = () => {
       const token = await getRecaptchaResponse();
 
       // Send phone number to sendCode API
-      const response = await fetch('https://api.tadrisino.org/account/register/sendCode/', {
+      const response = await fetch('http://localhost:8000/account/register/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ const Signup = () => {
       setError('');
 
       // Send verification code to verify API
-      const response = await fetch('https://api.tadrisino.org/account/register/verify/', {
+      const response = await fetch('http://localhost:8000/account/register/verify/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -258,7 +258,7 @@ const Signup = () => {
       setError('');
 
       // Send registration data to register API
-      const response = await fetch('https://api.tadrisino.org/account/register/register/', {
+      const response = await fetch('http://localhost:8000/account/register/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

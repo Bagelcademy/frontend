@@ -105,7 +105,7 @@ const AIAssistant = ({ lessonContent }) => {
       const token = localStorage.getItem('accessToken');
       const contextMessage = ` ${input}`;
 
-      const response = await fetch('https://api.tadrisino.org/account/chat/', {
+      const response = await fetch('http://localhost:8000/account/chat/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

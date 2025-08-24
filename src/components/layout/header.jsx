@@ -73,7 +73,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLan
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/account/user-info/', {
+      const response = await fetch('http://localhost:8000/account/user-info/', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -112,7 +112,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, isDarkTheme, toggleTheme, changeLan
         return;
       }
 
-      const response = await fetch('https://api.tadrisino.org/account/logout/logout/', {
+      const response = await fetch('http://localhost:8000/account/logout/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

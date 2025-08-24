@@ -5,6 +5,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useTranslation } from 'react-i18next';
 import { Notify } from 'notiflix';
+import CharacterWelcomePopup from '../components/ui/CharacterPopup'
 
 const Login = ({ setIsLoggedIn }) => {
   const { t } = useTranslation();
@@ -15,6 +16,8 @@ const Login = ({ setIsLoggedIn }) => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [activeTab, setActiveTab] = useState('password'); // 'password' or 'otp'
   const [countdown, setCountdown] = useState(0); // Countdown timer for OTP button
+  const [showCharacterPopup, setShowCharacterPopup] = useState(false);
+  const [characterData, setCharacterData] = useState(null);
   const navigate = useNavigate();
   
   // Site key for reCAPTCHA v2
@@ -114,7 +117,30 @@ const Login = ({ setIsLoggedIn }) => {
     
     // Dispatch the custom event
     window.dispatchEvent(new Event('loginStateChanged'));
-    Notify.success(t('loginSuccess'));
+    
+    // Show character popup if there are characters
+    if (data.main_character && data.main_character.length > 0) {
+      setCharacterData(data.main_character);
+      setShowCharacterPopup(true);
+      Notify.success(t('loginSuccess'));
+    } else {
+      // No characters, navigate directly
+      Notify.success(t('loginSuccess'));
+      navigate('/my-courses');
+    }
+  };
+
+  // Handler functions for the popup
+  const handlePopupClose = () => {
+    setShowCharacterPopup(false);
+    // Navigate to courses after a short delay
+    setTimeout(() => {
+      navigate('/my-courses');
+    }, 300);
+  };
+
+  const handlePopupContinue = () => {
+    setShowCharacterPopup(false);
     navigate('/my-courses');
   };
 
@@ -143,7 +169,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Get reCAPTCHA token
       const token = getRecaptchaToken('passwordLogin');
       
-      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
+      const response = await fetch('http://localhost:8000/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +205,7 @@ const Login = ({ setIsLoggedIn }) => {
 
     setError('');
     try {
-      const response = await fetch('https://api.tadrisino.org/account/login/sendCode/', {
+      const response = await fetch('http://localhost:8000/account/login/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -211,7 +237,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = getRecaptchaToken('verifyOtp');
       
-      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
+      const response = await fetch('http://localhost:8000/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -381,6 +407,16 @@ const Login = ({ setIsLoggedIn }) => {
           </a>
         </p>
       </div>
+
+      {/* Character Welcome Popup */}
+      {showCharacterPopup && (
+        <CharacterWelcomePopup
+          characters={characterData}
+          isOpen={showCharacterPopup}
+          onClose={handlePopupClose}
+          onContinue={handlePopupContinue}
+        />
+      )}
     </div>
   );
 }

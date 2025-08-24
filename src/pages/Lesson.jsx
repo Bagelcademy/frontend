@@ -93,7 +93,7 @@ const LessonPage = () => {
     setIsGeneratingAudio(true);
     try {
       const response = await fetch(
-        `https://api.tadrisino.org/courses/lesson-tts/generate_voice/`,
+        `http://localhost:8000/courses/lesson-tts/generate_voice/`,
         {
           method: 'POST',
           headers: {
@@ -227,7 +227,7 @@ const LessonPage = () => {
       try {
         setContentGenerating(true);
         const generationResponse = await fetch(
-          `https://api.tadrisino.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
+          `http://localhost:8000/courses/course-generation/content-generation/${courseId}/${lessonId}/`
         );
 
         if (generationResponse.status === 201) {
@@ -237,7 +237,7 @@ const LessonPage = () => {
         }
 
         const lessonResponse = await fetch(
-          `https://api.tadrisino.org/courses/courses/${courseId}/lessons/${lessonId}/`,
+          `http://localhost:8000/courses/courses/${courseId}/lessons/${lessonId}/`,
           {
             method: 'GET',
             headers: {
@@ -273,7 +273,7 @@ const LessonPage = () => {
           setIsNextAvailable(true);
 
           await fetch(
-            `https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`,
+            `http://localhost:8000/courses/student-progress/${lessonId}/complete-lesson/`,
             {
               method: 'POST',
               headers: {
@@ -344,7 +344,7 @@ const LessonPage = () => {
     if (direction === 'next') {
       try {
         const token = localStorage.getItem('accessToken');
-        await fetch(`https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`, {
+        await fetch(`http://localhost:8000/courses/student-progress/${lessonId}/complete-lesson/`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -697,7 +697,7 @@ const LessonPage = () => {
                     return;
                   }
 
-                  fetch(`https://api.tadrisino.org/courses/CourseRating/${courseId}/set_rate/`, {
+                  fetch(`http://localhost:8000/courses/CourseRating/${courseId}/set_rate/`, {
                     method: 'POST',
                     headers: {
                       Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

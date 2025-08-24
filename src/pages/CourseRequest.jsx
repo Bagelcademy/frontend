@@ -149,7 +149,7 @@ const RequestPage = () => {
         const token = localStorage.getItem('accessToken');
         if (!token) return;
         
-        const response = await fetch('https://api.tadrisino.org/account/user-info/', {
+        const response = await fetch('http://localhost:8000/account/user-info/', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -172,7 +172,7 @@ const RequestPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('https://api.tadrisino.org/courses/Category/', {
+        const response = await fetch('http://localhost:8000/courses/Category/', {
           method: 'GET',
         });
         
@@ -254,7 +254,7 @@ const RequestPage = () => {
       const token = localStorage.getItem('accessToken');
       if (!token) return;
       
-      const response = await fetch('https://api.tadrisino.org/courses/course-generation/search_for_existence_course/', {
+      const response = await fetch('http://localhost:8000/courses/course-generation/search_for_existence_course/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -317,7 +317,7 @@ const RequestPage = () => {
       return;
     }
     
-    const response = await fetch('https://api.tadrisino.org/courses/course-generation/generate_gpt_course/', {
+    const response = await fetch('http://localhost:8000/courses/course-generation/generate_gpt_course/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ const RequestPage = () => {
       setCurrentStep(0);
       
       // Refresh user credits after successful course generation
-      const userInfoResponse = await fetch('https://api.tadrisino.org/account/user-info/', {
+      const userInfoResponse = await fetch('http://localhost:8000/account/user-info/', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,

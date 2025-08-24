@@ -69,7 +69,7 @@ const Survey = () => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
-        const response = await fetch('https://api.tadrisino.org/courses/Category/');
+        const response = await fetch('http://localhost:8000/courses/Category/');
         if (response.ok) {
           const data = await response.json();
           setCategories(data);
@@ -278,7 +278,7 @@ const Survey = () => {
       // Transform interests to send only the IDs
       const interestIds = answers.interests.map(interest => interest.id);
       
-      const response = await fetch('https://api.tadrisino.org/account/user-info/survey/', { 
+      const response = await fetch('http://localhost:8000/account/user-info/survey/', { 
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -49,7 +49,7 @@ const CareerPathsPage = () => {
 
   const fetchPaths = async () => {
     try {
-      const response = await fetch('https://api.tadrisino.org/courses/learning-paths/');
+      const response = await fetch('http://localhost:8000/courses/learning-paths/');
       if (!response.ok) throw new Error('Failed to fetch paths');
       const data = await response.json();
       const transformedData = data.map(path => ({
@@ -77,7 +77,7 @@ const CareerPathsPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://api.tadrisino.org/courses/Category/');
+      const response = await fetch('http://localhost:8000/courses/Category/');
       const data = await response.json();
   
       // Translate category names dynamically
