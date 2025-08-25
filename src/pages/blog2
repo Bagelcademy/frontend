@@ -12,17 +12,17 @@ const AINewsPage = () => {
 
   useEffect(() => {
     // Fetch most viewed → featured
-    axios.get('http://localhost:8000/blog/posts/most_viewed/')
+    axios.get('https://api.tadrisino.org/blog/posts/most_viewed/')
       .then(res => setFeaturedArticles(res.data))
       .catch(err => console.error(err));
 
     // Fetch newest → latest news
-    axios.get('http://localhost:8000/blog/posts/newest/')
+    axios.get('https://api.tadrisino.org/blog/posts/newest/')
       .then(res => setLatestNews(res.data))
       .catch(err => console.error(err));
 
     // Fetch all paginated → top stories
-    axios.get('http://localhost:8000/blog/posts/all/?page=1')
+    axios.get('https://api.tadrisino.org/blog/posts/all/?page=1')
       .then(res => setTopStories(res.data.results))
       .catch(err => console.error(err));
   }, []);

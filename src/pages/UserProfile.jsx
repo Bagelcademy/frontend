@@ -73,8 +73,8 @@ const UserProfilePage = () => {
       const headers = { 'Authorization': `Bearer ${token}` };
 
       const [userResponse, notificationsResponse] = await Promise.all([
-        fetch('http://localhost:8000/account/user-info/', { headers }),
-        fetch('http://localhost:8000/account/NotifyUser/', { headers })
+        fetch('https://api.tadrisino.org/account/user-info/', { headers }),
+        fetch('https://api.tadrisino.org/account/NotifyUser/', { headers })
       ]);
 
       if (!userResponse.ok || !notificationsResponse.ok) {
@@ -128,7 +128,7 @@ const UserProfilePage = () => {
       const filePreview = URL.createObjectURL(file);
       setUser((prev) => ({ ...prev, profile_picture: filePreview }));
 
-      const uploadResponse = await fetch('http://localhost:8000/account/MyImage/', {
+      const uploadResponse = await fetch('https://api.tadrisino.org/account/MyImage/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -142,7 +142,7 @@ const UserProfilePage = () => {
 
       const uploadData = await uploadResponse.json();
 
-      const updateProfileResponse = await fetch('http://localhost:8000/account/profile/update_profile/', {
+      const updateProfileResponse = await fetch('https://api.tadrisino.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -259,7 +259,7 @@ const UserProfilePage = () => {
       }
 
       const token = localStorage.getItem("accessToken");
-      const response = await fetch('http://localhost:8000/account/profile/update_profile/', {
+      const response = await fetch('https://api.tadrisino.org/account/profile/update_profile/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

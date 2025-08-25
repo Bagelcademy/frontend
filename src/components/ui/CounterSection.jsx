@@ -9,7 +9,7 @@ const CounterSection = () => {
   useEffect(() => {
     const fetchCounters = async () => {
       try {
-        const response = await fetch('http://localhost:8000/courses/Statistics/counters/');
+        const response = await fetch('https://api.tadrisino.org/courses/Statistics/counters/');
         if (!response.ok) {
           throw new Error('Failed to fetch counters');
         }

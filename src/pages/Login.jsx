@@ -169,7 +169,7 @@ const Login = ({ setIsLoggedIn }) => {
       // Get reCAPTCHA token
       const token = getRecaptchaToken('passwordLogin');
       
-      const response = await fetch('http://localhost:8000/account/login/login/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ const Login = ({ setIsLoggedIn }) => {
 
     setError('');
     try {
-      const response = await fetch('http://localhost:8000/account/login/sendCode/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/sendCode/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ const Login = ({ setIsLoggedIn }) => {
     try {
       const token = getRecaptchaToken('verifyOtp');
       
-      const response = await fetch('http://localhost:8000/account/login/login/', {
+      const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

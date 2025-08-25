@@ -53,7 +53,7 @@ const CVEnhancer = () => {
 
   const fetchUserCourses = async () => {
     try {
-      const response = await fetch('http://localhost:8000/courses/courses/get_user_courses/', {
+      const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -68,7 +68,7 @@ const CVEnhancer = () => {
 
   const fetchUserCredits = async () => {
     try {
-      const response = await fetch('http://localhost:8000/account/user-info/', {
+      const response = await fetch('https://api.tadrisino.org/account/user-info/', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -166,7 +166,7 @@ const CVEnhancer = () => {
 
       console.log('Form data prepared, making generation API call...');
 
-      const response = await fetch('http://localhost:8000/courses/Resume/generate_resume/', {
+      const response = await fetch('https://api.tadrisino.org/courses/Resume/generate_resume/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -210,7 +210,7 @@ const CVEnhancer = () => {
     setIsDownloading(true);
 
     try {
-      const response = await fetch(`http://localhost:8000/courses/Resume/${generatedResume.id}/get_pdf/`, {
+      const response = await fetch(`https://api.tadrisino.org/courses/Resume/${generatedResume.id}/get_pdf/`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`

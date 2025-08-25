@@ -62,7 +62,7 @@ const App = () => {
     const refreshToken = localStorage.getItem('refreshToken');
     // checks axios access token validity
     if (accessToken && refreshToken) {
-      fetch('http://localhost:8000/account/token/validate-token/', {
+      fetch('https://api.tadrisino.org/account/token/validate-token/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -160,7 +160,7 @@ const SubscriptionCards = () => {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:8000/account/discounts/verify-discount/', {
+      const response = await fetch('https://api.tadrisino.org/account/discounts/verify-discount/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -207,7 +207,7 @@ const SubscriptionCards = () => {
         bodyData.discount_code = discountCode;
       }
 
-      const response = await fetch('http://localhost:8000/account/payment/', {
+      const response = await fetch('https://api.tadrisino.org/account/payment/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -264,7 +264,7 @@ const SubscriptionCards = () => {
         bodyData.discount_code = discountCode;
       }
 
-      const response = await fetch('http://localhost:8000/account/BuyCredit/', {
+      const response = await fetch('https://api.tadrisino.org/account/BuyCredit/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

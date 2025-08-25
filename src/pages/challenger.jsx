@@ -54,7 +54,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         setLoading(true);
         console.log('Fetching challenge:', { challengeNumber, courseId });
         
-        const response = await fetch(`http://localhost:8000/challenge/challenges/start/?challenge_number=${challengeNumber}&course_id=${courseId}`, {
+        const response = await fetch(`https://api.tadrisino.org/challenge/challenges/start/?challenge_number=${challengeNumber}&course_id=${courseId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -195,7 +195,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       setSubmitting(true);
       console.log('Submitting challenge:', { userChallengeId, answer });
       
-      const response = await fetch('http://localhost:8000/challenge/challenges/submit/', {
+      const response = await fetch('https://api.tadrisino.org/challenge/challenges/submit/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,

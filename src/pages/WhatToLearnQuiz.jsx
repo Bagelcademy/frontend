@@ -109,7 +109,7 @@ const QuizComponent = () => {
     );
 
     try {
-      const response = await fetch('http://localhost:8000/courses/Category/popular-courses/', {
+      const response = await fetch('https://api.tadrisino.org/courses/Category/popular-courses/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category: preferredCategory }),

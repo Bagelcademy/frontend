@@ -20,7 +20,7 @@ const ExamPage = () => {
     const fetchExam = async () => {
       try {
         const token = localStorage.getItem('accessToken');
-        const response = await fetch('http://localhost:8000/courses/paths/1/generate_exam/', {
+        const response = await fetch('https://api.tadrisino.org/courses/paths/1/generate_exam/', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -56,7 +56,7 @@ const ExamPage = () => {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('http://localhost:8000/courses/paths/1/generate_exam/', {
+      const response = await fetch('https://api.tadrisino.org/courses/paths/1/generate_exam/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

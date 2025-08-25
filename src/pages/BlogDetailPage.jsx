@@ -17,8 +17,8 @@ const BlogDetailPage = ({ postId = 1, onNavigate }) => {
         
         // Fetch post detail and recommendations simultaneously
         const [postResponse, recommendationsResponse] = await Promise.all([
-          fetch(`http://localhost:8000/blog/posts/${postId}/`),
-          fetch('http://localhost:8000/blog/posts/all/')
+          fetch(`https://api.tadrisino.org/blog/posts/${postId}/`),
+          fetch('https://api.tadrisino.org/blog/posts/all/')
         ]);
 
         if (!postResponse.ok) {

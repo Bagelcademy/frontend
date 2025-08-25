@@ -77,7 +77,7 @@ const ResetPasswordByPhone = () => {
       // Get reCAPTCHA token
       const token = await getRecaptchaToken();
 
-      const response = await fetch('http://localhost:8000/account/phone/send_verification_code/', {
+      const response = await fetch('https://api.tadrisino.org/account/phone/send_verification_code/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ const ResetPasswordByPhone = () => {
       // Get reCAPTCHA token
       const token = await getRecaptchaToken();
 
-      const response = await fetch('http://localhost:8000/account/phone/reset/', {
+      const response = await fetch('https://api.tadrisino.org/account/phone/reset/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
