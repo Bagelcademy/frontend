@@ -221,7 +221,8 @@
     },
     "contactInformation": {
       "title": "4. Contact Information",
-      "email": "For privacy concerns, email: privacy@tadrisino.com"
+      "email": "For privacy concerns, email: privacy@tadrisino.com",
+      "phoneNumber": "PhoneNumber"
     }
   },
   "Invalid discount code": "Invalid discount code",
@@ -444,5 +445,10 @@
   "Generate Resume": "Generate Resume",
   "Generating Resume...": "Generating Resume...",
   "You need at least 1 credit to generate a resume": "You need at least 1 credit to generate a resume",
-  "Please upload your resume, provide a job offer link, and GitHub profile": "Please upload your resume, provide a job offer link, and GitHub profile"
+  "Please upload your resume, provide a job offer link, and GitHub profile": "Please upload your resume, provide a job offer link, and GitHub profile",
+  "Mobile Phone": "09039179491",
+  "Footer-Mobile Phone":"09112834604",
+ "LandLine":"02433052650",
+ "ContactPage-LandLine":"02433052676",
+ "Login Placeholder":"091234567890"
 }
