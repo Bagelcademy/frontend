@@ -265,7 +265,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-            Challenge #{challengeNumber}
+            {t("Challenge")} #{challengeNumber}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -339,7 +339,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="w-5 h-5" />
-              Your Answer
+      {t("Your Answer")}
             </CardTitle>
             {/* Formatting Toolbar */}
             <div className="flex flex-wrap gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -430,7 +430,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               ref={textareaRef}
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
-              placeholder="Write your detailed answer here. You can use markdown formatting and mathematical expressions..."
+              placeholder={t("Write your detailed answer here. You can use markdown formatting and mathematical expressions...")}
               className="min-h-[300px] text-base leading-relaxed"
             />
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
@@ -453,7 +453,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           ) : (
             <Send className="w-5 h-5" />
           )}
-          {submitting ? 'Submitting...' : 'Submit Challenge'}
+          {submitting ? 'Submitting...' : t('Submit Challenge')}
         </Button>
       </div>
 

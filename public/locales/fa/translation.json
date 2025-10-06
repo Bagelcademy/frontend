@@ -1114,5 +1114,14 @@
   "monthly price":"۱۹۸۰۰۰",
   "6 months price":"۱۰۸۹۰۰۰",
    "Annual":"۲۱۷۸۰۰۰",
-   "Artificial Intelligence Credibility":"۲۹۹۰۰"
+   "Artificial Intelligence Credibility":"۲۹۹۰۰",
+
+   "Course Challenges":"چالش‌های دوره",
+   "Test your knowledge with these practice challenges designed for this course.":"دانش خود را با این چالش‌های تمرینی که برای این دوره طراحی شده‌اند، محک بزنید.",
+   "Your Answer":"پاسخ شما",
+   "Challenge":"چالش",
+   "Write your detailed answer here. You can use markdown formatting and mathematical expressions...":"پاسخ دقیق خود را اینجا بنویسید. می‌توانید از قالب‌بندی markdown و عبارات ریاضی استفاده کنید...",
+   "Submit Challenge":"ارسال چالش"
+   
+   
 }
