@@ -88,7 +88,7 @@ const CodeEditor = () => {
             className="flex items-center gap-2 bg-gray-800 text-white"
           >
             <Play className="w-4 h-4" />
-            {isExecuting ? 'Running...' : 'Execute'}
+            {isExecuting ? t('Running...') : t('Execute')}
           </Button>
         </div>
       </CardHeader>

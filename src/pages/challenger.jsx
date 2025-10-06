@@ -65,11 +65,13 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
 
-        if (!response.ok) {
+       if (!response.ok) {
           const errorText = await response.text();
-          console.log('Error response:', errorText);
-          throw new Error(`Failed to start challenge: ${response.status} - ${errorText}`);
+        
+          console.log(t('error_response'), errorText);
+  throw new Error(t('error_start_challenge', { status: response.status, details: errorText }));
         }
+       
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
@@ -434,7 +436,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               className="min-h-[300px] text-base leading-relaxed"
             />
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              <p>Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript</p>
+              <p>{t("Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript")}</p>
             </div>
           </CardContent>
         </Card>
@@ -461,18 +463,18 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {result && (
         <Card className={`border-2 ${result.status === 'Passed' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}`}>
           <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+            <CardTitle className={`flex items-center gap-2 ${result.status === t('Passed')? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
               {result.status === 'Passed' ? '✅' : '❌'} {result.status}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div>
-                <strong>Score:</strong> {result.score}/100
+                <strong>{t("Score Challenge")}:</strong> {result.score}/100
               </div>
               {result.feedback && (
                 <div>
-                  <strong>Feedback:</strong>
+                  <strong>{t("Feedback Challenge")}:</strong>
                   <p className="mt-1 p-3 bg-white dark:bg-gray-800 rounded border">
                     {result.feedback}
                   </p>

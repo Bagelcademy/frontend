@@ -1121,7 +1121,17 @@
    "Your Answer":"پاسخ شما",
    "Challenge":"چالش",
    "Write your detailed answer here. You can use markdown formatting and mathematical expressions...":"پاسخ دقیق خود را اینجا بنویسید. می‌توانید از قالب‌بندی markdown و عبارات ریاضی استفاده کنید...",
-   "Submit Challenge":"ارسال چالش"
+   "Submit Challenge":"ارسال چالش",
+   "Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript":"نکته: برای پررنگ کردن از **، برای کج کردن از *، برای معادلات از $$، برای بالانویس از ^{} و برای زیرنویس از _{} استفاده کنید.",
+   "Score Challenge":" امتیاز",
+   "Feedback Challenge":"بازخورد",
+   "Generating Audio...":"در حال تولید صدا",
+   "Generate Audio":"تولید صدا",
+   "Running...":"در حال اجرا",
+   "Execute":"اجرا",
    
-   
+    "error_response": "پاسخ خطا:",
+    "error_start_challenge": "شروع چالش با خطا مواجه شد: {{status}} - {{details}}"
+  
+  
 }
