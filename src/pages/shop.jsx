@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+
+
+
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Check, Gift } from 'lucide-react';
@@ -6,9 +9,18 @@ import { useTranslation } from 'react-i18next';
 import { Input } from '../components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { useEffect } from 'react';
 
-const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, isBestOffer, features, onSubscribe, subDuration }) => {
+const SubscriptionCard = ({
+  title,
+  price,
+  discountPrice,
+  period,
+  isHighlighted,
+  isBestOffer,
+  features,
+  onSubscribe,
+  subDuration
+}) => {
   const { t, i18n } = useTranslation();
 
   return (
@@ -27,12 +39,10 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
       </CardHeader>
       <CardContent className="text-center">
         {discountPrice ? (
-          <>
-            <div className="flex flex-col justify-center">
-              <span className="text-2xl font-bold line-through text-gray-400">{price} {t('Rial')}</span>
-              <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('Rial')}</span>
-            </div>
-          </>
+          <div className="flex flex-col justify-center">
+            <span className="text-2xl font-bold line-through text-gray-400">{price} {t('Rial')}</span>
+            <span className="text-3xl font-bold text-green-500 ml-2">{discountPrice} {t('Rial')}</span>
+          </div>
         ) : (
           <span className="text-3xl font-bold">{price} {t('Rial')}</span>
         )}
@@ -51,17 +61,22 @@ const SubscriptionCard = ({ title, price, discountPrice, period, isHighlighted, 
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button className="rounded-full text-white bg-gray-800 dark:bg-gray-800:" onClick={onSubscribe}>{t('Subscribe')} {subDuration} {subDuration > 1 ? t('months') : t('month')}</Button>
+        <Button
+          className="rounded-full text-white bg-gray-800 dark:bg-gray-800"
+          onClick={onSubscribe}
+        >
+          {t('Subscribe')} {subDuration} {subDuration > 1 ? t('months') : t('month')}
+        </Button>
       </CardFooter>
     </Card>
   );
 };
 
-
 const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
   const [credits, setCredits] = useState(1);
   const { t } = useTranslation();
 
+  //const basePrice = Number(t("Artificial Intelligence Credibility"));
   const basePrice = 29900;
   const totalPrice = basePrice * credits;
   const discountedPrice = discountPercent
@@ -97,7 +112,7 @@ const AICreditsCard = ({ discountPercent, onBuyCredits }) => {
                 {totalPrice} {t('Rial')}
               </span>
             )}
-            <p class="text-sm text-gray-500">{t("Number of")}</p>
+            <p className="text-sm text-gray-500">{t("Number of")}</p>
           </div>
 
           <div className="mx-1 mt-5">
@@ -153,7 +168,7 @@ const SubscriptionCards = () => {
     if (!token) {
       Notify.failure(t('Please login first.'));
       navigate('/login');
-      return; // Stop further execution
+      return;
     }
 
     setLoading(true);
@@ -169,9 +184,7 @@ const SubscriptionCards = () => {
         body: JSON.stringify({ code: discountCode }),
       });
 
-      if (!response.ok) {
-        throw new Error('Invalid discount code');
-      }
+      if (!response.ok) throw new Error('Invalid discount code');
 
       const data = await response.json();
       setDiscountPercent(data.percent);
@@ -190,22 +203,15 @@ const SubscriptionCards = () => {
     if (!token) {
       Notify.failure(t('Please login first.'));
       navigate('/login');
-      return; // Stop further execution
+      return;
     }
 
     setLoading(true);
     setError(null);
 
     try {
-      const bodyData = {
-        amount: amount,
-        plan_code: planCode,
-      };
-
-      // Add discount_code only if it exists
-      if (discountCode) {
-        bodyData.discount_code = discountCode;
-      }
+      const bodyData = { amount, plan_code: planCode };
+      if (discountCode) bodyData.discount_code = discountCode;
 
       const response = await fetch('https://api.tadrisino.org/account/payment/', {
         method: 'POST',
@@ -216,18 +222,13 @@ const SubscriptionCards = () => {
         body: JSON.stringify(bodyData),
       });
 
-      if (!response.ok) {
-        throw new Error('Subscription failed');
-      }
+      if (!response.ok) throw new Error('Subscription failed');
 
       const data = await response.json();
       console.log('Subscription successful:', data);
 
-      if (data.url) {
-        window.open(data.url, '_blank');
-      } else {
-        throw new Error('No payment URL provided');
-      }
+      if (data.url) window.open(data.url, '_blank');
+      else throw new Error('No payment URL provided');
     } catch (err) {
       setError(t('An error occurred during subscription. Please try again.'));
       console.error('Subscription error:', err);
@@ -236,11 +237,8 @@ const SubscriptionCards = () => {
     }
   };
 
-  const calculateDiscountedPrice = (originalPrice) => {
-    return discountPercent
-      ? Math.round(originalPrice * (1 - discountPercent / 100))
-      : null;
-  };
+  const calculateDiscountedPrice = (originalPrice) =>
+    discountPercent ? Math.round(originalPrice * (1 - discountPercent / 100)) : null;
 
   const handleBuyCredits = async (credits, amount) => {
     const token = localStorage.getItem('accessToken');
@@ -254,15 +252,8 @@ const SubscriptionCards = () => {
     setError(null);
 
     try {
-      const bodyData = {
-        credits: credits,
-        amount: amount,
-      };
-
-      // Add discount_code only if it exists
-      if (discountCode) {
-        bodyData.discount_code = discountCode;
-      }
+      const bodyData = { credits, amount };
+      if (discountCode) bodyData.discount_code = discountCode;
 
       const response = await fetch('https://api.tadrisino.org/account/BuyCredit/', {
         method: 'POST',
@@ -273,18 +264,13 @@ const SubscriptionCards = () => {
         body: JSON.stringify(bodyData),
       });
 
-      if (!response.ok) {
-        throw new Error('Credit purchase failed');
-      }
+      if (!response.ok) throw new Error('Credit purchase failed');
 
       const data = await response.json();
       console.log('Credit purchase successful:', data);
 
-      if (data.url) {
-        window.open(data.url, '_blank');
-      } else {
-        throw new Error('No payment URL provided');
-      }
+      if (data.url) window.open(data.url, '_blank');
+      else throw new Error('No payment URL provided');
     } catch (err) {
       setError(t('An error occurred during credit purchase. Please try again.'));
       console.error('Credit purchase error:', err);
@@ -319,10 +305,9 @@ const SubscriptionCards = () => {
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"
-          price="198000"
+          price={t("monthly price")}
           discountPrice={calculateDiscountedPrice(129000)}
           period="month"
-          // isHighlighted={true}
           features={[
             "Full access to all features",
             "24/7 customer support",
@@ -333,7 +318,7 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="6 Months"
-          price="1089000"
+          price={t("6 months price")}
           discountPrice={calculateDiscountedPrice(729000)}
           period="6 months"
           isBestOffer={true}
@@ -349,7 +334,7 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="Yearly"
-          price="2178000"
+          price={t("Annual")}
           discountPrice={calculateDiscountedPrice(1200000)}
           period="year"
           features={[
@@ -366,6 +351,7 @@ const SubscriptionCards = () => {
           onBuyCredits={handleBuyCredits}
         />
       </div>
+
       {loading && <p className="mt-4">{t('Processing...')}</p>}
     </div>
   );
