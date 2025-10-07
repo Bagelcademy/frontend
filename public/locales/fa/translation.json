@@ -1133,6 +1133,7 @@
     "happy": "خوشحال",
     "excited": "هیجان‌زده",
     "proud": "مغرور",
+    "sad": "ناراحت",
     "encouraging": "دلگرم‌کننده",
     "Hello. Welcome Back!": "سلام، خوش آمدی!",
     "Huzzah! Another adventure awaits! Time to conquer the digital realm with a smile on my face!":"هورا! ماجراجویی دیگه‌ای در راهه! وقتشه با لبخند دنیای دیجیتال رو فتح کنم",
@@ -1174,9 +1175,29 @@
      "hard":"سخت",
      "easy":"آسان",
      "medium":"متوسط"
-  }
+  },
       
+      "Passed":"قبول",
+      "Failed":"مردود",
+   
+   
+   
+    "The provided answer is not relevant to the challenge and does not address the task of designing a URL structure for a REST API.":"پاسخ ارائه شده به چالش مربوط نیست و به وظیفه طراحی ساختار URL برای یک REST API نمی‌پردازد.",
+    
       
+      "Subscription Duration": "{{count}} ماهه",
+      "1": "۱",
+      "2": "۲",
+      "3": "۳",
+      "4": "۴",
+      "5": "۵",
+      "6": "۶",
+      "7": "۷",
+      "8": "۸",
+      "9": "۹",
+      "10": "۱۰",
+      "11": "۱۱",
+      "12": "۱۲"
    
     
 }

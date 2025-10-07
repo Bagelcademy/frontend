@@ -59,6 +59,8 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         return '🌟';
       case 'encouraging':
         return '💪';
+      case 'encouraging':
+        return '👋';  
       default:
         return '👋';
     }

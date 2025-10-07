@@ -61,12 +61,15 @@ const SubscriptionCard = ({
         </ul>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button
-          className="rounded-full text-white bg-gray-800 dark:bg-gray-800"
-          onClick={onSubscribe}
-        >
-          {t('Subscribe')} {subDuration} {subDuration > 1 ? t('months') : t('month')}
-        </Button>
+        
+          <Button
+  className="rounded-full text-white bg-gray-800 dark:bg-gray-800"
+  onClick={onSubscribe}
+>
+  {t('Subscribe')} {t(String(subDuration))} {t('month')}
+</Button>
+
+         
       </CardFooter>
     </Card>
   );

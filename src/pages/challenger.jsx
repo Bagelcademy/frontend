@@ -267,7 +267,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-            {t("Challenge")} #{challengeNumber}
+             #{challengeNumber} {t("Challenge")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -455,7 +455,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           ) : (
             <Send className="w-5 h-5" />
           )}
-          {submitting ? 'Submitting...' : t('Submit Challenge')}
+          {submitting ? t('Submitting...' ): t('Submit Challenge')}
         </Button>
       </div>
 
@@ -463,9 +463,10 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {result && (
         <Card className={`border-2 ${result.status === 'Passed' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}`}>
           <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${result.status === t('Passed')? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-              {result.status === 'Passed' ? '✅' : '❌'} {result.status}
-            </CardTitle>
+          <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+  {result.status === 'Passed' ? '✅' : '❌'} {result.status === 'Passed' ? t('Passed') : t('Failed')}
+</CardTitle>
+
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
