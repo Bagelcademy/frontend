@@ -19,6 +19,10 @@ const CourseLandingPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isRtl = i18n.language === 'fa';
+  const toPersianDigits = (num) => {
+    return num?.toString().replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  };
+  
   const [copied, setCopied] = useState(false);
   
   useEffect(() => {
@@ -358,7 +362,9 @@ const handleChallengeClick = (challenge) => {
             <div className="flex items-center gap-3">
               {getDifficultyIcon(challenge.difficulty)}
               <span className="font-semibold text-blue-600 dark:text-blue-400">
-                #{challenge.challenge_number}
+                
+              #{isRtl ? toPersianDigits(challenge.challenge_number) : challenge.challenge_number}
+
               </span>
             </div>
             <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(challenge.difficulty)}`}>
@@ -370,7 +376,9 @@ const handleChallengeClick = (challenge) => {
           </h3>
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              {t('Challenge')} {challenge.challenge_number}
+
+            {t('Challenge')} {isRtl ? toPersianDigits(challenge.challenge_number) : challenge.challenge_number}
+
             </div>
             {isRtl ? (
               <ChevronLeft className="w-4 h-4 text-purple-500 group-hover:-translate-x-1 transition-transform" />

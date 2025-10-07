@@ -13,6 +13,10 @@ import { Play, Terminal, ChevronsLeftRightEllipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import CharacterWelcomePopup from '../components/ui/CharacterPopup';
 
+const toPersianDigits = (num) => {
+  return num.toString().replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+};
+
 const ChallengePage = ({ setIsLoggedIn }) => {
   const { courseId, challengeNumber } = useParams();
   const [challenge, setChallenge] = useState(null);
@@ -267,7 +271,9 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-             #{challengeNumber} {t("Challenge")}
+            {t("challenge_title", { number: toPersianDigits(challengeNumber) })}
+
+
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -455,7 +461,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           ) : (
             <Send className="w-5 h-5" />
           )}
-          {submitting ? t('Submitting...' ): t('Submit Challenge')}
+          {submitting ? t('Submitting...'): t('Submit Challenge')}
         </Button>
       </div>
 

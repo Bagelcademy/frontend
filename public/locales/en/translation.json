@@ -474,9 +474,17 @@
       "hard":"Hard",
       "easy":"Easy",
       "medium":"Medium"
-    }
+    },
   
-  
+    
+    
+      "challenge_title": "Challenge {{number}}"
+    
+      
+        
+      
+      
+    
 
 
 }
