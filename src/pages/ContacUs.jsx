@@ -42,7 +42,7 @@ const ContactPage = () => {
                     <Smartphone className="w-6 h-6 text-blue-500" />
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">{t("Mobile")}</p>
-                      <p className="text-gray-600 dark:text-gray-400">09039179491</p>
+                      <p className="text-gray-600 dark:text-gray-400">{t("Mobile Phone")}</p>
                     </div>
                   </div>
 
@@ -50,7 +50,7 @@ const ContactPage = () => {
                     <Phone className="w-6 h-6 text-blue-500" />
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">{t("Landline")}</p>
-                      <p className="text-gray-600 dark:text-gray-400">02433052676</p>
+                      <p className="text-gray-600 dark:text-gray-400">{t("ContactPage-LandLine")}</p>
                     </div>
                   </div>
 

@@ -313,7 +313,7 @@ const Login = ({ setIsLoggedIn }) => {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="091234567890"
+                placeholder={t("Login Placeholder")}
                 required
               />
             </div>
@@ -349,7 +349,7 @@ const Login = ({ setIsLoggedIn }) => {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                placeholder="091234567890"
+                placeholder={t("Login Placeholder")}
                 required
               />
             </div>

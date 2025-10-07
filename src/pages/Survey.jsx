@@ -447,7 +447,8 @@ const Survey = () => {
                     ${isSelected ? 'bg-white/20' : 'bg-gradient-to-r from-blue-500 to-purple-600'}`}>
                     <Icon size={32} className="text-white" />
                   </div>
-                  <p className="text-sm font-medium">{option.name}</p>
+                  <p className="text-sm font-medium">{t(option.name)}</p>
+
                   {isSelected && (
                     <div className="absolute top-2 right-2">
                       <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">

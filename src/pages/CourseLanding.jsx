@@ -19,6 +19,10 @@ const CourseLandingPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isRtl = i18n.language === 'fa';
+  const toPersianDigits = (num) => {
+    return num?.toString().replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  };
+  
   const [copied, setCopied] = useState(false);
   
   useEffect(() => {
@@ -337,51 +341,58 @@ const handleChallengeClick = (challenge) => {
             </div>
 
             {/* Course Challenges */}
-            {challenges.length > 0 && (
-              <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 shadow-lg border-2 border-purple-200 dark:border-purple-700">
-                <h2 className="text-2xl font-bold mb-6 flex items-center">
-                  <Trophy className="w-6 h-6 mx-2 text-blue-500" />
-                  {t('Course Challenges')}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  {t('Test your knowledge with these practice challenges designed for this course.')}
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {challenges.map((challenge) => (
-                    <div
-                      key={challenge.id}
-                      onClick={() => handleChallengeClick(challenge)} // Pass the whole challenge object
-                      className="group bg-white dark:bg-gray-700 rounded-lg p-4 cursor-pointer hover:bg-purple-50 dark:hover:bg-gray-600 transform hover:scale-102 transition-all duration-300 border border-purple-200 dark:border-purple-600 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          {getDifficultyIcon(challenge.difficulty)}
-                          <span className="font-semibold text-blue-600 dark:text-blue-400">
-                            #{challenge.challenge_number}
-                          </span>
-                        </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(challenge.difficulty)}`}>
-                          {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
-                        </span>
-                      </div>
-                      <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2 line-clamp-2">
-                        {challenge.topic}
-                      </h3>
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {t('Challenge')} {challenge.challenge_number}
-                        </div>
-                        {isRtl ? (
-                          <ChevronLeft className="w-4 h-4 text-purple-500 group-hover:-translate-x-1 transition-transform" />
-                        ) : (
-                          <ChevronRight className="w-4 h-4 text-purple-500 group-hover:translate-x-1 transition-transform" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            
+{challenges.length > 0 && (
+  <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-xl p-6 shadow-lg border-2 border-purple-200 dark:border-purple-700">
+    <h2 className="text-2xl font-bold mb-6 flex items-center">
+      <Trophy className="w-6 h-6 mx-2 text-blue-500" />
+      {t('Course Challenges')}
+    </h2>
+    <p className="text-gray-600 dark:text-gray-400 mb-6">
+      {t('Test your knowledge with these practice challenges designed for this course.')}
+    </p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {challenges.map((challenge) => (
+        <div
+          key={challenge.id}
+          onClick={() => handleChallengeClick(challenge)}
+          className="group bg-white dark:bg-gray-700 rounded-lg p-4 cursor-pointer hover:bg-purple-50 dark:hover:bg-gray-600 transform hover:scale-102 transition-all duration-300 border border-purple-200 dark:border-purple-600 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-lg"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-3">
+              {getDifficultyIcon(challenge.difficulty)}
+              <span className="font-semibold text-blue-600 dark:text-blue-400">
+                
+              #{isRtl ? toPersianDigits(challenge.challenge_number) : challenge.challenge_number}
+
+              </span>
+            </div>
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(challenge.difficulty)}`}>
+              {t(`difficulty_${challenge.difficulty.toLowerCase()}`)}
+            </span>
+          </div>
+          <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-2 line-clamp-2">
+            {challenge.topic}
+          </h3>
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+
+            {t('Challenge')} {isRtl ? toPersianDigits(challenge.challenge_number) : challenge.challenge_number}
+
+            </div>
+            {isRtl ? (
+              <ChevronLeft className="w-4 h-4 text-purple-500 group-hover:-translate-x-1 transition-transform" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-purple-500 group-hover:translate-x-1 transition-transform" />
             )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+            
           </div>
 
           {/* Sidebar */}

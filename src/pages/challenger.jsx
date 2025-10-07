@@ -13,6 +13,10 @@ import { Play, Terminal, ChevronsLeftRightEllipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import CharacterWelcomePopup from '../components/ui/CharacterPopup';
 
+const toPersianDigits = (num) => {
+  return num.toString().replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+};
+
 const ChallengePage = ({ setIsLoggedIn }) => {
   const { courseId, challengeNumber } = useParams();
   const [challenge, setChallenge] = useState(null);
@@ -65,11 +69,13 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
 
-        if (!response.ok) {
+       if (!response.ok) {
           const errorText = await response.text();
-          console.log('Error response:', errorText);
-          throw new Error(`Failed to start challenge: ${response.status} - ${errorText}`);
+        
+          console.log(t('error_response'), errorText);
+  throw new Error(t('error_start_challenge', { status: response.status, details: errorText }));
         }
+       
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
@@ -265,7 +271,9 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-            Challenge #{challengeNumber}
+            {t("challenge_title", { number: toPersianDigits(challengeNumber) })}
+
+
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -339,7 +347,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="w-5 h-5" />
-              Your Answer
+      {t("Your Answer")}
             </CardTitle>
             {/* Formatting Toolbar */}
             <div className="flex flex-wrap gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -430,11 +438,11 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               ref={textareaRef}
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
-              placeholder="Write your detailed answer here. You can use markdown formatting and mathematical expressions..."
+              placeholder={t("Write your detailed answer here. You can use markdown formatting and mathematical expressions...")}
               className="min-h-[300px] text-base leading-relaxed"
             />
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              <p>Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript</p>
+              <p>{t("Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript")}</p>
             </div>
           </CardContent>
         </Card>
@@ -453,7 +461,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
           ) : (
             <Send className="w-5 h-5" />
           )}
-          {submitting ? 'Submitting...' : 'Submit Challenge'}
+          {submitting ? t('Submitting...'): t('Submit Challenge')}
         </Button>
       </div>
 
@@ -461,18 +469,19 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {result && (
         <Card className={`border-2 ${result.status === 'Passed' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}`}>
           <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-              {result.status === 'Passed' ? '✅' : '❌'} {result.status}
-            </CardTitle>
+          <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+  {result.status === 'Passed' ? '✅' : '❌'} {result.status === 'Passed' ? t('Passed') : t('Failed')}
+</CardTitle>
+
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div>
-                <strong>Score:</strong> {result.score}/100
+                <strong>{t("Score Challenge")}:</strong> {result.score}/100
               </div>
               {result.feedback && (
                 <div>
-                  <strong>Feedback:</strong>
+                  <strong>{t("Feedback Challenge")}:</strong>
                   <p className="mt-1 p-3 bg-white dark:bg-gray-800 rounded border">
                     {result.feedback}
                   </p>
