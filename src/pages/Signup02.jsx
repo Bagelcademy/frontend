@@ -285,7 +285,7 @@ const validationSchema = Yup.object().shape({
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               disabled={isLoading || showVerification}
-              placeholder="09123456789"
+              placeholder={t("Reset Password-Signup-Signup02 Phone-placeholder")}
             />
           </div>
 

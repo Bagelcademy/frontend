@@ -63,7 +63,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         return '👋';
     }
   };
-
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
@@ -134,12 +134,14 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 
         {/* Character Name */}
         <div className="text-center mb-2">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-            Character {currentCharacter.character}
-          </h3>
-          <p className={`text-sm font-medium capitalize ${getMoodColor(currentCharacter.new_mood)}`}>
-            {currentCharacter.new_mood}
-          </p>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+  {t('Character')} {currentCharacter.character}
+</h3>
+<p className={`text-sm font-medium capitalize ${getMoodColor(currentCharacter.new_mood)}`}>
+  {t(currentCharacter.new_mood)}
+</p>
+
+
         </div>
 
         {/* Speech Bubble */}
@@ -149,8 +151,9 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
             <div className="absolute -top-2 left-6 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
             
             <p className="text-gray-800 dark:text-gray-200 text-center font-medium leading-relaxed">
-              {currentCharacter.reaction_message}
-            </p>
+  {t(currentCharacter.reaction_message)}
+</p>
+
           </div>
         </div>
 
@@ -185,8 +188,9 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         {/* Character Counter */}
         {characters.length > 1 && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
-            {currentCharacterIndex + 1} of {characters.length}
-          </p>
+          {t('{{current}} of {{total}}', { current: currentCharacterIndex + 1, total: characters.length })}
+        </p>
+        
         )}
       </div>
     </div>

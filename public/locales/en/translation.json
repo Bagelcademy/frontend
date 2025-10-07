@@ -308,11 +308,7 @@
       "sendButton": "Send message"
     }
   },
-  "courseLevels": {
-    "beginner": "Beginner",
-    "intermediate": "Intermediate",
-    "advanced": "Advanced"
-  },
+  
   "Active Courses": "Active Courses",
   "Active Users": "Active Users",
   "welcomeBack": "Welcome back, {{username}}!",
@@ -456,5 +452,31 @@
  "Annual":"2178000",
  "Artificial Intelligence Credibility":"29900",
  "Rial":"Toman",
- "Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript":"Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript"
+ "Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript":"Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript",
+ "Rial":"Toman",
+ 
+  "Art": "Art",
+  "Science": "Science",
+  "Business": "Business",
+  "Programming": "Programming",
+  "Mathematics": "Mathematics",
+  "Language Learning": "Language Learning",
+  "Easy": "Easy",
+  "General": "General",
+  "difficulty_easy": "Easy",
+    "difficulty_medium": "Medium",
+    "difficulty_hard": "Hard",
+    "courseLevels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "expert": "Expert",
+      "hard":"Hard",
+      "easy":"Easy",
+      "medium":"Medium"
+    }
+  
+  
+
+
 }

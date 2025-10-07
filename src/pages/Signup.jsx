@@ -366,7 +366,7 @@ const Signup = () => {
               onChange={(e) => setPhoneNumber(e.target.value)}
               required
               disabled={isLoading}
-              placeholder="09123456789"
+              placeholder={t("Reset Password-Signup-Signup02 Phone-placeholder")}
               className="mb-1"
               autoComplete="tel"
             />
