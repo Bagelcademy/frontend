@@ -1,14 +1,13 @@
-
-
-
-import React, { useState, useEffect } from 'react';
-import { Button } from './button';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from "react";
+import { Button } from "./button";
+import { useTranslation } from "react-i18next";
 
 const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
   const { t } = useTranslation();
   const [currentCharacterIndex, setCurrentCharacterIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+
+  const [showCharacterPopup, setShowCharacterPopup] = useState(false);
 
   useEffect(() => {
     if (isOpen && characters && characters.length > 0) {
@@ -38,33 +37,33 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 
   const getMoodColor = (mood) => {
     switch (mood?.toLowerCase()) {
-      case 'happy':
-        return 'text-yellow-500';
-      case 'excited':
-        return 'text-orange-500';
-      case 'proud':
-        return 'text-purple-500';
-      case 'encouraging':
-        return 'text-green-500';
+      case "happy":
+        return "text-yellow-500";
+      case "excited":
+        return "text-orange-500";
+      case "proud":
+        return "text-purple-500";
+      case "encouraging":
+        return "text-green-500";
       default:
-        return 'text-blue-500';
+        return "text-blue-500";
     }
   };
 
   const getMoodEmoji = (mood) => {
     switch (mood?.toLowerCase()) {
-      case 'happy':
-        return '😊';
-      case 'excited':
-        return '🎉';
-      case 'proud':
-        return '🌟';
-      case 'encouraging':
-        return '💪';
-      case 'motivated':
-        return '💪'
+      case "happy":
+        return "😊";
+      case "excited":
+        return "🎉";
+      case "proud":
+        return "🌟";
+      case "encouraging":
+        return "💪";
+      case "motivated":
+        return "💪";
       default:
-        return '👋';
+        return "👋";
     }
   };
 
@@ -79,7 +78,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
       {/* Popup Container */}
       <div
         className={`relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-11/12 max-w-md mx-4 p-6 transform transition-all duration-300 ${
-          isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+          isVisible ? "scale-100 opacity-100" : "scale-95 opacity-0"
         }`}
       >
         {/* Close Button */}
@@ -98,10 +97,10 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
                 key={index}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   index === currentCharacterIndex
-                    ? 'bg-blue-500'
+                    ? "bg-blue-500"
                     : index < currentCharacterIndex
-                    ? 'bg-green-500'
-                    : 'bg-gray-300 dark:bg-gray-600'
+                    ? "bg-green-500"
+                    : "bg-gray-300 dark:bg-gray-600"
                 }`}
               />
             ))}
@@ -136,7 +135,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         {/* Character Name */}
         <div className="text-center mb-2">
           <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-            {t('Character')} {currentCharacter.character}
+            {t("Character")} {currentCharacter.character}
           </h3>
           <p
             className={`text-sm font-medium capitalize ${getMoodColor(
@@ -167,13 +166,13 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
                 variant="outline"
                 className="flex-1 rounded-xl border-2"
               >
-                {t('Skip All')}
+                {t("Skip All")}
               </Button>
               <Button
                 onClick={handleNext}
                 className="flex-1 bg-green-500 hover:bg-green-600 text-white rounded-xl"
               >
-                {t('Next')} →
+                {t("Next")} →
               </Button>
             </>
           ) : (
@@ -181,7 +180,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
               onClick={handleNext}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl py-3 font-semibold"
             >
-              {t('Continue')} ✨
+              {t("Continue")} ✨
             </Button>
           )}
         </div>
@@ -189,7 +188,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         {/* Character Counter */}
         {characters.length > 1 && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
-            {t('{{current}} of {{total}}', {
+            {t("{{current}} of {{total}}", {
               current: currentCharacterIndex + 1,
               total: characters.length,
             })}
@@ -201,20 +200,3 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 };
 
 export default CharacterWelcomePopup;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
