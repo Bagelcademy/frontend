@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from './button';
 import { useTranslation } from 'react-i18next';
@@ -59,8 +60,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         return '🌟';
       case 'encouraging':
         return '💪';
-      case 'encouraging':
-        return '👋';  
+      
       default:
         return '👋';
     }
@@ -200,3 +200,18 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 };
 
 export default CharacterWelcomePopup;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
