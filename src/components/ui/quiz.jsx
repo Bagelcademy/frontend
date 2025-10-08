@@ -1,5 +1,4 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Button } from './button';
@@ -10,13 +9,12 @@ import { useTranslation } from 'react-i18next';
 import CharacterWelcomePopup from './CharacterPopup';
 
 const Quiz = ({ courseId, lessonId, onComplete }) => {
-  const { t } = useTranslation();
-
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false);
+  const { t, i18n } = useTranslation();
 
   // جدید برای پاپ‌آپ شخصیت
   const [showCharacterPopup, setShowCharacterPopup] = useState(false);
@@ -36,7 +34,11 @@ const Quiz = ({ courseId, lessonId, onComplete }) => {
       await fetch(
         `https://api.tadrisino.org/courses/course-generation/quizContent/${courseId}/${lessonId}/`,
         {
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept-Language': i18n.language || 'en',
+          },
         }
       ).then(res => res.json());
 
@@ -56,7 +58,11 @@ const Quiz = ({ courseId, lessonId, onComplete }) => {
       const response = await fetch(
         `https://api.tadrisino.org/courses/exams/${lessonId}/Qlist/`,
         {
-          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept-Language': i18n.language || 'en',
+          },
         }
       );
       const data = await response.json();
@@ -92,61 +98,63 @@ const Quiz = ({ courseId, lessonId, onComplete }) => {
     return questions.every(q => selectedAnswers[q.id] !== undefined);
   };
 
- 
-  
-const handleSubmit = async () => {
-  if (!validateAnswers()) {
-    setShowAlert(true);
-    return;
-  }
+  const handleSubmit = async () => {
+    if (!validateAnswers()) {
+      setShowAlert(true);
+      return;
+    }
 
-  const token = localStorage.getItem('accessToken');
-  if (!token) return;
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
 
-  try {
-    const response = await fetch(
-      `https://api.tadrisino.org/courses/quizzes/${lessonId}/submit_answers/`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          lessonId,
-          answers: Object.entries(selectedAnswers).map(([questionId, answer]) => ({
-            questionId: parseInt(questionId),
-            answer: parseInt(answer),
-          })),
-        }),
-      }
-    );
+    try {
+      const response = await fetch(
+        `https://api.tadrisino.org/courses/quizzes/${lessonId}/submit_answers/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+            'Accept-Language': i18n.language || 'en',
+          },
+          body: JSON.stringify({
+            lessonId,
+            answers: Object.entries(selectedAnswers).map(([questionId, answer]) => ({
+              questionId: parseInt(questionId),
+              answer: parseInt(answer),
+            })),
+          }),
+        }
+      );
 
-    const data = await response.json();
-    setResults(data);
+      const data = await response.json();
+      setResults(data);
 
-    // ✅ دسترسی صحیح به داده شخصیت
-    const mainChar = data.characters?.main_character?.[0];
+      // ✅ دسترسی صحیح به داده شخصیت
+      const mainChar = data.characters?.main_character?.[0];
+      const reactionMessage =
+  mainChar?.reaction_message || // اگر API پیام داد استفاده کن
+  (data.passed
+    ? t('quiz.passedMessage')  // اگر کاربر قبول شد، پیام Passed با زبان سایت
+    : t('quiz.failedMessage')); // اگر رد شد، پیام 
+      const characterData = {
+        character: mainChar?.character || 'B',
+        avatar: mainChar?.avatar || '',
+        new_mood: mainChar?.new_mood || (data.passed ? 'happy' : 'sad'),
+        reaction_message:
+          mainChar?.reaction_message ||
+          (data.passed ? t('quiz.passedMessage') : t('quiz.failedMessage')),
+      };
+      
+      setPopupCharacter([characterData]);
+      setShowCharacterPopup(true);
 
-    const characterData = {
-      character: mainChar?.character || 'B',
-      avatar: mainChar?.avatar || '',
-      new_mood: mainChar?.new_mood || (data.passed ? 'happy' : 'sad'),
-      reaction_message:
-        mainChar?.reaction_message ||
-        (data.passed ? t('quiz.passedMessage') : t('quiz.failedMessage')),
-    };
+      if (data.passed) onComplete?.();
+    } catch (error) {
+      console.error('Failed to submit quiz:', error);
+    }
+  };
 
-    setPopupCharacter([characterData]);
-    setShowCharacterPopup(true);
-
-    if (data.passed) onComplete?.();
-  } catch (error) {
-    console.error('Failed to submit quiz:', error);
-  }
-};
-
-  
   if (loading) {
     return (
       <Card className="w-full">

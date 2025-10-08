@@ -5,7 +5,7 @@ import {
   Share2, ClipboardCheck, Target, Zap, Brain
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
+import CharacterWelcomePopup from '../components/ui/CharacterPopup';
 const CourseLandingPage = () => {
   const { t, i18n } = useTranslation();
   const [course, setCourse] = useState(null);
@@ -16,6 +16,12 @@ const CourseLandingPage = () => {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [lastCompletedLessonId, setLastCompletedLessonId] = useState(null);
+  
+// Character pop-up state
+const [showCharacterPopup, setShowCharacterPopup] = useState(false);
+const [popupCharacter, setPopupCharacter] = useState(null);
+
+
   const { id } = useParams();
   const navigate = useNavigate();
   const isRtl = i18n.language === 'fa';
@@ -134,44 +140,101 @@ const CourseLandingPage = () => {
     }
   };
 
-const handleChallengeClick = (challenge) => {
-  if (!isLoggedIn) {
-    navigate('/login');
-    return;
-  }
-  navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
-};
-
-  const handleShare = () => {
-    const currentURL = window.location.href; // Get the current page URL
-    navigator.clipboard.writeText(currentURL).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000); // Reset message after 2 sec
-    });
-  };
-
-  const handleEnrollClick = async () => {
+  
+  /*const handleEnrollClick = async () => {
     if (!isLoggedIn) {
       navigate('/login');
       return;
     }
-
+  
     try {
       const response = await fetch(`https://api.tadrisino.org/courses/enroll/${id}/enroll/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'Content-Type': 'application/json'
         }
       });
-
+  
+      const data = await response.json(); // 👈 داده را بخوان
+  
       if (response.ok) {
         setIsEnrolled(true);
+  
+        // 👇 بررسی کنیم آیا فیلد triggered وجود دارد
+        if (data.triggered && Array.isArray(data.triggered) && data.triggered.length > 0) {
+          console.log('✅ Triggered characters:', data.triggered); // برای تست ببین تو console میاد یا نه
+          setPopupCharacter(data.triggered);
+        } else {
+          console.warn('⚠️ No triggered characters found in response');
+          setPopupCharacter([
+            {
+              character: 'A',
+              avatar: '/avatars/default.png',
+              new_mood: 'happy',
+              reaction_message: t('You have successfully enrolled! Welcome aboard.')
+            }
+          ]);
+        }
+  
+        setShowCharacterPopup(true);
+      } else {
+        console.error('Enrollment failed:', data);
       }
     } catch (error) {
-      console.error("Error enrolling:", error);
+      console.error('Error enrolling:', error);
     }
-  };
+  };*/
+ 
+const handleEnrollClick = async () => {
+  if (!isLoggedIn) {
+    navigate('/login');
+    return;
+  }
+
+  try {
+    const response = await fetch(`https://api.tadrisino.org/courses/enroll/${id}/enroll/`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'application/json',
+        'Accept-Language': i18n.language || 'en'  // 👈 زبان جاری کاربر
+      }
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      setIsEnrolled(true);
+
+      if (data.triggered && Array.isArray(data.triggered) && data.triggered.length > 0) {
+        setPopupCharacter(data.triggered);
+      } else {
+        setPopupCharacter([
+          {
+            character: 'A',
+            avatar: '/avatars/default.png',
+            new_mood: 'happy',
+            reaction_message: t('You have successfully enrolled! Welcome aboard.')
+          }
+        ]);
+      }
+
+      setShowCharacterPopup(true);
+    } else {
+      console.error('Enrollment failed:', data);
+    }
+  } catch (error) {
+    console.error('Error enrolling:', error);
+  }
+};
+
+  
+  
+  
+  
 
   const getDifficultyIcon = (difficulty) => {
     switch (difficulty.toLowerCase()) {
@@ -198,7 +261,11 @@ const handleChallengeClick = (challenge) => {
         return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
     }
   };
-
+  const handleShare = () => {
+    console.log("Share clicked!");
+    // یا منطق اشتراک‌گذاری واقعی
+  };
+  
   const StarRating = ({ rating }) => {
     return (
       <div className="flex items-center">
@@ -440,6 +507,18 @@ const handleChallengeClick = (challenge) => {
 
         </div>
       </div>
+      {showCharacterPopup && popupCharacter && (
+  <CharacterWelcomePopup
+    characters={popupCharacter}
+    isOpen={showCharacterPopup}
+    onClose={() => setShowCharacterPopup(false)}
+    onContinue={() => {
+      setShowCharacterPopup(false);
+      // Optional: redirect or perform additional actions after closing
+    }}
+  />
+)}
+
     </div>
   );
 };
