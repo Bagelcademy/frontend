@@ -1,4 +1,6 @@
 
+
+
 import React, { useState, useEffect } from 'react';
 import { Button } from './button';
 import { useTranslation } from 'react-i18next';
@@ -24,14 +26,13 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 
   const handleNext = () => {
     if (isLastCharacter) {
-      // Close popup and continue to next page
+      // Close popup and continue
       setIsVisible(false);
       setTimeout(() => {
         onContinue();
       }, 300);
     } else {
-      // Show next character
-      setCurrentCharacterIndex(prev => prev + 1);
+      setCurrentCharacterIndex((prev) => prev + 1);
     }
   };
 
@@ -60,32 +61,31 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         return '🌟';
       case 'encouraging':
         return '💪';
-      
+      case 'motivated':
+        return '💪'
       default:
         return '👋';
     }
   };
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
         onClick={onClose}
       />
-      
+
       {/* Popup Container */}
-      <div className={`
-        relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl 
-        w-11/12 max-w-md mx-4 p-6 transform transition-all duration-300
-        ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}
-      `}>
+      <div
+        className={`relative bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-11/12 max-w-md mx-4 p-6 transform transition-all duration-300 ${
+          isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        }`}
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 
-                   flex items-center justify-center text-gray-600 dark:text-gray-400 
-                   hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         >
           ✕
         </button>
@@ -97,11 +97,11 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
               <div
                 key={index}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                  index === currentCharacterIndex 
-                    ? 'bg-blue-500' 
-                    : index < currentCharacterIndex 
-                      ? 'bg-green-500' 
-                      : 'bg-gray-300 dark:bg-gray-600'
+                  index === currentCharacterIndex
+                    ? 'bg-blue-500'
+                    : index < currentCharacterIndex
+                    ? 'bg-green-500'
+                    : 'bg-gray-300 dark:bg-gray-600'
                 }`}
               />
             ))}
@@ -117,18 +117,17 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
                 alt={`Character ${currentCharacter.character}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.target.src = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23e2e8f0"/><text x="50" y="60" text-anchor="middle" font-size="30" fill="%236b7280">${currentCharacter.character}</text></svg>`;
+                  e.target.src = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e2e8f0'/><text x='50' y='60' text-anchor='middle' font-size='30' fill='%236b7280'>${currentCharacter.character}</text></svg>`;
                 }}
               />
             </div>
-            
+
             {/* Mood Indicator */}
-            <div className={`
-              absolute -bottom-1 -right-1 w-8 h-8 rounded-full 
-              bg-white dark:bg-gray-800 border-2 border-white dark:border-gray-800
-              flex items-center justify-center text-lg shadow-lg
-              ${getMoodColor(currentCharacter.new_mood)}
-            `}>
+            <div
+              className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white dark:bg-gray-800 border-2 border-white dark:border-gray-800 flex items-center justify-center text-lg shadow-lg ${getMoodColor(
+                currentCharacter.new_mood
+              )}`}
+            >
               {getMoodEmoji(currentCharacter.new_mood)}
             </div>
           </div>
@@ -136,14 +135,16 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 
         {/* Character Name */}
         <div className="text-center mb-2">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-  {t('Character')} {currentCharacter.character}
-</h3>
-<p className={`text-sm font-medium capitalize ${getMoodColor(currentCharacter.new_mood)}`}>
-  {t(currentCharacter.new_mood)}
-</p>
-
-
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+            {t('Character')} {currentCharacter.character}
+          </h3>
+          <p
+            className={`text-sm font-medium capitalize ${getMoodColor(
+              currentCharacter.new_mood
+            )}`}
+          >
+            {t(currentCharacter.new_mood)}
+          </p>
         </div>
 
         {/* Speech Bubble */}
@@ -151,11 +152,9 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
           <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 relative">
             {/* Speech bubble tail */}
             <div className="absolute -top-2 left-6 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
-            
             <p className="text-gray-800 dark:text-gray-200 text-center font-medium leading-relaxed">
-  {t(currentCharacter.reaction_message)}
-</p>
-
+              {t(currentCharacter.reaction_message)}
+            </p>
           </div>
         </div>
 
@@ -190,9 +189,11 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
         {/* Character Counter */}
         {characters.length > 1 && (
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
-          {t('{{current}} of {{total}}', { current: currentCharacterIndex + 1, total: characters.length })}
-        </p>
-        
+            {t('{{current}} of {{total}}', {
+              current: currentCharacterIndex + 1,
+              total: characters.length,
+            })}
+          </p>
         )}
       </div>
     </div>
@@ -200,6 +201,8 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 };
 
 export default CharacterWelcomePopup;
+
+
 
 
 
