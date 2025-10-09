@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { motion, AnimatePresence } from "framer-motion";
-import { Dialog, DialogContent } from "../components/dialog/dialog";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
-import { Button } from "../components/ui/button";
-import { Notify } from "notiflix/build/notiflix-notify-aio";
-import ReactMarkdown from "react-markdown";
-import Confetti from "react-confetti";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Dialog, DialogContent } from '../components/dialog/dialog';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import ReactMarkdown from 'react-markdown';
+import Confetti from 'react-confetti';
 import {
   BookOpen,
   ArrowLeft,
@@ -30,27 +25,27 @@ import {
   Loader2,
   SkipBack,
   SkipForward,
-} from "lucide-react";
+} from 'lucide-react';
 
-import AIAssistant from "../components/dialog/chat";
-import CodeEditor from "../components/ui/code-editor";
-import Quiz from "../components/ui/quiz";
-import Notes from "../components/ui/notes";
-import LoadingSpinner from "../components/ui/loading";
+import AIAssistant from '../components/dialog/chat';
+import CodeEditor from '../components/ui/code-editor';
+import Quiz from '../components/ui/quiz';
+import Notes from '../components/ui/notes';
+import LoadingSpinner from '../components/ui/loading';
 
 const LessonPage = () => {
   const { t } = useTranslation();
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
   const TABS = [
-    { id: "content", icon: BookOpen, label: t("Content") },
-    { id: "quiz", icon: Trophy, label: t("Quiz") },
-    { id: "notes", icon: Pencil, label: t("Notes") },
-    { id: "code", icon: Terminal, label: t("Code Lab") },
-    { id: "ai", icon: BrainCircuit, label: t("AI Assistant") },
+    { id: 'content', icon: BookOpen, label: t('Content') },
+    { id: 'quiz', icon: Trophy, label: t('Quiz') },
+    { id: 'notes', icon: Pencil, label: t('Notes') },
+    { id: 'code', icon: Terminal, label: t('Code Lab') },
+    { id: 'ai', icon: BrainCircuit, label: t('AI Assistant') },
   ];
-
-  const [activeTab, setActiveTab] = useState("content");
+  
+  const [activeTab, setActiveTab] = useState('content');
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -75,9 +70,6 @@ const LessonPage = () => {
   const [isBuffering, setIsBuffering] = useState(false);
   const [volume, setVolume] = useState(1);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [charList, setCharList] = useState([]);
-
-  const [showCharacterPopup, setShowCharacterPopup] = useState(false);
 
   const handleBack = () => {
     navigate(`/course/${courseId}`);
@@ -86,15 +78,15 @@ const LessonPage = () => {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }, [activeTab]);
 
   // Audio generation function
   const generateAudio = async () => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
     if (!token) {
-      Notify.failure(t("Please login first."));
+      Notify.failure(t('Please login first.'));
       return;
     }
 
@@ -103,32 +95,30 @@ const LessonPage = () => {
       const response = await fetch(
         `https://api.tadrisino.org/courses/lesson-tts/generate_voice/`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({ lesson_id: lessonId }),
         }
       );
 
       const data = await response.json();
-
+      
       if (response.ok) {
         // Construct full URL for the audio file
-        const fullAudioUrl =
-          typeof data.audio_url === "string" &&
-          data.audio_url.startsWith("http")
-            ? data.audio_url
-            : `http://localhost:8000${data.audio_url}`;
+      const fullAudioUrl = typeof data.audio_url === 'string' && data.audio_url.startsWith('http') 
+        ? data.audio_url 
+        : `http://localhost:8000${data.audio_url}`;
         setAudioUrl(fullAudioUrl);
-        Notify.success(t("Audio generated successfully!"));
+        Notify.success(t('Audio generated successfully!'));
       } else {
-        Notify.failure(data.error || t("Failed to generate audio"));
+        Notify.failure(data.error || t('Failed to generate audio'));
       }
     } catch (error) {
-      Notify.failure(t("Error generating audio"));
-      console.error("Audio generation error:", error);
+      Notify.failure(t('Error generating audio'));
+      console.error('Audio generation error:', error);
     } finally {
       setIsGeneratingAudio(false);
     }
@@ -165,10 +155,7 @@ const LessonPage = () => {
 
   const skipForward = () => {
     if (audioElement) {
-      audioElement.currentTime = Math.min(
-        audioElement.currentTime + 10,
-        duration
-      );
+      audioElement.currentTime = Math.min(audioElement.currentTime + 10, duration);
     }
   };
 
@@ -225,15 +212,15 @@ const LessonPage = () => {
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
   useEffect(() => {
     const checkAndFetchLesson = async () => {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem('accessToken');
       if (!token) {
-        Notify.failure(t("Please login first."));
-        navigate("/login");
+        Notify.failure(t('Please login first.'));
+        navigate('/login');
         return;
       }
 
@@ -244,7 +231,7 @@ const LessonPage = () => {
         );
 
         if (generationResponse.status === 201) {
-          console.log("Generating course content...");
+          console.log('Generating course content...');
           window.location.reload();
           return;
         }
@@ -252,20 +239,20 @@ const LessonPage = () => {
         const lessonResponse = await fetch(
           `https://api.tadrisino.org/courses/courses/${courseId}/lessons/${lessonId}/`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
               Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
 
         if (!lessonResponse.ok && lessonResponse.status === 403) {
-          throw new Error(t("You do not have subscription anymore."));
+          throw new Error(t('You do not have subscription anymore.'));
         }
 
         if (!lessonResponse.ok) {
-          throw new Error(t("Failed to fetch lesson data"));
+          throw new Error(t('Failed to fetch lesson data'));
         }
 
         const data = await lessonResponse.json();
@@ -273,12 +260,13 @@ const LessonPage = () => {
         setIsLastLesson(data.is_last_lesson);
 
         // Check if lesson has existing audio and construct full URL
-        if (typeof data.audio === "string" && data.audio.trim() !== "") {
-          const fullAudioUrl = data.audio.startsWith("http")
-            ? data.audio
+        if (typeof data.audio === 'string' && data.audio.trim() !== '') {
+          const fullAudioUrl = data.audio.startsWith('http') 
+            ? data.audio 
             : `http://localhost:8000${data.audio}`;
           setAudioUrl(fullAudioUrl);
         }
+
 
         if (data.has_quiz === false) {
           setNoQuiz(true);
@@ -287,10 +275,10 @@ const LessonPage = () => {
           await fetch(
             `https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`,
             {
-              method: "POST",
+              method: 'POST',
               headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             }
           );
@@ -316,31 +304,31 @@ const LessonPage = () => {
       const audio = new Audio(audioUrl);
       audio.volume = volume;
       audio.playbackRate = playbackRate;
-      audio.addEventListener("timeupdate", handleTimeUpdate);
-      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-      audio.addEventListener("ended", () => setIsPlaying(false));
-      audio.addEventListener("waiting", handleWaiting);
-      audio.addEventListener("canplay", handleCanPlay);
-      audio.addEventListener("error", (e) => {
-        console.error("Audio error:", e);
-        Notify.failure(t("Failed to load audio"));
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('ended', () => setIsPlaying(false));
+      audio.addEventListener('waiting', handleWaiting);
+      audio.addEventListener('canplay', handleCanPlay);
+      audio.addEventListener('error', (e) => {
+        console.error('Audio error:', e);
+        Notify.failure(t('Failed to load audio'));
       });
       setAudioElement(audio);
 
       return () => {
-        audio.removeEventListener("timeupdate", handleTimeUpdate);
-        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-        audio.removeEventListener("ended", () => setIsPlaying(false));
-        audio.removeEventListener("waiting", handleWaiting);
-        audio.removeEventListener("canplay", handleCanPlay);
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('ended', () => setIsPlaying(false));
+        audio.removeEventListener('waiting', handleWaiting);
+        audio.removeEventListener('canplay', handleCanPlay);
         audio.pause();
       };
     }
   }, [audioUrl, volume, playbackRate]);
 
   const handleNavigation = async (direction) => {
-    if (direction === "next" && !isNextAvailable) {
-      Notify.failure(t("Complete the lesson first"));
+    if (direction === 'next' && !isNextAvailable) {
+      Notify.failure(t('Complete the lesson first'));
       return;
     }
 
@@ -353,40 +341,22 @@ const LessonPage = () => {
     setIsNavigating(true);
     setIsLoadingNextLesson(true);
 
-    if (direction === "next") {
+    if (direction === 'next') {
       try {
-        const token = localStorage.getItem("accessToken");
-        await fetch(
-          `https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        if (isLastLesson) {
-          // باز کردن پاپ‌آپ کاراکتر
-          try {
-            const token = localStorage.getItem("accessToken");
-            const response = await fetch(
-              `https://api.tadrisino.org/courses/characters/${courseId}/`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            const data = await response.json();
-            setCharacters(data.characters || []); // فرض می‌کنیم API یک آرایه characters برمی‌گردونه
-            setShowCharacterPopup(true);
-          } catch (err) {
-            console.error("Failed to fetch characters", err);
-          }
+        const token = localStorage.getItem('accessToken');
+        await fetch(`https://api.tadrisino.org/courses/student-progress/${lessonId}/complete-lesson/`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-          setOpenDialog(true); // یا می‌تونی جای Dialog از پاپ‌آپ کاراکتر استفاده کنی
+        if (isLastLesson) {
+          setOpenDialog(true);
           setIsLoadingNextLesson(false);
         } else {
-          setActiveTab("content");
+          setActiveTab('content');
           navigate(`/courses/${courseId}/lessons/${parseInt(lessonId) + 1}`);
         }
       } catch (err) {
@@ -405,7 +375,7 @@ const LessonPage = () => {
 
   const handleQuizComplete = () => {
     setIsNextAvailable(true);
-    Notify.success(t("Quiz completed successfully"));
+    Notify.success(t('Quiz completed successfully'));
   };
 
   if (loading || isLoadingNextLesson) {
@@ -414,9 +384,7 @@ const LessonPage = () => {
         <div className="bg-white dark:bg-slate-800 rounded-lg p-8 flex flex-col items-center space-y-4">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
           <p className="text-lg font-medium text-slate-700 dark:text-slate-200">
-            {isLoadingNextLesson
-              ? t("Loading next lesson...")
-              : t("Loading lesson...")}
+            {isLoadingNextLesson ? t('Loading next lesson...') : t('Loading lesson...')}
           </p>
         </div>
       </div>
@@ -436,7 +404,7 @@ const LessonPage = () => {
           className="flex items-center gap-2 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
         >
           <ChevronLeft className="w-4 h-4" />
-          {t("Back to Course")}
+          {t('Back to Course')}
         </Button>
       </div>
 
@@ -450,11 +418,7 @@ const LessonPage = () => {
                   key={id}
                   variant="ghost"
                   onClick={() => setActiveTab(id)}
-                  className={
-                    activeTab === id
-                      ? "text-blue-500 bg-gray-300"
-                      : "text-gray-700 bg-gray-300"
-                  }
+                  className={activeTab === id ? 'text-blue-500 bg-gray-300' : 'text-gray-700 bg-gray-300'}
                 >
                   <Icon className="w-5 h-5" />
                   <span className="mx-2 hidden sm:inline">{label}</span>
@@ -475,13 +439,11 @@ const LessonPage = () => {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            {activeTab === "content" && (
+            {activeTab === 'content' && (
               <Card className="max-w-4xl mx-auto">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold">
-                    {lesson?.title}
-                  </CardTitle>
-
+                  <CardTitle className="text-2xl font-bold">{lesson?.title}</CardTitle>
+                  
                   {/* Enhanced Audio Section */}
                   <div className="mt-4 p-6 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg shadow-inner">
                     {!audioUrl ? (
@@ -496,9 +458,7 @@ const LessonPage = () => {
                           ) : (
                             <Volume2 className="w-5 h-5" />
                           )}
-                          {isGeneratingAudio
-                            ? t("Generating Audio...")
-                            : t("Generate Audio")}
+                          {isGeneratingAudio ? t('Generating Audio...') : t('Generate Audio')}
                         </Button>
                       </div>
                     ) : (
@@ -513,7 +473,7 @@ const LessonPage = () => {
                           >
                             <SkipBack className="w-4 h-4" />
                           </Button>
-
+                          
                           <Button
                             onClick={togglePlayPause}
                             size="lg"
@@ -528,7 +488,7 @@ const LessonPage = () => {
                               <Play className="w-6 h-6" />
                             )}
                           </Button>
-
+                          
                           <Button
                             onClick={skipForward}
                             size="sm"
@@ -548,13 +508,11 @@ const LessonPage = () => {
                             >
                               <div
                                 className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300 shadow-sm"
-                                style={{
-                                  width: `${(currentTime / duration) * 100}%`,
-                                }}
+                                style={{ width: `${(currentTime / duration) * 100}%` }}
                               />
                             </div>
                           </div>
-
+                          
                           <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                             <span>{formatTime(currentTime)}</span>
                             <span>{formatTime(duration)}</span>
@@ -572,20 +530,16 @@ const LessonPage = () => {
                             >
                               <RotateCcw className="w-4 h-4" />
                             </Button>
-
+                            
                             <Button
                               onClick={toggleMute}
                               size="sm"
                               variant="outline"
                               className="border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
                             >
-                              {isMuted ? (
-                                <VolumeX className="w-4 h-4" />
-                              ) : (
-                                <Volume2 className="w-4 h-4" />
-                              )}
+                              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                             </Button>
-
+                            
                             {/* Volume Control */}
                             <div className="flex items-center gap-2">
                               <input
@@ -599,27 +553,21 @@ const LessonPage = () => {
                               />
                             </div>
                           </div>
-
+                          
                           {/* Playback Speed */}
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-600 dark:text-gray-300">
-                              Speed:
-                            </span>
+                            <span className="text-sm text-gray-600 dark:text-gray-300">Speed:</span>
                             <div className="flex gap-1">
                               {[0.5, 0.75, 1, 1.25, 1.5, 2].map((rate) => (
                                 <Button
                                   key={rate}
                                   onClick={() => handlePlaybackRateChange(rate)}
                                   size="sm"
-                                  variant={
-                                    playbackRate === rate
-                                      ? "default"
-                                      : "outline"
-                                  }
+                                  variant={playbackRate === rate ? "default" : "outline"}
                                   className={`text-xs px-2 py-1 ${
                                     playbackRate === rate
-                                      ? "bg-blue-600 text-white"
-                                      : "border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                                      ? 'bg-blue-600 text-white'
+                                      : 'border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
                                   }`}
                                 >
                                   {rate}x
@@ -632,11 +580,10 @@ const LessonPage = () => {
                     )}
                   </div>
                 </CardHeader>
-
+                
                 <CardContent>
                   <div className="prose dark:prose-invert max-w-none">
-                    <ReactMarkdown
-                      className="text-justify"
+                    <ReactMarkdown className="text-justify"
                       components={{
                         code({ node, inline, className, children, ...props }) {
                           return inline ? (
@@ -662,21 +609,19 @@ const LessonPage = () => {
               </Card>
             )}
 
-            {activeTab === "quiz" && (
-              <Quiz
-                lessonId={lessonId}
-                courseId={courseId}
-                onComplete={handleQuizComplete}
-              />
+            {activeTab === 'quiz' && (
+              <Quiz lessonId={lessonId} courseId={courseId} onComplete={handleQuizComplete} />
             )}
 
-            {activeTab === "notes" && (
+            {activeTab === 'notes' && (
               <Notes lessonId={lessonId} courseId={courseId} />
             )}
 
-            {activeTab === "code" && <CodeEditor />}
+            {activeTab === 'code' && (
+              <CodeEditor />
+            )}
 
-            {activeTab === "ai" && (
+            {activeTab === 'ai' && (
               <div className="h-full">
                 <AIAssistant lessonContent={lesson?.content} />
               </div>
@@ -690,28 +635,28 @@ const LessonPage = () => {
         <div className="container mx-auto flex justify-between items-center">
           <Button
             variant="outline"
-            onClick={() => handleNavigation("previous")}
+            onClick={() => handleNavigation('previous')}
             disabled={parseInt(lessonId) === 1 || isLoadingNextLesson}
             className="w-24 bg-gray-700 hoveer:bg-gray-800 text-white hover:border-blue-700"
           >
             {isLoadingNextLesson ? (
               <span className="animate-spin border-2 border-slate-500 border-t-transparent rounded-full w-5 h-5"></span>
             ) : (
-              t("Previous")
+              t('Previous')
             )}
           </Button>
           <div className="text-center text-sm text-slate-500 dark:text-slate-400">
-            {t("For the next lesson, complete the exam first.")}
+            {t('For the next lesson, complete the exam first.')}
           </div>
           <Button
-            onClick={() => handleNavigation("next")}
+            onClick={() => handleNavigation('next')}
             disabled={!isNextAvailable || isNavigating || isLoadingNextLesson}
             className="w-24 flex items-center justify-center bg-gray-700 hoveer:bg-gray-800 text-white hover:border-blue-700"
           >
             {isLoadingNextLesson ? (
               <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
             ) : (
-              t("Next")
+              t('Next')
             )}
           </Button>
         </div>
@@ -727,22 +672,16 @@ const LessonPage = () => {
               </h3>
               <p className="text-black dark:text-white">
                 {t("You've completed the entire course!")}
-                {t(
-                  "A certificate of completion will be emailed to you shortly."
-                )}
+                {t("A certificate of completion will be emailed to you shortly.")}
               </p>
 
-              <p className="text-lg font-semibold text-black dark:text-white">
-                {t("Rate this Course")}
-              </p>
+              <p className="text-lg font-semibold text-black dark:text-white">{t("Rate this Course")}</p>
               <div className="flex gap-2 my-2 justify-center">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     onClick={() => setRating(star)}
-                    className={`bg-buttonColor ${
-                      rating >= star ? "text-yellow-400" : "text-gray-300"
-                    }`}
+                    className={`bg-buttonColor ${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
                     disabled={hasRated}
                   >
                     ★
@@ -754,41 +693,34 @@ const LessonPage = () => {
                 className="bg-slate-700 text-white dark:text-white w-full mt-4"
                 onClick={() => {
                   if (rating === 0) {
-                    Notify.failure(
-                      t("Please select a rating before submitting.")
-                    );
+                    Notify.failure(t('Please select a rating before submitting.'));
                     return;
                   }
 
-                  fetch(
-                    `https://api.tadrisino.org/courses/CourseRating/${courseId}/set_rate/`,
-                    {
-                      method: "POST",
-                      headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                          "accessToken"
-                        )}`,
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ rateDigit: rating }),
-                    }
-                  )
+                  fetch(`https://api.tadrisino.org/courses/CourseRating/${courseId}/set_rate/`, {
+                    method: 'POST',
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ rateDigit: rating }),
+                  })
                     .then(() => {
-                      Notify.success(t("Thanks for your feedback!"));
+                      Notify.success(t('Thanks for your feedback!'));
                       setHasRated(true);
                     })
-                    .catch(() => Notify.failure(t("Failed to submit rating")));
+                    .catch(() => Notify.failure(t('Failed to submit rating')));
                 }}
                 disabled={hasRated || rating === 0}
               >
-                {hasRated ? t("Rating Submitted") : t("Submit Rating")}
+                {hasRated ? t('Rating Submitted') : t('Submit Rating')}
               </Button>
 
               <Button
                 className="bg-slate-700 text-white dark:text-white w-full"
-                onClick={() => navigate("/courses")}
+                onClick={() => navigate('/courses')}
               >
-                {t("Back to Courses")}
+                {t('Back to Courses')}
               </Button>
             </div>
           </div>
@@ -801,18 +733,6 @@ const LessonPage = () => {
           height={window.innerHeight}
           recycle={false}
           numberOfPieces={200}
-        />
-      )}
-
-      {showCharacterPopup && (
-        <CharacterWelcomePopup
-          characters={charList} // از charList استفاده می‌کنیم
-          isOpen={showCharacterPopup}
-          onClose={() => setShowCharacterPopup(false)}
-          onContinue={() => {
-            setShowCharacterPopup(false);
-            navigate("/courses");
-          }}
         />
       )}
     </div>
