@@ -1190,6 +1190,8 @@
   "10": "۱۰",
   "11": "۱۱",
   "12": "۱۲",
+  "Successfully logged out.":"با موفقیت از سیستم خارج شدید",
+  
   "quiz.failedMessage":"متأسفیم، شما در کوییز موفق نشدید.",
   "quiz.passedMessage":"تبریک! شما کوییز را با موفقیت گذراندید!",
   "challenge_title": " چالش{{number}}",
