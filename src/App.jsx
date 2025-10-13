@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import CourseLandingPage from './pages/CourseLanding';
-import LessonPage from './pages/Lesson';
+import LessonPage from './pages/LessonPage';
 import UserProfilePage from './pages/UserProfile';
 import QuizComponent from './pages/WhatToLearnQuiz';
 import RequestPage from './pages/CourseRequest';
