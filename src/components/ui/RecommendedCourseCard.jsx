@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Users, Star, BookOpen, Award, ChevronRight, ChevronLeft } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
-import StarRating from './StarRating';
+import StarRating from './StarRatingImage';
 
 const RecommendedCourseCard = ({ course }) => {
     const { t, i18n } = useTranslation();
