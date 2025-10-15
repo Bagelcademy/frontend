@@ -9,12 +9,143 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-import StarRating from '../components/courses/StarRating';
-import CertificateModal from '../components/courses/CertificateModal';
-import CourseCard from '../components/courses/CourseCard';
-import RecommendedCourseCard from '../components/courses/RecommendedCourseCard';
 
 const COURSES_PER_SECTION = 4;
+
+const StarRating = ({ rating }) => (
+  <div className="flex items-center">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <Star
+        key={star}
+        className={`w-3 h-3 ${star <= rating
+          ? 'fill-yellow-400 text-yellow-400'
+          : 'fill-gray-300 text-gray-300'
+          }`}
+      />
+    ))}
+    <span className="ml-2 text-xs text-gray-600 dark:text-gray-400">
+      {rating.toFixed(1)}
+    </span>
+  </div>
+);
+
+const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, certificateUrl }) => {
+  const { t } = useTranslation();
+  const [name, setName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name.trim()) {
+      onSubmit(name.trim());
+    }
+  };
+
+  const handleClose = () => {
+    setName('');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">{t('Request Certificate')}</h3>
+          <button
+            onClick={handleClose}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        {certificateUrl ? (
+          <div className="text-center">
+            <div className="mb-4">
+              <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <p className="text-green-800 dark:text-green-200 mb-3">
+                  {t('Certificate generated successfully!')}
+                </p>
+                <a
+                  href={certificateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t('Download Certificate')}
+                </a>
+              </div>
+            </div>
+            <Button
+              onClick={handleClose}
+              className="w-full"
+            >
+              {t('Close')}
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                {t('Course')}: <span className="font-medium">{courseName}</span>
+              </p>
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                  <strong>{t('Important')}:</strong> {t('Please enter your name carefully in English. Certificates are issued only once and cannot be changed later.')}
+                </p>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium mb-2">
+                  {t('Your Name (in English)')}
+                </label>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t('Enter your full name in English')}
+                  required
+                  disabled={isLoading}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  onClick={handleClose}
+                  variant="outline"
+                  className="flex-1"
+                  disabled={isLoading}
+                >
+                  {t('Cancel')}
+                </Button>
+                <Button
+                  type="submit"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
+                  disabled={isLoading || !name.trim()}
+                >
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      {t('Processing...')}
+                    </div>
+                  ) : (
+                    t('Request Certificate')
+                  )}
+                </Button>
+              </div>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const MyCourses = () => {
   const { t, i18n } = useTranslation();
@@ -309,6 +440,210 @@ const fetchRecommendedCourses = async () => {
     return filtered;
   };
   
+  const CourseCard = ({ item }) => {
+    const { t, i18n } = useTranslation();
+    const { course, progress } = item;
+    const isRtl = i18n.language === 'fa';
+    const completedLessons = progress.completed_lessons.length;
+    const TOTAL_LESSONS = course.lesson_count
+    const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
+    const isCompleted = completedLessons === TOTAL_LESSONS && TOTAL_LESSONS > 0;
+
+    return (
+      <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+        <div className="relative h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+          <img
+            src={course.image_url}
+            alt={course.title}
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute bottom-4 left-4 right-4 z-20">
+            <div className="flex items-center space-x-2 text-white mb-2">
+              <StarRating rating={4.5} />
+            </div>
+          </div>
+          {isCompleted && (
+            <div className="absolute top-4 right-4 z-20">
+              <div className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                {t('Completed')}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <CardContent className="relative p-6 flex flex-col justify-between">
+          <div className="flex flex-col h-full">
+            <h3
+              className="text-lg font-semibold mb-3 line-clamp-2 h-[52px]"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {course.title}
+            </h3>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Briefcase className="w-4 h-4 mx-1" />
+                  <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+                </div>
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Globe2 className="w-4 h-4 mx-1" />
+                  <span>{t(course.language)}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center">
+                  <Award className="w-4 h-4 mx-1 text-purple-500" />
+                  <span>{progress.points_earned} {t('Points')}</span>
+                </div>
+                <div className="flex items-center">
+                  <Zap className="w-4 h-4 mx-1 text-yellow-500" />
+                  <span>{progress.streak} {t("Streak")}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 dark:text-gray-400">{t("Progress")}</span>
+                  <span className="font-medium">{completedLessons}/{TOTAL_LESSONS} {t("lessons")}</span>
+                </div>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+
+        <CardFooter className="p-6 pt-0">
+          <div className="w-full space-y-2">
+            <Button
+              onClick={() => navigate(`/course/${course.id}`)}
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+            >
+              <span className="mx-2">
+                {progress.course_completed ? t('Review Course') : t('Continue Learning')}
+              </span>
+              {isRtl ? (
+                <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              ) : (
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              )}
+            </Button>
+            
+            {isCompleted && (
+              <Button
+                onClick={() => handleCertificateRequest(course.id, course.title)}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white group-hover:scale-105 transition-all duration-300"
+              >
+                <Award className="w-4 h-4 mx-1" />
+                <span className="mx-2">{t('Request Certificate')}</span>
+              </Button>
+            )}
+          </div>
+        </CardFooter>
+      </Card>
+    );
+  };
+
+  const RecommendedCourseCard = ({ course }) => {
+    const { t, i18n } = useTranslation();
+    const isRtl = i18n.language === 'fa';
+
+    return (
+      <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">
+        <div className="relative h-48 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+          <img
+            src={course.image_url}
+            alt={course.title}
+            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute top-4 right-4 z-20">
+            <div className="bg-orange-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+              {t('Recommended')}
+            </div>
+          </div>
+          <div className="absolute bottom-4 left-4 right-4 z-20">
+            <div className="flex items-center justify-between text-white text-sm">
+              <div className="flex items-center">
+                <Users className="w-4 h-4 mr-1" />
+                <span>{course.enroll_count || 0} {t('Enrolled')}</span>
+              </div>
+              <StarRating rating={4.5} />
+            </div>
+          </div>
+        </div>
+
+        <CardContent className="relative p-6 flex flex-col justify-between">
+          <div className="flex flex-col h-full">
+            <h3
+              className="text-lg font-semibold mb-3 line-clamp-2 h-[52px]"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {course.title}
+            </h3>
+
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Briefcase className="w-4 h-4 mx-1" />
+                  <span>{t(`courseLevels.${course.level.toLowerCase()}`)}</span>
+                </div>
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <Globe2 className="w-4 h-4 mx-1" />
+                  <span>{t(course.language)}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                  <BookOpen className="w-4 h-4 mx-1" />
+                  <span>{course.lesson_count} {t("lessons")}</span>
+                </div>
+                <div className="flex items-center text-green-600 dark:text-green-400">
+                  <Award className="w-4 h-4 mx-1" />
+                  <span>{t('Certificate')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+
+        <CardFooter className="p-6 pt-0">
+          <Button
+            onClick={() => navigate(`/course/${course.id}`)}
+            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white group-hover:scale-105 transition-all duration-300"
+          >
+            <span className="mx-2">{t('Start Learning')}</span>
+            {isRtl ? (
+              <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            ) : (
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
