@@ -31,7 +31,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import DonutCatcherGame from './pages/game1';
 import FAQ from './pages/FAQ';
 import Interviewer from './pages/interviewer';
-import AISurvey from './pages/survey2';
+//import AISurvey from './pages/survey2';
 import ContactPage from './pages/ContacUs';
 import AINewsPage from './pages/blog';
 import MetricsDashboard from './pages/chart';
