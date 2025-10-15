@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Notify } from 'notiflix';
 import i18n from '../i18n';
-import cimage from "../../public/12.png";
+import cimage from "../assets/12.png";
 
 const LearningPathDetail = () => {
   const { id } = useParams();
