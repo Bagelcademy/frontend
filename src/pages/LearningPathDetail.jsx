@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Notify } from 'notiflix';
 import i18n from '../i18n';
 import cimage from "../assets/12.png";
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const LearningPathDetail = () => {
   const { id } = useParams();
@@ -69,11 +70,7 @@ const LearningPathDetail = () => {
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
