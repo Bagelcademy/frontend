@@ -9,10 +9,10 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-import CertificateModal from '../components/ui/CertificateModal';
-import CourseCard from '../components/ui/MyCourses_CourseCard';
-import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
+import StarRating from '../components/courses/StarRating';
+import CertificateModal from '../components/courses/CertificateModal';
+import CourseCard from '../components/courses/CourseCard';
+import RecommendedCourseCard from '../components/courses/RecommendedCourseCard';
 
 const COURSES_PER_SECTION = 4;
 
@@ -310,7 +310,11 @@ const fetchRecommendedCourses = async () => {
   };
   
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500" />
+      </div>
+    );
   }
 
   const completedCourses = getCompletedCourses();
