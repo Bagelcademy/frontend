@@ -524,6 +524,7 @@ import ProgressBar from "../components/survey/ProgressBar";
 import ConfettiEffect from "../components/survey/ConfettiEffect";
 import LevelUpOverlay from "../components/survey/LevelUpOverlay";
 
+
 const Survey = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -626,12 +627,23 @@ const Survey = () => {
 
   const handleTextInput = (field, value) => setAnswers((prev) => ({ ...prev, [field]: value }));
 
-  const handleSelect = (field, answer) => {
+  /*const handleSelect = (field, answer) => {
     setExplodingOption(answer);
     setAnswers((prev) => ({ ...prev, [field]: answer }));
     awardPoints();
     setTimeout(() => { setExplodingOption(null); moveToNextStep(); }, 500);
+  };*/
+
+  const handleSelect = (field, answer) => {
+    setExplodingOption(answer);
+    setAnswers(prev => ({ ...prev, [field]: answer })); // field دقیقاً "education" یا "job" باشد
+    awardPoints();
+    setTimeout(() => {
+      setExplodingOption(null);
+      moveToNextStep();
+    }, 500);
   };
+  
 
   const handleMultiSelect = (field, answer) => {
     setAnswers((prev) => {
@@ -652,10 +664,19 @@ const Survey = () => {
     const step = steps[currentStep];
     const field = step.field;
     if (["input", "date"].includes(step.type)) return answers[field]?.trim() !== "";
-    if (step.type === "multiOptions") return (answers[field] || []).length > 0;
+    if (step.type === "multiOptions") return (answers[field] || []).length === 3;
+
     return true;
   };
 
+
+  const handleSurveyComplete = () => {
+    setShowConfetti(true);
+    setTimeout(() => {
+      submitSurvey();
+    }, 2000);
+  };
+  
   const submitSurvey = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -694,15 +715,29 @@ const Survey = () => {
         return <StepInput title={step.title} icon={step.icon} value={answers[step.field]} placeholder={step.placeholder} onChange={(v) => handleTextInput(step.field, v)} canProceed={canProceed()} onNext={moveToNextStep} t={t} />;
       case "date":
         return <StepDate title={step.title} value={answers[step.field]} onChange={(v) => handleTextInput(step.field, v)} canProceed={canProceed()} onNext={moveToNextStep} t={t} />;
-      case "options":
-        return <StepOptions currentStepData={step} explodingOption={explodingOption} iconMap={iconMap} handleSelect={handleSelect} />;
+      /*case "options":
+        return <StepOptions currentStepData={step} explodingOption={explodingOption} iconMap={iconMap} handleSelect={handleSelect} />;*/
+
+        case "options":
+  return (
+    <StepOptions
+      currentStepData={step}
+      explodingOption={explodingOption}
+      iconMap={iconMap}
+      handleSelect={handleSelect}
+      value={answers[step.field]} // ✅ اضافه کنید
+      canProceed={canProceed} // ✅ اگر StepOptions ازش استفاده می‌کنه
+    />
+  );
+
       case "multiOptions":
-        return <StepMultiOptions options={step.options} selectedOptions={answers[step.field] || []} onSelectMulti={(opt) => handleMultiSelect(step.field, opt)} maxSelectionsReached={(answers[step.field] || []).length >= 3} t={t} canProceed={canProceed()} onNext={moveToNextStep} categoryIconMap={categoryIconMap} loadingCategories={loadingCategories} currentStepData={step} />;
+        return <StepMultiOptions options={step.options} selectedOptions={answers[step.field] || []} onSelectMulti={(opt) => handleMultiSelect(step.field, opt)} maxSelectionsReached={(answers[step.field] || []).length >= 3} t={t} canProceed={canProceed} onNext={handleSurveyComplete} categoryIconMap={categoryIconMap} loadingCategories={loadingCategories} currentStepData={step} />;
       default:
         return null;
     }
   };
-
+ 
+  
   return (
     <div className="min-h-screen bg-white dark:bg-gray-800 text-gray-900 dark:text-white flex flex-col items-center justify-center p-4">
       <PointsDisplay points={points} />

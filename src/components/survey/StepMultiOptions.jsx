@@ -13,6 +13,7 @@ const StepMultiOptions = ({
   currentStepData ,
    answers,
   canProceed,
+  
   onNext,
   categoryIconMap,
   loadingCategories,
@@ -27,9 +28,6 @@ const StepMultiOptions = ({
           </div>
         );
       }
-
-      //const selectedOptions = answers[currentStepData.field] || [];
-      //const maxSelectionsReached = selectedOptions.length >= 3;
 
       return (
         <div className="w-full">
@@ -49,7 +47,7 @@ const StepMultiOptions = ({
                 <button
                   key={option.id}
                   onClick={() =>
-                    onSelectMulti(currentStepData.field, option)
+                    onSelectMulti(option)
                   }
                   disabled={!isSelected && maxSelectionsReached}
                   className={`p-4 rounded-lg shadow-md transition-all duration-300 relative
@@ -88,7 +86,7 @@ const StepMultiOptions = ({
             })}
           </div>
           <button
-            onClick={moveToNextStep}
+            onClick={onNext}
             disabled={!canProceed()}
             className={`mt-8 w-full p-3 rounded-lg font-medium transition-all
               ${
