@@ -6,8 +6,9 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import StarRating from './StarRatingImage';
 
-const CourseCard = ({ item }) => {
+const CourseCard = ({ item, onRequestCertificate }) => {
     const { t, i18n } = useTranslation();
+    const navigate = useNavigate();
     const { course, progress } = item;
     const isRtl = i18n.language === 'fa';
     const completedLessons = progress.completed_lessons.length;
@@ -110,11 +111,11 @@ const CourseCard = ({ item }) => {
             
             {isCompleted && (
               <Button
-                onClick={() => handleCertificateRequest(course.id, course.title)}
+                onClick={() => onRequestCertificate(course.id, course.title, progress.got_certificate, progress.certificate_url)}
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white group-hover:scale-105 transition-all duration-300"
               >
                 <Award className="w-4 h-4 mx-1" />
-                <span className="mx-2">{t('Request Certificate')}</span>
+                <span className="mx-2">{progress.got_certificate ? t('View Certificate') : t('Request Certificate')}</span>
               </Button>
             )}
           </div>
