@@ -34,6 +34,7 @@ const MyCourses = () => {
     courseName: '',
     isLoading: false,
     certificateUrl: null
+    ,alreadyGenerated: false
   });
   
   // Pagination states
@@ -97,7 +98,8 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
+      // const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
+      const response = await fetch('./my_courses.json', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -199,13 +201,14 @@ const fetchRecommendedCourses = async () => {
     }
   };
 
-  const handleCertificateRequest = (courseId, courseName) => {
+  const handleCertificateRequest = (courseId, courseName, gotCertificate, certificateUrl) => {
     setCertificateModal({
       isOpen: true,
       courseId,
       courseName,
       isLoading: false,
-      certificateUrl: null
+      certificateUrl: certificateUrl || null,
+      alreadyGenerated: !!gotCertificate
     });
   };
 
@@ -327,6 +330,7 @@ const fetchRecommendedCourses = async () => {
         courseName={certificateModal.courseName}
         isLoading={certificateModal.isLoading}
         certificateUrl={certificateModal.certificateUrl}
+        alreadyGenerated={certificateModal.alreadyGenerated}
       />
 
       {/* Hero Section */}
@@ -425,7 +429,7 @@ const fetchRecommendedCourses = async () => {
             <h2 className="text-2xl font-bold mb-6">{t('Finished Courses')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {completedCourses.slice(0, completedCoursesPage * COURSES_PER_SECTION).map((item, index) => (
-                <CourseCard key={`completed-${item.course.id}-${index}`} item={item} />
+                <CourseCard key={`completed-${item.course.id}-${index}`} item={item} onRequestCertificate={handleCertificateRequest} />
               ))}
             </div>
             
@@ -448,7 +452,7 @@ const fetchRecommendedCourses = async () => {
             <h2 className="text-2xl font-bold mb-6">{t('Unfinished Courses')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {inProgressCourses.slice(0, inProgressCoursesPage * COURSES_PER_SECTION).map((item, index) => (
-                <CourseCard key={`progress-${item.course.id}-${index}`} item={item} />
+                <CourseCard key={`progress-${item.course.id}-${index}`} item={item} onRequestCertificate={handleCertificateRequest} />
               ))}
             </div>
             

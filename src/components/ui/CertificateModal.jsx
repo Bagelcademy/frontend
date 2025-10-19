@@ -4,7 +4,7 @@ import { X, Download } from 'lucide-react';
 import { Input } from '../../components/ui/input';
 import { Button } from '../../components/ui/button';
 
-const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, certificateUrl }) => {
+const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, certificateUrl, alreadyGenerated }) => {
   const { t } = useTranslation();
   const [name, setName] = useState('');
 
@@ -26,7 +26,9 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">{t('Request Certificate')}</h3>
+          <h3 className="text-lg font-semibold">
+            {alreadyGenerated ? t('Certificate Already Generated') : t('Request Certificate')}
+          </h3>
           <button
             onClick={handleClose}
             className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
@@ -34,8 +36,34 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
             <X className="w-5 h-5" />
           </button>
         </div>
-        
-        {certificateUrl ? (
+        {alreadyGenerated ? (
+          <div className="text-center">
+            <div className="mb-4">
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+                <p className="text-yellow-800 dark:text-yellow-200 mb-3">
+                  {t('Your certificate has already been generated for this course.')}
+                </p>
+                {certificateUrl ? (
+                  <a
+                    href={certificateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    {t('Download Certificate')}
+                  </a>
+                ) : null}
+              </div>
+            </div>
+            <Button
+              onClick={handleClose}
+              className="w-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+            >
+              {t('Close')}
+            </Button>
+          </div>
+        ) : certificateUrl ? (
           <div className="text-center">
             <div className="mb-4">
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
@@ -89,7 +117,7 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
                 />
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 text-white ">
                 <Button
                   type="button"
                   onClick={handleClose}
