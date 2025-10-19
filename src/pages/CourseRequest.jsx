@@ -120,8 +120,8 @@ const RequestPage = () => {
     value: 'beginner',
   });
   const [selectedLessonCount, setSelectedLessonCount] = useState({
-    label: '5',
-    value: 5,
+    label: '15',
+    value: 15,
   });
   const [selectedCategory, setSelectedCategory] = useState({
     label: t('General'),
