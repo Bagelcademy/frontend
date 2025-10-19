@@ -34,6 +34,7 @@ import HeroSection from "../components/userProfile/HeroSection";
 import StatsGrid from "../components/userProfile/StatsGrid";
 import ProfileDetails from "../components/userProfile/ProfileDetails";
 import NotificationsList from "../components/userProfile/NotificationsList";
+import CertificatesList from "../components/userProfile/CertificatesList";
 
 const UserProfilePage = () => {
   const { t } = useTranslation();
@@ -367,8 +368,11 @@ const UserProfilePage = () => {
           bio={bio}
         />
 
-        {/* Notifications */}
-        <NotificationsList notifications={notifications} t={t} />
+       
+        {/* بالای JSX یا انتهای صفحه */}
+        <CertificatesList notifications={notifications} t={t} />
+         {/* Notifications */}
+         <NotificationsList notifications={notifications} t={t} />
       </div>
     </div>
   );
