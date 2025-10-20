@@ -6,14 +6,17 @@ import { Card, CardContent, CardFooter } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import StarRating from './StarRatingImage';
 
+
 const CourseCard = ({ item }) => {
     const { t, i18n } = useTranslation();
     const { course, progress } = item;
+    const navigate = useNavigate(); // <-- این خط رو قبل از return اضافه کن
     const isRtl = i18n.language === 'fa';
     const completedLessons = progress.completed_lessons.length;
     const TOTAL_LESSONS = course.lesson_count
     const progressPercentage = (completedLessons / TOTAL_LESSONS) * 100;
     const isCompleted = completedLessons === TOTAL_LESSONS && TOTAL_LESSONS > 0;
+   
 
     return (
       <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">

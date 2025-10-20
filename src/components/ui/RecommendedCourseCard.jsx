@@ -2,13 +2,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Users, Star, BookOpen, Award, ChevronRight, ChevronLeft } from 'lucide-react';
-import { Card, CardContent, CardFooter } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardFooter } from '../ui/card';
+import { Button } from '../ui/button';
 import StarRating from './StarRatingImage';
+import { Briefcase } from "lucide-react";
+import { Globe2 } from 'lucide-react';
+
 
 const RecommendedCourseCard = ({ course }) => {
     const { t, i18n } = useTranslation();
     const isRtl = i18n.language === 'fa';
+    const navigate = useNavigate();
 
     return (
       <Card className="group h-full overflow-hidden border-0 bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-300 transform hover:scale-102">

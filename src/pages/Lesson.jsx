@@ -442,7 +442,7 @@ const LessonPage = () => {
             {activeTab === 'content' && (
               <Card className="max-w-4xl mx-auto">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold">{lesson?.title}</CardTitle>
+                  <CardTitle className="text-2xl font-bold">{lesson.order}.{lesson?.title}</CardTitle>
                   
                   {/* Enhanced Audio Section */}
                   <div className="mt-4 p-6 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg shadow-inner">
