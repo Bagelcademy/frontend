@@ -392,14 +392,7 @@ const CVEnhancer = () => {
                   </label>
                 </div>
                 
-                <div className="mt-4 text-center">
-                  <a
-                    href="/create-resume"
-                    className="text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {t("Don't have a resume? Create one here")}
-                  </a>
-                </div>
+                
               </div>
 
               {/* Job Offer Link */}

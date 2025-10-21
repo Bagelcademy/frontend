@@ -308,7 +308,7 @@ const SubscriptionCards = () => {
       <div className="flex flex-wrap justify-center gap-6">
         <SubscriptionCard
           title="Monthly"
-          price={t("monthly price")}
+          price={198000}
           discountPrice={calculateDiscountedPrice(129000)}
           period="month"
           features={[
@@ -321,7 +321,7 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="6 Months"
-          price={t("6 months price")}
+          price={1089000}
           discountPrice={calculateDiscountedPrice(729000)}
           period="6 months"
           isBestOffer={true}
@@ -337,7 +337,7 @@ const SubscriptionCards = () => {
         />
         <SubscriptionCard
           title="Yearly"
-          price={t("Annual")}
+          price={2178000}
           discountPrice={calculateDiscountedPrice(1200000)}
           period="year"
           features={[

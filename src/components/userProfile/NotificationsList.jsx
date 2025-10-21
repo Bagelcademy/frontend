@@ -101,7 +101,7 @@ const NotificationsList = ({ t }) => {
                   className={`p-4 rounded-lg flex flex-col gap-2 ${
                     notification.message_seen
                       ? "bg-gray-50 dark:bg-gray-700"
-                      : "bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-500"
+                      : "bg-blue-50 dark:bg-indigo-900 border-l-4 border-blue-500"
                   }`}
                 >
                   <p className="text-gray-700 dark:text-gray-200">
