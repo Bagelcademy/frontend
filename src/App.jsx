@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import CourseLandingPage from './pages/CourseLanding';
-import LessonPage from './pages/Lesson';
+import LessonPage from './pages/LessonPage';
 import UserProfilePage from './pages/UserProfile';
 import QuizComponent from './pages/WhatToLearnQuiz';
 import RequestPage from './pages/CourseRequest';
@@ -31,7 +31,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import DonutCatcherGame from './pages/game1';
 import FAQ from './pages/FAQ';
 import Interviewer from './pages/interviewer';
-import AISurvey from './pages/survey2';
+//import AISurvey from './pages/survey2';
 import ContactPage from './pages/ContacUs';
 import AINewsPage from './pages/blog';
 import MetricsDashboard from './pages/chart';
@@ -171,7 +171,7 @@ const App = () => {
             <Route path="/blog/:id" element={<BlogDetailPage/>} />
 
             {/* <Route path="/game" element={<DonutCatcherGame />} /> */}
-            {/* <Route path="/teachpanel" element={<TeacherPanel />} /> */}
+            <Route path="/teachpanel" element={<TeacherPanel />} />
             {/* <Route path="/interview" element={<Interviewer />} /> */}
             {/* <Route path="/AIservey" element={<AISurvey />} /> */}
 

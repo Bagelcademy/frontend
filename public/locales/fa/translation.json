@@ -1201,5 +1201,10 @@
 
   "challenge": {
     "number": "شماره چالش {{number}}"
-  }
+  },
+
+ 
+    "Certificates": "گواهینامه‌ها"
+    
+  
 }
