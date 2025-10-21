@@ -184,10 +184,14 @@ const Quiz = ({ courseId, lessonId, onComplete }) => {
     <>
       <Card className="w-full">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
-            {t("quiz.title")}
-          </CardTitle>
+        <CardTitle>
+  <div className="flex items-center gap-2">
+    <Trophy className="w-6 h-6 text-yellow-500" />
+    <span>{t("quiz.title")}</span>
+  </div>
+</CardTitle>
+
+
         </CardHeader>
         <CardContent>
           {showAlert && (

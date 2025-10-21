@@ -270,7 +270,8 @@ const CVEnhancer = () => {
       </Helmet>
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+">
         <div className="container mx-auto px-4 py-16 pt-32">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center">
             {t('AI-Powered CV Enhancer')}
@@ -284,7 +285,8 @@ const CVEnhancer = () => {
       {/* Credits Display */}
       <div className="container mx-auto px-4 py-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-6">
+          <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-4 mb-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <CreditCard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -305,7 +307,8 @@ const CVEnhancer = () => {
           
           {/* Generated Resume Display */}
           {generatedResume && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6 mb-8">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-2">
                   <CheckCircle2 className="w-5 h-5 text-green-600" />
@@ -365,7 +368,8 @@ const CVEnhancer = () => {
             <div className="space-y-8">
               
               {/* Resume Upload - Now Required */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <FileText className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -396,7 +400,8 @@ const CVEnhancer = () => {
               </div>
 
               {/* Job Offer Link */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <ExternalLink className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -414,7 +419,8 @@ const CVEnhancer = () => {
               </div>
 
               {/* GitHub Link - Now Required */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <Github className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -432,7 +438,8 @@ const CVEnhancer = () => {
               </div>
 
               {/* Course Selection */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <Star className="w-5 h-5 text-gray-700 dark:text-gray-300" />
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -515,7 +522,8 @@ const CVEnhancer = () => {
               </div>
 
               {/* Language Selection */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                   {t('Resume Language')}
                 </h2>
@@ -544,7 +552,8 @@ const CVEnhancer = () => {
               </div>
 
               {/* Output Format */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ rounded-lg shadow-md p-6">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                   {t('Output Format')}
                 </h2>
@@ -573,7 +582,7 @@ const CVEnhancer = () => {
               </div>
 
               {/* Generate Button */}
-              <div className="text-center">
+              <div className="text-center ">
                 <button
                   type="button"
                   onClick={handleGenerateResume}

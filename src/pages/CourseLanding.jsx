@@ -341,7 +341,8 @@ const CourseLandingPage = () => {
 
       {/* Course Description Section */}
       <section className="max-w-6xl mx-auto px-4 py-12 text-justify">
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+        <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ text-gray-900 rounded-xl p-6 shadow-lg">
           <h2 className="text-2xl font-bold mb-6 flex items-center">
             <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
             {t("Course Description")}
@@ -360,7 +361,8 @@ const CourseLandingPage = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Course Lessons */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+            <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ text-gray-900 rounded-xl p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
                 <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
                 {t("Course Content")}
@@ -481,7 +483,8 @@ const CourseLandingPage = () => {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg sticky top-24">
+            <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ text-gray-900 rounded-xl p-6 shadow-lg sticky top-24">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
                 <Trophy className="w-6 h-6 mx-2 text-yellow-400" />
                 {t("RecommendedCourses")}

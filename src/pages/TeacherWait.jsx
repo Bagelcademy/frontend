@@ -246,7 +246,9 @@ const TeacherWaitlist = () => {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950 dark:via-blue-900 dark:to-purple-950
+
+ p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
                 <Brain className="text-blue-600 dark:text-blue-400" />
               </div>
@@ -258,7 +260,8 @@ const TeacherWaitlist = () => {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+  p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mb-4">
                 <BookOpen className="text-purple-600 dark:text-purple-400" />
               </div>
@@ -270,7 +273,8 @@ const TeacherWaitlist = () => {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4">
                 <Code className="text-green-600 dark:text-green-400" />
               </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 
 export const Card = ({ className, children }) => (
-  <div className={`dark:bg-gradient-to-br dark:from-blue-900 dark:to-purple-900 text-gray-900 dark:text-white shadow rounded-md overflow-hidden ${className}`}>
+  <div className={`dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ text-gray-900 dark:text-white shadow rounded-md overflow-hidden ${className}`}>
     {children}
   </div>
 );
