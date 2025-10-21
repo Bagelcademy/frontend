@@ -171,7 +171,7 @@ const App = () => {
             <Route path="/blog/:id" element={<BlogDetailPage/>} />
 
             {/* <Route path="/game" element={<DonutCatcherGame />} /> */}
-            {/* <Route path="/teachpanel" element={<TeacherPanel />} /> */}
+            <Route path="/teachpanel" element={<TeacherPanel />} />
             {/* <Route path="/interview" element={<Interviewer />} /> */}
             {/* <Route path="/AIservey" element={<AISurvey />} /> */}
 
