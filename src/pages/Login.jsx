@@ -141,7 +141,7 @@ const Login = ({ setIsLoggedIn }) => {
 
   const handlePopupContinue = () => {
     setShowCharacterPopup(false);
-    navigate('/my-courses');
+    navigate('/');
   };
 
   const getRecaptchaToken = (captchaAction) => {

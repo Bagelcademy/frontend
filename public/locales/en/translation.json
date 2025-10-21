@@ -477,10 +477,14 @@
     },
       "quiz.passedMessage":"Congratulations! You passed the quiz!",
       "quiz.failedMessage":"Sorry, you did not pass the quiz.",
-      "challenge_title": "Challenge {{number}}"
+      "challenge_title": "Challenge {{number}}",
     
       
         
+      
+      
+        "Certificates": "Certificates",
+        "Certificate": "Certificate"
       
       
     

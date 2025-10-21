@@ -7,6 +7,7 @@ import { Notify } from 'notiflix';
 import i18n from '../i18n';
 import cimage from "../../public/12.png";
 
+
 const LearningPathDetail = () => {
   const { id } = useParams();
   const [pathData, setPathData] = useState(null);
