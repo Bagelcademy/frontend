@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/selectIndex';
 import { Play, Terminal, ChevronsLeftRightEllipsis } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Listbox } from '@headlessui/react';
 
 const CodeEditor = () => {
   const [code, setCode] = useState('');
@@ -60,7 +61,7 @@ const CodeEditor = () => {
   };
 
   return (
-    <Card className="w-full text-left ltr:mr-1">
+    <Card className="w-full text-left ">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="flex items-center gap-2">
           <div className="flex gap-4 items-center">
@@ -70,26 +71,32 @@ const CodeEditor = () => {
 
         </CardTitle>
         <div className="flex items-center gap-4 ">
-          <Select
-            value={codeLanguage}
-            onValueChange={setCodeLanguage}
-          >
-            <SelectTrigger className="w-32">
-              <SelectValue placeholder="Language" className="text-black dark:text-black"/>
-            </SelectTrigger>
-            <SelectContent >
-              <SelectItem value="python" >{t('Python')}</SelectItem>
-              <SelectItem value="java" >{t('Java')}</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
+        <Button
             onClick={executeCode}
             disabled={isExecuting || !code.trim()}
             className="flex items-center gap-2 bg-gray-800 text-white"
           >
             <Play className="w-4 h-4" />
             {isExecuting ? t('Running...') : t('Execute')}
-          </Button>
+            </Button>
+          <Select
+            value={codeLanguage}
+            onValueChange={setCodeLanguage}
+          >
+            
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder={t('Language')} className="text-black dark:text-black"/>
+            </SelectTrigger>
+           
+            <SelectContent className="bg-white text-black border border-gray-200 shadow-md w-32 text-right">
+            
+              <SelectItem value="python" className="text-right">{t('Python')}</SelectItem>
+              <SelectItem value="java" className="text-right" >{t('Java')}</SelectItem>
+             
+            </SelectContent>
+           
+          </Select>
+         
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
