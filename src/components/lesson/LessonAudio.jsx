@@ -50,7 +50,7 @@ const LessonAudio = ({
          className={`flex items-center gap-2 
            ${isGeneratingAudio 
              ? 'bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-500 opacity-70 cursor-not-allowed' 
-             : 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 hover:shadow-lg hover:scale-105'}
+             : 'bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 hover:shadow-lg hover:scale-105 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100'}
            text-white font-medium px-6 py-3 rounded-lg transition-all duration-300`}
        >
          {isGeneratingAudio ? (

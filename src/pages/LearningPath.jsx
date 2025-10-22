@@ -23,7 +23,7 @@ const CareerPathsPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-
+  const [open, setOpen] = useState(false)
   useEffect(() => {
     fetchPaths();
     fetchCategories();
@@ -99,7 +99,7 @@ const CareerPathsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
         <div className="max-w-6xl mx-auto px-6 py-16 pt-32">
           <h1 className="text-4xl font-bold mb-4 text-white">{t("Career Paths")}</h1>
           <p className="text-xl text-white/80 mb-8">
@@ -119,14 +119,14 @@ const CareerPathsPage = () => {
             </div>
 
             <Select onValueChange={setSelectedCategory} value={selectedCategory}>
-              <SelectTrigger className="w-full md:w-64 bg-white dark:bg-gray-800 border-0">
-                <Filter className="w-4 h-4 mx-2" />
+              <SelectTrigger className="w-full md:w-64 bg-white dark:bg-gray-800 border-0 dark:text-gray-400">
+                <Filter className="w-4 h-4 mx-2 " />
                 <SelectValue placeholder={t('Select Category')} />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">{t('All Categories')}</SelectItem>
+              <SelectContent >
+                <SelectItem  value="">{t('All Categories')}</SelectItem>
                 {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem  key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -137,7 +137,7 @@ const CareerPathsPage = () => {
       </div>
 
       {/* Paths Grid */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12 ">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedPaths.map(path => (
             <LearningPathCard key={path.id} path={path} />

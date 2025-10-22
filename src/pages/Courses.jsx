@@ -135,8 +135,8 @@ const Courses = () => {
         )}
       </Helmet>
 
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
-        <div className="container mx-auto px-4 py-16 pt-32">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
+        <div className="container mx-auto px-4 py-16 pt-32 ">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
             {t('Discover Your Next Learning Journey')}
           </h1>

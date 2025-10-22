@@ -69,17 +69,17 @@ const CodeEditor = () => {
           </div>
 
         </CardTitle>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 ">
           <Select
             value={codeLanguage}
             onValueChange={setCodeLanguage}
           >
             <SelectTrigger className="w-32">
-              <SelectValue placeholder="Language" />
+              <SelectValue placeholder="Language" className="text-black dark:text-black"/>
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="python">{t('Python')}</SelectItem>
-              <SelectItem value="java">{t('Java')}</SelectItem>
+            <SelectContent >
+              <SelectItem value="python" >{t('Python')}</SelectItem>
+              <SelectItem value="java" >{t('Java')}</SelectItem>
             </SelectContent>
           </Select>
           <Button

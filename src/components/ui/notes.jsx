@@ -132,24 +132,25 @@ const Notes = ({ lessonId, courseId }) => {
               value={note}
               onChange={(e) => setNote(e.target.value)}
               disabled={!isEditing}
-              className="w-full mb-4"
+              className="w-full mb-4 dark:text-black"
               placeholder={t('notes.placeholder')}
+              
             />
 
             <div className="flex gap-2">
               {isEditing ? (
                 <>
-                  <Button onClick={saveNote} disabled={!note.trim()}>
+                  <Button onClick={saveNote} disabled={!note.trim()} className="dark:text-gray-800">
                     <Save className="w-4 h-4" />
                     {t('notes.buttons.save')}
                   </Button>
-                  <Button variant="ghost" onClick={() => setIsEditing(false)}>
+                  <Button variant="ghost" onClick={() => setIsEditing(false)} className="dark:text-black">
                     {t('notes.buttons.cancel')}
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => setIsEditing(true)}>
+                  <Button onClick={() => setIsEditing(true)} className="dark:text-black">
                     {t('notes.buttons.edit')}
                   </Button>
                   <Button variant="ghost" onClick={deleteNote} className="text-red-500">

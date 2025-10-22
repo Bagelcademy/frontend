@@ -484,8 +484,9 @@
       
       
         "Certificates": "Certificates",
-        "Certificate": "Certificate"
-      
+        "Certificate": "Certificate",
+      "Python":"Python",
+      "Java":"Java"
       
     
 

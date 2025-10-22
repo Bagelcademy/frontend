@@ -25,13 +25,13 @@ const StatsGrid = ({ user, t }) => (
       icon={Calendar}
       label={t("subscription")}
       value={`${user.subscriptionDaysLeft} ${t("daysLeft")}`}
-      gradient="bg-gradient-to-r from-blue-500 to-blue-600"
+      gradient="bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-800/90 dark:to-blue-950/90"
     />
     <StatsCard
       icon={CreditCard}
       label={t("credits")}
       value={user.credit || 0}
-      gradient="bg-gradient-to-r from-purple-500 to-purple-600"
+      gradient="bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-800/90 dark:to-purple-950/90"
     />
   </div>
 );

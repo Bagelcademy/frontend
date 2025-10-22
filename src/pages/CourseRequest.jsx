@@ -516,7 +516,7 @@ const RequestPage = () => {
             <button
               type="button"
               onClick={() => setSearchResults([])}
-              className="text-blue-200 hover:text-white bg-transparent p-1 rounded-full hover:bg-blue-900"
+              className="text-blue-200 hover:text-white bg-transparent p-1 rounded-full hover:bg-blue-900 "
             >
               <X className="w-4 h-4" />
             </button>
@@ -815,7 +815,7 @@ const RequestPage = () => {
                   <span>{t("Next")}</span>
                   <ChevronDown
                     className={`w-5 h-5 ml-2 transition-transform ${
-                      i18n.language === "fa" ? "rotate-90" : "-rotate-90"
+                      i18n.language === "fa" ? "rotate-90" : "-rotate-90 "
                     }`}
                   />
                 </>

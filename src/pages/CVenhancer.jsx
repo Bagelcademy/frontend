@@ -412,7 +412,7 @@ const CVEnhancer = () => {
                   type="url"
                   value={jobOfferLink}
                   onChange={(e) => setJobOfferLink(e.target.value)}
-                  placeholder={t('https://company.com/job-posting')}
+                  placeholder={t('https:/ /company.com/job-posting')}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   required
                 />
@@ -431,7 +431,7 @@ const CVEnhancer = () => {
                   type="url"
                   value={githubLink}
                   onChange={(e) => setGithubLink(e.target.value)}
-                  placeholder={t('https://github.com/yourusername')}
+                  placeholder={t('https:/ /github.com/yourusername')}
                   className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   required
                 />
@@ -590,7 +590,7 @@ const CVEnhancer = () => {
                   className={`px-8 py-4 rounded-lg font-semibold text-white transition-all duration-300 ${
                     isSubmitting || userCredits < 1 || !resumeFile || !jobOfferLink || !githubLink
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100 hover:from-blue-600 hover:to-purple-700 hover:shadow-xl'
                   }`}
                 >
                   {isSubmitting ? (
