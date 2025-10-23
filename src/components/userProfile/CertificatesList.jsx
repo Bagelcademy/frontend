@@ -22,7 +22,7 @@ const CertificatesList = ({ notifications, t }) => {
   if (certificates.length === 0) return null;
 
   return (
-    <Card className="shadow-md border border-gray-200 dark:border-gray-700 mb-4">
+    <Card className="shadow-md border border-gray-200 bg-white dark:bg-gray-800 mb-4">
       <CardHeader className="flex items-center gap-2">
         <CardTitle>
           <div className="flex items-center gap-2 mt-3">
@@ -44,7 +44,7 @@ const CertificatesList = ({ notifications, t }) => {
               href={cert.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline break-all"
+              className="text-blue-900 dark:text-indigo-300 hover:underline break-all"
             >
               {cert.url}
             </a>

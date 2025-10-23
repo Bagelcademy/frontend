@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Clock, BookOpen, Users, Star, Filter, Briefcase, Award, Zap, ChevronRight } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from "../components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/selectIndex";
+import { Search, Clock, BookOpen, Users, Star, Filter, Briefcase, Award, Zap, ChevronRight, ChevronDown, Check } from 'lucide-react';
+
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
@@ -11,6 +12,84 @@ import { Link } from "react-router-dom";
 import StarRating from '../components/ui/StarRatingImage';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import LearningPathCard from '../components/ui/LearningPathCard';
+
+import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+
+const Listbox = ({ value, onChange, options, placeholder }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  // بستن منو با کلیک بیرون
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      {/* دکمه اصلی */}
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="w-full md:w-64 flex items-center justify-between py-3 px-4 bg-white dark:bg-gray-800 border-0 rounded-lg text-gray-800 dark:text-gray-200 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+      >
+        <div className="flex items-center gap-2">
+          <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          <span>{value ? value.name : placeholder}</span>
+        </div>
+        <ChevronDown
+          className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      {/* لیست بازشو */}
+      <AnimatePresence>
+        {isOpen && (
+         <motion.div
+         initial={{ opacity: 0, y: -8 }}
+         animate={{ opacity: 1, y: 0 }}
+         exit={{ opacity: 0, y: -8 }}
+         transition={{ duration: 0.2 }}
+         className="absolute z-10 mt-2 w-50  bg-white dark:bg-white dark:text-black rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-64 overflow-y-auto overflow-x-hidden"
+       >
+         {options.map((option) => (
+           <button
+             key={option.id}
+             onClick={() => {
+               onChange(option);
+               setIsOpen(false);
+             }}
+             className={`w-full text-left px-4 py-2 flex items-center justify-between hover:bg-gray-600 dark:hover:bg-gray-700 transition ${
+               value && value.id === option.id
+                 ? "font-semibold text-blue-600 dark:text-blue-400"
+                 : ""
+             }`}
+           >
+             <span className="break-words">{option.name}</span>
+             {value && value.id === option.id && (
+               <Check className="w-4 h-4 text-blue-500" />
+             )}
+           </button>
+         ))}
+       </motion.div>
+       
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 
 const CareerPathsPage = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -23,7 +102,7 @@ const CareerPathsPage = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-
+  const [open, setOpen] = useState(false)
   useEffect(() => {
     fetchPaths();
     fetchCategories();
@@ -99,7 +178,7 @@ const CareerPathsPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
         <div className="max-w-6xl mx-auto px-6 py-16 pt-32">
           <h1 className="text-4xl font-bold mb-4 text-white">{t("Career Paths")}</h1>
           <p className="text-xl text-white/80 mb-8">
@@ -118,26 +197,22 @@ const CareerPathsPage = () => {
               />
             </div>
 
-            <Select onValueChange={setSelectedCategory} value={selectedCategory}>
-              <SelectTrigger className="w-full md:w-64 bg-white dark:bg-gray-800 border-0">
-                <Filter className="w-4 h-4 mx-2" />
-                <SelectValue placeholder={t('Select Category')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">{t('All Categories')}</SelectItem>
-                {categories.map(category => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Listbox
+  value={selectedCategory ? categories.find(c => c.id === selectedCategory) : null}
+  onChange={(selected) => setSelectedCategory(selected.id)}
+  options={[
+    { id: '', name: t('All Categories') },
+    ...categories.map(c => ({ id: c.id, name: c.name })),
+  ]}
+  placeholder={t('Select Category')}
+/>
+
           </div>
         </div>
       </div>
 
       {/* Paths Grid */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 py-12 ">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedPaths.map(path => (
             <LearningPathCard key={path.id} path={path} />

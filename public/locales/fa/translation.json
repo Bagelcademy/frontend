@@ -149,11 +149,13 @@
     "title": "یادداشت‌های درس",
     "placeholder": "یادداشت خود را اینجا اضافه کنید...",
     "loading": "در حال بارگذاری...",
+    "noNotes":"یادداشتی وجود ندارد",
     "buttons": {
       "save": "ذخیره",
       "cancel": "لغو",
       "edit": "ویرایش",
-      "delete": "حذف"
+      "delete": "حذف",
+      "update":"به روزرسانی"
     },
     "errors": {
       "fetchError": "بارگیری یادداشت ناموفق بود. لطفاً دوباره تلاش کنید.",
@@ -1103,9 +1105,9 @@
   "LandLine": "۰۲۴۳۳۰۵۲۶۵۰",
   "ContactPage-LandLine": "۰۲۴۳۳۰۵۲۶۷۶",
   "Login Placeholder": "۰۹۱۲۳۴۵۶۷۸۹۰",
-  "monthly price": "۱۹۸۰۰۰",
-  "6 months price": "۱۰۸۹۰۰۰",
-  "Annual": "۲۱۷۸۰۰۰",
+ 
+  
+  
   "Artificial Intelligence Credibility": "۲۹۹۰۰",
 
   "Course Challenges": "چالش‌های دوره",
@@ -1201,7 +1203,9 @@
   },
 
  
-    "Certificates": "گواهینامه‌ها"
-    
+    "Certificates": "گواهینامه‌ها",
+    "Language":"زبان"
+   
+
   
 }

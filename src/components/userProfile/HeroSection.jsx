@@ -3,7 +3,7 @@ import { Edit3, Upload, Zap } from "lucide-react";
 import { Button } from "../ui/button";
 
 const HeroSection = ({ user, editMode, setEditMode, handleImageUpload, t }) => (
-  <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+  <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
     <div className="container mx-auto px-4 py-16 pt-32">
       <div className="relative max-w-4xl mx-auto">
         <div className="flex flex-col items-center">

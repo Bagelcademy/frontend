@@ -36,7 +36,7 @@ const HeroSection = () => {
           <div className="flex gap-4 justify-center">
             <Link to="/courses">
               <Button size="lg"
-                className="bg-[#082f49] hover:opacity-90 dark:text-white dark:bg-gray-600 text-white font-bold px-4 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
+                className="bg-[#082f49] hover:opacity-90 dark:text-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100 text-white font-bold px-4 sm:px-8 py-4 sm:py-6 text-base sm:text-lg"
               >
                 {t('Explore')}
               </Button>

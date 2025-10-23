@@ -59,7 +59,7 @@ const CourseCard = ({ course }) => {
   
         <CardFooter className="p-6 pt-0">
           <Button
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 dark:from-blue-800 dark:to-purple-900 hover:from-blue-600  hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300"
           >
             <span className="mr-2">{t("Start Learning")}</span>
           </Button>

@@ -93,7 +93,7 @@ const TeacherWaitlist = () => {
         <meta name="keywords" content="teaching, education, online courses, AI learning, technology education" />
       </Helmet>
 
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-800 dark:to-purple-800">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
         <div className="container mx-auto px-4 py-16 pt-32">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
             {t('Join Our Teaching Community')}
@@ -112,7 +112,7 @@ const TeacherWaitlist = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
-            <div className="bg-gradient-to-b from-blue-500 to-purple-600 p-6 md:w-1/3 flex flex-col justify-center items-center text-center">
+            <div className="bg-gradient-to-b from-blue-500 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100 p-6 md:w-1/3 flex flex-col justify-center items-center text-center">
               <h2 className="text-2xl font-bold text-white mb-6">{t('Why Teach With Us?')}</h2>
               <ul className="space-y-4">
                 <li className="flex items-center text-white">
@@ -217,7 +217,7 @@ const TeacherWaitlist = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full flex justify-center items-center py-3 px-4 rounded-lg text-white font-medium transition-all duration-300 ${
+                    className={`w-full flex justify-center items-center py-3 px-4 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100 rounded-lg text-white font-medium transition-all duration-300 ${
                       isSubmitting 
                         ? 'bg-gray-400 cursor-not-allowed' 
                         : 'bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 shadow-lg hover:shadow-xl'
@@ -246,7 +246,8 @@ const TeacherWaitlist = () => {
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mb-4">
                 <Brain className="text-blue-600 dark:text-blue-400" />
               </div>
@@ -258,7 +259,8 @@ const TeacherWaitlist = () => {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+  p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center mb-4">
                 <BookOpen className="text-purple-600 dark:text-purple-400" />
               </div>
@@ -270,7 +272,8 @@ const TeacherWaitlist = () => {
               </p>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+            <div className="bg-white dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
+ p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
               <div className="h-12 w-12 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mb-4">
                 <Code className="text-green-600 dark:text-green-400" />
               </div>
