@@ -41,7 +41,7 @@ const LessonAudio = ({
   t,
 }) => {
   return (
-    <div className="mt-4 p-6 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg shadow-inner">
+    <div className="mt-4 p-6 bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-500 dark:to-slate-600 rounded-lg shadow-inner ">
       {!audioUrl ? (
        <div className="flex items-center justify-center">
        <Button
@@ -58,7 +58,7 @@ const LessonAudio = ({
          ) : (
            <Volume2 className="w-5 h-5" />
          )}
-         <span>
+         <span >
            {isGeneratingAudio ? t('Generating Audio...') : t('Generate Audio')}
          </span>
        </Button>

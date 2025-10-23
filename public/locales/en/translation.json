@@ -282,11 +282,14 @@
     "title": "Lesson Notes",
     "placeholder": "Add your note here...",
     "loading": "Loading...",
+    "noNotes":"There is no note.",
+
     "buttons": {
       "save": "Save",
       "cancel": "Cancel",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "update":"Update"
     },
     "errors": {
       "fetchError": "Failed to fetch note. Please try again.",

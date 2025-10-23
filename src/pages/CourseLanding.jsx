@@ -343,7 +343,7 @@ const CourseLandingPage = () => {
       <section className="max-w-6xl mx-auto px-4 py-12 text-justify">
         <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
  text-gray-900 rounded-xl p-6 shadow-lg">
-          <h2 className="text-2xl font-bold mb-6 flex items-center">
+          <h2 className="text-2xl font-bold mb-6 flex items-center dark:text-white">
             <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
             {t("Course Description")}
           </h2>
@@ -363,11 +363,11 @@ const CourseLandingPage = () => {
             {/* Course Lessons */}
             <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
  text-gray-900 rounded-xl p-6 shadow-lg">
-              <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <h2 className="text-2xl font-bold mb-6 flex items-center dark:text-white">
                 <BookOpen className="w-6 h-6 mx-2 text-blue-400" />
                 {t("Course Content")}
               </h2>
-              <div className="space-y-4">
+              <div className="space-y-4 ">
                 {course.lessons?.map((lesson, index) => {
                   const lastCompletedIndex = course.lessons.findIndex(
                     (l) => l.id === lastCompletedLessonId
@@ -383,10 +383,10 @@ const CourseLandingPage = () => {
                     <div
                       key={index}
                       onClick={() => handleLessonClick(lesson.id, index)}
-                      className={`group bg-white dark:bg-gray-700 rounded-lg p-4 ${
+                      className={`group bg-white dark:bg-gray-500 rounded-lg p-4 ${
                         isLocked
                           ? "cursor-not-allowed opacity-75"
-                          : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600"
+                          : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700"
                       } transform hover:scale-102 transition-all duration-300`}
                     >
                       <div className="flex items-center justify-between">
@@ -485,7 +485,7 @@ const CourseLandingPage = () => {
           <div className="lg:col-span-1">
             <div className="dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100
  text-gray-900 rounded-xl p-6 shadow-lg sticky top-24">
-              <h2 className="text-2xl font-bold mb-6 flex items-center">
+              <h2 className="text-2xl font-bold mb-6 flex items-center dark:text-white">
                 <Trophy className="w-6 h-6 mx-2 text-yellow-400" />
                 {t("RecommendedCourses")}
               </h2>
@@ -494,7 +494,7 @@ const CourseLandingPage = () => {
                   <div
                     key={index}
                     onClick={() => navigate(`/course/${popularCourse.id}`)}
-                    className="group bg-white dark:bg-gray-700 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 relative"
+                    className="group bg-white dark:bg-gray-500 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 relative"
                   >
                     <div className="relative h-32">
                       <img
