@@ -563,7 +563,7 @@ const fetchRecommendedCourses = async () => {
               </div>
               <h3 className="text-lg font-medium mb-2">{t('No Learning Paths')}</h3>
               <p className="text-gray-500 dark:text-gray-400">
-                {t('Try again later or contact support.')}
+                {t('-')}
               </p>
             </div>
           )}
