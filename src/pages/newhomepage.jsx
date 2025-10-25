@@ -159,7 +159,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           <h2 className={`text-4xl md:text-5xl font-bold ${isDarkTheme ? 'text-white' : 'text-gray-900'} mb-8`}>
             {t('Ready to start learning?')}
           </h2>
-          <p className={`text-xl ${isDarkTheme ? 'text-zinc-300' : 'text-gray-600'} mb-8`}>
+          <p className={`text-xl ${isDarkTheme ? 'text-zinc-300' : 'text-gray-600'} mb-8 `}>
             {t('Sign up now and get access to all our courses!')}
           </p>
           <Link to="/signup">

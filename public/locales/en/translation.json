@@ -282,11 +282,14 @@
     "title": "Lesson Notes",
     "placeholder": "Add your note here...",
     "loading": "Loading...",
+    "noNotes":"There is no note.",
+
     "buttons": {
       "save": "Save",
       "cancel": "Cancel",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "update":"Update"
     },
     "errors": {
       "fetchError": "Failed to fetch note. Please try again.",
@@ -447,9 +450,9 @@
  "LandLine":"02433052650",
  "ContactPage-LandLine":"02433052676",
  "Login Placeholder":"091234567890",
- "monthly price":"198000 ",
- "6 months price":"1089000",
- "Annual":"2178000",
+
+ 
+ 
  "Artificial Intelligence Credibility":"29900",
  "Rial":"Toman",
  "Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript":"Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript",
@@ -484,9 +487,10 @@
       
       
         "Certificates": "Certificates",
-        "Certificate": "Certificate"
-      
-      
+        "Certificate": "Certificate",
+      "Python":"Python",
+      "Java":"Java",
+      "Language":"language"
     
 
 

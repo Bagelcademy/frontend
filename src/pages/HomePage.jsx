@@ -82,7 +82,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           icon={BrainCircuit}
           title={t('Design Courses with AI')}
           description={t('Unleash your creativity and expertise by designing custom courses. Our intuitive course builder empowers you to create engaging content in any subject or language.')}
-          gradient="bg-gradient-to-r from-blue-500 to-blue-600"
+          gradient="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100"
           buttonText={t('Start Creating')}
           linkTo="/ask"
           imageUrl= {Image1}
@@ -95,7 +95,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           icon={Brain}
           title={t('Discover Your Perfect Path')}
           description={t('Not sure where to start? Take our interactive learning assessment to find courses that align perfectly with your interests, goals, and learning style.')}
-          gradient="bg-gradient-to-r from-purple-500 to-purple-600"
+          gradient="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100"
           buttonText={t('Take Assessment')}
           linkTo="/quiz"
           reversed={true}
@@ -108,7 +108,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           icon={Route}
           title={t('Chart Your Career Journey')}
           description={t('Explore structured learning paths designed to take you from beginner to professional. Each path is carefully crafted to build your skills progressively.')}
-          gradient="bg-gradient-to-r from-blue-600 to-purple-600"
+          gradient="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100"
           buttonText={t('Explore Paths')}
           linkTo="/learning-paths"
           imageUrl= {Image3}
@@ -120,7 +120,7 @@ const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
           icon={Gift}
           title={t('Join the Bagel Family')}
           description={t('Become part of our thriving learning community. Meet our friendly character guides who will support and inspire you throughout your educational journey.')}
-          gradient="bg-gradient-to-r from-purple-600 to-blue-600"
+          gradient="bg-gradient-to-r from-blue-600 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100"
           buttonText={t('Meet the Family')}
           linkTo="/characters"
           reversed={true}

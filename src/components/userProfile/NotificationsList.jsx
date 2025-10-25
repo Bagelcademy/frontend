@@ -101,7 +101,7 @@ const NotificationsList = ({ t }) => {
                   className={`p-4 rounded-lg flex flex-col gap-2 ${
                     notification.message_seen
                       ? "bg-gray-50 dark:bg-gray-700"
-                      : "bg-blue-50 dark:bg-blue-900 border-l-4 border-blue-500"
+                      : "bg-blue-50 dark:bg-indigo-900 border-l-4 border-blue-500"
                   }`}
                 >
                   <p className="text-gray-700 dark:text-gray-200">
@@ -115,7 +115,8 @@ const NotificationsList = ({ t }) => {
                     {!notification.message_seen && (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 text-xs font-medium"
+                        className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-xs font-medium"
+
                       >
                         <CheckCircle className="w-4 h-4" /> {t("markAsRead")}
                       </button>

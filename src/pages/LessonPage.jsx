@@ -1013,7 +1013,7 @@ const LessonPage = () => {
             {activeTab === 'content' && (
               <Card className="max-w-4xl mx-auto">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold">{lesson?.title}</CardTitle>
+                  <CardTitle className="text-2xl font-bold">{lesson?.order}. {lesson?.title}</CardTitle>
                   <LessonAudio
     audioUrl={audioUrl}
     isGeneratingAudio={isGeneratingAudio}
