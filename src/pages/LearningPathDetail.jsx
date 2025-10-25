@@ -4,7 +4,7 @@ import { Clock, Book, Award, ChevronDown, ChevronUp, Play, Loader2, TrendingUp }
 import { useTranslation } from 'react-i18next';
 import { Notify } from 'notiflix';
 import i18n from '../i18n';
-import cimage from "../../public/12.png";
+import cimage from "../assets/12.png";
 
 
 const LearningPathDetail = () => {

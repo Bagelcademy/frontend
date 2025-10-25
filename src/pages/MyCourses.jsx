@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import CertificateModal from '../components/ui/CertificateModal';
 import CourseCard from '../components/ui/MyCourses_CourseCard';
-import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
+// import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import LearningPathCard from '../components/ui/MyCourses_LearningPathCard';
 
