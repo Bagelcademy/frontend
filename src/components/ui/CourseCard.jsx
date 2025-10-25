@@ -23,7 +23,7 @@ const CourseCard = ({ course }) => {
       </p>
       <button
         onClick={() => navigate(`/course/${course.id}`)}
-        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+        className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100"
       >
         {t("View Course")} <ArrowRight className="ml-2 w-4 h-4" />
       </button>
