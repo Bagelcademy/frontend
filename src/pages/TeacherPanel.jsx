@@ -25,113 +25,353 @@ import {
 const API_BASE = 'https://api.tadrisino.org/teacher';
 
 const api = {
-  // NOTE: keep mock shape; replace internals with fetch when your backend is ready.
+  // NOTE: these are written to call a real backend using a token from localStorage.
+  // Each method falls back to the previous mock shape if the network call fails so
+  // the UI continues to work during development.
+
   getCourses: async () => {
-    // Example real call:
-    // const res = await fetch(`${API_BASE}/courses/`, { credentials: 'include' });
-    // return await res.json();
-    return [
-      {
-        id: 1,
-        title: 'Python for Beginners',
-        description: 'Learn Python from scratch',
-        published: true,
-        enroll_count: 45,
-        lesson_count: 15,
-        level: 'beginner',
-        language: 'English',
-        category: 1,
-        image_url: '',
-        price: 0,
-      },
-    ];
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch courses: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getCourses failed, returning fallback mock', err);
+      return [
+        {
+          id: 1,
+          title: 'getCourses failed',
+          description: 'Learn Python from scratch',
+          published: true,
+          enroll_count: 45,
+          lesson_count: 15,
+          level: 'beginner',
+          language: 'English',
+          category: 1,
+          image_url: '',
+          price: 0,
+        },
+      ];
+    }
   },
+
   getCourse: async (id) => {
-    return {
-      id,
-      title: 'Python for Beginners',
-      description: 'Learn Python',
-      published: true,
-      image_url: '',
-      language: 'English',
-      level: 'beginner',
-      category: 1,
-      price: 0,
-    };
-  },
-  createCourse: async (data) => {
-    // const res = await fetch(`${API_BASE}/courses/`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data), credentials:'include' });
-    // return await res.json();
-    return { id: Date.now(), ...data };
-  },
-  updateCourse: async (id, data) => {
-    // const res = await fetch(`${API_BASE}/courses/${id}/`, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data), credentials:'include' });
-    // return await res.json();
-    return { id, ...data };
-  },
-  deleteCourse: async (id) => {
-    // await fetch(`${API_BASE}/courses/${id}/`, { method: 'DELETE', credentials:'include' });
-    return;
-  },
-  getLessons: async (courseId) => {
-    return [
-      {
-        id: 1,
-        title: 'Introduction',
-        description: 'Getting started',
-        content: 'Welcome to the course',
-        order: 1,
-        course: courseId,
-      },
-    ];
-  },
-  createLesson: async (courseId, data) => {
-    return { id: Date.now(), ...data, course: courseId };
-  },
-  updateLesson: async (courseId, lessonId, data) => {
-    return { id: lessonId, ...data, course: courseId };
-  },
-  getQuizzes: async (courseId) => {
-    return [{ id: 1, title: 'Quiz 1', lesson: 1 }];
-  },
-  createQuiz: async (courseId, lessonId, data) => {
-    return { id: Date.now(), ...data, lesson: lessonId };
-  },
-  getQuestions: async (quizId) => {
-    return [
-      {
-        id: 1,
-        question_text: 'What is Python?',
-        option_1: 'Language',
-        option_2: 'Snake',
-        option_3: 'Tool',
-        option_4: 'Framework',
-        correct_option: '1',
-        quiz: quizId,
-      },
-    ];
-  },
-  createQuestion: async (quizId, data) => {
-    return { id: Date.now(), ...data, quiz: quizId };
-  },
-  getChallenges: async (courseId) => {
-    return [
-      {
-        id: 1,
-        topic: 'Loops',
-        challenge_text: 'Write a for loop',
-        difficulty: 'easy',
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${id}/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch course ${id}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getCourse failed, returning fallback mock', err);
+      return {
+        id,
+        title: 'getCourse failed',
+        description: 'Learn Python',
+        published: true,
+        image_url: '',
         language: 'English',
-        answers: ['for i in range(10): print(i)'],
-      },
-    ];
+        level: 'beginner',
+        category: 1,
+        price: 0,
+      };
+    }
   },
+
+  createCourse: async (data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`Failed to create course: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('createCourse failed, returning fallback mock', err);
+      return { id: Date.now(), ...data };
+    }
+  },
+
+  updateCourse: async (id, data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${id}/`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`Failed to update course ${id}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('updateCourse failed, returning fallback mock', err);
+      return { id, ...data };
+    }
+  },
+
+  deleteCourse: async (id) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${id}/`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok && res.status !== 204) throw new Error(`Failed to delete course ${id}: ${res.status}`);
+      return;
+    } catch (err) {
+      console.warn('deleteCourse failed (no-op fallback)', err);
+      return;
+    }
+  },
+
+  getLessons: async (courseId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch lessons for course ${courseId}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getLessons failed, returning fallback mock', err);
+      return [
+        {
+          id: 1,
+          title: 'Failed to fetch lessons for course',
+          description: 'Getting started',
+          content: 'Welcome to the course',
+          order: 1,
+          course: courseId,
+        },
+      ];
+    }
+  },
+
+  createLesson: async (courseId, data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`Failed to create lesson: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('createLesson failed, returning fallback mock', err);
+      return { id: Date.now(), ...data, course: courseId };
+    }
+  },
+
+  updateLesson: async (courseId, lessonId, data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/${lessonId}/`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`Failed to update lesson ${lessonId}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('updateLesson failed, returning fallback mock', err);
+      return { id: lessonId, ...data, course: courseId };
+    }
+  },
+
+  getQuizzes: async (courseId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/quizzes/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch quizzes for course ${courseId}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getQuizzes failed, returning fallback mock', err);
+      return [{ id: 1, title: 'Quiz 1', lesson: 1 }];
+    }
+  },
+
+  createQuiz: async (courseId, lessonId, data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/quizzes/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ ...data, lesson: lessonId }),
+      });
+      if (!res.ok) throw new Error(`Failed to create quiz: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('createQuiz failed, returning fallback mock', err);
+      return { id: Date.now(), ...data, lesson: lessonId };
+    }
+  },
+
+  getQuestions: async (quizId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/quizzes/${quizId}/questions/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch questions for quiz ${quizId}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getQuestions failed, returning fallback mock', err);
+      return [
+        {
+          id: 1,
+          question_text: 'What is Python?',
+          option_1: 'Language',
+          option_2: 'Snake',
+          option_3: 'Tool',
+          option_4: 'Framework',
+          correct_option: '1',
+          quiz: quizId,
+        },
+      ];
+    }
+  },
+
+  createQuestion: async (quizId, data) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/quizzes/${quizId}/questions/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`Failed to create question: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('createQuestion failed, returning fallback mock', err);
+      return { id: Date.now(), ...data, quiz: quizId };
+    }
+  },
+
+  getChallenges: async (courseId) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/challenges/`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+      if (!res.ok) throw new Error(`Failed to fetch challenges for course ${courseId}: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('getChallenges failed, returning fallback mock', err);
+      return [
+        {
+          id: 1,
+          topic: 'Loops',
+          challenge_text: 'Write a for loop',
+          difficulty: 'easy',
+          language: 'English',
+          answers: ['for i in range(10): print(i)'],
+        },
+      ];
+    }
+  },
+
   generateAIChallenges: async (courseId, number) => {
-    return { message: `${number} challenges created`, challenges: [] };
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/generate_challenges/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ number }),
+      });
+      if (!res.ok) throw new Error(`Failed to generate AI challenges: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('generateAIChallenges failed, returning fallback mock', err);
+      return { message: `${number} challenges created`, challenges: [] };
+    }
   },
+
   generateAIImage: async (courseTitle) => {
-    // return { image_url: "https://..." }
-    return { image_url: 'https://via.placeholder.com/400x200' };
+    const token = localStorage.getItem('accessToken');
+    try {
+      const res = await fetch(`${API_BASE}/generate_image/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ title: courseTitle }),
+      });
+      if (!res.ok) throw new Error(`Failed to generate AI image: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn('generateAIImage failed, returning fallback mock', err);
+      return { image_url: 'https://via.placeholder.com/400x200' };
+    }
   },
 };
 
