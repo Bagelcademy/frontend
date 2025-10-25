@@ -101,8 +101,7 @@ const MyCourses = () => {
   const fetchMyCourses = async () => {
     try {
       const token = localStorage.getItem('accessToken');
-      // const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
-      const response = await fetch('./my_courses.json', {
+      const response = await fetch('https://api.tadrisino.org/courses/courses/get_user_courses/', {
         headers: {
           Authorization: `Bearer ${token}`
         }
