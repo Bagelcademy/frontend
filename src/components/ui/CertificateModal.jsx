@@ -41,7 +41,7 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
             <div className="mb-4">
               <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
                 <p className="text-yellow-800 dark:text-yellow-200 mb-3">
-                  {t('Your certificate has already been generated for this course.')}
+                  {t('Your certificate has already been generated for this course. You can download it from your user profile.')}
                 </p>
                 {certificateUrl ? (
                   <a

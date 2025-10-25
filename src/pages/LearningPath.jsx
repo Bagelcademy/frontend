@@ -18,7 +18,7 @@ const CareerPathsPage = () => {
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-
+  const [userProgress, setUserProgress] = useState({});
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -38,19 +38,38 @@ const CareerPathsPage = () => {
       const response = await fetch('https://api.tadrisino.org/courses/learning-paths/');
       if (!response.ok) throw new Error('Failed to fetch paths');
       const data = await response.json();
-      const transformedData = data.map(path => ({
-        id: path.id,
-        title: path.title,
-        category: path.category || 'other',
-        description: path.description,
-        duration: path.duration || '6 months',
-        lessons: path.lessons || 0,
-        level: path.level,
-        popular: path.popular || false,
-        image: path.image || '/api/placeholder/400/200',
-        rating: (Math.random() * 2 + 3).toFixed(1), // Random rating between 3.0 and 5.0
-        enrolledCount: Math.floor(Math.random() * 10000) + 1000 // Random number of enrolled students
-      }));
+
+      // Fetch enrolledCount for each path
+      const fetchEnrolledCounts = async (paths) => {
+        return await Promise.all(paths.map(async path => {
+          let enrolledCount = null;
+          try {
+            const enrollUrl = `https://api.tadrisino.org/courses/learning-paths/${path.id}/enrollment_count/`;
+            const enrollResponse = await fetch(enrollUrl, { method: 'POST' });
+            if (enrollResponse.ok) {
+              const enrollData = await enrollResponse.json();
+              enrolledCount = enrollData.enrollment_count;
+            }
+          } catch (err) {
+            enrolledCount = null;
+          }
+          return {
+            id: path.id,
+            title: path.title,
+            category: path.category || 'other',
+            description: path.description,
+            duration: path.duration || '6 months',
+            lessons: path.lessons || 0,
+            level: path.level,
+            popular: path.popular || false,
+            image: path.image || '/api/placeholder/400/200',
+            rating: (Math.random() * 2 + 3).toFixed(1), // Random rating between 3.0 and 5.0
+            enrolledCount: enrolledCount !== null ? enrolledCount : 0
+          };
+        }));
+      };
+
+      const transformedData = await fetchEnrolledCounts(data);
       setPaths(transformedData);
       setDisplayedPaths(transformedData);
     } catch (error) {
@@ -78,7 +97,39 @@ const CareerPathsPage = () => {
       enqueueSnackbar(t('Failed to fetch categories. Please try again later.'), { variant: 'error' });
     }
   };
+//////////////////
+  // Fetch user progress for a learning path
+  const fetchUserProgress = async (id) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
 
+    try {
+      const token = localStorage.getItem('accessToken');
+      const url = `https://api.tadrisino.org/courses/paths/${id}/user_progress/`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setUserProgress(data);
+    } catch (error) {
+      console.error('Error fetching user progress:', error);
+      return null;
+    }
+  };
+//////////////
   const filterPaths = () => {
     let filtered = paths;
     if (searchTerm) {

@@ -115,7 +115,7 @@ const CourseCard = ({ item, onRequestCertificate }) => {
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white group-hover:scale-105 transition-all duration-300"
               >
                 <Award className="w-4 h-4 mx-1" />
-                <span className="mx-2">{progress.got_certificate ? t('View Certificate') : t('Request Certificate')}</span>
+                <span className="mx-2">{t('Request Certificate')}</span>
               </Button>
             )}
           </div>

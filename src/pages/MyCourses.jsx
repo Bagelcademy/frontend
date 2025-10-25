@@ -13,6 +13,7 @@ import CertificateModal from '../components/ui/CertificateModal';
 import CourseCard from '../components/ui/MyCourses_CourseCard';
 import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
+import LearningPathCard from '../components/ui/MyCourses_LearningPathCard';
 
 const COURSES_PER_SECTION = 4;
 
@@ -21,6 +22,7 @@ const MyCourses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
+  const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
@@ -59,6 +61,7 @@ const MyCourses = () => {
     fetchRecommendedCourses();
     fetchCategories();
     fetchUserProfile();
+    fetchPaths();
     setQuote(motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]);
   }, []);
 
@@ -163,6 +166,32 @@ const fetchRecommendedCourses = async () => {
       setCategories(translatedCategories);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
+    }
+  };
+/// api needed
+  const fetchPaths = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(`https://api.tadrisino.org/courses/paths/${id}/user_progress/`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch paths');
+      const data = await response.json();
+      console.log("Fetched paths data:", data); // Debug log
+      const transformedData = data.map(path => ({
+        enrollment_status: path.enrollment_status,
+        user_progress: path.user_progress
+      }));
+      console.log("Transformed paths data:", transformedData); // Debug log
+      setPaths(transformedData);
+      setDisplayedPaths(transformedData);
+    } catch (error) {
+      console.error("Error fetching paths:", error);
+      console.error(t('Failed to fetch paths. Please try again later.'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -417,6 +446,12 @@ const fetchRecommendedCourses = async () => {
               >
                 {t('Explore More Courses')}
               </Button>
+              <Button
+                onClick={handleDownloadNotes}
+                className="w-full md:w-auto bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-white/90"
+              >
+                {t('Download Notes')}
+              </Button>
             </div>
           </div>
         </div>
@@ -513,6 +548,27 @@ const fetchRecommendedCourses = async () => {
             )}
           </div>
         )}
+        {/* LearningPaths */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">{t('Learning Paths')}</h2>
+          {displayedPaths.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedPaths.map(path => (
+                <LearningPathCard key={path.enrollment_status} path={path} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
+                <BookOpen className="w-6 h-6 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">{t('No Learning Paths')}</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                {t('Try again later or contact support.')}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
