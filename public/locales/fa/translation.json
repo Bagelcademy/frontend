@@ -203,6 +203,8 @@
   "User": "کاربر",
   "Congratulations": "تبریک!",
   "Get Certificate": "دریافت گواهینامه",
+  "View Certificate":"مشاهده گواهینامه",
+  "Certificate Already Generated":"گواهی قبلاً صادر شده است",
   "Would you like to get a certificate for this course?": "آیا می‌خواهید گواهینامه‌ای برای این دوره دریافت کنید؟",
   "Submit Answer": "ارسال پاسخ",
   "No quiz available for this lesson.": "برای این درس آزمونی در دسترس نیست.",
@@ -822,6 +824,7 @@
   "Important": "مهم",
   "Please enter your name carefully in English. Certificates are issued only once and cannot be changed later.": "مهم: لطفاً نام خود را با دقت به زبان انگلیسی وارد کنید. گواهی‌نامه‌ها فقط یک‌بار صادر می‌شوند و امکان تغییر آن‌ها وجود ندارد.",
   "Your Name (in English)": "نام و نام خانوادگی(in english)",
+  "Your certificate has already been generated for this course. You can download it from your user profile." : "گواهینامه شما قبلاً برای این دوره ایجاد شده است. می‌توانید گواهینامه خود را از پروفایل کاربری خود دریافت کنید.",
   "history": "تاریخ",
   "math": "ریاضیات",
   "Data_science": "علوم داده",
@@ -1203,9 +1206,8 @@
   },
 
  
-    "Certificates": "گواهینامه‌ها",
-    "Language":"زبان"
-   
+  "Certificates": "گواهینامه‌ها",
+  "Language":"زبان",
+  "No Learning Paths": "در حال حاظر مسیرشغلی ثبت نام شده ای ندارید."
 
-  
 }

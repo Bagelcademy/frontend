@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Clock, Book, Award, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Clock, Book, Award, ChevronDown, ChevronUp, Play, Loader2, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { Notify } from 'notiflix';
 import i18n from '../i18n';
-import cimage from "../../public/12.png";
+import cimage from "../assets/12.png";
 
 
 const LearningPathDetail = () => {
@@ -14,6 +13,14 @@ const LearningPathDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedCourse, setExpandedCourse] = useState(null);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProgress, setUserProgress] = useState(null);
+
+  // Character pop-up state
+  const [showCharacterPopup, setShowCharacterPopup] = useState(false);
+  const [popupCharacter, setPopupCharacter] = useState(null);
+
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -26,6 +33,10 @@ const LearningPathDetail = () => {
       }
 
       try {
+        // Check if user is logged in by checking if access token exists
+        const accessToken = localStorage.getItem("accessToken");
+        setIsLoggedIn(!!accessToken);
+        
         const url = `https://api.tadrisino.org/courses/learning-paths/${id}/`;
         const response = await fetch(url);
         if (!response.ok) {
@@ -33,6 +44,23 @@ const LearningPathDetail = () => {
         }
         const data = await response.json();
         setPathData(data);
+
+        // Fetch user progress if logged in
+        if (accessToken) {
+          const progressUrl = `https://api.tadrisino.org/courses/paths/${id}/user_progress/`;
+          const progressResponse = await fetch(progressUrl, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${accessToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (progressResponse.ok) {
+            const progressData = await progressResponse.json();
+            setUserProgress(progressData);
+            setIsEnrolled(progressData.enrollment_status === "Enrolled");
+          }
+        }
       } catch (error) {
         console.error('Error fetching learning path data:', error);
         setError(t('Failed to load learning path data') + `: ${error.message}`);
@@ -43,6 +71,53 @@ const LearningPathDetail = () => {
 
     fetchPathData();
   }, [id, t]);
+
+  const enrollInPath = async () => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch(`https://api.tadrisino.org/courses/learning-paths/${id}/enroll/`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        const data = await response.json();
+        setIsEnrolled(true);
+        // Show success message
+        Notify.success(t('Enrolled successfully'));
+        // If there's a character in the response, show it in popup
+        if (data.character) {
+          setPopupCharacter(data.character);
+          setShowCharacterPopup(true);
+        }
+        // Refresh user progress
+        const progressUrl = `https://api.tadrisino.org/courses/paths/${id}/user_progress/`;
+        const progressResponse = await fetch(progressUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (progressResponse.ok) {
+          const progressData = await progressResponse.json();
+          setUserProgress(progressData);
+        }
+      } else {
+        throw new Error('Failed to enroll');
+      }
+    } catch (error) {
+      console.error('Error enrolling in path:', error);
+      Notify.failure(t('Failed to enroll in the career path'));
+    }
+  };
 
   const toggleCourse = (courseId) => {
     setExpandedCourse(expandedCourse === courseId ? null : courseId);
@@ -131,10 +206,25 @@ const LearningPathDetail = () => {
                 <Award className="w-5 h-5" />
                 <span>{pathData.level}</span>
               </div>
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5" />
+                <span>{t('Progress')}: {userProgress.user_progress}%</span>
+              </div>
             </div>
 
-            <button className="w-full md:w-auto px-8 py-3 text-white font-semibold bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg transition-all">
-              {t('Start Career Path')}
+            <button 
+              onClick={!isEnrolled ? enrollInPath : undefined}
+              disabled={isEnrolled}
+              className={`
+            px-8 py-4 rounded-lg text-lg font-semibold text-white
+            ${
+              isEnrolled
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            }
+          `}
+            >
+              {isEnrolled ? t('Already Enrolled') : t('Start Career Path')}
             </button>
           </div>
 
