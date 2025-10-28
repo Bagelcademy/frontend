@@ -1204,8 +1204,32 @@
 
  
     "Certificates": "گواهینامه‌ها",
-    "Language":"زبان"
+    "Language":"زبان",
    
 
-  
+  "Teacher Portal": "پورتال آموزگار",
+  "Dashboard": "داشبورد",
+  "My Courses":"درس های من",
+  "New Course":"درس جدید",
+  "View Details":"مشاهده جزئیات",
+  "Draft":"پیش نویس",
+  "Published":"منتشر شده",
+  "Manage your courses and track performance":"دوره‌های خود را مدیریت کنید و عملکرد خود را پیگیری کنید",
+  "Total Courses":"تعداد دوره ها",
+  "Total Enrollments":"تعداد ثبت‌نام ها",
+  "Total Lessons":"تعداد درس ها",
+  "Course Lessons":"درس های دوره",
+  "Lesson Title":"عنوان درس",
+  "Description":"توضیحات",
+  "Content":"محتوا",
+  "Order":"ترتیب",
+  "Lesson":"درس",
+  "Create":"ایجاد",
+  "Update":"ویرایش",
+  "":"",
+  "":"",
+  "":"",
+  "":"",
+  "":"",
+  "":""
 }

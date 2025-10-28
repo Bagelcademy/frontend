@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BookOpen,
   Plus,
@@ -152,7 +153,7 @@ const api = {
   getLessons: async (courseId) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/get_lessons/`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -180,7 +181,7 @@ const api = {
   createLesson: async (courseId, data) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/add_lesson/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -200,7 +201,7 @@ const api = {
   updateLesson: async (courseId, lessonId, data) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/${lessonId}/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/${lessonId}/update_lesson/`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
@@ -220,7 +221,7 @@ const api = {
   getQuizzes: async (courseId) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/quizzes/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/get_quizzes/`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -232,14 +233,14 @@ const api = {
       return await res.json();
     } catch (err) {
       console.warn('getQuizzes failed, returning fallback mock', err);
-      return [{ id: 1, title: 'Quiz 1', lesson: 1 }];
+      return [{ id: 1, title: 'getQuizzes failed, returning fallback mock', lesson: 1 }];
     }
   },
 
   createQuiz: async (courseId, lessonId, data) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/quizzes/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/lessons/${lessonId}/add_quiz/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -259,7 +260,7 @@ const api = {
   getQuestions: async (quizId) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/quizzes/${quizId}/questions/`, {
+      const res = await fetch(`${API_BASE}/courses/quiz/${quizId}/get_question/`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -286,10 +287,39 @@ const api = {
     }
   },
 
+  updateQuiz: async (courseId, lessonId, quizId, data) => {
+  const token = localStorage.getItem('accessToken');
+  try {
+    const res = await fetch(
+      `${API_BASE}/teacher/courses/${courseId}/lessons/${lessonId}/quiz/${quizId}/update_quiz/`,
+      {
+        method: 'PATCH', // or 'PUT' if your backend expects full replacement
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok)
+      throw new Error(
+        `Failed to update quiz ${quizId} in lesson ${lessonId} (course ${courseId}): ${res.status}`
+      );
+
+    return await res.json();
+  } catch (err) {
+    console.warn('updateQuiz failed, returning fallback mock', err);
+    return { id: quizId, ...data, lesson: lessonId, course: courseId };
+  }
+},
+
+
   createQuestion: async (quizId, data) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/quizzes/${quizId}/questions/`, {
+      const res = await fetch(`${API_BASE}/courses/quiz/${quizId}/add_question/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -306,10 +336,39 @@ const api = {
     }
   },
 
+  updateQuestion: async (courseId, quizId, questionId, data) => {
+  const token = localStorage.getItem('accessToken');
+  try {
+    const res = await fetch(
+      `${API_BASE}/courses/${courseId}/quiz/${quizId}/question/${questionId}/update_question/`,
+      {
+        method: 'PATCH', // or 'PUT' if full replacement is required
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (!res.ok)
+      throw new Error(
+        `Failed to update question ${questionId} in quiz ${quizId} (course ${courseId}): ${res.status}`
+      );
+
+    return await res.json();
+  } catch (err) {
+    console.warn('updateQuestion failed, returning fallback mock', err);
+    return { id: questionId, ...data, quiz: quizId, course: courseId };
+  }
+},
+
+
   getChallenges: async (courseId) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/courses/${courseId}/challenges/`, {
+      const res = await fetch(`${API_BASE}/courses/${courseId}/get_challenges/`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -357,7 +416,7 @@ const api = {
   generateAIImage: async (courseTitle) => {
     const token = localStorage.getItem('accessToken');
     try {
-      const res = await fetch(`${API_BASE}/generate_image/`, {
+      const res = await fetch(`${API_BASE}/courses/img_generate_ai/`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -379,6 +438,7 @@ const api = {
  * ROOT
  */
 const TeacherDashboard = () => {
+  const { t } = useTranslation();
   const [view, setView] = useState('dashboard');
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -403,34 +463,34 @@ const TeacherDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <nav className="bg-gradient-to-r from-blue-500 to-purple-600 dark:bg-gradient-to-br dark:from-blue-950/100 dark:via-blue-950/95 dark:to-purple-950/100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center space-x-2">
-              <BookOpen className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Teacher Portal</span>
+            <div className="flex items-center gap-x-2">
+              <BookOpen className="w-8 h-8" />
+              <span className="text-xl font-bold">{t('Teacher Portal')}</span>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex gap-x-4">
               <button
-                onClick={() => setView('dashboard')}
+                onClick={() => setView(t('dashboard'))}
                 className={`px-4 py-2 rounded-lg ${
                   view === 'dashboard'
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                Dashboard
+                {t('Dashboard')}
               </button>
               <button
-                onClick={() => setView('courses')}
-                className={`px-4 py-2 rounded-lg ${
+                onClick={() => setView(t('courses'))}
+                className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center ${
                   view === 'courses'
                     ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    : 'text-gray-700 hover:bg-blue-700'
                 }`}
               >
-                My Courses
+                {t('My Courses')}
               </button>
             </div>
           </div>
@@ -472,6 +532,7 @@ const TeacherDashboard = () => {
  * Dashboard
  */
 const Dashboard = ({ courses, setView, setSelectedCourse }) => {
+  const { t } = useTranslation();
   const totalEnrollments = courses.reduce(
     (sum, c) => sum + (c.enroll_count || 0),
     0
@@ -482,40 +543,40 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Manage your courses and track performance</p>
+        <h1 className="text-3xl font-bold text-gray-900">{t('Dashboard')}</h1>
+        <p className="text-gray-600 mt-2 dark:text-gray-300">{t('Manage your courses and track performance')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard icon={BookOpen} label="Total Courses" value={courses.length} color="blue" />
-        <StatCard icon={Users} label="Total Enrollments" value={totalEnrollments} color="green" />
-        <StatCard icon={BookMarked} label="Total Lessons" value={totalLessons} color="purple" />
-        <StatCard icon={Eye} label="Published" value={publishedCourses} color="orange" />
+        <StatCard icon={BookOpen} label={t("Total Courses")} value={courses.length} color="blue" />
+        <StatCard icon={Users} label={t("Total Enrollments")} value={totalEnrollments} color="green" />
+        <StatCard icon={BookMarked} label={t("Total Lessons")} value={totalLessons} color="purple" />
+        <StatCard icon={Eye} label={t("Published")} value={publishedCourses} color="orange" />
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
+      <div className="bg-white rounded-lg shadow p-6 mb-6 dark:bg-blue-900/30">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Recent Courses</h2>
           <button
             onClick={() => setView('create-course')}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
           >
             <Plus className="w-5 h-5" />
-            <span>New Course</span>
+            <span>{t('New Course')}</span>
           </button>
         </div>
         <div className="space-y-4">
           {courses.slice(0, 5).map((course) => (
             <div
               key={course.id}
-              className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+              className="flex items-center justify-between p-4 dark:bg-purple-700/20 border dark:border-blue-950/20 rounded-lg hover:bg-gray-50 dark:hover:bg-purple-500/20"
             >
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">{course.title}</h3>
-                <p className="text-sm text-gray-600">{course.description}</p>
-                <div className="flex space-x-4 mt-2 text-sm text-gray-500">
-                  <span>{course.lesson_count} lessons</span>
-                  <span>{course.enroll_count} students</span>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-200">{course.title}</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{course.description}</p>
+                <div className="flex gap-x-4 mt-2 text-sm text-gray-600 dark:text-gray-300">
+                  <span>{course.lesson_count} {t('lessons')}</span>
+                  <span>{course.enroll_count} {t('Students')}</span>
                   <span
                     className={`px-2 py-0.5 rounded ${
                       course.published
@@ -523,7 +584,7 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
                         : 'bg-gray-100 text-gray-800'
                     }`}
                   >
-                    {course.published ? 'Published' : 'Draft'}
+                    {course.published ? t('Published') : t('Draft')}
                   </span>
                 </div>
               </div>
@@ -532,9 +593,9 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
                   setSelectedCourse(course);
                   setView('course-detail');
                 }}
-                className="ml-4 text-blue-600 hover:text-blue-800"
+                className="ml-4 text-blue-600 hover:text-blue-800 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow text-blue-600 dark:text-blue-400"
               >
-                View Details
+                {t('View Details')}
               </button>
             </div>
           ))}
@@ -546,18 +607,18 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
 
 const StatCard = ({ icon: Icon, label, value, color }) => {
   const colors = {
-    blue: 'bg-blue-100 text-blue-600',
-    green: 'bg-green-100 text-green-600',
-    purple: 'bg-purple-100 text-purple-600',
-    orange: 'bg-orange-100 text-orange-600',
+    blue: 'bg-blue-100 dark:bg-blue-700/40 text-blue-600 dark:text-blue-200',
+    green: 'bg-green-100 dark:bg-green-700/40 text-green-600 dark:text-green-300',
+    purple: 'bg-purple-100 dark:bg-purple-700/40 text-purple-600 dark:text-purple-300',
+    orange: 'bg-orange-100 dark:bg-orange-700/40 text-orange-600 dark:text-orange-200',
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white dark:bg-blue-900/30 rounded-lg shadow p-6 text-gray-900 dark:text-gray-100">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-gray-600">{label}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">{label}</p>
+          <p className="text-3xl font-bold text-gray-900 mt-2 dark:text-blue-300">{value}</p>
         </div>
         <div className={`p-3 rounded-lg ${colors[color]}`}>
           <Icon className="w-6 h-6" />
@@ -571,16 +632,17 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
  * Course List
  */
 const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Courses</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('My Courses')}</h1>
           <p className="text-gray-600 mt-2">Manage all your courses</p>
         </div>
         <button
           onClick={() => setView('create-course')}
-          className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
           <span>Create New Course</span>
@@ -612,27 +674,27 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
                     course.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {course.published ? 'Published' : 'Draft'}
+                  {course.published ? t('Published') : t('Draft')}
                 </span>
               </div>
               <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
               <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                <span className="flex items-center space-x-1">
+                <span className="flex items-center gap-x-1">
                   <BookMarked className="w-4 h-4" />
                   <span>{course.lesson_count} lessons</span>
                 </span>
-                <span className="flex items-center space-x-1">
+                <span className="flex items-center gap-x-1">
                   <Users className="w-4 h-4" />
                   <span>{course.enroll_count} students</span>
                 </span>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex gap-x-2">
                 <button
                   onClick={() => {
                     setSelectedCourse(course);
                     setView('course-detail');
                   }}
-                  className="flex-1 flex items-center justify-center space-x-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="flex-1 flex items-center justify-center gap-x-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                   <Eye className="w-4 h-4" />
                   <span>View</span>
@@ -787,7 +849,7 @@ const CourseForm = ({ course, onSave, setView }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <input
               type="text"
               value={formData.image_url}
@@ -798,7 +860,7 @@ const CourseForm = ({ course, onSave, setView }) => {
               type="button"
               onClick={handleGenerateImage}
               disabled={generating}
-              className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
+              className="flex items-center gap-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
             >
               <Sparkles className="w-4 h-4" />
               <span>{generating ? 'Generating...' : 'AI Generate'}</span>
@@ -806,7 +868,7 @@ const CourseForm = ({ course, onSave, setView }) => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-x-2">
           <input
             type="checkbox"
             id="published"
@@ -819,10 +881,10 @@ const CourseForm = ({ course, onSave, setView }) => {
           </label>
         </div>
 
-        <div className="flex space-x-4 pt-4">
+        <div className="flex gap-x-4 pt-4">
           <button
             type="submit"
-            className="flex-1 flex items-center justify-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            className="flex-1 flex items-center justify-center gap-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
           >
             <Save className="w-5 h-5" />
             <span>{course ? 'Update Course' : 'Create Course'}</span>
@@ -830,7 +892,7 @@ const CourseForm = ({ course, onSave, setView }) => {
           <button
             type="button"
             onClick={() => setView('courses')}
-            className="flex items-center justify-center space-x-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
+            className="flex items-center justify-center gap-x-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
             <X className="w-5 h-5" />
             <span>Cancel</span>
@@ -851,7 +913,7 @@ const CourseForm = ({ course, onSave, setView }) => {
             <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
             <input ... />
           </div>
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <button type="submit">...</button>
             <button type="button">Cancel</button>
           </div>
@@ -866,6 +928,7 @@ const CourseForm = ({ course, onSave, setView }) => {
  * Course Detail w/ Tabs
  */
 const CourseDetail = ({ course, setView }) => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('lessons');
   const [lessons, setLessons] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
@@ -913,24 +976,24 @@ const CourseDetail = ({ course, setView }) => {
             <h1 className="text-3xl font-bold text-gray-900">{course.title}</h1>
             <p className="text-gray-600 mt-2">{course.description}</p>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <span
               className={`px-3 py-1 rounded-lg ${
                 course.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
               }`}
             >
-              {course.published ? 'Published' : 'Draft'}
+              {course.published ? t('Published') : t('Draft')}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg shadow dark:bg-blue-900/30">
         <div className="border-b">
-          <div className="flex space-x-8 px-6">
+          <div className="flex gap-x-8 p-6">
             <button
               onClick={() => setActiveTab('lessons')}
-              className={`py-4 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 font-medium ${
                 activeTab === 'lessons'
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -940,7 +1003,7 @@ const CourseDetail = ({ course, setView }) => {
             </button>
             <button
               onClick={() => setActiveTab('quizzes')}
-              className={`py-4 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 font-medium ${
                 activeTab === 'quizzes'
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -950,7 +1013,7 @@ const CourseDetail = ({ course, setView }) => {
             </button>
             <button
               onClick={() => setActiveTab('challenges')}
-              className={`py-4 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 font-medium ${
                 activeTab === 'challenges'
                   ? 'border-blue-600 text-blue-600'
                   : 'border-transparent text-gray-600 hover:text-gray-800'
@@ -961,7 +1024,7 @@ const CourseDetail = ({ course, setView }) => {
           </div>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 dark:bg-blue-950 ">
           {activeTab === 'lessons' && (
             <LessonsTab
               courseId={course.id}
@@ -1004,6 +1067,7 @@ const LessonsTab = ({
   expandedLesson,
   setExpandedLesson,
 }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -1039,10 +1103,10 @@ const LessonsTab = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Course Lessons</h2>
+        <h2 className="text-xl font-semibold">{t('Course Lessons')}</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
           <span>Add Lesson</span>
@@ -1050,56 +1114,56 @@ const LessonsTab = ({
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mb-6 p-6 border border-gray-200 rounded-lg space-y-4">
+        <form onSubmit={handleSubmit} className="mb-6 p-6 border border-gray-200 rounded-lg space-y-4 dark:border-blue-950/20">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Lesson Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Lesson Title')}</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Description')}</label>
             <input
               type="text"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Content</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Content')}</label>
             <textarea
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               rows={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Order</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Order')}</label>
             <input
               type="number"
               value={formData.order}
               onChange={(e) =>
                 setFormData({ ...formData, order: Number.isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value) })
               }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
               required
             />
           </div>
 
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <button
               type="submit"
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               <Save className="w-4 h-4" />
-              <span>{editingId ? 'Update' : 'Create'} Lesson</span>
+              <span>{editingId ? t('Update') : t('Create')} {t('Lesson')}</span>
             </button>
             <button
               type="button"
@@ -1108,9 +1172,9 @@ const LessonsTab = ({
                 setEditingId(null);
                 setFormData({ title: '', description: '', content: '', order: 1 });
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 "
             >
-              Cancel
+              {t('Cancel')}
             </button>
           </div>
         </form>
@@ -1121,20 +1185,20 @@ const LessonsTab = ({
           .slice()
           .sort((a, b) => (a.order || 0) - (b.order || 0))
           .map((lesson) => (
-            <div key={lesson.id} className="border border-gray-200 rounded-lg">
-              <div className="flex items-center justify-between p-4 hover:bg-gray-50">
+            <div key={lesson.id} className="border border-gray-200 rounded-lg dark:border-blue-950/20">
+              <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-purple-800/20">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center gap-x-3">
                     <span className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
                       {lesson.order}
                     </span>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{lesson.title}</h3>
-                      <p className="text-sm text-gray-600">{lesson.description}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-200">{lesson.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-200">{lesson.description}</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <button
                     onClick={() =>
                       setExpandedLesson(expandedLesson === lesson.id ? null : lesson.id)
@@ -1179,6 +1243,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [editingQuestionId, setEditingQuestionId] = useState(null);
   const [questionData, setQuestionData] = useState({
     question_text: '',
     option_1: '',
@@ -1190,10 +1255,27 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
 
   const handleSubmitQuiz = async (e) => {
     e.preventDefault();
-    await api.createQuiz(courseId, parseInt(formData.lesson), { title: formData.title });
+    if (editingId) {
+      await api.updateQuiz(courseId, parseInt(formData.lesson), editingId, {
+        title: formData.title,
+      });
+    } else {
+      await api.createQuiz(courseId, parseInt(formData.lesson), {
+        title: formData.title,
+      });
+    }
     setFormData({ title: '', lesson: '' });
+    setEditingId(null);
     setShowForm(false);
     onUpdate();
+  };
+
+  const handleEdit = (quiz) => {
+    setFormData({
+      title: quiz.title || ''
+    });
+    setEditingId(quiz.id);
+    setShowForm(true);
   };
 
   const handleSelectQuiz = async (quiz) => {
@@ -1205,7 +1287,14 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
   const handleSubmitQuestion = async (e) => {
     e.preventDefault();
     if (!selectedQuiz) return;
-    await api.createQuestion(selectedQuiz.id, questionData);
+    if (editingQuestionId) {
+      // update existing question
+      await api.updateQuestion(courseId, selectedQuiz.id, editingQuestionId, questionData);
+    } else {
+      // create new question
+      await api.createQuestion(selectedQuiz.id, questionData);
+    }
+
     setQuestionData({
       question_text: '',
       option_1: '',
@@ -1215,6 +1304,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
       correct_option: '1',
     });
     setShowQuestionForm(false);
+    setEditingQuestionId(null);
     handleSelectQuiz(selectedQuiz);
   };
 
@@ -1224,7 +1314,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
         <h2 className="text-xl font-semibold">Course Quizzes</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
           <span>Add Quiz</span>
@@ -1259,10 +1349,10 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
               ))}
             </select>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex gap-x-2">
             <button
               type="submit"
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               <Save className="w-4 h-4" />
               <span>Create Quiz</span>
@@ -1283,33 +1373,52 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h3 className="font-semibold text-gray-900 mb-4">Quizzes</h3>
+          <h3 className="font-semibold text-gray-900 mb-4 dark:text-gray-200">Quizzes</h3>
           <div className="space-y-3">
             {quizzes.map((quiz) => (
               <div
                 key={quiz.id}
                 onClick={() => handleSelectQuiz(quiz)}
                 className={`p-4 border rounded-lg cursor-pointer hover:bg-gray-50 ${
-                  selectedQuiz?.id === quiz.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                  selectedQuiz?.id === quiz.id
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-gray-200'
                 }`}
               >
-                <h4 className="font-semibold text-gray-900">{quiz.title}</h4>
-                <p className="text-sm text-gray-600 mt-1">Lesson ID: {quiz.lesson}</p>
+                {/* Header row with title and edit button */}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 dark:text-gray-200">{quiz.title}</h4>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Lesson ID: {quiz.lesson}
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // prevent selecting the quiz when clicking edit
+                      handleEdit(quiz);
+                    }}
+                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                  >
+                    <Edit className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
+
         <div>
           {selectedQuiz && (
             <>
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-200">
                   Questions for {selectedQuiz.title}
                 </h3>
                 <button
                   onClick={() => setShowQuestionForm(!showQuestionForm)}
-                  className="flex items-center space-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
+                  className="flex items-center gap-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Question</span>
@@ -1371,17 +1480,28 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       <option value="4">Option 4</option>
                     </select>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex gap-x-2">
                     <button
                       type="submit"
-                      className="flex items-center space-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
+                      className="flex items-center gap-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
                     >
                       <Save className="w-4 h-4" />
-                      <span>Add</span>
+                      <span>{editingQuestionId ? 'Update' : 'Add'}</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => setShowQuestionForm(false)}
+                      onClick={() => {
+                        setShowQuestionForm(false);
+                        setEditingQuestionId(null);
+                        setQuestionData({
+                          question_text: '',
+                          option_1: '',
+                          option_2: '',
+                          option_3: '',
+                          option_4: '',
+                          correct_option: '1',
+                        });
+                      }}
                       className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                     >
                       Cancel
@@ -1393,9 +1513,31 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
               <div className="space-y-3">
                 {questions.map((q, idx) => (
                   <div key={q.id} className="p-4 border border-gray-200 rounded-lg">
-                    <p className="font-medium text-gray-900 mb-2">
-                      {idx + 1}. {q.question_text}
-                    </p>
+                    <div className="flex items-start justify-between mb-2">
+                      <p className="font-medium text-gray-900">
+                        {idx + 1}. {q.question_text}
+                      </p>
+                      <div className="flex items-center gap-x-2">
+                        <button
+                          onClick={() => {
+                            // populate form for editing this question
+                            setQuestionData({
+                              question_text: q.question_text || '',
+                              option_1: q.option_1 || '',
+                              option_2: q.option_2 || '',
+                              option_3: q.option_3 || '',
+                              option_4: q.option_4 || '',
+                              correct_option: q.correct_option ? String(q.correct_option) : '1',
+                            });
+                            setEditingQuestionId(q.id);
+                            setShowQuestionForm(true);
+                          }}
+                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg text-sm"
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    </div>
                     <div className="space-y-1 text-sm">
                       {[1, 2, 3, 4].map((num) => (
                         <div
@@ -1431,7 +1573,7 @@ const ChallengesTab = ({ challenges, onGenerate }) => {
         <h2 className="text-xl font-semibold">Course Challenges</h2>
         <button
           onClick={onGenerate}
-          className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+          className="flex items-center gap-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
         >
           <Sparkles className="w-5 h-5" />
           <span>Generate AI Challenges</span>
@@ -1443,8 +1585,8 @@ const ChallengesTab = ({ challenges, onGenerate }) => {
           <div key={challenge.id} className="border border-gray-200 rounded-lg p-6">
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="font-semibold text-gray-900 text-lg">{challenge.topic}</h3>
-                <div className="flex items-center space-x-2 mt-2">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-200 text-lg">{challenge.topic}</h3>
+                <div className="flex items-center gap-x-2 mt-2">
                   <span
                     className={`px-2 py-1 rounded text-xs ${
                       challenge.difficulty === 'easy'
