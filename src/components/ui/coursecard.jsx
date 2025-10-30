@@ -1,8 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Globe2, Briefcase, Users, Star, ArrowRight } from 'lucide-react';
+import { Globe2, Briefcase, Users, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 // CourseCard Component
