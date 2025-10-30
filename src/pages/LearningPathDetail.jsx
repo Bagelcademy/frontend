@@ -206,10 +206,12 @@ const LearningPathDetail = () => {
                 <Award className="w-5 h-5" />
                 <span>{pathData.level}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                <span>{t('Progress')}: {userProgress.user_progress}%</span>
-              </div>
+              {userProgress && (
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  <span>{t('Progress')}: {userProgress.user_progress}%</span>
+                </div>
+              )}
             </div>
 
             <button 
