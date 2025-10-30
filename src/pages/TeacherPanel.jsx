@@ -483,7 +483,7 @@ const TeacherDashboard = () => {
                 {t('Dashboard')}
               </button>
               <button
-                onClick={() => setView(t('courses'))}
+                onClick={() => setView('courses')}
                 className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center ${
                   view === 'courses'
                     ? 'bg-blue-600 text-white'
@@ -578,10 +578,10 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
                   <span>{course.lesson_count} {t('lessons')}</span>
                   <span>{course.enroll_count} {t('Students')}</span>
                   <span
-                    className={`px-2 py-0.5 rounded ${
+                    className={`px-2 py-0.5 items-center rounded ${
                       course.published
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200'
+                        : 'bg-gray-100 text-gray-800 dark:bg-blue-800 dark:text-gray-200'
                     }`}
                   >
                     {course.published ? t('Published') : t('Draft')}
@@ -653,7 +653,7 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
         {courses.map((course) => (
           <div
             key={course.id}
-            className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"
+            className="bg-white dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               {course.image_url ? (
@@ -668,10 +668,10 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
             </div>
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="text-xl font-semibold text-gray-900">{course.title}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{course.title}</h3>
                 <span
-                  className={`px-2 py-1 text-xs rounded ${
-                    course.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                  className={`px-2 py-1 text-xs rounded dark:bg-blue-800 dark:text-blue-100 ${
+                    course.published ? 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200' : 'bg-gray-100 text-gray-800'
                   }`}
                 >
                   {course.published ? t('Published') : t('Draft')}
@@ -764,39 +764,39 @@ const CourseForm = ({ course, onSave, setView }) => {
         <h1 className="text-3xl font-bold text-gray-900">
           {course ? 'Edit Course' : 'Create New Course'}
         </h1>
-        <p className="text-gray-600 mt-2">Fill in the details below</p>
+        <p className="text-gray-600 mt-2 dark:text-purple-300">Fill in the details below</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6 dark:bg-blue-950">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Course Title</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Course Title</label>
           <input
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Description</label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={4}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             required
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Language</label>
             <select
               value={formData.language}
               onChange={(e) => setFormData({ ...formData, language: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
               required
             >
               <option value="English">English</option>
@@ -807,11 +807,11 @@ const CourseForm = ({ course, onSave, setView }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Level</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Level</label>
             <select
               value={formData.level}
               onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             >
               <option value="beginner">Beginner</option>
               <option value="intermediate">Intermediate</option>
@@ -822,19 +822,19 @@ const CourseForm = ({ course, onSave, setView }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Category ID</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Category ID</label>
             <input
               type="number"
               value={formData.category}
               onChange={(e) =>
                 setFormData({ ...formData, category: Number.isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value) })
               }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Price ($)</label>
             <input
               type="number"
               step="0.01"
@@ -842,19 +842,19 @@ const CourseForm = ({ course, onSave, setView }) => {
               onChange={(e) =>
                 setFormData({ ...formData, price: Number.isNaN(parseFloat(e.target.value)) ? 0 : parseFloat(e.target.value) })
               }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Image URL</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Image URL</label>
           <div className="flex gap-x-2">
             <input
               type="text"
               value={formData.image_url}
               onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
             />
             <button
               type="button"
@@ -874,9 +874,9 @@ const CourseForm = ({ course, onSave, setView }) => {
             id="published"
             checked={formData.published}
             onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="w-4 h-4 dark:accent-purple-500 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
-          <label htmlFor="published" className="text-sm font-medium text-gray-700">
+          <label htmlFor="published" className="text-sm font-medium text-gray-700 dark:text-purple-300">
             Publish this course
           </label>
         </div>
@@ -1109,7 +1109,7 @@ const LessonsTab = ({
           className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Lesson</span>
+          <span>{t('Add Lesson')}</span>
         </button>
       </div>
 
@@ -1307,7 +1307,6 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
     setEditingQuestionId(null);
     handleSelectQuiz(selectedQuiz);
   };
-
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
