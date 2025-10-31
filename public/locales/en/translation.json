@@ -482,7 +482,9 @@
       
         
       
-      
+        "Python":"Python",
+        "Java":"Java",
+        "Language":"language",
         "Certificates": "Certificates",
         "Certificate": "Certificate",
       
