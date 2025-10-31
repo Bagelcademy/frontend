@@ -1200,8 +1200,8 @@
     "number": "شماره چالش {{number}}"
   },
 
-    "markAsRead":"خوانده شد",
-    "Certificates": "گواهینامه‌ها"
     
+    "Certificates": "گواهینامه‌ها",
+    "markAsRead":"خوانده شد"
   
 }
