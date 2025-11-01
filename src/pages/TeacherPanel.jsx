@@ -44,24 +44,10 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch courses: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getCourses failed, returning fallback mock', err);
-      return [
-        {
-          id: 1,
-          title: 'getCourses failed',
-          description: 'Learn Python from scratch',
-          published: true,
-          enroll_count: 45,
-          lesson_count: 15,
-          level: 'beginner',
-          language: 'English',
-          category: 1,
-          image_url: '',
-          price: 0,
-        },
-      ];
-    }
-  },
+    console.error('getCourses failed:', err);
+    throw err;
+  }
+},
 
   getCourse: async (id) => {
     const token = localStorage.getItem('accessToken');
@@ -77,18 +63,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch course ${id}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getCourse failed, returning fallback mock', err);
-      return {
-        id,
-        title: 'getCourse failed',
-        description: 'Learn Python',
-        published: true,
-        image_url: '',
-        language: 'English',
-        level: 'beginner',
-        category: 1,
-        price: 0,
-      };
+    console.error('getCourse failed:', err);
+    throw err;
     }
   },
 
@@ -107,8 +83,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to create course: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('createCourse failed, returning fallback mock', err);
-      return { id: Date.now(), ...data };
+    console.error('getCourse failed:', err);
+    throw err;
     }
   },
 
@@ -127,8 +103,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to update course ${id}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('updateCourse failed, returning fallback mock', err);
-      return { id, ...data };
+    console.error('getCourse failed:', err);
+    throw err;
     }
   },
 
@@ -164,17 +140,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch lessons for course ${courseId}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getLessons failed, returning fallback mock', err);
-      return [
-        {
-          id: 1,
-          title: 'Failed to fetch lessons for course',
-          description: 'Getting started',
-          content: 'Welcome to the course',
-          order: 1,
-          course: courseId,
-        },
-      ];
+    console.error('getLessons failed:', err);
+    throw err;
     }
   },
 
@@ -193,8 +160,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to create lesson: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('createLesson failed, returning fallback mock', err);
-      return { id: Date.now(), ...data, course: courseId };
+    console.error('createLesson failed:', err);
+    throw err;
     }
   },
 
@@ -213,8 +180,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to update lesson ${lessonId}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('updateLesson failed, returning fallback mock', err);
-      return { id: lessonId, ...data, course: courseId };
+    console.error('updateLesson failed:', err);
+    throw err;
     }
   },
 
@@ -232,8 +199,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch quizzes for course ${courseId}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getQuizzes failed, returning fallback mock', err);
-      return [{ id: 1, title: 'getQuizzes failed, returning fallback mock', lesson: 1 }];
+    console.error('getQuizzes failed:', err);
+    throw err;
     }
   },
 
@@ -252,8 +219,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to create quiz: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('createQuiz failed, returning fallback mock', err);
-      return { id: Date.now(), ...data, lesson: lessonId };
+    console.error('createQuiz failed:', err);
+    throw err;
     }
   },
 
@@ -271,19 +238,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch questions for quiz ${quizId}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getQuestions failed, returning fallback mock', err);
-      return [
-        {
-          id: 1,
-          question_text: 'What is Python?',
-          option_1: 'Language',
-          option_2: 'Snake',
-          option_3: 'Tool',
-          option_4: 'Framework',
-          correct_option: '1',
-          quiz: quizId,
-        },
-      ];
+    console.error('getQuestions failed:', err);
+    throw err;
     }
   },
 
@@ -310,9 +266,9 @@ const api = {
 
     return await res.json();
   } catch (err) {
-    console.warn('updateQuiz failed, returning fallback mock', err);
-    return { id: quizId, ...data, lesson: lessonId, course: courseId };
-  }
+    console.error('updateQuiz failed:', err);
+    throw err;
+    }
 },
 
 
@@ -331,8 +287,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to create question: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('createQuestion failed, returning fallback mock', err);
-      return { id: Date.now(), ...data, quiz: quizId };
+    console.error('createQuestion failed:', err);
+    throw err;
     }
   },
 
@@ -359,9 +315,9 @@ const api = {
 
     return await res.json();
   } catch (err) {
-    console.warn('updateQuestion failed, returning fallback mock', err);
-    return { id: questionId, ...data, quiz: quizId, course: courseId };
-  }
+    console.error('updateQuestion:', err);
+    throw err;
+    }
 },
 
 
@@ -379,20 +335,12 @@ const api = {
       if (!res.ok) throw new Error(`Failed to fetch challenges for course ${courseId}: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('getChallenges failed, returning fallback mock', err);
-      return [
-        {
-          id: 1,
-          topic: 'Loops',
-          challenge_text: 'Write a for loop',
-          difficulty: 'easy',
-          language: 'English',
-          answers: ['for i in range(10): print(i)'],
-        },
-      ];
+    console.error('getChallenges failed:', err);
+    throw err;
     }
   },
 
+  //backend needed
   generateAIChallenges: async (courseId, number) => {
     const token = localStorage.getItem('accessToken');
     try {
@@ -408,8 +356,8 @@ const api = {
       if (!res.ok) throw new Error(`Failed to generate AI challenges: ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.warn('generateAIChallenges failed, returning fallback mock', err);
-      return { message: `${number} challenges created`, challenges: [] };
+    console.error('generateAIChallenges failed:', err);
+    throw err;
     }
   },
 
@@ -556,7 +504,7 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
 
       <div className="bg-white rounded-lg shadow p-6 mb-6 dark:bg-blue-900/30">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Recent Courses</h2>
+          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">{t('Recent Courses')}</h2>
           <button
             onClick={() => setView('create-course')}
             className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -865,6 +813,7 @@ const CourseForm = ({ course, onSave, setView }) => {
               value={formData.image_url}
               onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-purple-500/20 dark:border-purple-800/20 dark:text-white"
+              required
             />
             <button
               type="button"
@@ -1021,7 +970,7 @@ const CourseDetail = ({ course, setView }) => {
             >
               {t('Quizzes')} ({quizzes.length})
             </button>
-            <button
+            {/* <button
               onClick={() => setActiveTab('challenges')}
               className={`py-3 px-2 border-b-2 dark:border-blue-500 font-medium ${
                 activeTab === 'challenges'
@@ -1030,7 +979,7 @@ const CourseDetail = ({ course, setView }) => {
               }`}
             >
               {t('Challenges')} ({challenges.length})
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -1335,7 +1284,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">{t('Course Quizzes')}</h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">{t('Course Quizzes')}</h2>
         <button
           onClick={() => {
             // If currently editing a quiz, switch straight to create mode
