@@ -291,7 +291,7 @@ const api = {
   const token = localStorage.getItem('accessToken');
   try {
     const res = await fetch(
-      `${API_BASE}/teacher/courses/${courseId}/lessons/${lessonId}/quiz/${quizId}/update_quiz/`,
+      `${API_BASE}/courses/${courseId}/lessons/${lessonId}/quiz/${quizId}/update_quiz/`,
       {
         method: 'PATCH', // or 'PUT' if your backend expects full replacement
         credentials: 'include',
@@ -476,18 +476,18 @@ const TeacherDashboard = () => {
                 onClick={() => setView(t('dashboard'))}
                 className={`px-4 py-2 rounded-lg ${
                   view === 'dashboard'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-gray-700 text-white'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
               >
                 {t('Dashboard')}
               </button>
               <button
                 onClick={() => setView('courses')}
-                className={`bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center ${
+                className={`bg-blue-500 text-white px-4 py-2 rounded-lg flex items-center ${
                   view === 'courses'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-blue-700'
+                    ? 'bg-gray-700 text-white'
+                    : 'bg-blue-600 text-white transition-colors hover:bg-blue-700'
                 }`}
               >
                 {t('My Courses')}
@@ -575,13 +575,13 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
                 <h3 className="font-semibold text-gray-900 dark:text-gray-200">{course.title}</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{course.description}</p>
                 <div className="flex gap-x-4 mt-2 text-sm text-gray-600 dark:text-gray-300">
-                  <span>{course.lesson_count} {t('lessons')}</span>
-                  <span>{course.enroll_count} {t('Students')}</span>
+                  <span>{course.lesson_count} {t('teachPanel.lessons')}</span>
+                  <span>{course.enroll_count} {t('teachPanel.students')}</span>
                   <span
                     className={`px-2 py-0.5 items-center rounded ${
                       course.published
-                        ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200'
-                        : 'bg-gray-100 text-gray-800 dark:bg-blue-800 dark:text-gray-200'
+                        ? 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200'
+                        : 'bg-blue-200 text-gray-800 dark:bg-blue-800 dark:text-gray-200'
                     }`}
                   >
                     {course.published ? t('Published') : t('Draft')}
@@ -591,9 +591,18 @@ const Dashboard = ({ courses, setView, setSelectedCourse }) => {
               <button
                 onClick={() => {
                   setSelectedCourse(course);
+                  setView('edit-course');
+                }}
+                className="flex h-12 items-center justify-center border border-gray-300 dark:border-blue-900 bg-gray-600 dark:bg-gray-800 rounded-lg hover:bg-blue-500"
+              >
+                <Edit className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => {
+                  setSelectedCourse(course);
                   setView('course-detail');
                 }}
-                className="ml-4 text-blue-600 hover:text-blue-800 bg-gray-200 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow text-blue-600 dark:text-blue-400"
+                className="mx-4 h-12 text-blue-600 dark:text-blue-400 hover:text-blue-800 bg-gray-300 dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
                 {t('View Details')}
               </button>
@@ -638,14 +647,14 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{t('My Courses')}</h1>
-          <p className="text-gray-600 mt-2">Manage all your courses</p>
+          <p className="text-gray-600 mt-2">{t('Manage all your courses')}</p>
         </div>
         <button
           onClick={() => setView('create-course')}
           className="flex items-center gap-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
-          <span>Create New Course</span>
+          <span>{t('Create New Course')}</span>
         </button>
       </div>
 
@@ -671,21 +680,21 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{course.title}</h3>
                 <span
                   className={`px-2 py-1 text-xs rounded dark:bg-blue-800 dark:text-blue-100 ${
-                    course.published ? 'bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200' : 'bg-gray-100 text-gray-800'
+                    course.published ? 'bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200' : 'bg-blue-200 text-gray-800'
                   }`}
                 >
                   {course.published ? t('Published') : t('Draft')}
                 </span>
               </div>
-              <p className="text-gray-600 text-sm mb-4 line-clamp-2">{course.description}</p>
-              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+              <p className="text-gray-600 text-sm mb-4 line-clamp-2 dark:text-gray-200">{course.description}</p>
+              <div className="flex items-center justify-between text-sm text-gray-800 mb-4 dark:text-gray-200">
                 <span className="flex items-center gap-x-1">
-                  <BookMarked className="w-4 h-4" />
-                  <span>{course.lesson_count} lessons</span>
+                  <BookMarked className="w-4 h-4 mx-1" />
+                  <span>{course.lesson_count} {t('teachPanel.lessons')}</span>
                 </span>
                 <span className="flex items-center gap-x-1">
-                  <Users className="w-4 h-4" />
-                  <span>{course.enroll_count} students</span>
+                  <Users className="w-4 h-4 mx-1" />
+                  <span>{course.enroll_count} {t('teachPanel.students')}</span>
                 </span>
               </div>
               <div className="flex gap-x-2">
@@ -694,23 +703,23 @@ const CourseList = ({ courses, onDelete, setView, setSelectedCourse }) => {
                     setSelectedCourse(course);
                     setView('course-detail');
                   }}
-                  className="flex-1 flex items-center justify-center gap-x-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="flex-1 flex items-center justify-center gap-x-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
                 >
                   <Eye className="w-4 h-4" />
-                  <span>View</span>
+                  <span>{t('View')}</span>
                 </button>
                 <button
                   onClick={() => {
                     setSelectedCourse(course);
                     setView('edit-course');
                   }}
-                  className="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className="flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-blue-900 bg-blue-600 dark:bg-blue-600 rounded-lg hover:bg-blue-500"
                 >
                   <Edit className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => onDelete(course.id)}
-                  className="flex items-center justify-center px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50"
+                  className="flex items-center justify-center px-4 py-2 border border-red-300 bg-red-300/90 dark:bg-red-700/60 dark:border-red-800 text-red-600 dark:text-red-200 rounded-lg hover:bg-red-400 dark:hover:bg-red-600/90"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -739,6 +748,7 @@ const CourseForm = ({ course, onSave, setView }) => {
     price: course?.price ?? 0,
   });
   const [generating, setGenerating] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -761,15 +771,15 @@ const CourseForm = ({ course, onSave, setView }) => {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          {course ? 'Edit Course' : 'Create New Course'}
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">
+          {course ? t('Edit Course') : t('Create New Course')}
         </h1>
-        <p className="text-gray-600 mt-2 dark:text-purple-300">Fill in the details below</p>
+        <p className="text-gray-600 mt-2 dark:text-purple-300">{t('Fill in the details below')}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6 dark:bg-blue-950">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Course Title</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Course Title')}</label>
           <input
             type="text"
             value={formData.title}
@@ -780,7 +790,7 @@ const CourseForm = ({ course, onSave, setView }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Description')}</label>
           <textarea
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -792,7 +802,7 @@ const CourseForm = ({ course, onSave, setView }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Language</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Language')}</label>
             <select
               value={formData.language}
               onChange={(e) => setFormData({ ...formData, language: e.target.value })}
@@ -807,7 +817,7 @@ const CourseForm = ({ course, onSave, setView }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Level</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Level')}</label>
             <select
               value={formData.level}
               onChange={(e) => setFormData({ ...formData, level: e.target.value })}
@@ -822,7 +832,7 @@ const CourseForm = ({ course, onSave, setView }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Category ID</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Category ID')}</label>
             <input
               type="number"
               value={formData.category}
@@ -834,7 +844,7 @@ const CourseForm = ({ course, onSave, setView }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Price ($)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Price')} ($)</label>
             <input
               type="number"
               step="0.01"
@@ -848,7 +858,7 @@ const CourseForm = ({ course, onSave, setView }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">Image URL</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-purple-300">{t('Image URL')}</label>
           <div className="flex gap-x-2">
             <input
               type="text"
@@ -863,7 +873,7 @@ const CourseForm = ({ course, onSave, setView }) => {
               className="flex items-center gap-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50"
             >
               <Sparkles className="w-4 h-4" />
-              <span>{generating ? 'Generating...' : 'AI Generate'}</span>
+              <span>{generating ? 'Generating...' : t('AI Generate')}</span>
             </button>
           </div>
         </div>
@@ -877,7 +887,7 @@ const CourseForm = ({ course, onSave, setView }) => {
             className="w-4 h-4 dark:accent-purple-500 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
           <label htmlFor="published" className="text-sm font-medium text-gray-700 dark:text-purple-300">
-            Publish this course
+            {t('Publish this course')}
           </label>
         </div>
 
@@ -887,7 +897,7 @@ const CourseForm = ({ course, onSave, setView }) => {
             className="flex-1 flex items-center justify-center gap-x-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
           >
             <Save className="w-5 h-5" />
-            <span>{course ? 'Update Course' : 'Create Course'}</span>
+            <span>{course ? ('Update Course') : t('Create Course')}</span>
           </button>
           <button
             type="button"
@@ -895,7 +905,7 @@ const CourseForm = ({ course, onSave, setView }) => {
             className="flex items-center justify-center gap-x-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
             <X className="w-5 h-5" />
-            <span>Cancel</span>
+            <span>{t('Cancel')}</span>
           </button>
         </div>
 
@@ -967,19 +977,19 @@ const CourseDetail = ({ course, setView }) => {
       <div className="mb-8">
         <button
           onClick={() => setView('courses')}
-          className="text-blue-600 hover:text-blue-800 mb-4"
+          className="text-blue-400 hover:text-blue-800 mb-4"
         >
-          ← Back to Courses
+          {t('← Back to Courses')}
         </button>
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{course.title}</h1>
-            <p className="text-gray-600 mt-2">{course.description}</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-200">{course.title}</h1>
+            <p className="text-gray-600 mt-2 dark:text-gray-400">{course.description}</p>
           </div>
           <div className="flex gap-x-2">
             <span
               className={`px-3 py-1 rounded-lg ${
-                course.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                course.published ? 'bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-300' : 'bg-blue-200 text-gray-800 dark:bg-blue-800 dark:text-gray-200'
               }`}
             >
               {course.published ? t('Published') : t('Draft')}
@@ -988,43 +998,43 @@ const CourseDetail = ({ course, setView }) => {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow dark:bg-blue-900/30">
-        <div className="border-b">
+      <div className="bg-white rounded-lg shadow dark:bg-blue-900/60">
+        <div className="border-b dark:border-blue-500">
           <div className="flex gap-x-8 p-6">
             <button
               onClick={() => setActiveTab('lessons')}
-              className={`py-3 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 dark:border-blue-500 font-medium ${
                 activeTab === 'lessons'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'border-blue-600 bg-gray-800 dark:bg-gray-800 text-blue-400'
+                  : 'border-transparent bg-blue-700 text-gray-100 hover:text-gray-800'
               }`}
             >
-              Lessons ({lessons.length})
+              {t('Lessons')} ({lessons.length})
             </button>
             <button
               onClick={() => setActiveTab('quizzes')}
-              className={`py-3 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 dark:border-blue-500 font-medium ${
                 activeTab === 'quizzes'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'border-blue-600 bg-gray-800 dark:bg-gray-800 text-blue-400'
+                  : 'border-transparent bg-blue-700 text-gray-100 hover:text-gray-800'
               }`}
             >
-              Quizzes ({quizzes.length})
+              {t('Quizzes')} ({quizzes.length})
             </button>
             <button
               onClick={() => setActiveTab('challenges')}
-              className={`py-3 px-2 border-b-2 font-medium ${
+              className={`py-3 px-2 border-b-2 dark:border-blue-500 font-medium ${
                 activeTab === 'challenges'
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-800'
+                  ? 'border-blue-600 bg-gray-800 dark:bg-gray-800 text-blue-400'
+                  : 'border-transparent bg-blue-700 text-gray-100 hover:text-gray-800'
               }`}
             >
-              Challenges ({challenges.length})
+              {t('Challenges')} ({challenges.length})
             </button>
           </div>
         </div>
 
-        <div className="p-6 dark:bg-blue-950 ">
+        <div className="p-6 rounded-lg dark:bg-blue-950 ">
           {activeTab === 'lessons' && (
             <LessonsTab
               courseId={course.id}
@@ -1103,7 +1113,7 @@ const LessonsTab = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">{t('Course Lessons')}</h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{t('Course Lessons')}</h2>
         <button
           onClick={() => setShowForm(!showForm)}
           className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
@@ -1186,7 +1196,7 @@ const LessonsTab = ({
           .sort((a, b) => (a.order || 0) - (b.order || 0))
           .map((lesson) => (
             <div key={lesson.id} className="border border-gray-200 rounded-lg dark:border-blue-950/20">
-              <div className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-purple-800/20">
+              <div className="flex items-center justify-between p-4 rounded-2xl dark:bg-violet-900/60 border-gray-200 dark:border-violet-950 hover:bg-gray-50 dark:hover:bg-purple-800/20">
                 <div className="flex-1">
                   <div className="flex items-center gap-x-3">
                     <span className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
@@ -1203,7 +1213,7 @@ const LessonsTab = ({
                     onClick={() =>
                       setExpandedLesson(expandedLesson === lesson.id ? null : lesson.id)
                     }
-                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    className="lex items-center justify-center p-2 border border-blue-700 dark:border-blue-900 bg-gray-700 dark:bg-blue-600/30 rounded-lg hover:bg-blue-500"
                   >
                     {expandedLesson === lesson.id ? (
                       <ChevronUp className="w-5 h-5" />
@@ -1213,7 +1223,7 @@ const LessonsTab = ({
                   </button>
                   <button
                     onClick={() => handleEdit(lesson)}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                    className="flex items-center justify-center p-2 border border-blue-700 dark:border-blue-900 bg-gray-700 dark:bg-blue-600/30 rounded-lg hover:bg-blue-500"
                   >
                     <Edit className="w-5 h-5" />
                   </button>
@@ -1221,10 +1231,14 @@ const LessonsTab = ({
               </div>
 
               {expandedLesson === lesson.id && (
-                <div className="px-4 pb-4 border-t border-gray-200 pt-4">
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium text-gray-900 mb-2">Content:</h4>
-                    <p className="text-gray-700 whitespace-pre-wrap">{lesson.content}</p>
+                <div className="px-4 pb-4 pt-4">
+                  <div className="rounded-lg p-4 bg-gray-200 dark:bg-violet-700/60">
+                    <h4 className="mb-2 font-medium text-gray-900 dark:text-gray-100">
+                      {t('Content')}:
+                    </h4>
+                    <p className="whitespace-pre-wrap text-gray-800 dark:text-gray-200">
+                      {lesson.content}
+                    </p>
                   </div>
                 </div>
               )}
@@ -1239,7 +1253,9 @@ const LessonsTab = ({
  * Quizzes Tab
  */
 const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdate }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({ title: '', lesson: '' });
+  const [editingId, setEditingId] = useState(null);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [showQuestionForm, setShowQuestionForm] = useState(false);
@@ -1255,24 +1271,33 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
 
   const handleSubmitQuiz = async (e) => {
     e.preventDefault();
-    if (editingId) {
-      await api.updateQuiz(courseId, parseInt(formData.lesson), editingId, {
-        title: formData.title,
-      });
-    } else {
-      await api.createQuiz(courseId, parseInt(formData.lesson), {
-        title: formData.title,
-      });
+    try {
+      if (editingId) {
+        await api.updateQuiz(courseId, parseInt(formData.lesson), editingId, {
+          title: formData.title,
+        });
+      } else {
+        await api.createQuiz(courseId, parseInt(formData.lesson), {
+          title: formData.title,
+        });
+      }
+      setFormData({ title: '', lesson: '' });
+      setEditingId(null);
+      setShowForm(false);
+      onUpdate();
+      Notify.success(t(editingId ? 'Quiz updated successfully' : 'Quiz created successfully'));
+    } catch (error) {
+      console.error('Error creating/updating quiz:', error);
+      Notify.failure(t('Failed to save quiz'));
     }
-    setFormData({ title: '', lesson: '' });
-    setEditingId(null);
-    setShowForm(false);
-    onUpdate();
   };
 
   const handleEdit = (quiz) => {
+    // Immediately open the edit form and pre-fill values.
+    // This will replace any create form that might be open.
     setFormData({
-      title: quiz.title || ''
+      title: quiz.title || '',
+      lesson: quiz.lesson?.toString() || ''
     });
     setEditingId(quiz.id);
     setShowForm(true);
@@ -1310,37 +1335,47 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Course Quizzes</h2>
+        <h2 className="text-xl font-semibold">{t('Course Quizzes')}</h2>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => {
+            // If currently editing a quiz, switch straight to create mode
+            if (editingId) {
+              setEditingId(null);
+              setFormData({ title: '', lesson: '' });
+              setShowForm(true);
+            } else {
+              setShowForm(!showForm);
+            }
+          }}
           className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
         >
           <Plus className="w-5 h-5" />
-          <span>Add Quiz</span>
+          <span>{t('Add Quiz')}</span>
         </button>
       </div>
 
-      {showForm && (
-        <form onSubmit={handleSubmitQuiz} className="mb-6 p-6 border border-gray-200 rounded-lg space-y-4">
+      {showForm && !editingId && (
+        <form onSubmit={handleSubmitQuiz} className="mb-6 p-6 border border-gray-200 rounded-lg space-y-4 dark:border-gray-700 dark:bg-gray-800">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">{t('Create New Quiz')}</h3>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Quiz Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">{t('Quiz Title')}</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 text-white"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Select Lesson</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">{t('Select Lesson')}</label>
             <select
               value={formData.lesson}
               onChange={(e) => setFormData({ ...formData, lesson: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               required
             >
-              <option value="">Choose a lesson...</option>
+              <option value="">{t('Choose a lesson...')}</option>
               {lessons.map((lesson) => (
                 <option key={lesson.id} value={lesson.id}>
                   {lesson.title}
@@ -1354,7 +1389,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
               className="flex items-center gap-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
               <Save className="w-4 h-4" />
-              <span>Create Quiz</span>
+              <span>{t('Create Quiz')}</span>
             </button>
             <button
               type="button"
@@ -1362,9 +1397,61 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                 setShowForm(false);
                 setFormData({ title: '', lesson: '' });
               }}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-700 dark:text-gray-300"
             >
-              Cancel
+              {t('Cancel')}
+            </button>
+          </div>
+        </form>
+      )}
+
+      {showForm && editingId && (
+        <form onSubmit={handleSubmitQuiz} className="mb-6 p-6 border text-gray-800 dark:text-white border-gray-200 rounded-lg space-y-4 dark:border-gray-700 dark:bg-gray-800">
+          <h3 className="text-lg font-semibold mb-4">{t('Edit Quiz')}</h3>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('Quiz Title')}</label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-2 mb-1 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600"
+              required
+            />
+          </div>
+          {/* <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">{t('Select Lesson')}</label>
+            <select
+              value={formData.lesson}
+              onChange={(e) => setFormData({ ...formData, lesson: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              required
+            >
+              <option value="">{t('Choose a lesson...')}</option>
+              {lessons.map((lesson) => (
+                <option key={lesson.id} value={lesson.id}>
+                  {lesson.title}
+                </option>
+              ))}
+            </select>
+          </div> */}
+          <div className="flex gap-x-2">
+            <button
+              type="submit"
+              className="flex items-center gap-x-2 bg-green-600 dark:bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-700"
+            >
+              <Save className="w-4 h-4" />
+              <span>{t('Update Quiz')}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowForm(false);
+                setEditingId(null);
+                setFormData({ title: '', lesson: '' });
+              }}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-200 hover:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-700"
+            >
+              {t('Cancel')}
             </button>
           </div>
         </form>
@@ -1372,13 +1459,13 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h3 className="font-semibold text-gray-900 mb-4 dark:text-gray-200">Quizzes</h3>
+          <h3 className="font-semibold text-gray-900 mb-4 dark:text-gray-200">{t('Quizzes')}</h3>
           <div className="space-y-3">
             {quizzes.map((quiz) => (
               <div
                 key={quiz.id}
                 onClick={() => handleSelectQuiz(quiz)}
-                className={`p-4 border rounded-lg cursor-pointer hover:bg-gray-50 ${
+                className={`p-4 border rounded-lg cursor-pointer bg-slate-300 dark:bg-slate-800 hover:bg-gray-50 ${
                   selectedQuiz?.id === quiz.id
                     ? 'border-blue-500 bg-blue-50'
                     : 'border-gray-200'
@@ -1388,8 +1475,8 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                 <div className="flex justify-between items-start">
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-gray-200">{quiz.title}</h4>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Lesson ID: {quiz.lesson}
+                    <p className="text-sm text-gray-700 dark:text-gray-200 mt-1">
+                      {t('Lesson ID:')} {quiz.lesson}
                     </p>
                   </div>
                   <button
@@ -1397,7 +1484,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       e.stopPropagation(); // prevent selecting the quiz when clicking edit
                       handleEdit(quiz);
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg"
+                    className="flex items-center justify-center p-2 border border-blue-700 dark:border-blue-900 bg-gray-700 dark:bg-blue-600/30 rounded-lg hover:bg-blue-500"
                   >
                     <Edit className="w-5 h-5" />
                   </button>
@@ -1413,14 +1500,34 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
             <>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold text-gray-900 dark:text-gray-200">
-                  Questions for {selectedQuiz.title}
+                  {t('Questions for')} {selectedQuiz.title}
                 </h3>
                 <button
-                  onClick={() => setShowQuestionForm(!showQuestionForm)}
+                  onClick={() => {
+                    // If the question form is open and we're currently editing a question,
+                    // switch immediately to create mode (clear inputs and editing state).
+                    if (showQuestionForm && editingQuestionId) {
+                      setEditingQuestionId(null);
+                      setQuestionData({
+                        question_text: '',
+                        option_1: '',
+                        option_2: '',
+                        option_3: '',
+                        option_4: '',
+                        correct_option: '1',
+                      });
+                      // keep the form open in create mode
+                      setShowQuestionForm(true);
+                      return;
+                    }
+
+                    // Otherwise toggle the question form
+                    setShowQuestionForm(!showQuestionForm);
+                  }}
                   className="flex items-center gap-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Question</span>
+                  <span>{t('Add Question')}</span>
                 </button>
               </div>
 
@@ -1430,8 +1537,8 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                   className="mb-4 p-4 border border-gray-200 rounded-lg space-y-3"
                 >
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Question
+                    <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-200">
+                      {t('Question')}
                     </label>
                     <input
                       type="text"
@@ -1439,14 +1546,14 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       onChange={(e) =>
                         setQuestionData({ ...questionData, question_text: e.target.value })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-slate-700"
                       required
                     />
                   </div>
                   {[1, 2, 3, 4].map((num) => (
                     <div key={num}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Option {num}
+                      <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-200">
+                        {t('Option')} {num}
                       </label>
                       <input
                         type="text"
@@ -1457,26 +1564,26 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                             [`option_${num}`]: e.target.value,
                           })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-slate-700"
                         required
                       />
                     </div>
                   ))}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Correct Option
+                    <label className="block text-sm font-medium text-gray-700 mb-1 dark:text-gray-200">
+                      {t('Correct Option')}
                     </label>
                     <select
                       value={questionData.correct_option}
                       onChange={(e) =>
                         setQuestionData({ ...questionData, correct_option: e.target.value })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm dark:bg-slate-700"
                     >
-                      <option value="1">Option 1</option>
-                      <option value="2">Option 2</option>
-                      <option value="3">Option 3</option>
-                      <option value="4">Option 4</option>
+                      <option value="1">{t('Option')} 1</option>
+                      <option value="2">{t('Option')} 2</option>
+                      <option value="3">{t('Option')} 3</option>
+                      <option value="4">{t('Option')} 4</option>
                     </select>
                   </div>
                   <div className="flex gap-x-2">
@@ -1485,7 +1592,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       className="flex items-center gap-x-2 bg-green-600 text-white px-3 py-1.5 rounded-lg hover:bg-green-700 text-sm"
                     >
                       <Save className="w-4 h-4" />
-                      <span>{editingQuestionId ? 'Update' : 'Add'}</span>
+                      <span>{editingQuestionId ? t('Update') : t('Add')}</span>
                     </button>
                     <button
                       type="button"
@@ -1503,7 +1610,7 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       }}
                       className="px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
                     >
-                      Cancel
+                      {t('Cancel')}
                     </button>
                   </div>
                 </form>
@@ -1511,9 +1618,9 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
 
               <div className="space-y-3">
                 {questions.map((q, idx) => (
-                  <div key={q.id} className="p-4 border border-gray-200 rounded-lg">
+                  <div key={q.id} className="p-4 border border-gray-200 dark:border-gray-900 dark:bg-slate-900/70 rounded-lg">
                     <div className="flex items-start justify-between mb-2">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-justify text-gray-900 dark:text-gray-100">
                         {idx + 1}. {q.question_text}
                       </p>
                       <div className="flex items-center gap-x-2">
@@ -1531,9 +1638,9 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                             setEditingQuestionId(q.id);
                             setShowQuestionForm(true);
                           }}
-                          className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg text-sm"
+                          className="flex items-center justify-center p-1 mx-2 border border-blue-700 dark:border-blue-900 bg-gray-700 dark:bg-sky-600/50 rounded-lg hover:bg-blue-500"
                         >
-                          Edit
+                          <Edit className="w-5 h-5" />
                         </button>
                       </div>
                     </div>
@@ -1541,16 +1648,20 @@ const QuizzesTab = ({ courseId, lessons, quizzes, showForm, setShowForm, onUpdat
                       {[1, 2, 3, 4].map((num) => (
                         <div
                           key={num}
-                          className={`p-2 rounded ${
+                          className={`p-2 rounded break-words overflow-hidden text-ellipsis ${
                             q.correct_option === num.toString()
-                              ? 'bg-green-50 text-green-700'
-                              : 'bg-gray-50 text-gray-700'
+                              ? 'bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-100'
+                              : 'bg-gray-50 dark:bg-slate-700 text-gray-700 dark:text-gray-50'
                           }`}
                         >
-                          {num}. {q[`option_${num}`]} {q.correct_option === num.toString() && '✓'}
+                          <span className="inline-block w-full break-words">
+                            {num}. {q[`option_${num}`]}{' '}
+                            {q.correct_option === num.toString() && '✓'}
+                          </span>
                         </div>
                       ))}
                     </div>
+
                   </div>
                 ))}
               </div>
