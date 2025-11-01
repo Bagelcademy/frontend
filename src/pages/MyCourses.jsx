@@ -168,31 +168,29 @@ const fetchRecommendedCourses = async () => {
     }
   };
 /// api needed
-  const fetchPaths = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const response = await fetch(`https://api.tadrisino.org/courses/paths/${id}/user_progress/`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch paths');
-      const data = await response.json();
-      console.log("Fetched paths data:", data); // Debug log
-      const transformedData = data.map(path => ({
-        enrollment_status: path.enrollment_status,
-        user_progress: path.user_progress
-      }));
-      console.log("Transformed paths data:", transformedData); // Debug log
-      setPaths(transformedData);
-      setDisplayedPaths(transformedData);
-    } catch (error) {
-      console.error("Error fetching paths:", error);
-      console.error(t('Failed to fetch paths. Please try again later.'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+const fetchPaths = async () => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const response = await fetch(`https://api.tadrisino.org/courses/paths/my-enrollments/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch paths');
+
+    const data = await response.json();
+    console.log("Fetched paths data:", data);
+    setPaths(data);
+    setDisplayedPaths(data);
+  } catch (error) {
+    console.error("Error fetching paths:", error);
+    console.error(t('Failed to fetch paths. Please try again later.'));
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
