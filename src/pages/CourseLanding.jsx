@@ -248,6 +248,14 @@ const CourseLandingPage = () => {
     console.log("Share clicked!");
     // یا منطق اشتراک‌گذاری واقعی
   };
+  
+  const handleChallengeClick = (challenge) => {
+  if (!isLoggedIn) {
+    navigate('/login');
+    return;
+  }
+  navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
+  };
 
   const StarRating = ({ rating }) => {
     return (
