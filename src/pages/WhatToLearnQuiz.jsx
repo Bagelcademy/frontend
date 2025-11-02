@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronLeft, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import CourseCard from '../components/ui/coursecard'; // Import CourseCard component
+import CourseCard from '../components/ui/CourseCard'; // Import CourseCard component
 
 const questions = [
   {
