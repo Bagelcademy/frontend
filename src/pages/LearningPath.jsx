@@ -124,7 +124,7 @@ const CareerPathsPage = () => {
           let enrolledCount = null;
           try {
             const enrollUrl = `https://api.tadrisino.org/courses/learning-paths/${path.id}/enrollment_count/`;
-            const enrollResponse = await fetch(enrollUrl, { method: 'POST' });
+            const enrollResponse = await fetch(enrollUrl, { method: 'GET' });
             if (enrollResponse.ok) {
               const enrollData = await enrollResponse.json();
               enrolledCount = enrollData.enrollment_count;

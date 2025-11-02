@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
@@ -22,6 +22,7 @@ const MyCourses = () => {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [recommendedCourses, setRecommendedCourses] = useState([]);
+  const [paths, setPaths] = useState([]);
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -38,6 +39,12 @@ const MyCourses = () => {
     certificateUrl: null
     ,alreadyGenerated: false
   });
+
+  //if the user has not logged in
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return <Navigate to="/login" replace />;
+  }
   
   // Pagination states
   const [completedCoursesPage, setCompletedCoursesPage] = useState(1);
@@ -167,32 +174,39 @@ const fetchRecommendedCourses = async () => {
       console.error('Failed to fetch categories:', error);
     }
   };
-/// api needed
-  const fetchPaths = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const response = await fetch(`https://api.tadrisino.org/courses/paths/${id}/user_progress/`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch paths');
-      const data = await response.json();
-      console.log("Fetched paths data:", data); // Debug log
-      const transformedData = data.map(path => ({
-        enrollment_status: path.enrollment_status,
-        user_progress: path.user_progress
-      }));
-      console.log("Transformed paths data:", transformedData); // Debug log
-      setPaths(transformedData);
-      setDisplayedPaths(transformedData);
-    } catch (error) {
-      console.error("Error fetching paths:", error);
-      console.error(t('Failed to fetch paths. Please try again later.'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+
+const fetchPaths = async () => {
+  try {
+    const token = localStorage.getItem('accessToken');
+    const response = await fetch(`https://api.tadrisino.org/courses/paths/my-enrollments/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch paths');
+
+    const data = await response.json();
+    console.log("Fetched paths data:", data);
+    const detailPromises = data.map(p => 
+      fetch(`https://api.tadrisino.org/courses/learning-paths/${p.learning_path_id}/`
+      ).then(res => res.json())
+    );
+    const details = await Promise.all(detailPromises);
+    const merged = data.map((p, idx) =>({
+      ...p,
+      ...details[idx],
+    }));
+    setPaths(merged);
+    setDisplayedPaths(merged);
+  } catch (error) {
+    console.error("Error fetching paths:", error);
+    console.error(t('Failed to fetch paths. Please try again later.'));
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -520,7 +534,7 @@ const fetchRecommendedCourses = async () => {
         )}
 
         {/* Recommended Courses Section */}
-        {filteredRecommendedCourses.length > 0 && (
+        {/* {filteredRecommendedCourses.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('Recommended for You')}</h2>
@@ -546,14 +560,14 @@ const fetchRecommendedCourses = async () => {
               </div>
             )}
           </div>
-        )}
+        )} */}
         {/* LearningPaths */}
         <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">{t('Learning Paths')}</h2>
+          <h2 className="text-2xl font-bold mb-6">{t('learningPath')}</h2>
           {displayedPaths.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {displayedPaths.map(path => (
-                <LearningPathCard key={path.enrollment_status} path={path} />
+                <LearningPathCard key={path.learning_path_id} path={path} />
               ))}
             </div>
           ) : (
