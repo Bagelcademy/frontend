@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   BookOpen, Award, Zap, Search, Users,
@@ -39,6 +39,12 @@ const MyCourses = () => {
     certificateUrl: null
     ,alreadyGenerated: false
   });
+
+  //if the user has not logged in
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return <Navigate to="/login" replace />;
+  }
   
   // Pagination states
   const [completedCoursesPage, setCompletedCoursesPage] = useState(1);
