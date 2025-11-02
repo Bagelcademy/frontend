@@ -491,11 +491,15 @@
       "Python":"Python",
       "Java":"Java",
       "Language":"language",
+
+     
     
   "teachPanel":{
   "lessons":"lessons",
   "students":"students",
   "":""
-  }
-
+  },
+  "markAsRead":"markAsRead",
+  "read":"read"
+  
 }

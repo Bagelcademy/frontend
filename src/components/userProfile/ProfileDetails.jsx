@@ -64,48 +64,60 @@ const ProfileDetails = ({
     </CardHeader>
     <CardContent>
       {editMode ? (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
-                validationErrors.first_name ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-              placeholder={t('enterName')}
-              value={user.first_name}
-              name="first_name"
-              onChange={handleInputChange}
-            />
-            {/* Replace single birthdate input with separated inputs */}
-            <div className="col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                {t('birthdate')}
-              </label>
-              {renderBirthDateInputs()}
-            </div>
-            <input
-              className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
-                validationErrors.national_code ? 'border-red-500' : 'border-gray-300'
-              } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
-              placeholder={t('enterNationalCode')}
-              value={user?.national_code || ''}
-              name="national_code"
-              onChange={handleInputChange}
-            />
-            <textarea
-              className="w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder={t('enterBio')}
-              value={bio}
-              onChange={handleBioChange}
-              rows={3}
-            />
-          </div>
-          <Button
-            onClick={handleSave}
-            className="w-full md:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
-          >
-            {t('saveChanges')}
-          </Button>
-        </div>
+       <div className="space-y-4">
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+         <input
+           className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
+             validationErrors.first_name ? 'border-red-500' : 'border-gray-300'
+           } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+           placeholder={t('enterName')}
+           value={user.first_name}
+           name="first_name"
+           onChange={handleInputChange}
+         />
+     
+         {/* تاریخ تولد */}
+         <div className="col-span-1 md:col-span-2">
+           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+             {t('birthdate')}
+           </label>
+           {renderBirthDateInputs()}
+         </div>
+     
+         {/* کد ملی */}
+         <div className="col-span-1">
+           <input
+             className={`w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border ${
+               validationErrors.national_code ? 'border-red-500' : 'border-gray-300'
+             } focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
+             placeholder={t('enterNationalCode')}
+             value={user?.national_code || ''}
+             name="national_code"
+             onChange={handleInputChange}
+           />
+         </div>
+     
+         {/* بیوگرافی */}
+         <div className="col-span-1 md:col-span-2">
+           <textarea
+             className="w-full bg-gray-50 dark:bg-gray-700 text-black dark:text-white px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+             placeholder={t('enterBio')}
+             value={bio}
+             onChange={handleBioChange}
+             rows={3}
+           />
+         </div>
+       </div>
+     
+       <Button
+         onClick={handleSave}
+         className="w-full md:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+       >
+         {t('saveChanges')}
+       </Button>
+     </div>
+     
+     
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
