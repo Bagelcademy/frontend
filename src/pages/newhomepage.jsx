@@ -6,7 +6,7 @@ import { Card } from '../components/ui/card';
 import heroImage from '../assets/1201.png';
 import { useTranslation } from 'react-i18next';
 import i18n from '../i18n';
-import CourseCard from '../components/ui/coursecard';
+import CourseCard from '../components/ui/CourseCard';
 
 const HomePage = ({ isDarkTheme, toggleTheme, isLoggedIn, setIsLoggedIn }) => {
   const [courses, setCourses] = useState([]);

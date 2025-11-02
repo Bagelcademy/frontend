@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Search, BookOpen, Users, Star, Filter, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSnackbar } from 'notistack';
-import CourseCard from '../components/ui/coursecard'
+import CourseCard from '../components/ui/CourseCard'
 
 const Courses = () => {
   const { enqueueSnackbar } = useSnackbar();
