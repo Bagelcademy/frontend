@@ -104,9 +104,18 @@ const NotificationsList = ({ t }) => {
                       : "bg-blue-50 dark:bg-indigo-900 border-l-4 border-blue-500"
                   }`}
                 >
-                  <p className="text-gray-700 dark:text-gray-200">
-                    {notification.text}
-                  </p>
+            <div className="flex justify-between items-center">
+  <p className="text-gray-700 dark:text-gray-200 inline-block">
+    {notification.text}
+  </p>
+  {notification.message_seen && (
+    <span className="inline-block self-start text-gray-500 dark:text-gray-400 text-xs">
+      {t("read")}
+    </span>
+  )}
+</div>
+
+
                   <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />
