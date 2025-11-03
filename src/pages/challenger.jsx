@@ -255,9 +255,9 @@ const ChallengePage = ({ setIsLoggedIn }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen text-gray-800 dark:text-gray-300">
         <Loader2 className="w-8 h-8 animate-spin" />
-        <span className="ml-2">Loading challenge...</span>
+        <span className="ml-2">{t('Loading challenge...')}</span>
       </div>
     );
   }

@@ -1262,7 +1262,6 @@
   "Already Enrolled":"ثبت نام شده",
   "Enrolled successfully":"ثبت نام با موفقیت انجام شد",
   "":"",
-  "":"",
   
   "teachPanel":{
   "lessons":"درس",
@@ -1278,6 +1277,7 @@
   "Challenge not found.":".چالش پیدا نشد",
   "Unexpected response:":":خطا",
   "Challenge start error:":":شروع چالش با خطا مواجه شد",
-  "Network error:":"خطای شبکه:"
+  "Network error:":"خطای شبکه:",
+  "Loading challenge...":"در حال بارگیری چالش..."
   
 }
