@@ -250,58 +250,6 @@ const CourseLandingPage = () => {
     // یا منطق اشتراک‌گذاری واقعی
   };
   
-  // const handleChallengeClick = (challenge) => {
-  // if (!isLoggedIn) {
-  //   navigate('/login');
-  //   return;
-  // }
-  // navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
-  // };
-
-
-  // const handleChallengeClick = async (challenge) => {
-  //   if (!isLoggedIn) {
-  //     navigate('/login');
-  //     return;
-  //   }
-
-  //   try {
-  //     const accessToken = localStorage.getItem("accessToken");
-  //     const response = await fetch(
-  //       `courses/${id}/challenges/${challenge.challenge_number}`,
-  //       {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           Authorization: `Bearer ${accessToken}`, // if you use JWT auth
-  //         },
-  //       }
-  //     );
-
-  //     if (response.ok) {
-  //       // user has access → go to the challenge page
-  //       navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
-  //     } else if (response.status === 403) {
-  //       const data = await response.json();
-  //       Notify.warning(data.detail || 'Please complete the previous challenge first.', {
-  //         position: 'right-bottom',
-  //         timeout: 4000,
-  //       });
-  //     } else {
-  //       Notify.failure('Something went wrong. Please try again later.', {
-  //         position: 'right-bottom', 
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Challenge access error:', error);
-  //     Notify.failure('Network error. Please try again.', {
-  //       position: 'right-bottom',
-  //     });
-  //   }
-  //   return error;
-  // };
-
-
   const handleChallengeClick = async (challenge) => {
     if (!isLoggedIn) {
       navigate('/login');
@@ -316,13 +264,12 @@ const CourseLandingPage = () => {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`, // only if JWT auth
+            Authorization: `Bearer ${accessToken}`,
           },
-          credentials: 'include', // important if using session auth
+          credentials: 'include', 
         }
       );
 
-      // Helper to safely parse JSON
       const safeParseJSON = async (res) => {
         const text = await res.text();
         try {
