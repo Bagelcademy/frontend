@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Alert, AlertDescription } from '../components/ui/alert';
@@ -38,7 +38,12 @@ const ChallengePage = ({ setIsLoggedIn }) => {
   const [textAnswer, setTextAnswer] = useState('');
   const textareaRef = useRef(null);
   
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) {
+    return <Navigate to="/login" replace />;
+  }
 
   const languageIds = {
     python: 71,
@@ -107,7 +112,10 @@ const ChallengePage = ({ setIsLoggedIn }) => {
     try {
       const submissionResponse = await fetch('https://judge.tadrisino.org/submissions?base64_encoded=true', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'Content-Type': 'application/json' 
+        },
         body: JSON.stringify({
           source_code: btoa(code),
           language_id: languageIds[codeLanguage],
@@ -269,16 +277,17 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {/* Challenge Description */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-            {t("challenge_title", { number: toPersianDigits(challengeNumber) })}
-
-
+          <CardTitle>
+            <div className="flex items-center gap-2">
+            {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5 mb-2" />}
+            {i18n.language === 'fa' ? t("challenge_title", { number: toPersianDigits(challengeNumber) }) : t("challenge_title",{ number : challengeNumber})}
+            {/* {t("challenge_title", i18n.language === 'fa' ? { number: toPersianDigits(challengeNumber) } : challengeNumber)} */}
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="prose max-w-none">
-            <p className="whitespace-pre-wrap">{challenge?.challenge_text}</p>
+            <p className="whitespace-pre-wrap text-gray-800 dark:text-gray-200">{challenge?.challenge_text}</p>
           </div>
         </CardContent>
       </Card>
@@ -345,13 +354,15 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {!isCodingChallenge && (
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
-      {t("Your Answer")}
+            <CardTitle>
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 mb-2" />
+                {t("Your Answer")}
+              </div>
             </CardTitle>
             {/* Formatting Toolbar */}
-            <div className="flex flex-wrap gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <Button
+            <div className="flex flex-wrap gap-2 p-2 bg-gray-200 dark:bg-indigo-900 rounded-lg">
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('bold')}
@@ -359,7 +370,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <Bold className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('italic')}
@@ -367,7 +378,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <Italic className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('list')}
@@ -375,7 +386,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <List className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('link')}
@@ -383,7 +394,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <Link className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('subscript')}
@@ -391,7 +402,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <Subscript className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('superscript')}
@@ -399,7 +410,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 <Superscript className="w-4 h-4" />
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('equation')}
@@ -407,7 +418,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 ∑
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('fraction')}
@@ -415,7 +426,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 ½
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('square')}
@@ -423,7 +434,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               >
                 x²
               </Button>
-              <Button
+              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
                 size="sm"
                 variant="outline"
                 onClick={() => formatText('sqrt')}
@@ -439,7 +450,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
               placeholder={t("Write your detailed answer here. You can use markdown formatting and mathematical expressions...")}
-              className="min-h-[300px] text-base leading-relaxed"
+              className="min-h-[300px] text-gray-800 dark:text-gray-200 text-base leading-relaxed"
             />
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               <p>{t("Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript")}</p>
@@ -453,7 +464,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         <Button
           onClick={submitChallenge}
           disabled={submitting || (!code.trim() && !textAnswer.trim())}
-          className="flex items-center gap-2 px-8 py-3 text-lg"
+          className="flex items-center gap-2 px-8 py-3 dark:bg-indigo-900 text-lg"
           size="lg"
         >
           {submitting ? (
@@ -469,10 +480,9 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       {result && (
         <Card className={`border-2 ${result.status === 'Passed' ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-red-500 bg-red-50 dark:bg-red-900/20'}`}>
           <CardHeader>
-          <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
-  {result.status === 'Passed' ? '✅' : '❌'} {result.status === 'Passed' ? t('Passed') : t('Failed')}
-</CardTitle>
-
+            <CardTitle className={`flex items-center gap-2 ${result.status === 'Passed' ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}`}>
+              {result.status === 'Passed' ? '✅' : '❌'} {result.status === 'Passed' ? t('Passed') : t('Failed')}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">

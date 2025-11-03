@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -249,13 +250,119 @@ const CourseLandingPage = () => {
     // یا منطق اشتراک‌گذاری واقعی
   };
   
-  const handleChallengeClick = (challenge) => {
-  if (!isLoggedIn) {
-    navigate('/login');
-    return;
-  }
-  navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
+  // const handleChallengeClick = (challenge) => {
+  // if (!isLoggedIn) {
+  //   navigate('/login');
+  //   return;
+  // }
+  // navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
+  // };
+
+
+  // const handleChallengeClick = async (challenge) => {
+  //   if (!isLoggedIn) {
+  //     navigate('/login');
+  //     return;
+  //   }
+
+  //   try {
+  //     const accessToken = localStorage.getItem("accessToken");
+  //     const response = await fetch(
+  //       `courses/${id}/challenges/${challenge.challenge_number}`,
+  //       {
+  //         method: 'GET',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           Authorization: `Bearer ${accessToken}`, // if you use JWT auth
+  //         },
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       // user has access → go to the challenge page
+  //       navigate(`/courses/${id}/challenges/${challenge.challenge_number}`);
+  //     } else if (response.status === 403) {
+  //       const data = await response.json();
+  //       Notify.warning(data.detail || 'Please complete the previous challenge first.', {
+  //         position: 'right-bottom',
+  //         timeout: 4000,
+  //       });
+  //     } else {
+  //       Notify.failure('Something went wrong. Please try again later.', {
+  //         position: 'right-bottom', 
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Challenge access error:', error);
+  //     Notify.failure('Network error. Please try again.', {
+  //       position: 'right-bottom',
+  //     });
+  //   }
+  //   return error;
+  // };
+
+
+  const handleChallengeClick = async (challenge) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `https://api.tadrisino.org/challenge/challenges/start/?challenge_number=${challenge.challenge_number}&course_id=${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`, // only if JWT auth
+          },
+          credentials: 'include', // important if using session auth
+        }
+      );
+
+      // Helper to safely parse JSON
+      const safeParseJSON = async (res) => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      };
+
+      if (response.ok) {
+        const data = await safeParseJSON(response);
+        navigate(`/courses/${id}/challenges/${challenge.challenge_number}`, {
+          state: { challengeData: data },
+        });
+      } else if (response.status === 403) {
+        Notify.failure(t('Please complete the previous challenge first.'), {
+          position: 'right-top',
+        });
+      } else if (response.status === 400) {
+        Notify.failure(t('Invalid request. Please try again later.'), {
+          position: 'right-top',
+        });
+      } else if (response.status === 404) {
+        Notify.failure(t('Challenge not found.'), {
+          position: 'right-top',
+        });
+      } else {
+        Notify.failure(`${t('Unexpected response:')} ${response.status}`, {
+          position: 'right-top',
+        });
+      }
+    } catch (error) {
+      console.error(t('Challenge start error:'), error);
+      Notify.failure(`${t('Network error:')} ${error.message || 'Please try again.'}`, {
+        position: 'right-top',
+      });
+    }
   };
+
+
 
   const StarRating = ({ rating }) => {
     return (

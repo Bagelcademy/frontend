@@ -1199,7 +1199,7 @@
   
   "quiz.failedMessage":"متأسفیم، شما در کوییز موفق نشدید.",
   "quiz.passedMessage":"تبریک! شما کوییز را با موفقیت گذراندید!",
-  "challenge_title": " چالش{{number}}",
+  "challenge_title": " چالش {{number}}",
 
   "challenge": {
     "number": "شماره چالش {{number}}"
@@ -1271,5 +1271,13 @@
   
   },
   "markAsRead":"نشانه گذاری به عنوان خوانده شد ",
-  "read":"خوانده شد"
+  "read":"خوانده شد",
+  
+  "Please complete the previous challenge first.":".لطفا ابتدا چالش قبلی را انجام دهید",
+  "Invalid request. Please try again later.":".درخواست نامعتبر است. لطفاً بعداً دوباره امتحان کنید",
+  "Challenge not found.":".چالش پیدا نشد",
+  "Unexpected response:":":خطا",
+  "Challenge start error:":":شروع چالش با خطا مواجه شد",
+  "Network error:":"خطای شبکه:"
+  
 }
