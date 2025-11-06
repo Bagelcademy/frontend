@@ -982,7 +982,7 @@ const LessonPage = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Back Button */}
 
-      <div className="fixed sm:top-28 top-36 left-4 z-50">
+      {/* <div className="fixed sm:top-28 top-36 left-4 z-50">
         <Button
           variant="ghost"
           size="sm"
@@ -992,7 +992,7 @@ const LessonPage = () => {
           <ChevronLeft className="w-4 h-4" />
           {t('Back to Course')}
         </Button>
-      </div>
+      </div> */}
     
       
 
@@ -1015,27 +1015,27 @@ const LessonPage = () => {
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">{lesson?.order}. {lesson?.title}</CardTitle>
                   <LessonAudio
-    audioUrl={audioUrl}
-    isGeneratingAudio={isGeneratingAudio}
-    isPlaying={isPlaying}
-    isMuted={isMuted}
-    isBuffering={isBuffering}
-    duration={duration}
-    currentTime={currentTime}
-    playbackRate={playbackRate}
-    volume={volume}
-    generateAudio={generateAudio}
-    skipForward={skipForward}
-    skipBackward={skipBackward}
-    togglePlayPause={togglePlayPause}
-    toggleMute={toggleMute}
-    resetAudio={resetAudio}
-    handleVolumeChange={handleVolumeChange}
-    handlePlaybackRateChange={handlePlaybackRateChange}
-    handleSeek={handleSeek}
-    t={t}
-  />
-                  </CardHeader>
+                    audioUrl={audioUrl}
+                    isGeneratingAudio={isGeneratingAudio}
+                    isPlaying={isPlaying}
+                    isMuted={isMuted}
+                    isBuffering={isBuffering}
+                    duration={duration}
+                    currentTime={currentTime}
+                    playbackRate={playbackRate}
+                    volume={volume}
+                    generateAudio={generateAudio}
+                    skipForward={skipForward}
+                    skipBackward={skipBackward}
+                    togglePlayPause={togglePlayPause}
+                    toggleMute={toggleMute}
+                    resetAudio={resetAudio}
+                    handleVolumeChange={handleVolumeChange}
+                    handlePlaybackRateChange={handlePlaybackRateChange}
+                    handleSeek={handleSeek}
+                    t={t}
+                  />
+                </CardHeader>
                 
                   {/* Enhanced Audio Section */}
                   
@@ -1065,7 +1065,14 @@ const LessonPage = () => {
                     >
                       {lesson?.content}
                     </ReactMarkdown>
-                    
+                  </div>
+                  <div className="mt-6 flex justify-center">
+                    <Button
+                      onClick={() => setActiveTab('quiz')}
+                      className="bg-blue-500 hover:bg-blue-600 text-white"
+                    >
+                      <Trophy className="w-5 h-5 mr-2" /> Quiz
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
