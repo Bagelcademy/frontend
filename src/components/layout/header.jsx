@@ -271,7 +271,7 @@ const Header = ({
           </div>
         )}
 
-        <nav className="container mx-auto px-4 flex items-center justify-between">
+        <nav className="mx-auto px-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               to="/"
@@ -282,7 +282,7 @@ const Header = ({
             >
               {t("Tadrisino")}
             </Link>
-            <Link to="/shop">
+            {/* <Link to="/shop">
               <Button
                 className={`
                 relative overflow-hidden bg-gradient-to-r
@@ -301,50 +301,47 @@ const Header = ({
               >
                 {t("getting PRO")}
               </Button>
-            </Link>
-            <Link to="/ask" onClick={triggerSparkle}>
-              {/* Replace the image with Lucide React Bot icon */}
-              <div className="relative group">
+            </Link> */}
+            <Link
+              to="/ask"
+              onClick={triggerSparkle}
+              className={`
+                inline-flex items-center gap-2 px-2 py-2 rounded-2xl
+                bg-gradient-to-r from-purple-500 via-fuchsia-500 to-indigo-500
+                hover:from-indigo-500 hover:to-purple-500
+                text-white font-semibold shadow-md hover:shadow-lg
+                transition-all duration-300 group
+              `}
+            >
+              <div className="relative flex items-center">
                 <Bot
-                  size={32}
+                  size={24}
                   className={`
-                  transition-all duration-300
-                  ${isDarkTheme ? "text-white" : "text-gray-900"}
-                  ${sparkleAnimate ? "scale-110" : ""}
-                  hover:scale-105
-                `}
+                    transition-transform duration-300
+                    ${sparkleAnimate ? "scale-110" : "group-hover:scale-105"}
+                  `}
                 />
-                {/* Add star/sparkle animations around the icon */}
+
+                {/* Sparkle effects */}
                 <div
                   className={`absolute -inset-1 opacity-0 group-hover:opacity-100 ${
                     sparkleAnimate ? "opacity-100" : ""
                   } transition-opacity duration-300`}
                 >
-                  <div className="absolute top-0 left-0 h-2 w-2 bg-yellow-300 rounded-full animate-pulse"></div>
+                  <div className="absolute top-0 left-0 h-1.5 w-1.5 bg-yellow-300 rounded-full animate-pulse"></div>
                   <div className="absolute top-1 right-0 h-1 w-1 bg-blue-400 rounded-full animate-ping"></div>
                   <div className="absolute bottom-0 left-1 h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce"></div>
                   <div className="absolute bottom-1 right-1 h-2 w-2 bg-green-300 rounded-full animate-pulse"></div>
                   <div className="absolute top-3 right-3 h-1 w-1 bg-pink-400 rounded-full animate-ping"></div>
                 </div>
-                <span
-                  className={`
-                absolute -bottom-8 left-1/2 transform -translate-x-1/2 
-                text-xs whitespace-nowrap px-2 py-1 rounded-md opacity-0 
-                group-hover:opacity-100 transition-opacity duration-300
-                ${
-                  isDarkTheme
-                    ? "bg-gray-700 text-white"
-                    : "bg-gray-200 text-black"
-                }
-              `}
-                >
-                  {t("AI Assistant")}
-                </span>
               </div>
+
+              {/* Text label */}
+              <span className="text-base tracking-wide">{t("AI Assistant")}</span>
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center gap-x-4">
+          <div className="hidden lg:flex items-center gap-x-4">
             <Link
               to="/"
               className={`
@@ -387,6 +384,21 @@ const Header = ({
             `}
             >
               {t("learningPath")}
+            </Link>
+
+            <Link
+              to="/shop"
+              className={`
+              relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              after:w-0 hover:after:w-full after:transition-all after:duration-300
+              ${
+                isDarkTheme
+                  ? "text-gray-300 hover:text-white after:bg-white"
+                  : "text-black hover:text-gray-900 after:bg-gray-900"
+              }
+            `}
+            >
+              {t("getting PRO")}
             </Link>
 
             {isLoggedIn ? (
@@ -440,7 +452,7 @@ const Header = ({
             <div
               onClick={toggleTheme}
               className={`
-              cursor-pointer p-2 rounded-full
+              cursor-pointer p-1 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
             >
@@ -454,7 +466,7 @@ const Header = ({
             <div
               onClick={toggleLanguage}
               className={`
-              cursor-pointer flex items-center p-2 rounded-full
+              cursor-pointer flex items-center p-1 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
             >
@@ -473,7 +485,7 @@ const Header = ({
             </div>
           </div>
 
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               data-menu-button
               onClick={toggleMenu}
@@ -492,7 +504,7 @@ const Header = ({
           <div
             data-mobile-menu
             className={`
-            md:hidden px-4 py-2 gap-y-3
+            lg:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
             z-50
             ${isDarkTheme ? "bg-transparent" : "bg-transparent"}
@@ -615,6 +627,22 @@ const Header = ({
             `}
             >
               {t("learningPath")}
+            </Link>
+            
+            <Link
+              to="/shop"
+              onClick={toggleMenu}
+              className={`
+              block py-2 px-3 rounded-lg
+              ${
+                isDarkTheme
+                  ? "text-gray-300 hover:bg-gray-700/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
+              }
+              transition-colors duration-300
+            `}
+            >
+              {t("getting PRO")}
             </Link>
 
             {isLoggedIn && (
