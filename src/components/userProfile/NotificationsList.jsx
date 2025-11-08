@@ -74,16 +74,13 @@ const NotificationsList = ({ t }) => {
   return (
     <Card className="border-0 bg-white dark:bg-gray-800 shadow-md h-96 overflow-y-auto">
       <CardHeader className="border-b border-gray-200 dark:border-gray-700 pb-2">
-  <div className="flex items-center gap-2">
-    <Bell className="w-6 h-6 text-gray-600 dark:text-gray-300 relative top-[1px]" />
-    <span className="text-xl font-bold text-gray-800 dark:text-gray-100 leading-none">
-      {t("myNotifications")}
-    </span>
-  </div>
-</CardHeader>
-
-
-
+        <div className="flex items-center gap-2">
+          <Bell className="w-6 h-6 text-gray-600 dark:text-gray-300 relative top-[1px]" />
+          <span className="text-xl font-bold text-gray-800 dark:text-gray-100 leading-none">
+            {t("myNotifications")}
+          </span>
+        </div>
+      </CardHeader>
       <CardContent>
         {notifications.length > 0 ? (
           <div className="space-y-4">
@@ -104,18 +101,16 @@ const NotificationsList = ({ t }) => {
                       : "bg-blue-50 dark:bg-indigo-900 border-l-4 border-blue-500"
                   }`}
                 >
-            <div className="flex justify-between items-center">
-  <p className="text-gray-700 dark:text-gray-200 inline-block">
-    {notification.text}
-  </p>
-  {notification.message_seen && (
-    <span className="inline-block self-start text-gray-500 dark:text-gray-400 text-xs">
-      {t("read")}
-    </span>
-  )}
-</div>
-
-
+                  <div className="flex justify-between items-center">
+                    <p className="text-gray-700 dark:text-gray-200 overflow-hidden break-words min-w-0">
+                      {notification.text}
+                    </p>
+                    {notification.message_seen && (
+                      <span className="inline-block self-start text-gray-500 dark:text-gray-400 text-xs">
+                        {t("read")}
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />

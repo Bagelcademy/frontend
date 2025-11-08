@@ -36,6 +36,11 @@ const Header = ({
   const [showCharacterPopup, setShowCharacterPopup] = useState(false);
   const [popupCharacter, setPopupCharacter] = useState(null);
 
+  const handleLoginClick = () => {
+    toggleMenu();
+    navigate("/login");
+  };
+
   const handleLogoutClick = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
@@ -120,6 +125,25 @@ const Header = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const menuButton = document.querySelector('[data-menu-button]');
+      const mobileMenu = document.querySelector('[data-mobile-menu]');
+      
+      if (menuOpen && mobileMenu && !mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -389,11 +413,11 @@ const Header = ({
                   />
                 </Link>
                 <Button
-  onClick={handleLogoutClick}
-  variant="outline"
->
-  {t("logout")}
-</Button>
+                  onClick={handleLogoutClick}
+                  variant="outline"
+                >
+                  {t("logout")}
+                </Button>
 
               </>
             ) : (
@@ -451,6 +475,7 @@ const Header = ({
 
           <div className="md:hidden flex items-center">
             <button
+              data-menu-button
               onClick={toggleMenu}
               className={`
               p-2 rounded-full
@@ -465,14 +490,86 @@ const Header = ({
 
         {menuOpen && (
           <div
+            data-mobile-menu
             className={`
             md:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
+            z-50
             ${isDarkTheme ? "bg-transparent" : "bg-transparent"}
-            border-t
-            ${isDarkTheme ? "border-gray-700/30" : "border-gray-200/30"}
+            border-y
+            ${isDarkTheme ? "border-gray-700/30" : "border-gray-400"}
           `}
           >
+            <div className="flex flex-row justify-between pb-3 border-b border-blue-600/40 dark:border-blue-800/90">
+              {isLoggedIn ? (
+                <div className="flex flex-row mx-2">
+                  <Link to="/profile">
+                    <img
+                      src={profilePicture || "https://via.placeholder.com/40"} // Default placeholder
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer"
+                    />
+                  </Link>
+                  <Button
+                    className="mx-3 mt-0.5 text-red-700 dark:text-red-200 border border-red-700 dark:border-red-950 bg-red-200 dark:bg-red-900"
+                    onClick={handleLogoutClick}
+                    variant="outline"
+                  >
+                    {t("logout")}
+                  </Button>
+                </div>
+              ) : (
+                  <Button
+                  className={`mt-0.5 ${
+                    isDarkTheme
+                      ? "bg-blue-800 text-gray-300 hover:bg-gray-700/50"
+                      : "bg-blue-600 text-gray-200 hover:bg-gray-100/50"
+                  } transition-colors duration-300`}
+                  onClick={handleLoginClick}
+                  variant="outline"
+                >
+                  {t("login")}
+                </Button>
+              )}
+              <div className={`flex flex-row justify-end}`}>
+                <div
+                  onClick={toggleTheme}
+                  className={`
+                  block py-2 px-3 rounded-lg cursor-pointer
+                  ${
+                    isDarkTheme
+                      ? "text-gray-300 hover:bg-gray-700/50"
+                      : "text-black hover:bg-gray-100/50"
+                  }
+                  transition-colors duration-300
+                `}
+                >
+                  {isDarkTheme ? (
+                    <Moon className="h-6 w-6" />
+                  ) : (
+                    <Sun className="h-6 w-6" />
+                  )}
+                </div>
+
+                <div
+                  onClick={toggleLanguage}
+                  className={`
+                  flex items-center py-2 px-1 rounded-lg cursor-pointer
+                  ${
+                    isDarkTheme
+                      ? "text-gray-300 hover:bg-gray-700/50"
+                      : "text-black hover:bg-gray-100/50"
+                  }
+                  transition-colors duration-300
+                `}
+                >
+                  <Globe className="h-6 w-6" />
+                  <span className="mx-2">
+                    {currentLanguage === "en" ? "فا" : "EN"}
+                  </span>
+                </div>
+              </div>
+            </div>
             <Link
               to="/"
               onClick={toggleMenu}
@@ -520,7 +617,7 @@ const Header = ({
               {t("learningPath")}
             </Link>
 
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <>
                 <Link
                   to="/my-courses"
@@ -537,75 +634,8 @@ const Header = ({
                 >
                   {t("myCourses")}
                 </Link>
-                <Link to="/profile">
-                  <img
-                    src={profilePicture || "https://via.placeholder.com/40"} // Default placeholder
-                    alt="Profile"
-                    className="w-10 h-10 mb-4 mt-2 mx-3 rounded-full border-2 border-white shadow-md cursor-pointer"
-                  />
-                </Link>
-                <Button
-  onClick={handleLogoutClick}
-  variant="outline"
->
-  {t("logout")}
-</Button>
-
               </>
-            ) : (
-              <Link
-                to="/login"
-                onClick={toggleMenu}
-                className={`
-                block py-2 px-3 rounded-lg
-                ${
-                  isDarkTheme
-                    ? "text-gray-300 hover:bg-gray-700/50"
-                    : "text-black hover:bg-gray-100/50"
-                }
-                transition-colors duration-300
-              `}
-              >
-                {t("login")}
-              </Link>
             )}
-
-            <div
-              onClick={toggleTheme}
-              className={`
-              block py-2 px-3 rounded-lg cursor-pointer
-              ${
-                isDarkTheme
-                  ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
-              }
-              transition-colors duration-300
-            `}
-            >
-              {isDarkTheme ? (
-                <Moon className="h-6 w-6" />
-              ) : (
-                <Sun className="h-6 w-6" />
-              )}
-            </div>
-
-            <div
-              onClick={toggleLanguage}
-              className={`
-              flex items-center py-2 px-3 rounded-lg cursor-pointer
-              ${
-                isDarkTheme
-                  ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
-              }
-              transition-colors duration-300
-            `}
-            >
-              <Globe className="h-6 w-6" />
-              <span className="ml-2">
-                {currentLanguage === "en" ? "فا" : "EN"}
-              </span>
-            </div>
           </div>
         )}
       </header>
