@@ -75,7 +75,7 @@ const CourseCard = ({ course }) => {
           </div>
           <Link 
             to={`/course/${course.id}`}
-            className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
+            className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white hover:text-white rounded-lg transition-all duration-300"
           >
             {t('Start Learning')}
           </Link>

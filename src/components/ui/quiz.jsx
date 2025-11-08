@@ -227,7 +227,7 @@ const Quiz = ({ courseId, lessonId, onComplete }) => {
                 </div>
               ))}
               <Button
-                className="w-full text-white bg-gray-800"
+                className="w-[95%] mx-auto text-white bg-gray-600 dark:bg-gray-700"
                 onClick={handleSubmit}
               >
                 {t("quiz.submitButton")}

@@ -980,9 +980,11 @@ const LessonPage = () => {
 
     
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Back Button */}
+      {/* Tab Navigation */}
+      <LessonTabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div className="fixed sm:top-28 top-36 left-4 z-50">
+      {/* Back Button - Fixed position under tabs */}
+      <div className="fixed left-4 sm:top-[calc(7rem+40px)] md:top-[calc(7rem+64px)] top-[calc(9rem+30px)] z-5">
         <Button
           variant="ghost"
           size="sm"
@@ -993,12 +995,6 @@ const LessonPage = () => {
           {t('Back to Course')}
         </Button>
       </div>
-    
-      
-
-      {/* Tab Navigation */}
-      
-      <LessonTabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Main Content Area */}
       <main className="container mx-auto px-4 pt-16 pb-24 flex-1 min-h-0">
@@ -1015,27 +1011,27 @@ const LessonPage = () => {
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">{lesson?.order}. {lesson?.title}</CardTitle>
                   <LessonAudio
-    audioUrl={audioUrl}
-    isGeneratingAudio={isGeneratingAudio}
-    isPlaying={isPlaying}
-    isMuted={isMuted}
-    isBuffering={isBuffering}
-    duration={duration}
-    currentTime={currentTime}
-    playbackRate={playbackRate}
-    volume={volume}
-    generateAudio={generateAudio}
-    skipForward={skipForward}
-    skipBackward={skipBackward}
-    togglePlayPause={togglePlayPause}
-    toggleMute={toggleMute}
-    resetAudio={resetAudio}
-    handleVolumeChange={handleVolumeChange}
-    handlePlaybackRateChange={handlePlaybackRateChange}
-    handleSeek={handleSeek}
-    t={t}
-  />
-                  </CardHeader>
+                    audioUrl={audioUrl}
+                    isGeneratingAudio={isGeneratingAudio}
+                    isPlaying={isPlaying}
+                    isMuted={isMuted}
+                    isBuffering={isBuffering}
+                    duration={duration}
+                    currentTime={currentTime}
+                    playbackRate={playbackRate}
+                    volume={volume}
+                    generateAudio={generateAudio}
+                    skipForward={skipForward}
+                    skipBackward={skipBackward}
+                    togglePlayPause={togglePlayPause}
+                    toggleMute={toggleMute}
+                    resetAudio={resetAudio}
+                    handleVolumeChange={handleVolumeChange}
+                    handlePlaybackRateChange={handlePlaybackRateChange}
+                    handleSeek={handleSeek}
+                    t={t}
+                  />
+                </CardHeader>
                 
                   {/* Enhanced Audio Section */}
                   
@@ -1065,7 +1061,14 @@ const LessonPage = () => {
                     >
                       {lesson?.content}
                     </ReactMarkdown>
-                    
+                  </div>
+                  <div className="mt-20 mb-3 flex justify-center">
+                    <Button
+                      onClick={() => setActiveTab('quiz')}
+                      className="px-3 py-5 gap-x-2 text-lg bg-blue-500 hover:bg-blue-600 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white dark:text-gray-300"
+                    >
+                      <Trophy className="w-5 h-5" /> {t('Quiz')}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

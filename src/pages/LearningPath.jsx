@@ -142,7 +142,7 @@ const CareerPathsPage = () => {
             level: path.level,
             popular: path.popular || false,
             image: path.image || '/api/placeholder/400/200',
-            rating: (Math.random() * 2 + 3).toFixed(1), // Random rating between 3.0 and 5.0
+            rating: 4.5, // fixed rating
             enrolledCount: enrolledCount !== null ? enrolledCount : 0
           };
         }));

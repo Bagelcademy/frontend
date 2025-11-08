@@ -36,6 +36,11 @@ const Header = ({
   const [showCharacterPopup, setShowCharacterPopup] = useState(false);
   const [popupCharacter, setPopupCharacter] = useState(null);
 
+  const handleLoginClick = () => {
+    toggleMenu();
+    navigate("/login");
+  };
+
   const handleLogoutClick = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     const accessToken = localStorage.getItem("accessToken");
@@ -120,6 +125,25 @@ const Header = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const menuButton = document.querySelector('[data-menu-button]');
+      const mobileMenu = document.querySelector('[data-mobile-menu]');
+      
+      if (menuOpen && mobileMenu && !mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -247,7 +271,7 @@ const Header = ({
           </div>
         )}
 
-        <nav className="container mx-auto px-4 flex items-center justify-between">
+        <nav className="mx-auto px-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
               to="/"
@@ -258,7 +282,7 @@ const Header = ({
             >
               {t("Tadrisino")}
             </Link>
-            <Link to="/shop">
+            {/* <Link to="/shop">
               <Button
                 className={`
                 relative overflow-hidden bg-gradient-to-r
@@ -277,50 +301,47 @@ const Header = ({
               >
                 {t("getting PRO")}
               </Button>
-            </Link>
-            <Link to="/ask" onClick={triggerSparkle}>
-              {/* Replace the image with Lucide React Bot icon */}
-              <div className="relative group">
+            </Link> */}
+            <Link
+              to="/ask"
+              onClick={triggerSparkle}
+              className={`
+                inline-flex items-center gap-2 px-2 py-2 rounded-2xl
+                bg-gradient-to-r from-purple-500 via-fuchsia-500 to-indigo-500
+                hover:from-indigo-500 hover:to-purple-500
+                text-white font-semibold shadow-md hover:shadow-lg
+                transition-all duration-300 group
+              `}
+            >
+              <div className="relative flex items-center">
                 <Bot
-                  size={32}
+                  size={24}
                   className={`
-                  transition-all duration-300
-                  ${isDarkTheme ? "text-white" : "text-gray-900"}
-                  ${sparkleAnimate ? "scale-110" : ""}
-                  hover:scale-105
-                `}
+                    transition-transform duration-300
+                    ${sparkleAnimate ? "scale-110" : "group-hover:scale-105"}
+                  `}
                 />
-                {/* Add star/sparkle animations around the icon */}
+
+                {/* Sparkle effects */}
                 <div
                   className={`absolute -inset-1 opacity-0 group-hover:opacity-100 ${
                     sparkleAnimate ? "opacity-100" : ""
                   } transition-opacity duration-300`}
                 >
-                  <div className="absolute top-0 left-0 h-2 w-2 bg-yellow-300 rounded-full animate-pulse"></div>
+                  <div className="absolute top-0 left-0 h-1.5 w-1.5 bg-yellow-300 rounded-full animate-pulse"></div>
                   <div className="absolute top-1 right-0 h-1 w-1 bg-blue-400 rounded-full animate-ping"></div>
                   <div className="absolute bottom-0 left-1 h-1.5 w-1.5 bg-purple-400 rounded-full animate-bounce"></div>
                   <div className="absolute bottom-1 right-1 h-2 w-2 bg-green-300 rounded-full animate-pulse"></div>
                   <div className="absolute top-3 right-3 h-1 w-1 bg-pink-400 rounded-full animate-ping"></div>
                 </div>
-                <span
-                  className={`
-                absolute -bottom-8 left-1/2 transform -translate-x-1/2 
-                text-xs whitespace-nowrap px-2 py-1 rounded-md opacity-0 
-                group-hover:opacity-100 transition-opacity duration-300
-                ${
-                  isDarkTheme
-                    ? "bg-gray-700 text-white"
-                    : "bg-gray-200 text-black"
-                }
-              `}
-                >
-                  {t("AI Assistant")}
-                </span>
               </div>
+
+              {/* Text label */}
+              <span className="text-base tracking-wide">{t("AI Assistant")}</span>
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center gap-x-4">
+          <div className="hidden lg:flex items-center gap-x-4">
             <Link
               to="/"
               className={`
@@ -363,6 +384,21 @@ const Header = ({
             `}
             >
               {t("learningPath")}
+            </Link>
+
+            <Link
+              to="/shop"
+              className={`
+              relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+              after:w-0 hover:after:w-full after:transition-all after:duration-300
+              ${
+                isDarkTheme
+                  ? "text-gray-300 hover:text-white after:bg-white"
+                  : "text-black hover:text-gray-900 after:bg-gray-900"
+              }
+            `}
+            >
+              {t("getting PRO")}
             </Link>
 
             {isLoggedIn ? (
@@ -389,11 +425,11 @@ const Header = ({
                   />
                 </Link>
                 <Button
-  onClick={handleLogoutClick}
-  variant="outline"
->
-  {t("logout")}
-</Button>
+                  onClick={handleLogoutClick}
+                  variant="outline"
+                >
+                  {t("logout")}
+                </Button>
 
               </>
             ) : (
@@ -416,7 +452,7 @@ const Header = ({
             <div
               onClick={toggleTheme}
               className={`
-              cursor-pointer p-2 rounded-full
+              cursor-pointer p-1 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
             >
@@ -430,7 +466,7 @@ const Header = ({
             <div
               onClick={toggleLanguage}
               className={`
-              cursor-pointer flex items-center p-2 rounded-full
+              cursor-pointer flex items-center p-1 rounded-full
               hover:bg-gray-200/20 transition-colors duration-300
             `}
             >
@@ -449,8 +485,9 @@ const Header = ({
             </div>
           </div>
 
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
+              data-menu-button
               onClick={toggleMenu}
               className={`
               p-2 rounded-full
@@ -465,14 +502,86 @@ const Header = ({
 
         {menuOpen && (
           <div
+            data-mobile-menu
             className={`
-            md:hidden px-4 py-2 gap-y-3
+            lg:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
+            z-50
             ${isDarkTheme ? "bg-transparent" : "bg-transparent"}
-            border-t
-            ${isDarkTheme ? "border-gray-700/30" : "border-gray-200/30"}
+            border-y
+            ${isDarkTheme ? "border-gray-700/30" : "border-gray-400"}
           `}
           >
+            <div className="flex flex-row justify-between pb-2 mb-1 border-b border-blue-600/40 dark:border-blue-800/90">
+              {isLoggedIn ? (
+                <div className="flex flex-row mx-2">
+                  <Link to="/profile">
+                    <img
+                      src={profilePicture || "https://via.placeholder.com/40"} // Default placeholder
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer"
+                    />
+                  </Link>
+                  <Button
+                    className="mx-3 mt-0.5 text-red-700 dark:text-red-200 border border-red-700 dark:border-red-950 bg-red-200 dark:bg-red-900"
+                    onClick={handleLogoutClick}
+                    variant="outline"
+                  >
+                    {t("logout")}
+                  </Button>
+                </div>
+              ) : (
+                  <Button
+                  className={`mt-0.5 ${
+                    isDarkTheme
+                      ? "bg-blue-800 text-gray-300 hover:bg-gray-700/50"
+                      : "bg-blue-600 text-gray-200 hover:bg-gray-100/50"
+                  } transition-colors duration-300`}
+                  onClick={handleLoginClick}
+                  variant="outline"
+                >
+                  {t("login")}
+                </Button>
+              )}
+              <div className={`flex flex-row justify-end}`}>
+                <div
+                  onClick={toggleTheme}
+                  className={`
+                  block py-2 px-3 rounded-lg cursor-pointer mx-2
+                  ${
+                    isDarkTheme
+                      ? "text-gray-300 bg-gray-400/10 hover:bg-gray-700/50"
+                      : "text-black bg-gray-400/30 hover:bg-gray-100/50"
+                  }
+                  transition-colors duration-300
+                `}
+                >
+                  {isDarkTheme ? (
+                    <Moon className="h-6 w-6" />
+                  ) : (
+                    <Sun className="h-6 w-6" />
+                  )}
+                </div>
+
+                <div
+                  onClick={toggleLanguage}
+                  className={`
+                  flex items-center py-2 px-1 rounded-lg cursor-pointer
+                  ${
+                    isDarkTheme
+                      ? "text-gray-300 bg-gray-400/10 hover:bg-gray-700/50"
+                      : "text-black bg-gray-400/30 hover:bg-gray-100/50 hover"
+                  }
+                  transition-colors duration-300
+                `}
+                >
+                  <Globe className="h-6 w-6" />
+                  <span className="mx-2">
+                    {currentLanguage === "en" ? "فا" : "EN"}
+                  </span>
+                </div>
+              </div>
+            </div>
             <Link
               to="/"
               onClick={toggleMenu}
@@ -481,7 +590,7 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}
@@ -496,7 +605,7 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}
@@ -512,15 +621,31 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}
             >
               {t("learningPath")}
             </Link>
+            
+            <Link
+              to="/shop"
+              onClick={toggleMenu}
+              className={`
+              block py-2 px-3 rounded-lg
+              ${
+                isDarkTheme
+                  ? "text-gray-300 hover:bg-gray-700/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
+              }
+              transition-colors duration-300
+            `}
+            >
+              {t("getting PRO")}
+            </Link>
 
-            {isLoggedIn ? (
+            {isLoggedIn && (
               <>
                 <Link
                   to="/my-courses"
@@ -537,75 +662,8 @@ const Header = ({
                 >
                   {t("myCourses")}
                 </Link>
-                <Link to="/profile">
-                  <img
-                    src={profilePicture || "https://via.placeholder.com/40"} // Default placeholder
-                    alt="Profile"
-                    className="w-10 h-10 mb-4 mt-2 mx-3 rounded-full border-2 border-white shadow-md cursor-pointer"
-                  />
-                </Link>
-                <Button
-  onClick={handleLogoutClick}
-  variant="outline"
->
-  {t("logout")}
-</Button>
-
               </>
-            ) : (
-              <Link
-                to="/login"
-                onClick={toggleMenu}
-                className={`
-                block py-2 px-3 rounded-lg
-                ${
-                  isDarkTheme
-                    ? "text-gray-300 hover:bg-gray-700/50"
-                    : "text-black hover:bg-gray-100/50"
-                }
-                transition-colors duration-300
-              `}
-              >
-                {t("login")}
-              </Link>
             )}
-
-            <div
-              onClick={toggleTheme}
-              className={`
-              block py-2 px-3 rounded-lg cursor-pointer
-              ${
-                isDarkTheme
-                  ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
-              }
-              transition-colors duration-300
-            `}
-            >
-              {isDarkTheme ? (
-                <Moon className="h-6 w-6" />
-              ) : (
-                <Sun className="h-6 w-6" />
-              )}
-            </div>
-
-            <div
-              onClick={toggleLanguage}
-              className={`
-              flex items-center py-2 px-3 rounded-lg cursor-pointer
-              ${
-                isDarkTheme
-                  ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
-              }
-              transition-colors duration-300
-            `}
-            >
-              <Globe className="h-6 w-6" />
-              <span className="ml-2">
-                {currentLanguage === "en" ? "فا" : "EN"}
-              </span>
-            </div>
           </div>
         )}
       </header>

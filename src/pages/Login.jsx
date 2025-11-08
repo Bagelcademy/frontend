@@ -28,21 +28,66 @@ const Login = ({ setIsLoggedIn }) => {
   const otpVerifyRecaptchaRef = useRef(null);
 
   useEffect(() => {
-    // Load the reCAPTCHA v2 script
-    const script = document.createElement('script');
-    script.src = `https://www.google.com/recaptcha/api.js`;
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-    
-    // Initialize reCAPTCHA when script is loaded
-    script.onload = renderRecaptchas;
+    let recaptchaScript;
+    let scriptLoadRetries = 0;
+    const maxRetries = 3;
+
+    const loadRecaptchaScript = () => {
+      // Check if script already exists
+      const existingScript = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
+      if (existingScript) {
+        if (window.grecaptcha && window.grecaptcha.render) {
+          renderRecaptchas();
+          return;
+        }
+        // If script exists but grecaptcha not initialized, remove it and try again
+        existingScript.remove();
+      }
+
+      recaptchaScript = document.createElement('script');
+      recaptchaScript.src = `https://www.google.com/recaptcha/api.js?render=explicit`;
+      recaptchaScript.async = true;
+      recaptchaScript.defer = true;
+
+      // Handle script load success
+      recaptchaScript.onload = () => {
+        // Wait for grecaptcha to be fully initialized
+        const checkGrecaptcha = setInterval(() => {
+          if (window.grecaptcha && window.grecaptcha.render) {
+            clearInterval(checkGrecaptcha);
+            renderRecaptchas();
+          }
+        }, 100);
+
+        // Timeout after 5 seconds
+        setTimeout(() => {
+          clearInterval(checkGrecaptcha);
+          if (!window.grecaptcha?.render && scriptLoadRetries < maxRetries) {
+            scriptLoadRetries++;
+            console.log(`Retrying reCAPTCHA load, attempt ${scriptLoadRetries}`);
+            loadRecaptchaScript();
+          }
+        }, 5000);
+      };
+
+      // Handle script load error
+      recaptchaScript.onerror = () => {
+        if (scriptLoadRetries < maxRetries) {
+          scriptLoadRetries++;
+          console.log(`ReCAPTCHA script load failed, retrying... Attempt ${scriptLoadRetries}`);
+          setTimeout(loadRecaptchaScript, 1000);
+        }
+      };
+
+      document.body.appendChild(recaptchaScript);
+    };
+
+    loadRecaptchaScript();
 
     return () => {
-      // Clean up script when component unmounts
-      const recaptchaScript = document.querySelector('script[src^="https://www.google.com/recaptcha/api.js"]');
-      if (recaptchaScript) {
-        document.body.removeChild(recaptchaScript);
+      // Cleanup
+      if (recaptchaScript && recaptchaScript.parentNode) {
+        recaptchaScript.parentNode.removeChild(recaptchaScript);
       }
     };
   }, []);
@@ -72,36 +117,52 @@ const Login = ({ setIsLoggedIn }) => {
   }, [countdown]);
   
   const renderRecaptchas = () => {
-    // Only proceed if grecaptcha is available
-    if (window.grecaptcha && window.grecaptcha.render) {
-      // Clear existing reCAPTCHAs first
+    if (!window.grecaptcha?.render) {
+      console.log('ReCAPTCHA not yet available');
+      return;
+    }
+
+    const renderCaptcha = (element, containerId) => {
+      if (!element) return;
+      
       try {
-        window.grecaptcha.reset();
+        // Check if this container is already rendered
+        const existingId = element.getAttribute('data-widget-id');
+        if (existingId !== null) {
+          try {
+            window.grecaptcha.reset(parseInt(existingId));
+            return;
+          } catch (e) {
+            // If reset fails, continue to re-render
+            console.log('Reset failed, re-rendering captcha');
+          }
+        }
+
+        // Render new captcha
+        const widgetId = window.grecaptcha.render(element, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          callback: (token) => {
+            console.log(`ReCAPTCHA verified for ${containerId}`);
+          },
+          'expired-callback': () => {
+            console.log(`ReCAPTCHA expired for ${containerId}`);
+          }
+        });
+        
+        // Store the widget ID for future resets
+        element.setAttribute('data-widget-id', widgetId.toString());
       } catch (e) {
-        // Ignore if no reCAPTCHAs exist yet
+        console.error(`Error rendering reCAPTCHA for ${containerId}:`, e);
       }
-      
-      // Render reCAPTCHA for password login if visible
-      if (activeTab === 'password' && passwordRecaptchaRef.current) {
-        try {
-          window.grecaptcha.render(passwordRecaptchaRef.current, {
-            sitekey: RECAPTCHA_SITE_KEY
-          });
-        } catch (e) {
-          // Already rendered
-        }
-      }
-      
-      // Render reCAPTCHA for OTP verification if visible
-      if (activeTab === 'otp' && isOtpSent && otpVerifyRecaptchaRef.current) {
-        try {
-          window.grecaptcha.render(otpVerifyRecaptchaRef.current, {
-            sitekey: RECAPTCHA_SITE_KEY
-          });
-        } catch (e) {
-          // Already rendered
-        }
-      }
+    };
+
+    // Render appropriate captcha based on current view
+    if (activeTab === 'password' && passwordRecaptchaRef.current) {
+      renderCaptcha(passwordRecaptchaRef.current, 'password-captcha');
+    }
+    
+    if (activeTab === 'otp' && isOtpSent && otpVerifyRecaptchaRef.current) {
+      renderCaptcha(otpVerifyRecaptchaRef.current, 'otp-captcha');
     }
   };
 
@@ -274,12 +335,12 @@ const Login = ({ setIsLoggedIn }) => {
           {t('we changed our login form. if you register with your phone number you get 7 days free subscription!')}
         </p>
         {/* Custom Tabs */}
-        <div className="flex mb-6 border-b">
+        <div className="flex mb-6 border-b border-gray-400 gap-x-1 pb-1">
           <button
             className={`flex-1 py-2 font-medium text-center ${
               activeTab === 'password' 
-                ? 'text-buttonColor border-b-2 border-buttonColor' 
-                : 'text-gray-500 dark:text-gray-400'
+                ? 'text-gray-300 border-b-2  border-buttonColor bg-gray-600' 
+                : 'text-gray-300 dark:text-gray-200'
             }`}
             onClick={() => {
               setActiveTab('password');
@@ -291,8 +352,8 @@ const Login = ({ setIsLoggedIn }) => {
           <button
             className={`flex-1 py-2 font-medium text-center ${
               activeTab === 'otp' 
-                ? 'text-buttonColor border-b-2 border-buttonColor' 
-                : 'text-gray-500 dark:text-gray-400'
+                ? 'text-gray-300 border-b-2 border-buttonColor bg-gray-600' 
+                : 'text-gray-300 dark:text-gray-200'
             }`}
             onClick={() => {
               setActiveTab('otp');

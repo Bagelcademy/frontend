@@ -59,7 +59,7 @@ const LearningPathCard = ({ path }) => {
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <Clock className="w-4 h-4 mx-1" />
-                <span>{path.duration} {t('months')}</span>
+                <span>{path.duration} {path.duration > 1 ? t('months') : t('month')}</span> 
               </div>
               <div className="flex items-center text-gray-600 dark:text-gray-400">
                 <BookOpen className="w-4 h-4 mx-2" />

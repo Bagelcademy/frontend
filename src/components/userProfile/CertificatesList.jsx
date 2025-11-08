@@ -32,19 +32,17 @@ const CertificatesList = ({ notifications, t }) => {
           </div>
         </CardTitle>
       </CardHeader>
-
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 bg-black">
         {certificates.map((cert, index) => (
           <div key={index} className="flex flex-col">
             <span className="font-semibold text-black dark:text-white">
-              {`${t(cert.title)} ${index + 1}`}{" "}
-              {/* ترجمه عنوان "Certificate" */}
+              {`${t(cert.title)} ${index + 1}`}
             </span>
             <a
               href={cert.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-900 dark:text-indigo-300 hover:underline break-all"
+              className="text-blue-900 dark:text-indigo-300 hover:underline break-words max-w-full overflow-hidden"
             >
               {cert.url}
             </a>
