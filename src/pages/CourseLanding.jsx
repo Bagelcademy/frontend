@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import CharacterWelcomePopup from "../components/ui/CharacterPopup";
+import ShareButton from "../components/ui/ShareButton";
 const CourseLandingPage = () => {
   const { t, i18n } = useTranslation();
   const [course, setCourse] = useState(null);
@@ -245,10 +246,10 @@ const CourseLandingPage = () => {
         return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
     }
   };
-  const handleShare = () => {
-    console.log("Share clicked!");
-    // یا منطق اشتراک‌گذاری واقعی
-  };
+  // const handleShare = () => {
+  //   console.log("Share clicked!");
+  //   // یا منطق اشتراک‌گذاری واقعی
+  // };
   
   const handleChallengeClick = async (challenge) => {
     if (!isLoggedIn) {
@@ -380,22 +381,7 @@ const CourseLandingPage = () => {
               {isEnrolled ? t("Enrolled") : t("Enroll Now")}
             </button>
             <div className="flex items-center justify-center space-x-4 mt-4">
-              <button
-                onClick={handleShare}
-                className="flex items-center px-3 py-3 rounded-lg text-sm font-semibold text-white bg-gray-500 hover:bg-gray-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                {copied ? (
-                  <>
-                    <ClipboardCheck className="w-5 h-5 mx-2" />
-                    {t("Copied!")}
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="w-5 h-5 mx-2" />
-                    {t("Share")}
-                  </>
-                )}
-              </button>
+<ShareButton />
             </div>
           </div>
         </div>
