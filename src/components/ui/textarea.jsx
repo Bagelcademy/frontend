@@ -11,7 +11,7 @@ export const Textarea = React.forwardRef(
           placeholder={placeholder}
           disabled={disabled}
           className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'
+            disabled ? 'bg-gray-100 dark:bg-gray-600 cursor-not-allowed' : 'bg-white dark:bg-slate-800'
           } ${className}`}
           {...props}
         />

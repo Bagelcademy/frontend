@@ -75,7 +75,7 @@ const LearningPathCard = ({ path }) => {
                   <span className="text-gray-600 dark:text-gray-400">{t("Progress")}</span>
                   <div className="flex items-center text-gray-700 dark:text-gray-400">
                     <TrendingUp className="w-4 h-4 mx-2" />
-                    <span className="font-medium">{path.progress}%</span>
+                    <span className="font-medium">{Math.floor(path.progress)}%</span>
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">

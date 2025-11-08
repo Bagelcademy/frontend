@@ -204,12 +204,12 @@ const LearningPathDetail = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Award className="w-5 h-5" />
-                <span>{pathData.level}</span>
+                <span>{t(pathData.level)}</span>
               </div>
               {userProgress && (
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  <span>{t('Progress')}: {userProgress.user_progress}%</span>
+                  <span>{t('Progress')}: {Math.floor(userProgress.user_progress)}%</span>
                 </div>
               )}
             </div>

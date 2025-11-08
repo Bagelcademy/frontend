@@ -1199,7 +1199,7 @@
   
   "quiz.failedMessage":"متأسفیم، شما در کوییز موفق نشدید.",
   "quiz.passedMessage":"تبریک! شما کوییز را با موفقیت گذراندید!",
-  "challenge_title": " چالش{{number}}",
+  "challenge_title": " چالش {{number}}",
 
   "challenge": {
     "number": "شماره چالش {{number}}"
@@ -1207,46 +1207,42 @@
 
 
   "Certificates": "گواهینامه‌ها",
-  "Language":"زبان",
   "No Learning Paths": "در حال حاظر مسیرشغلی ثبت نام شده ای ندارید.",
    
 
   "Teacher Portal": "پورتال آموزگار",
   "Dashboard": "داشبورد",
-  "My Courses":"دوره های من",
-  "New Course":"دوره جدید",
+  "My Courses":"آموزش های من",
+  "New Course":"آموزش جدید",
   "View Details":"مشاهده جزئیات",
   "Draft":"پیش نویس",
   "Published":"منتشر شده",
   "Manage your courses and track performance":"دوره‌های خود را مدیریت کنید و عملکرد خود را پیگیری کنید",
-  "Total Courses":"تعداد دوره ها",
+  "Total Courses":"تعداد آموزش ها",
   "Total Enrollments":"تعداد ثبت‌نام ها",
   "Total Lessons":"تعداد درس ها",
-  "Course Lessons":"درس های دوره",
+  "Course Lessons":"درس های آموزش",
   "Lesson Title":"عنوان درس",
   "Description":"توضیحات",
-  "Content":"محتوا",
   "Order":"ترتیب",
   "Lesson":"درس",
   "Create":"ایجاد",
   "Update":"ویرایش",
   "Add Lesson":"ایجاد درس جدید",
-  "Course Title":"عنوان دوره",
-  "Description":"توضیحات",
-  "Level":"سطح",
+  "Course Title":"عنوان آموزش",
   "Price":"هزینه",
   "Image URL":"آدرس تصویر",
   "Category ID":"شناسه دسته",
   "AI Generate":"ایجاد با هوش مصنوعی",
   "Publish this course":"این درس را منتشر کن",
-  "Course Quizzes":"کوییز های دوره",
+  "Course Quizzes":"کوییز های آموزش",
   "Quiz Title":"عنوان کوییز",
   "Select Lesson":"انتخاب درس",
   "Choose a lesson...":"یک درس را انتخاب کنید...",
   "Quizzes":"کوییز ها",
   "Challenges":"چالش ها",
-  "Manage all your courses":"دوره های خود را مدیریت کنید",
-  "Create New Course":"ایجاد دوره جدید",
+  "Manage all your courses":"آموزش های خود را مدیریت کنید",
+  "Create New Course":"ایجاد آموزش جدید",
   "Edit Quiz":"ویرایش کوییز",
   "Add Quiz":"ایجاد کوییز",
   "Add Question":"ایجاد سوال",
@@ -1255,21 +1251,26 @@
   "Add":"تائید",
   "Create New Quiz":"ایجاد کوییز جدید",
   "Create Quiz":"ایجاد کوییز",
-  "← Back to Courses":"→ بازگشت به دوره ها",
-  "Update Course":"ویرایش دوره",
+  "← Back to Courses":"→ بازگشت به آموزش ها",
+  "Update Course":"ویرایش آموزش",
   "Update Quiz":"ویرایش کوییز",
-  "Recent Courses":"دوره های اخیر",
-  "":"",
-  "":"",
-  "":"",
-  "":"",
+  "Recent Courses":"آموزش های اخیر",
+  "Already Enrolled":"ثبت نام شده",
+  "Enrolled successfully":"ثبت نام با موفقیت انجام شد",
   
   "teachPanel":{
   "lessons":"درس",
-  "students":"دانش‌آموز",
-  "":""
-  
+  "students":"دانش‌آموز"
   },
   "markAsRead":"نشانه گذاری به عنوان خوانده شد ",
-  "read":"خوانده شد"
+  "read":"خوانده شد",
+  
+  "Please complete the previous challenge first.":".لطفا ابتدا چالش قبلی را انجام دهید",
+  "Invalid request. Please try again later.":".درخواست نامعتبر است. لطفاً بعداً دوباره امتحان کنید",
+  "Challenge not found.":".چالش پیدا نشد",
+  "Unexpected response:":":خطا",
+  "Challenge start error:":":شروع چالش با خطا مواجه شد",
+  "Network error:":"خطای شبکه:",
+  "Loading challenge...":"در حال بارگیری چالش..."
+  
 }
