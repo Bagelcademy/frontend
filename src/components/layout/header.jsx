@@ -500,7 +500,7 @@ const Header = ({
             ${isDarkTheme ? "border-gray-700/30" : "border-gray-400"}
           `}
           >
-            <div className="flex flex-row justify-between pb-3 border-b border-blue-600/40 dark:border-blue-800/90">
+            <div className="flex flex-row justify-between pb-2 mb-1 border-b border-blue-600/40 dark:border-blue-800/90">
               {isLoggedIn ? (
                 <div className="flex flex-row mx-2">
                   <Link to="/profile">
@@ -535,11 +535,11 @@ const Header = ({
                 <div
                   onClick={toggleTheme}
                   className={`
-                  block py-2 px-3 rounded-lg cursor-pointer
+                  block py-2 px-3 rounded-lg cursor-pointer mx-2
                   ${
                     isDarkTheme
-                      ? "text-gray-300 hover:bg-gray-700/50"
-                      : "text-black hover:bg-gray-100/50"
+                      ? "text-gray-300 bg-gray-400/10 hover:bg-gray-700/50"
+                      : "text-black bg-gray-400/30 hover:bg-gray-100/50"
                   }
                   transition-colors duration-300
                 `}
@@ -557,8 +557,8 @@ const Header = ({
                   flex items-center py-2 px-1 rounded-lg cursor-pointer
                   ${
                     isDarkTheme
-                      ? "text-gray-300 hover:bg-gray-700/50"
-                      : "text-black hover:bg-gray-100/50"
+                      ? "text-gray-300 bg-gray-400/10 hover:bg-gray-700/50"
+                      : "text-black bg-gray-400/30 hover:bg-gray-100/50 hover"
                   }
                   transition-colors duration-300
                 `}
@@ -578,7 +578,7 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}
@@ -593,7 +593,7 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}
@@ -609,7 +609,7 @@ const Header = ({
               ${
                 isDarkTheme
                   ? "text-gray-300 hover:bg-gray-700/50"
-                  : "text-black hover:bg-gray-100/50"
+                  : "text-black hover:bg-gray-100/50 hover:text-gray-600"
               }
               transition-colors duration-300
             `}

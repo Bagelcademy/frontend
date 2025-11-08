@@ -196,7 +196,7 @@ const LearningPathDetail = () => {
             <div className="flex flex-wrap gap-6 mb-8 text-gray-700 dark:text-gray-300">
               <div className="flex items-center gap-2">
                 <Clock className="w-5 h-5" />
-                <span>{pathData.duration}</span>
+                <span>{pathData.duration} {pathData.duration > 1 ? t('months') : t('month')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Book className="w-5 h-5" />
