@@ -24,7 +24,7 @@ const Footer = () => {
               <li><Link to="/" className="hover:text-buttonColor transition-colors">{t('Home')}</Link></li>
               <li><Link to="/ask" className="hover:text-buttonColor transition-colors">{t('AI course design')}</Link></li>
               <li><Link to="/courses" className="hover:text-buttonColor transition-colors">{t('Courses')}</Link></li>
-              <li><Link to="/learningpathes" className="hover:text-buttonColor transition-colors">{t('Career Paths')}</Link></li>
+              <li><Link to="/learning-paths" className="hover:text-buttonColor transition-colors">{t('Career Paths')}</Link></li>
               <li><Link to="/shop" className="hover:text-buttonColor transition-colors">{t('Shop')}</Link></li>
               <li><Link to="/characters" className="hover:text-buttonColor transition-colors">{t('Meet the Characters')}</Link></li>
               <li><Link to="/quiz" className="hover:text-buttonColor transition-colors">{t('What to Learn')}</Link></li>

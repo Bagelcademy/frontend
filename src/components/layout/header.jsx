@@ -306,7 +306,7 @@ const Header = ({
               to="/ask"
               onClick={triggerSparkle}
               className={`
-                inline-flex items-center gap-2 px-2 py-2 rounded-2xl
+                inline-flex items-center gap-2 px-2 py-1.5 rounded-md
                 bg-gradient-to-r from-purple-500 via-fuchsia-500 to-indigo-500
                 hover:from-indigo-500 hover:to-purple-500
                 text-white font-semibold shadow-md hover:shadow-lg
