@@ -84,7 +84,7 @@ const Header = ({
       setTimeout(() => {
         const characterData = {
           character: "A",
-          avatar: "/images/characters/default.png",
+          avatar: "https://tadrisino.org/blue-cry.png",
           new_mood: "sad",
           reaction_message: data.message || t("You have successfully logged out."),
         };

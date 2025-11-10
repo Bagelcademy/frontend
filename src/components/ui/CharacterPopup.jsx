@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTranslation } from "react-i18next";
+import blueHappyImg from './assets/blueHappyBgRemoved.png';
 
 const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
   const { t } = useTranslation();
@@ -111,7 +112,8 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
           <div className="relative">
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-200 dark:border-blue-800 shadow-lg">
               <img
-                src={`${currentCharacter.avatar}`}
+                // src={`${currentCharacter.avatar}`}
+                src= {blueHappyImg}
                 alt={`${currentCharacter.character}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
