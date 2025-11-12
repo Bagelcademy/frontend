@@ -601,7 +601,7 @@
   "Submit": "ارسال",
   "Quiz Completed!": "آزمون کامل شد!",
   "Your recommended category is:": "دسته‌بندی پیشنهادی شما:",
-  "nameTooLong": "نام نباید بیشتر از ۲۰ حرف باشد",
+  "nameTooLong": "نام نباید بیشتر از ۴۰ حرف باشد",
   "phoneNumberTooShort": "شماره تلفن باید حداقل ۱۱ رقم باشد",
   "phoneNumberTooLong": "شماره تلفن باید حدراکثر ۱۳ رقم باشد",
   "usernameInvalid": "نام کاربری فقط می‌تواند شامل حروف، اعداد یا زیرخط (_) باشد و نباید شامل فاصله باشد.",
@@ -853,6 +853,7 @@
   "University of Zanjan, Thecnology Incubator Center - Arman Ertebat Vira Knowledge-Based Company": "دانشگاه زنجان، مرکز رشد دانشگاه زنجان-شرکت دانش‌بنیان آرمان ارتباطات ویرا",
   "You've completed the entire course!": "شما دوره را تمام کرده‌اید!",
   "Back to Courses": "بازگشت به آموزش‌ها",
+  "Back to Course": "بازگشت به آموزش‌",
   "A certificate of completion will be emailed to you shortly.": "گواهینامه تکمیل دوره به زودی برای شما ایمیل خواهد شد.",
   "Meet Your Tech Education Team": "با تیم آموزش فنی خود آشنا شوید!",
   "A family of tech-savvy educators dedicated to making your learning journey deliciously engaging": "خانواده‌ای از متخصصان آموزش فناوری که به ایجاد یک سفر یادگیری لذت‌بخش می‌پردازند.",
@@ -1272,6 +1273,7 @@
   "Unexpected response:":":خطا",
   "Challenge start error:":":شروع چالش با خطا مواجه شد",
   "Network error:":"خطای شبکه:",
-  "Loading challenge...":"در حال بارگیری چالش..."
+  "Loading challenge...":"در حال بارگیری چالش...",
+  "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید"
   
 }

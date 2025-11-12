@@ -64,7 +64,7 @@ const UserProfilePage = () => {
   const validationSchema = Yup.object().shape({
     first_name: Yup.string()
       .matches(/^[a-zA-Z\u0600-\u06FF\s]+$/, t("invalidName"))
-      .max(20, t("nameTooLong")),
+      .max(40, t("nameTooLong")),
     birthDay: Yup.number().min(1, t("invalidDay")).max(31, t("invalidDay")),
     birthMonth: Yup.number()
       .min(1, t("invalidMonth"))

@@ -10,8 +10,10 @@ export const Textarea = React.forwardRef(
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
-          className={`w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            disabled ? 'bg-gray-100 dark:bg-gray-600 cursor-not-allowed' : 'bg-white dark:bg-slate-800'
+          dir="auto"
+          style={{ unicodeBidi: 'plaintext' }}
+          className={`w-full p-3 box-border rounded-md focus:outline-none overflow-auto focus:ring-2 focus:ring-blue-500 ${
+            disabled ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-100 dark:bg-slate-700/70'
           } ${className}`}
           {...props}
         />
