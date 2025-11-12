@@ -61,11 +61,11 @@ const LearningPathCard = ({ path }) => {
               <div className="space-y-4 mt-auto">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center text-gray-700 dark:text-gray-400">
-                    <Clock className="w-4 h-4 mx-1" />
+                    <Clock className="w-4 h-4 mb-1 mx-1" />
                     <span>{path.duration} {t('months')}</span>
                   </div>
                   <div className="flex items-center text-gray-700 dark:text-gray-400">
-                    <BookOpen className="w-4 h-4 mx-2" />
+                    <BookOpen className="w-4 h-4 mb-0.5 mx-2" />
                     <span>{path.lessons}</span>
                   </div>
                 </div>

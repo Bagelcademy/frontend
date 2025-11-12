@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTranslation } from "react-i18next";
+import blueHappyImg from './assets/blueHappyBgRemoved.png';
 
 const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
   const { t } = useTranslation();
@@ -71,7 +72,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300"
-        onClick={onClose}
+        onClick={handleNext}
       />
 
       {/* Popup Container */}
@@ -82,7 +83,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleNext}
           className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         >
           ✕
@@ -111,8 +112,9 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
           <div className="relative">
             <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-200 dark:border-blue-800 shadow-lg">
               <img
-                src={`http://localhost:8000${currentCharacter.avatar}`}
-                alt={`Character ${currentCharacter.character}`}
+                // src={`${currentCharacter.avatar}`}
+                src= {blueHappyImg}
+                alt={`${currentCharacter.character}`}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   e.target.src = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23e2e8f0'/><text x='50' y='60' text-anchor='middle' font-size='30' fill='%236b7280'>${currentCharacter.character}</text></svg>`;

@@ -16,6 +16,7 @@ const TeacherWaitlist = () => {
     course_price: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [animationStep, setAnimationStep] = useState(0);
 
   // Animation effect for the icons
@@ -36,7 +37,7 @@ const TeacherWaitlist = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setErrorMessage('');
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       enqueueSnackbar(t('Please log in to apply as a teacher.'), { variant: 'info' });
@@ -54,17 +55,43 @@ const TeacherWaitlist = () => {
         },
         body: JSON.stringify(formData),
       });
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (e) {
+        // non-json response
+      }
 
-      const data = await response.json();
-      
+      const extractMessage = (payload) => {
+        if (!payload) return null;
+        if (typeof payload === 'string') return payload;
+        if (payload.detail && typeof payload.detail === 'string') return payload.detail;
+        if (payload.message && typeof payload.message === 'string') return payload.message;
+        // handle Django-rest-framework style validation errors: { field: ["err"] }
+        if (typeof payload === 'object') {
+          const firstKey = Object.keys(payload)[0];
+          const val = payload[firstKey];
+          if (Array.isArray(val) && val.length > 0) return val[0];
+          if (typeof val === 'string') return val;
+        }
+        return JSON.stringify(payload);
+      };
+
       if (response.ok) {
         enqueueSnackbar(t('Application submitted successfully! We will contact you soon.'), { variant: 'success' });
+        setErrorMessage('');
+        // optionally clear form
+        setFormData({ phone_number: '', degree: '', subject: '', course_price: '' });
       } else {
-        enqueueSnackbar(t(data.detail || 'Failed to submit application. Please try again.'), { variant: 'error' });
+        const msg = extractMessage(data) || 'Failed to submit application. Please try again.';
+        enqueueSnackbar(msg, { variant: 'error' });
+        setErrorMessage(msg);
       }
     } catch (error) {
       console.error('Error submitting teacher application:', error);
-      enqueueSnackbar(t('Network error. Please check your connection and try again.'), { variant: 'error' });
+      const netMsg = t('Network error. Please check your connection and try again.');
+      enqueueSnackbar(netMsg, { variant: 'error' });
+      setErrorMessage(netMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -138,6 +165,9 @@ const TeacherWaitlist = () => {
               <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
                 {t('Apply to Join the Waitlist')}
               </h3>
+              {errorMessage && (
+                <p className="text-red-600 dark:text-red-400 mb-4 text-center">{errorMessage}</p>
+              )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>

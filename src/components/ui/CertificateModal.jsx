@@ -60,7 +60,7 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
               onClick={handleClose}
               className="w-full text-white bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
             >
-              {t('Close')}
+              {t('close')}
             </Button>
           </div>
         ) : certificateUrl ? (
@@ -85,7 +85,7 @@ const CertificateModal = ({ isOpen, onClose, onSubmit, courseName, isLoading, ce
               onClick={handleClose}
               className="w-full"
             >
-              {t('Close')}
+              {t('close')}
             </Button>
           </div>
         ) : (
