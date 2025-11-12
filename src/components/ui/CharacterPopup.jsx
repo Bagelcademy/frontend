@@ -91,24 +91,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
 
         {/* Main Content Row */}
         <div className="flex flex-row justify-between gap-4 flex-1 items-center">
-          <div className="flex-1 flex flex-col p-3">
-            {/* Speech Bubble */}
-            <div className="relative mb-8 mt-6">
-              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 relative">
-                {/* Speech bubble tail */}
-                {dir === 'rtl' ? (
-                  <div className="absolute top-4 -left-2 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
-                ) : (
-                  <div className="absolute top-4 -right-2 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
-                )}
-                <p className="text-gray-800 dark:text-gray-200 text-center font-medium leading-relaxed">
-                  {t(currentCharacter.reaction_message)}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Character Avatar */}
+        {/* Character Avatar */}
           <div className="w-36 flex flex-col items-center justify-center">
             <div className="flex justify-center">
               <div className="relative">
@@ -122,6 +105,23 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
                     }}
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex-1 flex flex-col p-3">
+            {/* Speech Bubble */}
+            <div className="relative mb-8 mt-6">
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 relative">
+                {/* Speech bubble tail */}
+                {dir === 'rtl' ? (
+                  <div className="absolute top-4 -right-2 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
+                ) : (
+                  <div className="absolute top-4 -left-2 w-4 h-4 bg-blue-50 dark:bg-blue-900/20 rotate-45"></div>
+                )}
+                <p className="text-gray-800 dark:text-gray-200 text-center font-medium leading-relaxed">
+                  {t(currentCharacter.reaction_message)}
+                </p>
               </div>
             </div>
           </div>
