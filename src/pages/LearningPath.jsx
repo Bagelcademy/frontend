@@ -61,7 +61,7 @@ const Listbox = ({ value, onChange, options, placeholder }) => {
          animate={{ opacity: 1, y: 0 }}
          exit={{ opacity: 0, y: -8 }}
          transition={{ duration: 0.2 }}
-         className="absolute z-10 mt-2 w-50  bg-white dark:bg-white dark:text-black rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-64 overflow-y-auto overflow-x-hidden"
+         className="absolute z-10 mt-2 w-60 max-h-64 bg-white dark:bg-white dark:text-white rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 overflow-y-auto overflow-x-hidden"
        >
          {options.map((option) => (
            <button
@@ -249,14 +249,14 @@ const CareerPathsPage = () => {
             </div>
 
             <Listbox
-  value={selectedCategory ? categories.find(c => c.id === selectedCategory) : null}
-  onChange={(selected) => setSelectedCategory(selected.id)}
-  options={[
-    { id: '', name: t('All Categories') },
-    ...categories.map(c => ({ id: c.id, name: c.name })),
-  ]}
-  placeholder={t('Select Category')}
-/>
+              value={selectedCategory ? categories.find(c => c.id === selectedCategory) : null}
+              onChange={(selected) => setSelectedCategory(selected.id)}
+              options={[
+                { id: '', name: t('All Categories') },
+                ...categories.map(c => ({ id: c.id, name: c.name })),
+              ]}
+              placeholder={t('Select Category')}
+            />
 
           </div>
         </div>

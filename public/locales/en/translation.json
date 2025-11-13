@@ -247,7 +247,15 @@
     "Language Learning": "Language Learning",
     "Science": "Science",
     "Mathematics": "Mathematics",
-    "Business": "Business"
+    "Business": "Business",
+    "Computer_skills":"Computer Skills",
+    "Law":"Law",
+    "Teaching_skills":"Teaching Skills",
+    "Others":"Others",
+    "Physics":"Physics",
+    "Psychology":"Psychology",
+    "Chemistry":"Chemistry",
+    "Economic":"Economic"
   },
   "languages": {
     "allLanguages": "all Languages",

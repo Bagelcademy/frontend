@@ -95,7 +95,7 @@ const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
           <div className="w-36 flex flex-col items-center justify-center">
             <div className="flex justify-center">
               <div className="relative">
-                <div className="w-36 h-48 overflow-hidden bg-transparent dark:border-blue-800 shadow-lg">
+                <div className="w-36 h-48 overflow-hidden bg-transparent">
                   <img
                     src={currentCharacter.avatar}
                     alt={`${currentCharacter.character}`}

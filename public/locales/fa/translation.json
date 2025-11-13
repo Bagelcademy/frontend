@@ -532,7 +532,11 @@
     "Language Learning": "یادگیری زبان",
     "Science": "علوم",
     "Mathematics": "ریاضیات",
-    "Business": "کسب‌وکار"
+    "Business": "کسب‌وکار",
+    "Computer_skills":"مهارت های کامپیوتری",
+    "Law":"حقوق و قضا",
+    "Teaching_skills":"مهارت های تدریس",
+    "Others":"متفرقه"
   },
   "Take The Exam": "امتحان بدهید",
   "Invalid learning path ID": "شناسه مسیر یادگیری نامعتبر است",
@@ -957,11 +961,11 @@
   "The Tadrisino Teaching Experience": "تجربه تدریس در تدریسینو‌",
   "resendCodeIn": "ارسال دوباره کد در : ",
   "AI-Powered Teaching": "تدریس مبتنی بر هوش مصنوعی",
-  "Leverage our AI tools to create interactive and personalized learning experiences": "از ابزارهای هوش مصنوعی ما برای ایجاد تجربه‌های یادگیری تعاملی و شخصی‌سازی شده استفاده کنید",
+  "Leverage our AI tools to create interactive and personalized learning experiences": "از ابزارهای هوش مصنوعی ما برای ایجاد تجربه‌های یادگیری تعاملی و شخصی‌سازی شده استفاده کنید.",
   "Expert Community": "جامعه متخصصان",
-  "Join a network of leading educators and tech professionals from around the world": "به شبکه‌ای از مدرسان پیشرو و متخصصان فناوری از سراسر جهان بپیوندید",
+  "Join a network of leading educators and tech professionals from around the world": "به شبکه‌ای از مدرسان پیشرو و متخصصان فناوری از سراسر جهان بپیوندید.",
   "Cutting-Edge Platform": "پلتفرم پیشرفته",
-  "Teach on a modern platform built with the latest technology to enhance the learning experience": "در یک پلتفرم مدرن که با آخرین فناوری‌ها برای بهبود تجربه یادگیری ساخته شده است، تدریس کنید",
+  "Teach on a modern platform built with the latest technology to enhance the learning experience": "در یک پلتفرم مدرن که با آخرین فناوری‌ها برای بهبود تجربه یادگیری ساخته شده است، تدریس کنید.",
   "Please log in to apply as a teacher.": "لطفا برای درخواست به عنوان مدرس وارد شوید.",
   "Application submitted successfully! We will contact you soon.": "درخواست با موفقیت ارسال شد! به زودی با شما تماس خواهیم گرفت.",
   "Failed to submit application. Please try again.": "ارسال درخواست ناموفق بود. لطفا دوباره تلاش کنید.",
@@ -1274,6 +1278,7 @@
   "Challenge start error:":":شروع چالش با خطا مواجه شد",
   "Network error:":"خطای شبکه:",
   "Loading challenge...":"در حال بارگیری چالش...",
-  "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید"
+  "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید",
+  "teacher waiting list with this email already exists.":"لیست انتظار معلمان با این ایمیل از قبل وجود دارد."
   
 }
