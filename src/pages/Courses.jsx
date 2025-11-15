@@ -165,14 +165,14 @@ const Courses = () => {
                 </button>
                 
                 {isDropdownOpen && (
-                  <div className="absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
-                    <div className="py-2">
+                  <div className="absolute mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 w-52 max-h-64 overflow-y-auto overflow-x-hidden divide-y divide-gray-200 dark:divide-gray-700">
+                    <div className="py-1">
                       <button
                         onClick={() => {
                           setSelectedCategory('');
                           setIsDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                        className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                       >
                         {t('All Categories')}
                       </button>
@@ -183,7 +183,7 @@ const Courses = () => {
                             setSelectedCategory(category.id);
                             setIsDropdownOpen(false);
                           }}
-                          className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                          className="w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
                         >
                           {t(`categories.${category.name}`)}
                         </button>
@@ -205,14 +205,14 @@ const Courses = () => {
                 </button>
                 
                 {isLanguageDropdownOpen && (
-                  <div className="absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50">
-                    <div className="py-2">
+                  <div className="absolute mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 w-56 max-h-60 overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700">
+                    <div className="py-1">
                       <button
                         onClick={() => {
                           setSelectedLanguage('');
                           setIsLanguageDropdownOpen(false);
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                        className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-black dark:text-white"
                       >
                         {languageMapping[""]}
                       </button>
@@ -225,7 +225,7 @@ const Courses = () => {
                                 setSelectedLanguage(key);
                                 setIsLanguageDropdownOpen(false);
                               }}
-                              className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 bg-white text-black dark:bg-gray-800 dark:text-white"
+                              className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-black dark:text-white"
                             >
                               {value}
                             </button>

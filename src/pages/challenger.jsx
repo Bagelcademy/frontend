@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Alert, AlertDescription } from '../components/ui/alert';
 import { Textarea } from '../components/ui/textarea';
-import { Loader2, Code, FileText, Send, Save, Bold, Italic, List, Link, Subscript, Superscript } from 'lucide-react';
+import { Loader2, Code, FileText, Send, Save, Bold, Italic, List, Link, Subscript, Superscript, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import CodeMirror from '@uiw/react-codemirror';
 import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
@@ -19,6 +20,7 @@ const toPersianDigits = (num) => {
 
 const ChallengePage = ({ setIsLoggedIn }) => {
   const { courseId, challengeNumber } = useParams();
+  const navigate = useNavigate();
   const [challenge, setChallenge] = useState(null);
   const [userChallengeId, setUserChallengeId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,6 +41,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
   const textareaRef = useRef(null);
   
   const { t, i18n } = useTranslation();
+  const dir = i18n.dir();
 
   const accessToken = localStorage.getItem("accessToken");
   if (!accessToken) {
@@ -74,13 +77,35 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
 
-       if (!response.ok) {
+        if (!response.ok) {
           const errorText = await response.text();
-        
           console.log(t('error_response'), errorText);
-  throw new Error(t('error_start_challenge', { status: response.status, details: errorText }));
+          
+          // Handle specific error codes
+          if (response.status === 403) {
+            Notify.failure(t('Please complete the previous challenge first.'), {
+              position: 'right-top',
+            });
+          } else if (response.status === 400) {
+            Notify.failure(t('Invalid request. Please try again later.'), {
+              position: 'right-top',
+            });
+          } else if (response.status === 404) {
+            Notify.failure(t('Challenge not found.'), {
+              position: 'right-top',
+            });
+          } else {
+            Notify.failure(`${t('Unexpected response:')} ${response.status}`, {
+              position: 'right-top',
+            });
+          }
+          
+          // Navigate back to course
+          setTimeout(() => {
+            navigate(`/course/${courseId}`);
+          }, 1500);
+          return;
         }
-       
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
@@ -95,7 +120,12 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         setUserChallengeId(data.user_challenge_id);
       } catch (err) {
         console.error('Error loading challenge:', err);
-        setError(err.message);
+        Notify.failure(t('Failed to load challenge. Please try again.'), {
+          position: 'right-top',
+        });
+        setTimeout(() => {
+          navigate(`/course/${courseId}`);
+        }, 1500);
       } finally {
         setLoading(false);
       }
@@ -105,6 +135,65 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       startChallenge();
     }
   }, [challengeNumber, courseId]);
+
+  const handleChallengeClick = async (challenge) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `https://api.tadrisino.org/challenge/challenges/start/?challenge_number=${challenge.challenge_number}&course_id=${courseId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          credentials: 'include', 
+        }
+      );
+
+      const safeParseJSON = async (res) => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          return null;
+        }
+      };
+
+      if (response.ok) {
+        const data = await safeParseJSON(response);
+        navigate(`/courses/${courseId}/challenges/${challenge.challenge_number}`, {
+          state: { challengeData: data },
+        });
+      } else if (response.status === 403) {
+        Notify.failure(t('Please complete the previous challenge first.'), {
+          position: 'right-top',
+        });
+      } else if (response.status === 400) {
+        Notify.failure(t('Invalid request. Please try again later.'), {
+          position: 'right-top',
+        });
+      } else if (response.status === 404) {
+        Notify.failure(t('Challenge not found.'), {
+          position: 'right-top',
+        });
+      } else {
+        Notify.failure(`${t('Unexpected response:')} ${response.status}`, {
+          position: 'right-top',
+        });
+      }
+    } catch (error) {
+      console.error(t('Challenge start error:'), error);
+      Notify.failure(`${t('Network error:')} ${error.message || 'Please try again.'}`, {
+        position: 'right-top',
+      });
+    }
+  };
 
   // Execute code for programming challenges
   const executeCode = async () => {
@@ -253,6 +342,41 @@ const ChallengePage = ({ setIsLoggedIn }) => {
     }
   };
 
+  // Navigate to Course
+  const backToCourse = () => {
+    navigate(`/course/${courseId}/`);
+  };
+
+  // Navigate to previous challenge
+  const goToPreviousChallenge = () => {
+    const prevChallenge = parseInt(challengeNumber) - 1;
+    if (prevChallenge > 0) {
+      setTextAnswer('');
+      setCode('');
+      setCodeOutput('');
+      setResult(null);
+      setError(null);
+      navigate(`/courses/${courseId}/challenges/${prevChallenge}`);
+    }
+  };
+
+  // Navigate to next challenge
+  const goToNextChallenge = () => {
+    if (!result || result.status !== 'Passed') {
+      Notify.failure(t('completeCurrentChallenge') , {
+        position: 'right-top',
+      });
+      return;
+    }
+    const nextChallenge = parseInt(challengeNumber) + 1;
+    setTextAnswer('');
+    setCode('');
+    setCodeOutput('');
+    setResult(null);
+    setError(null);
+    navigate(`/courses/${courseId}/challenges/${nextChallenge}`);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-800 dark:text-gray-300">
@@ -278,10 +402,24 @@ const ChallengePage = ({ setIsLoggedIn }) => {
       <Card>
         <CardHeader>
           <CardTitle>
-            <div className="flex items-center gap-2">
-            {isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5 mb-2" />}
-            {i18n.language === 'fa' ? t("challenge_title", { number: toPersianDigits(challengeNumber) }) : t("challenge_title",{ number : challengeNumber})}
+            <div className="flex items-center justify-between px-1">
+            <div className='flex flex-row gap-2'>{isCodingChallenge ? <Code className="w-5 h-5" /> : <FileText className="w-5 h-5 mb-2" />}
+            {i18n.language === 'fa' ? t("challenge_title", { number: toPersianDigits(challengeNumber) }) : t("challenge_title",{ number : challengeNumber})}</div>
             {/* {t("challenge_title", i18n.language === 'fa' ? { number: toPersianDigits(challengeNumber) } : challengeNumber)} */}
+             <Button
+              onClick={backToCourse}
+              className="flex items-center gap-1 px-2 py-3
+                bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600
+                text-white
+                transition-colors duration-200 text-sm sm:text-base"
+              size="lg"
+            >
+              {<span className='hidden sm:block'>
+                {t('Back to Course')}
+              </span>}
+              {<BookOpen className="w-4 h-4 sm:w-5 sm:h-5 sm:hidden"/>}
+              {dir === 'rtl' ? <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />}
+            </Button>
             </div>
           </CardTitle>
         </CardHeader>
@@ -361,87 +499,91 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               </div>
             </CardTitle>
             {/* Formatting Toolbar */}
-            <div className="flex flex-wrap gap-2 p-2 bg-gray-200 dark:bg-indigo-900 rounded-lg">
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('bold')}
-                title="Bold"
-              >
-                <Bold className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('italic')}
-                title="Italic"
-              >
-                <Italic className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('list')}
-                title="List"
-              >
-                <List className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('link')}
-                title="Link"
-              >
-                <Link className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('subscript')}
-                title="Subscript"
-              >
-                <Subscript className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('superscript')}
-                title="Superscript"
-              >
-                <Superscript className="w-4 h-4" />
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('equation')}
-                title="Equation"
-              >
-                ∑
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('fraction')}
-                title="Fraction"
-              >
-                ½
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('square')}
-                title="Square"
-              >
-                x²
-              </Button>
-              <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
-                size="sm"
-                variant="outline"
-                onClick={() => formatText('sqrt')}
-                title="Square Root"
-              >
-                √
-              </Button>
+            <div className="flex flex-wrap flex-col sm:flex-row gap-x-2 px-2 bg-gray-200 dark:bg-indigo-900 rounded-lg items-center justify-center sm:items-start sm:justify-start">
+              <div className="flex flex-wrap gap-2 pt-2 justify-between items-center sm:justify-start sm:items-start">
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('bold')}
+                  title="Bold"
+                >
+                  <Bold className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('italic')}
+                  title="Italic"
+                >
+                  <Italic className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('list')}
+                  title="List"
+                >
+                  <List className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('link')}
+                  title="Link"
+                >
+                  <Link className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('subscript')}
+                  title="Subscript"
+                >
+                  <Subscript className="w-4 h-4" />
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 py-2 justify-between items-center sm:justify-start sm:items-start">
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('superscript')}
+                  title="Superscript"
+                >
+                  <Superscript className="w-4 h-4" />
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('equation')}
+                  title="Equation"
+                >
+                  ∑
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('fraction')}
+                  title="Fraction"
+                >
+                  ½
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('square')}
+                  title="Square"
+                >
+                  x²
+                </Button>
+                <Button className="w-10 h-8 bg-slate-800 hover:bg-slate-700 text-gray-200"
+                  size="sm"
+                  variant="outline"
+                  onClick={() => formatText('sqrt')}
+                  title="Square Root"
+                >
+                  √
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
@@ -450,7 +592,7 @@ const ChallengePage = ({ setIsLoggedIn }) => {
               value={textAnswer}
               onChange={(e) => setTextAnswer(e.target.value)}
               placeholder={t("Write your detailed answer here. You can use markdown formatting and mathematical expressions...")}
-              className="min-h-[300px] text-gray-800 dark:text-gray-200 text-base leading-relaxed"
+              className={`min-h-[300px] text-gray-800 dark:text-gray-200 text-base leading-relaxed`}
             />
             <div className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               <p>{t("Tip: Use ** for bold, * for italic, $$ for equations, ^{} for superscript, _{} for subscript")}</p>
@@ -459,20 +601,54 @@ const ChallengePage = ({ setIsLoggedIn }) => {
         </Card>
       )}
 
-      {/* Submit Button */}
-      <div className="flex justify-center">
+      {/* Submit Button with Navigation */}
+      <div className="flex flex-row gap-2 justify-between items-center">
+        <Button
+          onClick={goToPreviousChallenge}
+          disabled={parseInt(challengeNumber) == 1}
+          className="flex items-center gap-2 px-4 py-3 sm:px-6
+            bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600
+            text-white disabled:bg-gray-400 dark:disabled:bg-gray-800 disabled:cursor-not-allowed
+            transition-colors duration-200 text-sm sm:text-base"
+          size="lg"
+        >
+          {dir === 'ltr' ? <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />}
+          {<span className='hidden sm:block'>
+            {t('Previous')}
+          </span>}
+        </Button>
+
         <Button
           onClick={submitChallenge}
           disabled={submitting || (!code.trim() && !textAnswer.trim())}
-          className="flex items-center gap-2 px-8 py-3 dark:bg-indigo-900 text-lg"
+          className="flex items-center gap-2 px-6 py-3 sm:px-8 
+            dark:bg-indigo-900 dark:hover:bg-indigo-800 
+            bg-indigo-700 hover:bg-indigo-800
+            text-white text-sm sm:text-lg
+            transition-colors duration-200"
           size="lg"
         >
           {submitting ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
           ) : (
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4 sm:w-5 sm:h-5" />
           )}
-          {submitting ? t('Submitting...'): t('Submit Challenge')}
+          {submitting ? t('Submitting...') : t('Submit Challenge')}
+        </Button>
+
+        <Button
+          onClick={goToNextChallenge}
+          disabled={parseInt(challengeNumber) == 3}
+          className="flex items-center gap-2 px-4 py-3 sm:px-6
+            bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600
+            text-white
+            transition-colors duration-200 text-sm sm:text-base"
+          size="lg"
+        >
+          {<span className='hidden sm:block'>
+            {t('Next')}
+          </span>}
+          {dir === 'rtl' ? <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />}
         </Button>
       </div>
 

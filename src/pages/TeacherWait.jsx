@@ -166,7 +166,7 @@ const TeacherWaitlist = () => {
                 {t('Apply to Join the Waitlist')}
               </h3>
               {errorMessage && (
-                <p className="text-red-600 dark:text-red-400 mb-4 text-center">{errorMessage}</p>
+                <p className="text-red-600 dark:text-red-400 mb-4 text-center">{t(errorMessage)}</p>
               )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -284,7 +284,7 @@ const TeacherWaitlist = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                 {t('AI-Powered Teaching')}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 text-justify">
                 {t('Leverage our AI tools to create interactive and personalized learning experiences')}
               </p>
             </div>
@@ -297,7 +297,7 @@ const TeacherWaitlist = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                 {t('Expert Community')}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 text-justify">
                 {t('Join a network of leading educators and tech professionals from around the world')}
               </p>
             </div>
@@ -310,7 +310,7 @@ const TeacherWaitlist = () => {
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">
                 {t('Cutting-Edge Platform')}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-gray-300 text-justify">
                 {t('Teach on a modern platform built with the latest technology to enhance the learning experience')}
               </p>
             </div>

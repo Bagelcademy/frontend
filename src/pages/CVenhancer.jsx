@@ -413,7 +413,7 @@ const CVEnhancer = () => {
                   value={jobOfferLink}
                   onChange={(e) => setJobOfferLink(e.target.value)}
                   placeholder={t('https:/ /company.com/job-posting')}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-left"
                   required
                 />
               </div>
@@ -432,7 +432,7 @@ const CVEnhancer = () => {
                   value={githubLink}
                   onChange={(e) => setGithubLink(e.target.value)}
                   placeholder={t('https:/ /github.com/yourusername')}
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-left"
                   required
                 />
               </div>

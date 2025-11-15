@@ -425,8 +425,8 @@ const fetchPaths = async () => {
                 </button>
 
                 {isCategoryDropdownOpen && (
-                  <div className={`absolute mt-2 w-auto bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 ${isRtl ? 'text-right' : 'text-left'}`}>
-                    <div className="py-2">
+                  <div className={`absolute mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-50 w-52 max-h-64 overflow-y-auto overflow-x-hidden divide-y divide-gray-200 dark:divide-gray-700 ${isRtl ? 'text-right' : 'text-left'}`}>
+                    <div className="py-1">
                       <button
                         onClick={() => {
                           handleCategoryChange('');

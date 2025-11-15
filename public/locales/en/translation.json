@@ -247,7 +247,15 @@
     "Language Learning": "Language Learning",
     "Science": "Science",
     "Mathematics": "Mathematics",
-    "Business": "Business"
+    "Business": "Business",
+    "Computer_skills":"Computer Skills",
+    "Law":"Law",
+    "Teaching_skills":"Teaching Skills",
+    "Others":"Others",
+    "Physics":"Physics",
+    "Psychology":"Psychology",
+    "Chemistry":"Chemistry",
+    "Economic":"Economic"
   },
   "languages": {
     "allLanguages": "all Languages",
@@ -348,7 +356,7 @@
   "verificationSMSSent": "verification SMS sent",
   "didntReceiveCode": "didnt receive code",
   "searchPlaceholder": "Search in my courses",
-  "nameTooLong": "Name must be less than 20 characters.",
+  "nameTooLong": "Name must be less than 40 characters.",
   "phoneNumberTooShort": "Phone number must be at least 11 digits.",
   "phoneNumberTooLong": "Phone number must be no more than 13 digits.",
   "usernameInvalid": "Username can only contain letters, numbers, or underscores, and must not contain spaces.",
@@ -446,7 +454,7 @@
   "You need at least 1 credit to generate a resume": "You need at least 1 credit to generate a resume",
   "Please upload your resume, provide a job offer link, and GitHub profile": "Please upload your resume, provide a job offer link, and GitHub profile",
   "Mobile Phone": "09039179491",
-  "Footer-Mobile Phone":"09112834604",
+  "Footer-Mobile Phone":"09039179491",
  "LandLine":"02433052650",
  "ContactPage-LandLine":"02433052676",
  "Login Placeholder":"091234567890",
@@ -491,8 +499,6 @@
       "Python":"Python",
       "Java":"Java",
       "Language":"language",
-
-     
     
   "teachPanel":{
   "lessons":"lessons",
@@ -500,6 +506,6 @@
   "":""
   },
   "markAsRead":"markAsRead",
-  "read":"read"
-  
+  "read":"read",
+  "completeCurrentChallenge": "Please complete the current challenge first."
 }
