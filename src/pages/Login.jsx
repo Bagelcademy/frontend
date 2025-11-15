@@ -332,7 +332,7 @@ const Login = ({ setIsLoggedIn }) => {
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-900 dark:text-white">{t('login')}</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <p className="mb-6 text-center text-gray-700 dark:text-gray-300">
-          {t('we changed our login form. if you register with your phone number you get 7 days free subscription!')}
+          {t('New here? Sign up to receive 1 AI credit and a 3-day free trial.')}
         </p>
         {/* Custom Tabs */}
         <div className="flex mb-6 border-b border-gray-400 gap-x-1 pb-1">
