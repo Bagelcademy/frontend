@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./button";
 import { useTranslation } from "react-i18next";
-import blueHappyImg from './assets/blueHappyBgRemoved.png';
+import blueHappyImg from '../../assets/blueHappyBgRemoved.png';
 
 const CharacterWelcomePopup = ({ characters, isOpen, onClose, onContinue }) => {
   const { t } = useTranslation();
