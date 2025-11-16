@@ -152,8 +152,10 @@ const CourseLandingPage = () => {
       return;
     }
 
-    if (!isEnrolled && index > 0) {
-      // Only allow first lesson if not enrolled
+    if (!isEnrolled) {
+      Notify.failure(t('Please enroll in this course first'), {
+        position: 'right-top',
+      });
       return;
     }
 

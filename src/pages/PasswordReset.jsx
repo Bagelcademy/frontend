@@ -244,7 +244,7 @@ const ResetPasswordByPhone = () => {
 
           <Button 
             type="submit" 
-            className="w-full text-black dark:text-black" 
+            className="w-full text-gray-200" 
             disabled={isLoading}
           >
             {isLoading ? (

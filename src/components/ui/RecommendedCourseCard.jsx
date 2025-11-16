@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BookOpen, Award, Globe2, Briefcase, ChevronRight, ChevronLeft, Users } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '../ui/card';
 import { Button } from '../ui/button';
-import StarRating from '../ui/MyCoursesStarRating';
+import StarRating from '../ui/StarRatingImage';
 
 const RecommendedCourseCard = ({ course }) => {
   const { t, i18n } = useTranslation();
