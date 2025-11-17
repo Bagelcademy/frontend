@@ -118,37 +118,20 @@ const CareerPathsPage = () => {
       if (!response.ok) throw new Error('Failed to fetch paths');
       const data = await response.json();
 
-      // Fetch enrolledCount for each path
-      const fetchEnrolledCounts = async (paths) => {
-        return await Promise.all(paths.map(async path => {
-          let enrolledCount = null;
-          try {
-            const enrollUrl = `https://api.tadrisino.org/courses/learning-paths/${path.id}/enrollment_count/`;
-            const enrollResponse = await fetch(enrollUrl, { method: 'GET' });
-            if (enrollResponse.ok) {
-              const enrollData = await enrollResponse.json();
-              enrolledCount = enrollData.enrollment_count;
-            }
-          } catch (err) {
-            enrolledCount = null;
-          }
-          return {
-            id: path.id,
-            title: path.title,
-            category: path.category || 'other',
-            description: path.description,
-            duration: path.duration || '6 months',
-            lessons: path.lessons || 0,
-            level: path.level,
-            popular: path.popular || false,
-            image: path.image || '/api/placeholder/400/200',
-            rating: 4.5, // fixed rating
-            enrolledCount: enrolledCount !== null ? enrolledCount : 0
-          };
-        }));
-      };
+      const transformedData = data.map(path => ({
+        id: path.id,
+        title: path.title,
+        category: path.category || 'other',
+        description: path.description,
+        duration: path.duration || '6 months',
+        lessons: path.lessons || 0,
+        level: path.level,
+        popular: path.popular || false,
+        image: path.image || '/api/placeholder/400/200',
+        rating: 4.5, // fixed rating
+        enrolledCount: path.enroll_count ?? 0,
+      }));
 
-      const transformedData = await fetchEnrolledCounts(data);
       setPaths(transformedData);
       setDisplayedPaths(transformedData);
     } catch (error) {
@@ -164,11 +147,10 @@ const CareerPathsPage = () => {
       const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
   
-      // Translate category names dynamically, but keep original name as `rawName`
       const translatedCategories = data.map(category => ({
         id: category.id,
-        name: t(category.name), // Translated display name
-        rawName: category.name // Original category identifier used in learning paths
+        name: t(category.name),
+        rawName: category.name
       }));
 
       setCategories(translatedCategories);
@@ -218,7 +200,6 @@ const CareerPathsPage = () => {
       );
     }
     if (selectedCategory) {
-      // selectedCategory now contains the rawName directly
       filtered = filtered.filter(path => path.category === selectedCategory);
     }
     setDisplayedPaths(filtered);
