@@ -1283,6 +1283,7 @@
   "Network error:":"خطای شبکه:",
   "Loading challenge...":"در حال بارگیری چالش...",
   "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید",
-  "teacher waiting list with this email already exists.":"لیست انتظار معلمان با این ایمیل از قبل وجود دارد."
+  "teacher waiting list with this email already exists.":"لیست انتظار معلمان با این ایمیل از قبل وجود دارد.",
+  "Please enroll in this course first":"لطفا ابتدا ثبت‌نام کنید"
   
 }

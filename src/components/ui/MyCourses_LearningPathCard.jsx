@@ -91,7 +91,7 @@ const LearningPathCard = ({ path }) => {
                   className="block mt-4 text-center py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-lg transition-all duration-300"
                 >
                   <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white group-hover:scale-105 transition-all duration-300">
-                    <span className="mx-2">{t('Start Learning')}</span>
+                    <span className="mx-2">{t('Continue Learning')}</span>
                   </Button>
                 </Link>
               </div>

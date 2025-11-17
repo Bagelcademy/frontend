@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button } from '../ui/button';
 
-const LessonFooter = ({ handleNavigation, t, isNextAvailable, isNavigating, isLoadingNextLesson, lessonId }) => (
+const LessonFooter = ({ handleNavigation, t, isNextAvailable, isNavigating, isLoadingNextLesson, lessonId, lessonOrder }) => {
+  const currentOrder = lessonOrder != null ? Number(lessonOrder) : (lessonId ? Number(lessonId) : null);
+  return (
     <div className="left-0 right-0 bg-white dark:bg-slate-800 border-t dark:border-slate-700 p-4 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <Button
             variant="outline"
             onClick={() => handleNavigation('previous')}
-            disabled={parseInt(lessonId) === 1 || isLoadingNextLesson}
+            disabled={currentOrder === 1 || isLoadingNextLesson}
             className="w-24 bg-gray-700 hover:bg-gray-800 text-white hover:border-blue-700"
           >
             {isLoadingNextLesson ? (
@@ -32,6 +34,7 @@ const LessonFooter = ({ handleNavigation, t, isNextAvailable, isNavigating, isLo
           </Button>
         </div>
       </div>
-      );
+  );
+};
 
-      export default LessonFooter;
+export default LessonFooter;

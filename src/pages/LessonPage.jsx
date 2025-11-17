@@ -71,6 +71,7 @@ const LessonPage = () => {
   const [rating, setRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
   const [isLoadingNextLesson, setIsLoadingNextLesson] = useState(false);
+  const [originalOrder, setOriginalOrder] = useState(null);
 
   // Audio related states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -275,6 +276,7 @@ const LessonPage = () => {
         const data = await lessonResponse.json();
         setLesson(data);
         setIsLastLesson(data.is_last_lesson);
+        setOriginalOrder(data.order ?? (lessonId ? parseInt(lessonId) : null));
 
         // Check if lesson has existing audio and construct full URL
         if (typeof data.audio === 'string' && data.audio.trim() !== '') {
@@ -534,7 +536,8 @@ const LessonPage = () => {
   isNavigating={isNavigating}
   isLoadingNextLesson={isLoadingNextLesson}
   lessonId={lessonId}
-/>
+  lessonOrder={originalOrder}
+/
 
 
       {/* Completion Dialog *//*}
@@ -619,6 +622,7 @@ const LessonPage = () => {
   const [rating, setRating] = useState(0);
   const [hasRated, setHasRated] = useState(false);
   const [isLoadingNextLesson, setIsLoadingNextLesson] = useState(false);
+  const [originalOrder, setOriginalOrder] = useState(null);
 
   // Audio related states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -841,6 +845,7 @@ const LessonPage = () => {
         const data = await lessonResponse.json();
         setLesson(data);
         setIsLastLesson(data.is_last_lesson);
+        setOriginalOrder(data.order ?? (lessonId ? parseInt(lessonId) : null));
 
         // Check if lesson has existing audio and construct full URL
         if (typeof data.audio === 'string' && data.audio.trim() !== '') {
@@ -1097,13 +1102,14 @@ const LessonPage = () => {
 
       {/* Navigation Footer */}
       <LessonFooter
-  handleNavigation={handleNavigation}
-  t={t}
-  isNextAvailable={isNextAvailable}
-  isNavigating={isNavigating}
-  isLoadingNextLesson={isLoadingNextLesson}
-  lessonId={lessonId}
-/>
+        handleNavigation={handleNavigation}
+        t={t}
+        isNextAvailable={isNextAvailable}
+        isNavigating={isNavigating}
+        isLoadingNextLesson={isLoadingNextLesson}
+        lessonId={lessonId}
+        lessonOrder={originalOrder}
+      />
 
 
       {/* Completion Dialog */}

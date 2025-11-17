@@ -241,7 +241,7 @@ const CodeEditor = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               source_code: btoa(code), // Base64 encode the source code
-              language_id: [languageIds[language.value]],
+              language_id: languageIds[language.value],
             }),
           });
     
@@ -292,13 +292,14 @@ const CodeEditor = () => {
             {isExecuting ? t('Running...') : t('Execute')}
             </Button>
             <CustomListbox
-  value={language}
-  onChange={setLanguage}
-  options={[
-    { label: 'Python', value: 'python' },
-    { label: 'Java', value: 'java' },
-  ]}
-/>
+              value={language}
+              onChange={setLanguage}
+              className={`text-white bg-gray-200`}
+              options={[
+                { label: 'Python', value: 'python' },
+                { label: 'Java', value: 'java' },
+              ]}
+            />
 
         </div>
       </CardHeader>
@@ -324,7 +325,7 @@ const CodeEditor = () => {
           </div>
           </CardHeader>
           <CardContent>
-            <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg min-h-[100px] max-h-[200px] overflow-auto">
+            <pre className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg min-h-[100px] max-h-[200px] overflow-auto" dir='ltr'>
               {codeOutput || 'No output yet'}
             </pre>
           </CardContent>

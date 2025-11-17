@@ -378,7 +378,7 @@ const Signup = () => {
             
             <Button
               type="submit"
-              className="w-full text-black dark:text-black"
+              className="w-full text-gray-200"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -490,7 +490,7 @@ const Signup = () => {
               <Progress value={passwordStrength} className={`h-1 ${getPasswordStrengthColor()}`} />
               
               <div className="mt-2 space-y-1">
-                <div className="flex items-center text-xs">
+                <div className="flex items-center text-xs text-gray-700 dark:text-gray-200">
                   {hasMinLength ? (
                     <Check className="h-3 w-3 text-green-500 mr-1" />
                   ) : (
@@ -498,7 +498,7 @@ const Signup = () => {
                   )}
                   {t('passwordMinLength')}
                 </div>
-                <div className="flex items-center text-xs">
+                <div className="flex items-center text-xs text-gray-700 dark:text-gray-200">
                   {hasNumber ? (
                     <Check className="h-3 w-3 text-green-500 mr-1" />
                   ) : (
@@ -506,7 +506,7 @@ const Signup = () => {
                   )}
                   {t('passwordHasNumber')}
                 </div>
-                <div className="flex items-center text-xs">
+                <div className="flex items-center text-xs text-gray-700 dark:text-gray-200">
                   {hasLetter ? (
                     <Check className="h-3 w-3 text-green-500 mr-1" />
                   ) : (

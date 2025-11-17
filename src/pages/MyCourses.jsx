@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
 import CertificateModal from '../components/ui/CertificateModal';
 import CourseCard from '../components/ui/MyCourses_CourseCard';
-// import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
+import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import LearningPathCard from '../components/ui/MyCourses_LearningPathCard';
 
@@ -533,8 +533,30 @@ const fetchPaths = async () => {
           </div>
         )}
 
+        {/* LearningPaths */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">{t('learningPath')}</h2>
+          {displayedPaths.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {displayedPaths.map(path => (
+                <LearningPathCard key={path.learning_path_id} path={path} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
+                <BookOpen className="w-6 h-6 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-medium mb-2">{t('No Learning Paths')}</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                {t('-')}
+              </p>
+            </div>
+          )}
+        </div>
+
         {/* Recommended Courses Section */}
-        {/* {filteredRecommendedCourses.length > 0 && (
+        {filteredRecommendedCourses.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold">{t('Recommended for You')}</h2>
@@ -560,28 +582,8 @@ const fetchPaths = async () => {
               </div>
             )}
           </div>
-        )} */}
-        {/* LearningPaths */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6">{t('learningPath')}</h2>
-          {displayedPaths.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {displayedPaths.map(path => (
-                <LearningPathCard key={path.learning_path_id} path={path} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="rounded-full bg-gray-100 dark:bg-gray-800 p-4 inline-flex mb-4">
-                <BookOpen className="w-6 h-6 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium mb-2">{t('No Learning Paths')}</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                {t('-')}
-              </p>
-            </div>
-          )}
-        </div>
+        )}
+
       </div>
     </div>
   );
