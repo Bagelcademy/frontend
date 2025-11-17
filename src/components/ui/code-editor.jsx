@@ -190,7 +190,7 @@ const CustomListbox = ({ value, onChange, options }) => {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="absolute right-0 z-10 mt-2 w-full bg-white dark:bg-white dark:text-black rounded-md shadow-lg border border-gray-200 dark:border-gray-700"
+            className="absolute right-0 z-10 mt-2 w-full bg-gray-400 dark:text-black rounded-md shadow-lg border border-gray-200 dark:border-gray-700"
           >
             {options.map((option) => (
               <button
@@ -199,7 +199,7 @@ const CustomListbox = ({ value, onChange, options }) => {
                   onChange(option);
                   setIsOpen(false);
                 }}
-                className={`block w-full text-right px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 ${
+                className={`block w-full text-right px-4 py-2 text-sm bg-gray-600 dark:bg-gray-800 text-gray-100 hover:bg-gray-700 dark:hover:bg-gray-900 ${
                   option.value === value.value ? 'font-semibold text-blue-600 dark:text-blue-400' : ''
                 }`}
               >

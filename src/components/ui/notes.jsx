@@ -559,8 +559,11 @@ const Notes = ({ lessonId, courseId }) => {
               className="mb-3 dark:text-black"
             />
 
-            <div className="flex gap-2 dark:text-black">
-              <Button onClick={saveNote} disabled={saving}>
+            <div className="flex gap-2 text-green-200">
+              <Button 
+              onClick={saveNote} 
+              disabled={saving}
+              className="bg-green-700 dark:bg-green-900">
                 <Save className="w-4 h-4 mr-2 " />
                 {noteId ? t("notes.buttons.save") : t("notes.buttons.save")}
               </Button>

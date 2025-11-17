@@ -96,7 +96,7 @@ const CareerPathsPage = () => {
   const [paths, setPaths] = useState([]);
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(''); // Store rawName instead of id
   const [userProgress, setUserProgress] = useState({});
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -164,12 +164,13 @@ const CareerPathsPage = () => {
       const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
   
-      // Translate category names dynamically
+      // Translate category names dynamically, but keep original name as `rawName`
       const translatedCategories = data.map(category => ({
         id: category.id,
-        name: t(category.name) // Translate category name dynamically
+        name: t(category.name), // Translated display name
+        rawName: category.name // Original category identifier used in learning paths
       }));
-  
+
       setCategories(translatedCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -217,6 +218,7 @@ const CareerPathsPage = () => {
       );
     }
     if (selectedCategory) {
+      // selectedCategory now contains the rawName directly
       filtered = filtered.filter(path => path.category === selectedCategory);
     }
     setDisplayedPaths(filtered);
@@ -249,11 +251,11 @@ const CareerPathsPage = () => {
             </div>
 
             <Listbox
-              value={selectedCategory ? categories.find(c => c.id === selectedCategory) : null}
-              onChange={(selected) => setSelectedCategory(selected.id)}
+              value={selectedCategory ? categories.find(c => c.rawName === selectedCategory) : null}
+              onChange={(selected) => setSelectedCategory(selected.rawName)}
               options={[
-                { id: '', name: t('All Categories') },
-                ...categories.map(c => ({ id: c.id, name: c.name })),
+                { id: '', name: t('All Categories'), rawName: '' },
+                ...categories.map(c => ({ id: c.id, name: c.name, rawName: c.rawName })),
               ]}
               placeholder={t('Select Category')}
             />
@@ -264,11 +266,25 @@ const CareerPathsPage = () => {
 
       {/* Paths Grid */}
       <div className="max-w-6xl mx-auto px-6 py-12 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedPaths.map(path => (
-            <LearningPathCard key={path.id} path={path} />
-          ))}
-        </div>
+        {displayedPaths.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayedPaths.map(path => (
+              <LearningPathCard key={path.id} path={path} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <BookOpen className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              {t('No paths found')}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              {searchTerm
+                ? t('No paths match your search')
+                : t('No paths available in this category')}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

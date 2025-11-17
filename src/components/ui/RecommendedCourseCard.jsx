@@ -28,8 +28,8 @@ const RecommendedCourseCard = ({ course }) => {
         <div className="absolute bottom-4 left-4 right-4 z-20">
           <div className="flex items-center justify-between text-white text-sm">
             <div className="flex items-center">
-              <Users className="w-4 h-4 mr-1" />
-              <span>{course.enroll_count || 0} {t('Enrolled')}</span>
+              <Users className="w-4 h-4 mx-1 mb-1 " />
+              <span>{course.enroll_count || 0} {t('People Enrolled')}</span>
             </div>
             <StarRating rating={4.5} />
           </div>
