@@ -88,7 +88,17 @@ const ResetPasswordByPhone = () => {
         }),
       });
 
-      const data = await response.json();
+      // Check if response is JSON before parsing
+      const contentType = response.headers.get('content-type');
+      let data;
+      
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        // throw new Error(`Server returned ${response.status}: ${response.statusText}`);
+        throw new Error();
+
+      }
 
       if (!response.ok) {
         throw new Error(data.error || t('phoneVerificationFailed'));

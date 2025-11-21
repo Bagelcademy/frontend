@@ -96,7 +96,7 @@ const CareerPathsPage = () => {
   const [paths, setPaths] = useState([]);
   const [displayedPaths, setDisplayedPaths] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(''); // Store rawName instead of id
   const [userProgress, setUserProgress] = useState({});
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -118,37 +118,20 @@ const CareerPathsPage = () => {
       if (!response.ok) throw new Error('Failed to fetch paths');
       const data = await response.json();
 
-      // Fetch enrolledCount for each path
-      const fetchEnrolledCounts = async (paths) => {
-        return await Promise.all(paths.map(async path => {
-          let enrolledCount = null;
-          try {
-            const enrollUrl = `https://api.tadrisino.org/courses/learning-paths/${path.id}/enrollment_count/`;
-            const enrollResponse = await fetch(enrollUrl, { method: 'GET' });
-            if (enrollResponse.ok) {
-              const enrollData = await enrollResponse.json();
-              enrolledCount = enrollData.enrollment_count;
-            }
-          } catch (err) {
-            enrolledCount = null;
-          }
-          return {
-            id: path.id,
-            title: path.title,
-            category: path.category || 'other',
-            description: path.description,
-            duration: path.duration || '6 months',
-            lessons: path.lessons || 0,
-            level: path.level,
-            popular: path.popular || false,
-            image: path.image || '/api/placeholder/400/200',
-            rating: 4.5, // fixed rating
-            enrolledCount: enrolledCount !== null ? enrolledCount : 0
-          };
-        }));
-      };
+      const transformedData = data.map(path => ({
+        id: path.id,
+        title: path.title,
+        category: path.category || 'other',
+        description: path.description,
+        duration: path.duration || '6 months',
+        lessons: path.lessons || 0,
+        level: path.level,
+        popular: path.popular || false,
+        image: path.image || '/api/placeholder/400/200',
+        rating: 4.5, // fixed rating
+        enrolledCount: path.enroll_count ?? 0,
+      }));
 
-      const transformedData = await fetchEnrolledCounts(data);
       setPaths(transformedData);
       setDisplayedPaths(transformedData);
     } catch (error) {
@@ -164,12 +147,12 @@ const CareerPathsPage = () => {
       const response = await fetch('https://api.tadrisino.org/courses/Category/');
       const data = await response.json();
   
-      // Translate category names dynamically
       const translatedCategories = data.map(category => ({
         id: category.id,
-        name: t(category.name) // Translate category name dynamically
+        name: t(category.name),
+        rawName: category.name
       }));
-  
+
       setCategories(translatedCategories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -249,11 +232,11 @@ const CareerPathsPage = () => {
             </div>
 
             <Listbox
-              value={selectedCategory ? categories.find(c => c.id === selectedCategory) : null}
-              onChange={(selected) => setSelectedCategory(selected.id)}
+              value={selectedCategory ? categories.find(c => c.rawName === selectedCategory) : null}
+              onChange={(selected) => setSelectedCategory(selected.rawName)}
               options={[
-                { id: '', name: t('All Categories') },
-                ...categories.map(c => ({ id: c.id, name: c.name })),
+                { id: '', name: t('All Categories'), rawName: '' },
+                ...categories.map(c => ({ id: c.id, name: c.name, rawName: c.rawName })),
               ]}
               placeholder={t('Select Category')}
             />
@@ -264,11 +247,25 @@ const CareerPathsPage = () => {
 
       {/* Paths Grid */}
       <div className="max-w-6xl mx-auto px-6 py-12 ">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedPaths.map(path => (
-            <LearningPathCard key={path.id} path={path} />
-          ))}
-        </div>
+        {displayedPaths.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayedPaths.map(path => (
+              <LearningPathCard key={path.id} path={path} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <BookOpen className="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              {t('No paths found')}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              {searchTerm
+                ? t('No paths match your search')
+                : t('No paths available in this category')}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
