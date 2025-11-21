@@ -502,10 +502,25 @@
     
   "teachPanel":{
   "lessons":"lessons",
-  "students":"students",
-  "":""
+  "students":"students"
   },
   "markAsRead":"markAsRead",
   "read":"read",
-  "completeCurrentChallenge": "Please complete the current challenge first."
+  "completeCurrentChallenge": "Please complete the current challenge first.",
+
+  "LessonTabsTour": {
+    "Content":"This is the Content tab",
+    "Quiz":"In this section, you can take the test to unlock the content of the next lesson for you.",
+    "Notes":"Here you can save your notes.",
+    "CodeLab":"Coding section",
+    "AI_Assistant":"AI Assistant"
+  },
+
+  "": {
+    "":"",
+    "":"",
+    "":"",
+    "":"",
+    "":""
+  }
 }

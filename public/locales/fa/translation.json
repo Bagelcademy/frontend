@@ -1288,6 +1288,17 @@
   "Loading challenge...":"در حال بارگیری چالش...",
   "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید",
   "teacher waiting list with this email already exists.":"لیست انتظار معلمان با این ایمیل از قبل وجود دارد.",
-  "Please enroll in this course first":"لطفا ابتدا ثبت‌نام کنید"
-  
+  "Please enroll in this course first":"لطفا ابتدا ثبت‌نام کنید",
+
+  "LessonTabsTour": {
+    "Content":"در این قسمت می توانید محتوای درس را مطالعه کنید",
+    "Quiz":"در این قسمت می توانید در آزمون شرکت کنید ت محتوای درس بعدی برای شما باز شود",
+    "Notes":"در اینجا می توانید یادداشت های خود را ذخیره کنید",
+    "CodeLab":"بخش کدنویسی",
+    "AI_Assistant":"دستیار هوش مصنوعی"
+  },
+  "Finish":"تمام",
+  "Skip tour":"رد کردن",
+  "Back":"قبلی",
+  "Skip":"رد کردن"
 }
