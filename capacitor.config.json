@@ -1,0 +1,8 @@
+{
+  "appId": "com.tadrisino.app",
+  "appName": "Tadrisino",
+  "webDir": "dist",
+  "assets": {
+    "path": "src/assets"
+  }
+}

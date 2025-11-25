@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/cli": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
     "@codemirror/lang-java": "^6.0.1",
     "@codemirror/lang-python": "^6.1.6",
     "@emotion/react": "^11.13.3",
@@ -52,6 +55,7 @@
     "react-slick": "^0.30.2",
     "react-spring": "^9.7.4",
     "recharts": "^2.15.1",
+    "sharp": "^0.34.5",
     "shepherd.js": "^14.5.1",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.2",
@@ -59,6 +63,7 @@
     "yup": "^1.5.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@eslint/js": "^9.9.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

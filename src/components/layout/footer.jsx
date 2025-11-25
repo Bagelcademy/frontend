@@ -68,9 +68,9 @@ const Footer = () => {
 
 
         {/* Trust Badges */}
-        <div className="flex justify-center items-center gap-4 mb-6">
+        {/* <div className="flex justify-center items-center gap-4 mb-6"> */}
           {/* eNamad */}
-          <a 
+          {/* <a 
             href="https://trustseal.enamad.ir/?id=609515&Code=6FWmuBO0dYSwQ96O4fc0CUN2NYWe1Hqq" 
             target="_blank"
             className="block"
@@ -80,23 +80,23 @@ const Footer = () => {
               alt="eNamad"
               className="w-16 h-16 object-contain"
             />
-          </a>
+          </a> */}
 
           {/* Samandehi */}
-          <img 
+          {/* <img 
             src="https://logo.samandehi.ir/logo.aspx?id=380155&p=qftiaqgwlymanbpdujynujyn"
             alt="Samandehi"
             className="w-16 h-16 object-contain cursor-pointer"
             onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=380155&p=xlaomcsiobpdrfthdshwdshw", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")}
-          />
+          /> */}
 
           {/* Senfi Logo */}
-          <img 
+          {/* <img 
             src={senfi}
             alt="Senfi Logo"
             className="w-16 h-16 object-contain"
           />
-        </div>
+        </div> */}
 
 
 
