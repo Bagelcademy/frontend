@@ -269,7 +269,7 @@ const AIRobotsCharacters = () => {
         </div>
 
         {/* Team Stats */}
-        <div className={`grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        {/* <div className={`grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 transition-all duration-1000 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           {robots.map((robot, index) => (
             <div
               key={robot.key}
@@ -291,7 +291,7 @@ const AIRobotsCharacters = () => {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* Mission Statement */}
         <div className={`text-center transition-all duration-1000 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>

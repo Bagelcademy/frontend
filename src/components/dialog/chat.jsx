@@ -182,10 +182,10 @@ const AIAssistant = ({ lessonContent }) => {
           <Button
             onClick={handleSendMessage}
             disabled={isLoading || !input.trim()}
-            className="w-10 h-10 p-0 "
+            className="w-10 h-10 p-0"
             aria-label={t('chat.aria.sendButton')}
           >
-            <Send className="w-4 h-4  dark:text-black" />
+            <Send className="w-4 h-4 text-white" />
           </Button>
         </div>
       </CardContent>
