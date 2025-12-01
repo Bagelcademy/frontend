@@ -159,15 +159,13 @@ const QuizComponent = () => {
             </div>
 
             <div className="mt-6 flex justify-between">
-              {!isRtl ? (
-                // **LTR Layout (English, etc.)**
                 <>
                   <button
                     onClick={handlePrevious}
                     disabled={currentQuestion === 0}
                     className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
                   >
-                    <ChevronLeft className="w-5 h-5 mr-2" />
+                    {isRtl ? <ChevronRight className="w-5 h-5 mr-2" /> : (<ChevronLeft className="w-5 h-5 ml-2" />)}
                     {t("Previous")}
                   </button>
 
@@ -178,50 +176,20 @@ const QuizComponent = () => {
                       className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
                     >
                       {t("Next")}
-                      <ChevronRight className="w-5 h-5 ml-2" />
+                      {isRtl ? (<ChevronLeft className="w-5 h-5 ml-2" />) : (<ChevronRight className="w-5 h-5 ml-2" />)}
                     </button>
                   ) : (
                     <button
                       onClick={handleSubmit}
                       className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white"
                     >
-                      {t("Submit")}
-                      <Send className="w-5 h-5 ml-2" />
+                      <div className={isRtl ? "ml-2" : "mr-2"}>
+                        {t("Submit")}
+                      </div>
+                      <Send className="w-5 h-5" />
                     </button>
                   )}
                 </>
-              ) : (
-                // **RTL Layout (Persian, etc.)**
-                <>
-                  {currentQuestion < questions.length - 1 ? (
-                    <button
-                    onClick={handlePrevious}
-                    disabled={currentQuestion === 0}
-                    className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gray-300 dark:bg-gray-700 disabled:opacity-50"
-                  >
-                    <ChevronRight className="w-5 h-5 mx-2" /> {/* RTL: Chevron Right on Previous */}
-                    {t("Previous")}
-                  </button>
-                  ) : (
-                    <button
-                      onClick={handleSubmit}
-                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white"
-                    >
-                      <Send className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Submit */}
-                      {t("Submit")}
-                    </button>
-                  )}
-
-                  <button
-                      onClick={handleNext}
-                      disabled={answers[currentQuestion] === null}
-                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-gradient-to-r from-blue-500 to-purple-600 text-white disabled:opacity-50"
-                    >
-                      {t("Next")}
-                      <ChevronLeft className="w-5 h-5 mx-2" /> {/* RTL: Chevron Left on Next */}
-                    </button>
-                </>
-              )}
             </div>
           </motion.div>
         ) : (

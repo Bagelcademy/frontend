@@ -7,6 +7,8 @@ const DiscountBanner = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const STORAGE_KEY = 'discount_banner_closed';
+
   const [isVisible, setIsVisible] = useState(true); // Keep track of visibility
   const [targetDate, setTargetDate] = useState(null);
   const [timer, setTimer] = useState(null);
@@ -28,6 +30,19 @@ const DiscountBanner = () => {
     };
 
     fetchCountdown();
+  }, []);
+
+  // Read closed flag from localStorage so banner stays hidden after user closes it
+  useEffect(() => {
+    try {
+      const closed = localStorage.getItem(STORAGE_KEY);
+      if (closed === 'true') {
+        setIsVisible(false);
+      }
+    } catch (e) {
+      // ignore localStorage errors (e.g., SSR or privacy settings)
+      // keep banner visible by default
+    }
   }, []);
 
   // Function to calculate remaining time
@@ -70,6 +85,11 @@ const DiscountBanner = () => {
   // Close button function
   const handleClose = (event) => {
     event.stopPropagation(); // Prevent navigation on close
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true');
+    } catch (e) {
+      // ignore
+    }
     setIsVisible(false);
   };
 

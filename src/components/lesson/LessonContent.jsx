@@ -1,6 +1,8 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import ReactMarkdown from 'react-markdown';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import LessonAudio from './LessonAudio';
 
 const LessonContent = ({ lesson, audioProps, t }) => {
@@ -18,6 +20,29 @@ const LessonContent = ({ lesson, audioProps, t }) => {
                     <ReactMarkdown className="text-justify"
                       components={{
                         code({ node, inline, className, children, ...props }) {
+                          const content = String(children).trim();
+                          // Check for LaTeX block math ($$...$$ or \[...\])
+                          if (!inline && (
+                            (content.startsWith('$$') && content.endsWith('$$')) ||
+                            (content.startsWith('\\[') && content.endsWith('\\]'))
+                          )) {
+                            const math = content.startsWith('$$') 
+                              ? content.slice(2, -2) 
+                              : content.slice(2, -2);
+                            return (
+                              <BlockMath math={math} />
+                            );
+                          }
+                          // Check for LaTeX inline math ($...$ or \(...\))
+                          if (inline && (
+                            (content.startsWith('$') && content.endsWith('$')) ||
+                            (content.startsWith('\\(') && content.endsWith('\\)'))
+                          )) {
+                            const math = content.startsWith('$') 
+                              ? content.slice(1, -1) 
+                              : content.slice(2, -2);
+                            return <InlineMath math={math} />;
+                          }
                           return inline ? (
                             <code {...props}>{children}</code>
                           ) : (

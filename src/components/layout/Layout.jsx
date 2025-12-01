@@ -14,6 +14,7 @@ const Layout = ({
   changeLanguage 
 }) => {
   const location = useLocation();
+  const isIntroPage = location.pathname === '/';
 
   // Force scroll to top on route change
   useEffect(() => {
@@ -31,23 +32,25 @@ const Layout = ({
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300 flex flex-col">
-      <Header 
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        isDarkTheme={isDarkTheme}
-        toggleTheme={toggleTheme}
-        handleLogout={handleLogout}
-        changeLanguage={changeLanguage}
-      />
+      <div className={isIntroPage ? 'hidden' : ''}>
+        <Header 
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          isDarkTheme={isDarkTheme}
+          toggleTheme={toggleTheme}
+          handleLogout={handleLogout}
+          changeLanguage={changeLanguage}
+        />
+      </div>
 
       <main className="flex-grow flex flex-col">
         <div className="w-full flex-grow">
-          <DiscountBanner />
+          {!isIntroPage && <DiscountBanner />}
           {children}
         </div>
       </main>
 
-      <Footer />
+      {!isIntroPage && <Footer />}
     </div>
   );
 };

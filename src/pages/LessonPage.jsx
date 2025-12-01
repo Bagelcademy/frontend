@@ -6,6 +6,8 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import ReactMarkdown from 'react-markdown';
+import { InlineMath, BlockMath } from 'react-katex';
+import 'katex/dist/katex.min.css';
 import Quiz from '../components/ui/quiz';
 import Notes from '../components/ui/notes';
 import CodeEditor from '../components/ui/code-editor';
@@ -439,7 +441,7 @@ const LessonPage = () => {
       <LessonTabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       <LessonGuidedTour/>
       {/* Back Button - Fixed position under tabs */}
-      <div className="fixed left-4 sm:top-[calc(7rem+40px)] md:top-[calc(7rem+64px)] top-[calc(9rem+30px)] z-5">
+      <div className="fixed left-4 sm:top-[calc(7rem+40px)] md:top-[calc(7rem+64px)] top-[calc(9rem+30px)] z-50">
         <Button
           variant="ghost"
           size="sm"
@@ -498,6 +500,29 @@ const LessonPage = () => {
                     <ReactMarkdown className="text-justify"
                       components={{
                         code({ node, inline, className, children, ...props }) {
+                          const content = String(children).trim();
+                          // Check for LaTeX block math ($$...$$ or \[...\])
+                          if (!inline && (
+                            (content.startsWith('$$') && content.endsWith('$$')) ||
+                            (content.startsWith('\\[') && content.endsWith('\\]'))
+                          )) {
+                            const math = content.startsWith('$$') 
+                              ? content.slice(2, -2) 
+                              : content.slice(2, -2);
+                            return (
+                              <BlockMath math={math} />
+                            );
+                          }
+                          // Check for LaTeX inline math ($...$ or \(...\))
+                          if (inline && (
+                            (content.startsWith('$') && content.endsWith('$')) ||
+                            (content.startsWith('\\(') && content.endsWith('\\)'))
+                          )) {
+                            const math = content.startsWith('$') 
+                              ? content.slice(1, -1) 
+                              : content.slice(2, -2);
+                            return <InlineMath math={math} />;
+                          }
                           return inline ? (
                             <code {...props}>{children}</code>
                           ) : (

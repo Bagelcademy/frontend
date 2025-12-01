@@ -21,7 +21,7 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Quick Links')}</h4>
             <ul className="space-y-2 text-center text-gray-600 dark:text-gray-400">
-              <li><Link to="/" className="hover:text-buttonColor transition-colors">{t('Home')}</Link></li>
+              <li><Link to="/home" className="hover:text-buttonColor transition-colors">{t('Home')}</Link></li>
               <li><Link to="/ask" className="hover:text-buttonColor transition-colors">{t('AI course design')}</Link></li>
               <li><Link to="/courses" className="hover:text-buttonColor transition-colors">{t('Courses')}</Link></li>
               <li><Link to="/learning-paths" className="hover:text-buttonColor transition-colors">{t('Career Paths')}</Link></li>

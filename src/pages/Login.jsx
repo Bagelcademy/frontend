@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -18,14 +18,8 @@ const Login = ({ setIsLoggedIn }) => {
   const [countdown, setCountdown] = useState(0); // Countdown timer for OTP button
   const [showCharacterPopup, setShowCharacterPopup] = useState(false);
   const [characterData, setCharacterData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Loading state for login button
   const navigate = useNavigate();
-  
-  // Site key for reCAPTCHA v2
-  const RECAPTCHA_SITE_KEY = '6LfkvD4rAAAAAPJPSvnKaHCvLej0hRotvj3TOYmA';
-  
-  // References for reCAPTCHA containers
-  const passwordRecaptchaRef = useRef(null);
-  const otpVerifyRecaptchaRef = useRef(null);
 
   useEffect(() => {
     let recaptchaScript;
@@ -101,7 +95,7 @@ const Login = ({ setIsLoggedIn }) => {
     
     return () => clearTimeout(timer);
   }, [activeTab, isOtpSent]);
-  
+
   // Countdown timer effect
   useEffect(() => {
     let interval;
@@ -117,72 +111,29 @@ const Login = ({ setIsLoggedIn }) => {
   }, [countdown]);
   
   const renderRecaptchas = () => {
-    if (!window.grecaptcha?.render) {
-      console.log('ReCAPTCHA not yet available');
-      return;
-    }
-
     const renderCaptcha = (element, containerId) => {
-      if (!element) return;
-      
-      try {
-        // Check if this container is already rendered
-        const existingId = element.getAttribute('data-widget-id');
-        if (existingId !== null) {
-          try {
-            window.grecaptcha.reset(parseInt(existingId));
-            return;
-          } catch (e) {
-            // If reset fails, continue to re-render
-            console.log('Reset failed, re-rendering captcha');
-          }
-        }
-
-        // Render new captcha
-        const widgetId = window.grecaptcha.render(element, {
-          sitekey: RECAPTCHA_SITE_KEY,
-          callback: (token) => {
-            console.log(`ReCAPTCHA verified for ${containerId}`);
-          },
-          'expired-callback': () => {
-            console.log(`ReCAPTCHA expired for ${containerId}`);
-          }
-        });
-        
-        // Store the widget ID for future resets
-        element.setAttribute('data-widget-id', widgetId.toString());
-      } catch (e) {
-        console.error(`Error rendering reCAPTCHA for ${containerId}:`, e);
-      }
+      // Render new captcha
     };
 
-    // Render appropriate captcha based on current view
-    if (activeTab === 'password' && passwordRecaptchaRef.current) {
-      renderCaptcha(passwordRecaptchaRef.current, 'password-captcha');
-    }
-    
-    if (activeTab === 'otp' && isOtpSent && otpVerifyRecaptchaRef.current) {
-      renderCaptcha(otpVerifyRecaptchaRef.current, 'otp-captcha');
-    }
+    // Add logic here if needed to render one or more captchas
   };
-
   const handleLoginSuccess = (data) => {
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('accessToken', data.access);
-    localStorage.setItem('refreshToken', data.refresh);
-    localStorage.setItem('userRole', data.role);
-    localStorage.setItem('streak', data.streak);
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('accessToken', data.access);
+      localStorage.setItem('refreshToken', data.refresh);
+      localStorage.setItem('userRole', data.role);
+      localStorage.setItem('streak', data.streak);
     
-    // Update the parent App.jsx state
-    setIsLoggedIn(true); 
+      // Update the parent App.jsx state
+      setIsLoggedIn(true); 
     
-    // Dispatch the custom event
-    window.dispatchEvent(new Event('loginStateChanged'));
+      // Dispatch the custom event
+      window.dispatchEvent(new Event('loginStateChanged'));
     
-    // Show character popup if there are characters
-    if (data.main_character && data.main_character.length > 0) {
-      setCharacterData(data.main_character);
-      setShowCharacterPopup(true);
+      // Show character popup if there are characters
+      if (data.main_character && data.main_character.length > 0) {
+        setCharacterData(data.main_character);
+        setShowCharacterPopup(true);
       Notify.success(t('loginSuccess'));
     } else {
       // No characters, navigate directly
@@ -191,7 +142,7 @@ const Login = ({ setIsLoggedIn }) => {
     }
   };
 
-  // Handler functions for the popup
+    // Handler functions for the popup
   const handlePopupClose = () => {
     setShowCharacterPopup(false);
     // Navigate to courses after a short delay
@@ -205,31 +156,12 @@ const Login = ({ setIsLoggedIn }) => {
     navigate('/my-courses');
   };
 
-  const getRecaptchaToken = (captchaAction) => {
-    let token;
-    
-    // Determine which reCAPTCHA to get token from based on action
-    if (activeTab === 'password') {
-      token = window.grecaptcha.getResponse();
-    } else if (activeTab === 'otp' && isOtpSent && captchaAction === 'verifyOtp') {
-      token = window.grecaptcha.getResponse();
-    }
-    
-    if (!token) {
-      throw new Error(t('pleaseCompleteRecaptcha'));
-    }
-    
-    return token;
-  };
 
   const handlePasswordLogin = async (e) => {
     e.preventDefault();
     setError('');
-    
+    setIsLoading(true);
     try {
-      // Get reCAPTCHA token
-      const token = getRecaptchaToken('passwordLogin');
-      
       const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
@@ -238,23 +170,19 @@ const Login = ({ setIsLoggedIn }) => {
         body: JSON.stringify({ 
           username: phoneNumber, 
           password, 
-          mode: 'password',
-          recaptcha_token: token 
+            mode: 'password'
         }),
       });
-      
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || t('invalidCredentials'));
       }
-      
       const data = await response.json();
       handleLoginSuccess(data.data);
-      
-      // Reset reCAPTCHA after use
-      window.grecaptcha.reset();
     } catch (error) {
       setError(error.message || t('invalidCredentials'));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -296,8 +224,6 @@ const Login = ({ setIsLoggedIn }) => {
     setError('');
     
     try {
-      const token = getRecaptchaToken('verifyOtp');
-      
       const response = await fetch('https://api.tadrisino.org/account/login/login/', {
         method: 'POST',
         headers: {
@@ -306,8 +232,7 @@ const Login = ({ setIsLoggedIn }) => {
         body: JSON.stringify({ 
           username: phoneNumber, 
           code: otpCode, 
-          mode: 'otp',
-          recaptcha_token: token 
+            mode: 'otp'
         }),
       });
       
@@ -318,9 +243,6 @@ const Login = ({ setIsLoggedIn }) => {
       
       const data = await response.json();
       handleLoginSuccess(data.data);
-      
-      // Reset reCAPTCHA after use
-      window.grecaptcha.reset();
     } catch (error) {
       setError(error.message || t('invalidCode'));
     }
@@ -388,14 +310,11 @@ const Login = ({ setIsLoggedIn }) => {
                 required
               />
             </div>
-            
-            {/* reCAPTCHA v2 for password login */}
-            <div className="mb-6 flex justify-center">
-              <div ref={passwordRecaptchaRef} className="g-recaptcha"></div>
-            </div>
-            
-            <Button className="bg-buttonColor w-full text-white" type="submit">
-              {t('login')}
+            <Button className="bg-buttonColor w-full text-white flex items-center justify-center" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+              ) : t('login')}
+              {/*t('login')*/}
             </Button>
           </form>
         )}
@@ -440,11 +359,6 @@ const Login = ({ setIsLoggedIn }) => {
                     placeholder="123456"
                     required
                   />
-                </div>
-                
-                {/* reCAPTCHA v2 for OTP verification */}
-                <div className="mb-6 flex justify-center">
-                  <div ref={otpVerifyRecaptchaRef} className="g-recaptcha"></div>
                 </div>
                 
                 <Button className="bg-buttonColor w-full text-white" type="submit">

@@ -44,6 +44,8 @@ import CVEnhancer from './pages/CVenhancer';
 import PixelCityWorld from './pages/test';
 import BlogDetailPage from './pages/BlogDetailPage';
 import ChallengePage from './pages/challenger';
+import IntroScreen from './components/layout/AppIntro';
+import BackButtonHandler from './components/layout/BackButtonHandler';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -51,7 +53,18 @@ const App = () => {
     const refreshToken = localStorage.getItem('refreshToken');
     return !!(accessToken && refreshToken);
   });
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    try {
+      const stored = localStorage.getItem('isDarkTheme');
+      if (stored !== null) return stored === 'true';
+    } catch (e) {
+      // ignore (e.g. SSR or blocked storage)
+    }
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
   const { i18n } = useTranslation();
   const GOFTINO_KEY = "cD7Gse";
 
@@ -95,7 +108,37 @@ const App = () => {
     localStorage.setItem('i18nextLng', lng); // ✅ persist it explicitly
   };
 
-  const toggleTheme = () => setIsDarkTheme(!isDarkTheme);
+  const toggleTheme = () => {
+    setIsDarkTheme((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('isDarkTheme', String(next));
+      } catch (e) {
+        // ignore storage errors
+      }
+      return next;
+    });
+  };
+
+  // Listen to system color-scheme changes if user hasn't set a preference
+  useEffect(() => {
+    let mq;
+    try {
+      const stored = localStorage.getItem('isDarkTheme');
+      if (stored === null && typeof window !== 'undefined' && window.matchMedia) {
+        mq = window.matchMedia('(prefers-color-scheme: dark)');
+        const handler = (e) => setIsDarkTheme(e.matches);
+        if (mq.addEventListener) mq.addEventListener('change', handler);
+        else mq.addListener(handler);
+        return () => {
+          if (mq.removeEventListener) mq.removeEventListener('change', handler);
+          else mq.removeListener(handler);
+        };
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
@@ -105,6 +148,7 @@ const App = () => {
 
   return (
     <Router>
+      <BackButtonHandler />
       <GoftinoSnippet
         goftinoKey={GOFTINO_KEY}
         onReady={() => window.Goftino.close()}
@@ -120,9 +164,10 @@ const App = () => {
           currentLanguage={i18n.language}
         >
           <Routes>
-            {/* Login Routes */}
-            <Route path="*" element={<NotFoundPage />} />
-            <Route path="/" element={<HomePage />} />
+            {/* Intro Screen - shows first on site load */}
+            <Route path="/intro" element={<IntroScreen/>}/>
+            <Route path="/" element={<IntroScreen />} />
+            <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/resetpass" element={<ResetPassword />} />
@@ -175,6 +220,8 @@ const App = () => {
             {/* <Route path="/interview" element={<Interviewer />} /> */}
             {/* <Route path="/AIservey" element={<AISurvey />} /> */}
 
+            {/* Catch-all route - must be last */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Layout>
       </div>

@@ -274,7 +274,7 @@ const Header = ({
         <nav className="mx-auto px-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link
-              to="/"
+              to="/home"
               className={`text-xl font-b6 relative overflow-hidden
               ${isDarkTheme ? "text-white" : "text-gray-900"}
               ${isDarkTheme ? "hover:text-gray-300" : "hover:text-gray-900"}
@@ -343,7 +343,7 @@ const Header = ({
 
           <div className="hidden lg:flex items-center gap-x-4">
             <Link
-              to="/"
+              to="/home"
               className={`
               relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
               after:w-0 hover:after:w-full after:transition-all after:duration-300
@@ -583,7 +583,7 @@ const Header = ({
               </div>
             </div>
             <Link
-              to="/"
+              to="/home"
               onClick={toggleMenu}
               className={`
               block py-2 px-3 rounded-lg
