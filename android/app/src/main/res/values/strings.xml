@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Tadrisino</string>
-    <string name="title_activity_main">Tadrisino</string>
-    <string name="package_name">com.tadrisino.app</string>
-    <string name="custom_url_scheme">com.tadrisino.app</string>
-</resources>
