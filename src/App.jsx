@@ -46,6 +46,9 @@ import BlogDetailPage from './pages/BlogDetailPage';
 import ChallengePage from './pages/challenger';
 import IntroScreen from './components/layout/AppIntro';
 import BackButtonHandler from './components/layout/BackButtonHandler';
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { App as CapacitorApp } from "@capacitor/app";
+import { FileOpener } from "@capacitor-community/file-opener";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -101,6 +104,48 @@ const App = () => {
     else {
       setIsLoggedIn(false);
     }
+  }, []);
+
+  useEffect(() => {
+    const setupNotificationChannel = async () => {
+      try {
+        await LocalNotifications.createChannel({
+          id: "downloads",
+          name: "Downloads",
+          importance: 5, // HIGH importance
+          description: "Notifications for completed downloads",
+        });
+        console.log("Notification channel created");
+      } catch (e) {
+        console.error("Failed to create notification channel", e);
+      }
+    };
+
+    setupNotificationChannel();
+  }, []);
+
+  // 2️⃣ Handle notification taps to open PDF
+  useEffect(() => {
+    const unregister = CapacitorApp.addListener(
+      "localNotificationActionPerformed",
+      async (notification) => {
+        const filePath = notification.notification.extra?.filePath;
+        if (filePath) {
+          try {
+            // Wait 500ms to ensure app is fully resumed
+            setTimeout(async () => {
+              await FileOpener.open({ filePath, contentType: "applicatino/pdf" });
+            }, 500);
+          } catch (e) {
+            console.error("Failed to open PDF from notification", e);
+          }
+        }
+      }
+    );
+
+    return () => {
+      unregister.remove();
+    };
   }, []);
 
   const changeLanguage = (lng) => {

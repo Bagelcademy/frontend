@@ -15,6 +15,10 @@ import RecommendedCourseCard from '../components/ui/RecommendedCourseCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import LearningPathCard from '../components/ui/MyCourses_LearningPathCard';
 
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { LocalNotifications } from '@capacitor/local-notifications';
+import { FileOpener } from '@capacitor-community/file-opener';
+
 const COURSES_PER_SECTION = 4;
 
 const MyCourses = () => {
@@ -216,32 +220,97 @@ const fetchPaths = async () => {
     setInProgressCoursesPage(1);
   };
 
-  const handleDownloadNotes = async () => {
+  {/* compatible with browser */}
+  // const handleDownloadNotes = async () => {
+  //   try {
+  //     const token = localStorage.getItem('accessToken');
+  //     const response = await fetch('https://api.tadrisino.org/courses/user-notes/export-notes-pdf/', {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to download notes');
+  //     }
+
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     a.download = 'course-notes.pdf';
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //     document.body.removeChild(a);
+  //   } catch (error) {
+  //     console.error('Error downloading notes:', error);
+  //   }
+  // };
+
+  {/* compatible with android */}
+const handleDownloadNotes = async () => {
+  try {
+    const token = localStorage.getItem("accessToken");
+
+    // 1. Fetch PDF
+    const response = await fetch(
+      "https://api.tadrisino.org/courses/user-notes/export-notes-pdf/",
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (!response.ok) throw new Error("Failed to download notes");
+
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const base64Data = btoa(
+      new Uint8Array(arrayBuffer).reduce((acc, byte) => acc + String.fromCharCode(byte), "")
+    );
+
+    // 2. Save PDF to Downloads
+    const result = await Filesystem.writeFile({
+      path: "tadrisino-my-notes.pdf",
+      data: base64Data,
+      directory: Directory.External,
+      recursive: true,
+    });
+
+    console.log("Saved to:", result.uri);
+
+    // Get a URI that other apps can access
+    const fileUri = await Filesystem.getUri({
+      path: "tadrisino-my-notes.pdf",
+      directory: Directory.External,
+    });
+
+    console.log(fileUri.uri); 
+    // 3. Schedule notification if allowed
     try {
-      const token = localStorage.getItem('accessToken');
-      const response = await fetch('https://api.tadrisino.org/courses/user-notes/export-notes-pdf/', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: 1,
+            title: "Download complete",
+            body: "Tap to open your notes",
+            schedule: { at: new Date(Date.now() + 1000) },
+            channelId: "downloads",
+            extra: { filePath: result.uri },
+          },
+        ],
       });
+      console.log("Notification scheduled");
+    } catch (notifError) {
+      console.warn("Notifications not allowed:", notifError);
 
-      if (!response.ok) {
-        throw new Error('Failed to download notes');
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'course-notes.pdf';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading notes:', error);
+      // If notifications blocked, open PDF immediately
+      await FileOpener.open({ filePath: result.uri, contentType: "application/pdf" });
     }
-  };
+
+  } catch (error) {
+    console.error("Download error:", error);
+    alert("Download failed: " + error);
+  }
+};
+
 
   const handleCertificateRequest = (courseId, courseName, gotCertificate, certificateUrl) => {
     setCertificateModal({
