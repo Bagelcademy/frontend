@@ -29,16 +29,7 @@ const CourseCard = ({ course }) => {
         <CardContent className="relative p-6">
           <div className="flex flex-col h-full">
             {/* Updated Title Section */}
-            <h3
-              className="text-lg font-semibold mb-3 line-clamp-2 h-[48px]"
-              style={{
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
+            <h3 className="text-lg font-semibold mb-3 line-clamp-2 min-h-[48px] break-words">
               {course.title}
             </h3>
   
