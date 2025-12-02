@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import senfi from "../../assets/senfi.png";
+import Samandehi from "../../assets/samandehiLogo.png";
+import eNamad from "../../assets/enamadLogo.png";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -68,35 +70,35 @@ const Footer = () => {
 
 
         {/* Trust Badges */}
-        {/* <div className="flex justify-center items-center gap-4 mb-6"> */}
+        <div className="flex justify-center items-center gap-4 mb-6">
           {/* eNamad */}
-          {/* <a 
+          <a 
             href="https://trustseal.enamad.ir/?id=609515&Code=6FWmuBO0dYSwQ96O4fc0CUN2NYWe1Hqq" 
             target="_blank"
             className="block"
           >
             <img 
-              src="https://trustseal.enamad.ir/logo.aspx?id=609515&Code=6FWmuBO0dYSwQ96O4fc0CUN2NYWe1Hqq"
-              alt="eNamad"
+              src={eNamad}
+              alt={eNamad}
               className="w-16 h-16 object-contain"
             />
-          </a> */}
+          </a>
 
           {/* Samandehi */}
-          {/* <img 
-            src="https://logo.samandehi.ir/logo.aspx?id=380155&p=qftiaqgwlymanbpdujynujyn"
-            alt="Samandehi"
+          <img 
+            src={Samandehi}
+            alt={Samandehi}
             className="w-16 h-16 object-contain cursor-pointer"
             onClick={() => window.open("https://logo.samandehi.ir/Verify.aspx?id=380155&p=xlaomcsiobpdrfthdshwdshw", "Popup", "toolbar=no, scrollbars=no, location=no, statusbar=no, menubar=no, resizable=0, width=450, height=630, top=30")}
-          /> */}
+          />
 
           {/* Senfi Logo */}
-          {/* <img 
+          <img 
             src={senfi}
             alt="Senfi Logo"
             className="w-16 h-16 object-contain"
           />
-        </div> */}
+        </div>
 
 
 

@@ -3,11 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import ReactMarkdown from 'react-markdown';
-import { InlineMath, BlockMath } from 'react-katex';
-import 'katex/dist/katex.min.css';
 import Quiz from '../components/ui/quiz';
 import Notes from '../components/ui/notes';
 import CodeEditor from '../components/ui/code-editor';
@@ -75,6 +71,7 @@ const LessonPage = () => {
   const [hasRated, setHasRated] = useState(false);
   const [isLoadingNextLesson, setIsLoadingNextLesson] = useState(false);
   const [originalOrder, setOriginalOrder] = useState(null);
+  const [courseLanguage, setCourseLanguage] = useState(null);
 
   // Audio related states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -265,6 +262,25 @@ const LessonPage = () => {
 
       try {
         setContentGenerating(true);
+        
+        // Fetch course data to get language
+        const courseResponse = await fetch(
+          `https://api.tadrisino.org/courses/courses/${courseId}/`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (courseResponse.ok) {
+          const courseData = await courseResponse.json();
+          const language = courseData.language;
+          setCourseLanguage(language);
+        }
+
         const generationResponse = await fetch(
           `https://api.tadrisino.org/courses/course-generation/content-generation/${courseId}/${lessonId}/`
         );
@@ -464,94 +480,30 @@ const LessonPage = () => {
             transition={{ duration: 0.3 }}
           >
             {activeTab === 'content' && (
-              <Card className="max-w-4xl mx-auto">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-bold">{lesson?.order}. {lesson?.title}</CardTitle>
-                  <LessonAudio
-                    audioUrl={audioUrl}
-                    isGeneratingAudio={isGeneratingAudio}
-                    isPlaying={isPlaying}
-                    isMuted={isMuted}
-                    isBuffering={isBuffering}
-                    duration={duration}
-                    currentTime={currentTime}
-                    playbackRate={playbackRate}
-                    volume={volume}
-                    generateAudio={generateAudio}
-                    skipForward={skipForward}
-                    skipBackward={skipBackward}
-                    togglePlayPause={togglePlayPause}
-                    toggleMute={toggleMute}
-                    resetAudio={resetAudio}
-                    handleVolumeChange={handleVolumeChange}
-                    handlePlaybackRateChange={handlePlaybackRateChange}
-                    handleSeek={handleSeek}
-                    t={t}
-                  />
-                </CardHeader>
-                
-                  {/* Enhanced Audio Section */}
-                  
-                
-                <CardContent>
-                  <div className="prose dark:prose-invert max-w-none">
-
-                    
-                    <ReactMarkdown className="text-justify"
-                      components={{
-                        code({ node, inline, className, children, ...props }) {
-                          const content = String(children).trim();
-                          // Check for LaTeX block math ($$...$$ or \[...\])
-                          if (!inline && (
-                            (content.startsWith('$$') && content.endsWith('$$')) ||
-                            (content.startsWith('\\[') && content.endsWith('\\]'))
-                          )) {
-                            const math = content.startsWith('$$') 
-                              ? content.slice(2, -2) 
-                              : content.slice(2, -2);
-                            return (
-                              <BlockMath math={math} />
-                            );
-                          }
-                          // Check for LaTeX inline math ($...$ or \(...\))
-                          if (inline && (
-                            (content.startsWith('$') && content.endsWith('$')) ||
-                            (content.startsWith('\\(') && content.endsWith('\\)'))
-                          )) {
-                            const math = content.startsWith('$') 
-                              ? content.slice(1, -1) 
-                              : content.slice(2, -2);
-                            return <InlineMath math={math} />;
-                          }
-                          return inline ? (
-                            <code {...props}>{children}</code>
-                          ) : (
-                            <pre
-                              style={{
-                                direction: "ltr",
-                                textAlign: "left",
-                              }}
-                              {...props}
-                            >
-                              <code>{children}</code>
-                            </pre>
-                          );
-                        },
-                      }}
-                    >
-                      {lesson?.content}
-                    </ReactMarkdown>
-                  </div>
-                  <div className="mt-20 mb-3 flex justify-center">
-                    <Button
-                      onClick={() => setActiveTab('quiz')}
-                      className="px-3 py-5 gap-x-2 text-lg bg-blue-500 hover:bg-blue-600 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white dark:text-gray-300"
-                    >
-                      <Trophy className="w-5 h-5" /> {t('Quiz')}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <LessonContent
+                lesson={lesson}
+                courseLanguage={courseLanguage}
+                audioUrl={audioUrl}
+                isGeneratingAudio={isGeneratingAudio}
+                isPlaying={isPlaying}
+                isMuted={isMuted}
+                isBuffering={isBuffering}
+                duration={duration}
+                currentTime={currentTime}
+                playbackRate={playbackRate}
+                volume={volume}
+                generateAudio={generateAudio}
+                skipForward={skipForward}
+                skipBackward={skipBackward}
+                togglePlayPause={togglePlayPause}
+                toggleMute={toggleMute}
+                resetAudio={resetAudio}
+                handleVolumeChange={handleVolumeChange}
+                handlePlaybackRateChange={handlePlaybackRateChange}
+                handleSeek={handleSeek}
+                setActiveTab={setActiveTab}
+                t={t}
+              />
             )}
 
             {activeTab === 'quiz' && (

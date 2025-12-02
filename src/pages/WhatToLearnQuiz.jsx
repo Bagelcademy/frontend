@@ -181,7 +181,8 @@ const QuizComponent = () => {
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white"
+                      disabled={answers[currentQuestion] === null}
+                      className="flex items-center px-3 py-2 rounded-lg text-lg font-semibold bg-green-700 text-white disabled:opacity-50"
                     >
                       <div className={isRtl ? "ml-2" : "mr-2"}>
                         {t("Submit")}

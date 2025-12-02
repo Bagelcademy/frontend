@@ -1,5 +1,5 @@
 {
-  "name": "tadrisino",
+  "name": "app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/android": "^6.2.1",
-    "@capacitor/app": "^6.0.3",
-    "@capacitor/cli": "^6.2.1",
-    "@capacitor/core": "^6.2.1",
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/app": "^7.1.0",
+    "@capacitor/core": "^7.4.4",
     "@codemirror/lang-java": "^6.0.1",
     "@codemirror/lang-python": "^6.1.6",
     "@emotion/react": "^11.13.3",
@@ -58,6 +57,8 @@
     "react-slick": "^0.30.2",
     "react-spring": "^9.7.4",
     "recharts": "^2.15.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
     "shepherd.js": "^14.5.1",
     "slick-carousel": "^1.8.1",
@@ -67,18 +68,19 @@
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
-    "@eslint/js": "^9.9.0",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@capacitor/cli": "^7.4.4",
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.9.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-react": "^7.35.0",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.9",
-    "globals": "^15.9.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
-    "vite": "^5.4.1"
+    "vite": "^7.2.4"
   }
 }
