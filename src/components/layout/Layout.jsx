@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Header from './header';
 import Footer from './footer';
 import DiscountBanner from './DiscountBanner';
+import DownloadAppBanner from './DownloadAppBanner';
 
 const Layout = ({ 
   children, 
@@ -47,6 +48,7 @@ const Layout = ({
         </div>
       </main>
 
+      <DownloadAppBanner />
       <Footer />
     </div>
   );

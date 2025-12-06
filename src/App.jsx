@@ -44,6 +44,7 @@ import CVEnhancer from './pages/CVenhancer';
 import PixelCityWorld from './pages/test';
 import BlogDetailPage from './pages/BlogDetailPage';
 import ChallengePage from './pages/challenger';
+import DownloadAppContent from './pages/DownloadApp'
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -167,6 +168,7 @@ const App = () => {
             {/* <Route path="/pix" element={<PixelCityWorld />} /> */}
 
             {/* In progress pages */}
+            <Route path="/download" element={<DownloadAppContent/>}/>
             <Route path="/blog" element={<AINewsPage/>} />
             <Route path="/blog/:id" element={<BlogDetailPage/>} />
 
