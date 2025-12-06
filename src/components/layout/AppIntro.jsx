@@ -4,7 +4,7 @@ import icon from "../../assets/icon.png";
 import { useTranslation } from "react-i18next";
 
 const IntroScreen = () => {
-  const fullText = "Tadrisino";
+  const fullText = "تدریسینو"; // Tadrisino in Persian
   const [displayedText, setDisplayedText] = useState("");
   const [showIntro, setShowIntro] = useState(true);
   const { t } = useTranslation();
@@ -47,7 +47,7 @@ const IntroScreen = () => {
         />
 
         {/* TYPED TEXT BELOW */}
-        <div className="flex items-center mr-2 text-3xl font-bold tracking-[0.2m]">
+        <div className="flex items-center mr-2 text-4xl font-bold tracking-[0.2m]">
           <span>{displayedText}</span>
           <span className="ml-1 inline-block animate-[blink_0.8s_step-start_infinite]">
             |

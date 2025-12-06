@@ -230,8 +230,14 @@ const SubscriptionCards = () => {
       const data = await response.json();
       console.log('Subscription successful:', data);
 
-      if (data.url) window.open(data.url, '_blank');
-      else throw new Error('No payment URL provided');
+      if (!data.url) throw new Error('No payment URL provided');
+
+      // ⭐ ADD: Tell the server that this request is initiated from the app
+      const finalUrl = `${data.url}&fromApp=1`;
+
+      // Open in browser
+      window.open(finalUrl, '_blank');
+
     } catch (err) {
       setError(t('An error occurred during subscription. Please try again.'));
       console.error('Subscription error:', err);
