@@ -13,7 +13,7 @@ const StarRating = ({ rating }) => (
         }`}
       />
     ))}
-    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+    <span className="mx-1 pt-1 text-sm text-gray-600 dark:text-gray-400">
       {rating.toFixed(1)}
     </span>
   </div>

@@ -1286,7 +1286,7 @@
   "Challenge start error:":":شروع چالش با خطا مواجه شد",
   "Network error:":"خطای شبکه:",
   "Loading challenge...":"در حال بارگیری چالش...",
-  "completeCurrentChallenge": ".لطفا ابتدا چالش فعلی را تکمیل کنید",
+  "completeCurrentChallenge": ".لطفDownload the APK on your device.ا ابتدا چالش فعلی را تکمیل کنید",
   "teacher waiting list with this email already exists.":"لیست انتظار معلمان با این ایمیل از قبل وجود دارد.",
   "Please enroll in this course first":"لطفا ابتدا ثبت‌نام کنید",
 
@@ -1300,5 +1300,19 @@
   "Finish":"تمام",
   "Skip tour":"رد کردن",
   "Back":"قبلی",
-  "Skip":"رد کردن"
+  "Skip":"رد کردن",
+  "Download APK":"دانلود فایل نصبی برنامه",
+  "Open in Cafe Bazaar":"دریافت از کافه بازار",
+  "How to install":"نحوه نصب",
+  "Download the APK on your device.":"فایل APK را روی دستگاه خود دانلود کنید.",
+  "Enable 'Install unknown apps' in Settings.":"گزینه «نصب برنامه‌های ناشناخته» را در تنظیمات فعال کنید.",
+  "Open the APK file and install the app.":"فایل APK را باز کنید و برنامه را نصب کنید.",
+  "Launch the app and sign in.":"برنامه را اجرا کنید و وارد سیستم شوید.",
+  "Installation checklist":"توصیه های نصب",
+  "Android 8.0 or higher":"اندروید ۸.۰ یا بالاتر",
+  "Allow unknown sources for installation":"اجازه نصب از منابع ناشناس",
+  "Install our Android app for the best experience.":"برای بهترین تجربه، اپلیکیشن اندروید ما را نصب کنید.",
+  "Download App":"دانلود اپلیکیشن",
+  "Tadrisino Android app":"برنامه اندرویدی تدریسینو",
+  "Install the Tadrisino Android app directly on your device.":"اپلیکیشن اندروید تدریسینو را مستقیماً روی دستگاه خود نصب کنید."
 }

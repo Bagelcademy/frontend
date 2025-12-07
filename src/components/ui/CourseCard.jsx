@@ -4,26 +4,27 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Globe2, Briefcase, Users, Star, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import StarRating from './StarRatingCard';
 
 // CourseCard Component
 const CourseCard = ({ course }) => {
   const { t } = useTranslation();
   
-  const StarRating = ({ rating }) => (
-    <div className="flex items-center">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          className={`w-4 h-4 ${
-            star <= rating
-              ? 'fill-yellow-400 text-yellow-400'
-              : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
-          }`}
-        />
-      ))}
-      <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
-    </div>
-  );
+  // const StarRating = ({ rating }) => (
+  //   <div className="flex items-center">
+  //     {[1, 2, 3, 4, 5].map((star) => (
+  //       <Star
+  //         key={star}
+  //         className={`w-4 h-4 ${
+  //           star <= rating
+  //             ? 'fill-yellow-400 text-yellow-400'
+  //             : 'fill-gray-300 text-gray-300 dark:fill-gray-600 dark:text-gray-600'
+  //         }`}
+  //       />
+  //     ))}
+  //     <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">{rating.toFixed(1)}</span>
+  //   </div>
+  // );
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-102">
