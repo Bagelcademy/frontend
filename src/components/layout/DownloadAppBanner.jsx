@@ -1,95 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X , Download } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const STORAGE_KEY = 'downloadAppBannerShown';
+const STORAGE_KEY = "download_app_banner_dismissed";
 
-const DownloadAppBanner = () => {
-  const [visible, setVisible] = useState(false);
-  const { t } = useTranslation();
+export default function DownloadAppBanner() {
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const dismissed = localStorage.getItem(STORAGE_KEY);
+    if (dismissed) return;
 
-    try {
-      // Allow forcing the banner via URL param for testing (e.g. ?forceDownloadBanner=1)
-      const params = new URLSearchParams(window.location.search);
-      const forceShow = params.get('forceDownloadBanner') === '1';
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setVisible(mobile);
+    };
 
-      const alreadyShown = localStorage.getItem(STORAGE_KEY) === 'false';
-      if (alreadyShown && !forceShow) return;
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-      // If forceShow is set, show immediately for testing (bypass size checks and timer)
-      if (forceShow) {
-        console.debug('DownloadAppBanner: forceShow active — showing banner now');
-        setVisible(true);
-        return;
-      }
-
-      const isAndroid = /Android/i.test(navigator.userAgent || '');
-      const isSmallScreen = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-
-      // Only show for small screens by default
-      // NOTE: Android check is commented out for desktop testing — remove comment to re-enable
-      if (!isAndroid || !isSmallScreen) return;
-
-      const timer = setTimeout(() => {
-        // mark as shown so it only appears the first time
-        // try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (e) {}
-        // setVisible(true);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    } catch (err) {
-      // fail silently
-    }
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  if (!visible) return null;
+  const dismiss = () => {
+    localStorage.setItem(STORAGE_KEY, "true");
+    setVisible(false);
+  };
+
+  const handleDownload = () => {
+    localStorage.setItem(STORAGE_KEY, "true");
+    navigate("/download");
+    setVisible(false);
+  };
+
+  if (!isMobile) return null;
 
   return (
-    <div
-      role="dialog"
-      aria-label="Download app"
-      className="fixed z-50 bottom-0 left-0 w-full box-border overflow-hidden"
-      style={{ pointerEvents: 'auto' }}
-    >
-      <div className="bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-lg rounded-lg p-2 flex items-center gap-3">
-        {/* <div className="flex-shrink-0"> */}
-          {/* <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-md flex items-center justify-center text-white font-semibold">APP</div> */}
-        {/* </div> */}
-
-        <div className="flex-1 flex items-center gap-3 text-sm leading-tight">
-          <div className="text-sm opacity-80 whitespace-nowrap px-4">
-            {t("Install our Android app for the best experience.")}
-          </div>
-
-          <a
-            href="/download"
-            className="text-xs bg-blue-600 text-white px-3 pt-2 pb-1 rounded"
-            onClick={(e) => {
-              e.preventDefault();
-              try { localStorage.setItem(STORAGE_KEY, 'true'); } catch (e) {}
-              setVisible(false);
-              navigate('/download');
-            }}
-          >
-            {t("Download App")}
-          </a>
-        </div>
-        <button
-          aria-label="Close download banner"
-          onClick={() => { try { localStorage.setItem(STORAGE_KEY, 'true'); } catch(e){} setVisible(false); }}
-          className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white ml-2 p-1"
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ y: 120, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 120, opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed bottom-4 right-1 z-50 w-[70%] max-w-sm"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  );
-};
+          <div dir="rtl" className="flex items-center justify-between gap-3 rounded-xl bg-gray-300 dark:bg-slate-600 p-2.5 shadow-lg">
+            <button
+                onClick={dismiss}
+                className="rounded-xl p-2 bg-gray-900 text-gray-200 hover:bg-gray-500"
+                aria-label="Close"
+              >
+                <X size={18} />
+            </button>
+            <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+              {t("Tadrisino App")}
+            </span>
 
-export default DownloadAppBanner;
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleDownload}
+                className="rounded-lg border border-purple-800 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-3 py-2 text-sm font-medium text-white active:scale-95"
+              >
+                <Download size={16} className="inline-block" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

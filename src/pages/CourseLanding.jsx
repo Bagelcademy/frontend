@@ -349,7 +349,7 @@ const CourseLandingPage = () => {
     <div className=" bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-white min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[70vh] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-purple-600/80 dark:from-blue-600/80 dark:to-purple-600/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/90 to-purple-600/90 dark:from-blue-700/60 dark:to-purple-700/60"></div>
         <img
           src={course.image_url}
           alt={course.title}
@@ -357,7 +357,7 @@ const CourseLandingPage = () => {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-4xl mx-auto text-center px-4">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white animate-fade-in-down">
+            <h1 className="text-3xl md:text-7xl font-bold mb-6 text-white animate-fade-in-down rounded-lg bg-slate-900/50 p-4">
               {course.title}
             </h1>
             <div className="flex items-center justify-center space-x-8 mb-8 text-white">
@@ -383,7 +383,7 @@ const CourseLandingPage = () => {
               {isEnrolled ? t("Enrolled") : t("Enroll Now")}
             </button>
             <div className="flex items-center justify-center space-x-4 mt-4">
-<ShareButton />
+              <ShareButton />
             </div>
           </div>
         </div>
