@@ -378,7 +378,7 @@ const Signup = () => {
             
             <Button
               type="submit"
-              className="w-full text-gray-200"
+              className="w-full bg-black text-gray-200"
               disabled={isLoading}
             >
               {isLoading ? (

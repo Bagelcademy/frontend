@@ -357,7 +357,7 @@ const CourseLandingPage = () => {
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-4xl mx-auto text-center px-4">
-            <h1 className="text-3xl md:text-7xl font-bold mb-6 text-white animate-fade-in-down rounded-lg bg-slate-900/50 p-4">
+            <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white animate-fade-in-down rounded-lg bg-slate-900/50 p-4">
               {course.title}
             </h1>
             <div className="flex items-center justify-center space-x-8 mb-8 text-white">

@@ -457,15 +457,18 @@ const LessonPage = () => {
       <LessonTabs tabs={TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
       <LessonGuidedTour/>
       {/* Back Button - Fixed position under tabs */}
-      <div className="fixed left-4 sm:top-[calc(7rem+40px)] md:top-[calc(7rem+64px)] top-[calc(9rem+30px)] z-50">
+      <div className="fixed left-4 sm:top-[calc(7rem+40px)] md:top-[calc(7rem+64px)] top-[calc(9rem+30px)] z-40">
         <Button
           variant="ghost"
           size="sm"
           onClick={handleBack}
-          className="flex items-center gap-2 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
+          className="flex items-center gap-1 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
         >
           <ChevronLeft className="w-4 h-4" />
-          {t('Back to Course')}
+          <p className='mt-1 hidden sm:block'>
+            {t('Back to Course')}
+          </p>
+          <BookOpen className="w-4 h-4 sm:hidden" />
         </Button>
       </div>
 

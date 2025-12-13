@@ -35,7 +35,7 @@ const LessonContent = ({
 }) => {
   return (
     <Card
-      className={`max-w-4xl mx-auto ${
+      className={`max-w-4xl mx-auto mt-8 sm:mt-2 ${
         courseLanguage === 'Persian'
           ? '[direction:rtl] text-right'
           : '[direction:ltr] text-left'
