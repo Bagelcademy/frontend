@@ -233,7 +233,9 @@ const SubscriptionCards = () => {
       if (!data.url) throw new Error('No payment URL provided');
 
       // ⭐ ADD: Tell the server that this request is initiated from the app
-      const finalUrl = `${data.url}&fromApp=1`;
+    //   const finalUrl = data.url.includes('?')
+    // ? `${data.url}&fromApp=1`
+    // : `${data.url}?fromApp=1`;
 
       // Open in browser
       window.open(finalUrl, '_blank');

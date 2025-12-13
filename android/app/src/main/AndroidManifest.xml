@@ -5,11 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- STORAGE PERMISSIONS -->
-
-    <!-- For Android 13+ (replaces READ_EXTERNAL_STORAGE) -->
     <uses-permission android:name="android.permission.READ_MEDIA_DOCUMENTS" />
 
-    <!-- These only work on Android 9 or lower -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
@@ -33,9 +30,20 @@
             android:launchMode="singleTask"
             android:exported="true">
 
+            <!-- MAIN APP ENTRY -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- 🔥 ADD THIS: DEEP LINK SUPPORT -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Opens app with: tadrisino://anything -->
+                <data android:scheme="tadrisino" />
             </intent-filter>
 
         </activity>

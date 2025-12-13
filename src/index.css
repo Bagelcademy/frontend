@@ -153,6 +153,7 @@ nav {
 .button {
   border-radius: 9999px; /* Fully rounded buttons */
 }
+
 .katex-display {
   direction: ltr !important;
   /* text-align: left !important; */
