@@ -461,12 +461,12 @@ const Login = ({ setIsLoggedIn }) => {
             {t('Signup Link')}
           </a>
         </p> 
-        <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+        {/* <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
           {t('resetPasswordPrompt')}{' '}
           <a href="/resetpass" className="text-blue-500 hover:underline">
             {t('resetPassword')}
           </a>
-        </p>
+        </p> */}
       </div>
 
       {/* Character Welcome Popup */}

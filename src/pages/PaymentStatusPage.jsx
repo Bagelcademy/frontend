@@ -10,8 +10,14 @@ const PaymentStatusPage = () => {
   const searchParams = new URLSearchParams(location.search);
   const status = searchParams.get('status');
   const authority = searchParams.get('authority');
+  const fromApp = searchParams.get('fromApp');
 
   const isSuccess = status === 'success';
+
+  const handleReturnToApp = () => {
+    // Deep link back into your app
+    window.location.href = 'tadrisino://return';
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -38,6 +44,12 @@ const PaymentStatusPage = () => {
           <p className="text-sm text-gray-500">
             {t('Authority')} <span className="font-mono">{authority || t('Not provided')}</span>
           </p>
+          {fromApp && (<button
+              onClick={handleReturnToApp}
+              className="bg-blue-600 dark:bg-slate-800 text-white py-2 mt-2 rounded-lg shadow hover:bg-blue-700 transition dark:hover:bg-slate-700"
+            >
+              {t('Return to App')}
+          </button>)}
         </div>
       </div>
     </div>
