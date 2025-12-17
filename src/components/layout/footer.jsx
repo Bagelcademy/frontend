@@ -48,10 +48,10 @@ const Footer = () => {
             {/* Special Pages */}
         <div className="flex justify-center gap-4 mb-6 text-lg">
         <ul className="space-y-2 text-center text-gray-600 dark:text-gray-400">
-
           <li><Link to="/Cve" className="hover:text-buttonColor transition-colors">{t('CV Enhancer')}</Link></li>
           <li><Link to="/waitlist" className="hover:text-buttonColor transition-colors">{t('Teacher Waitlist')}</Link></li>
           <li><Link to="/download" className="hover:text-buttonColor transition-colors">{t('Tadrisino App')}</Link></li>
+          <li><Link to="https://ai.tadrisino.org/" className="hover:text-buttonColor transition-colors">{t('Image Generating AI')}</Link></li>
         </ul>
         </div>
           <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
