@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import senfi from "../../assets/senfi.png";
 import Samandehi from "../../assets/samandehiLogo.png";
@@ -57,10 +57,10 @@ const Footer = () => {
         </div>
           <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Linkedin size={20} /></a>
+              <a href="https://t.me/tadrisino_org" className="text-gray-600 hover:text-buttonColor transition-colors"><Send size={20} /></a>
+              {/* <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Twitter size={20} /></a> */}
+              <a href="https://www.instagram.com/tadrisino_org" className="text-gray-600 hover:text-buttonColor transition-colors"><Instagram size={20} /></a>
+              {/* <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Linkedin size={20} /></a> */}
             </div>
             </div>
 
