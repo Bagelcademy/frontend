@@ -461,8 +461,9 @@ const LessonPage = () => {
         <Button
           variant="ghost"
           size="sm"
+          dir="ltr"
           onClick={handleBack}
-          className="flex items-center gap-1 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
+          className="tour-back-to-course-button flex items-center p-2 gap-1 bg-gray-500 text-white hover:bg-gray-600 dark:hover:bg-slate-700"
         >
           <ChevronLeft className="w-4 h-4" />
           <p className='mt-1 hidden sm:block'>
