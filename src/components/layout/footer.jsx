@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Send, Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import senfi from "../../assets/senfi.png";
 
@@ -48,18 +48,18 @@ const Footer = () => {
             {/* Special Pages */}
         <div className="flex justify-center gap-4 mb-6 text-lg">
         <ul className="space-y-2 text-center text-gray-600 dark:text-gray-400">
-
           <li><Link to="/Cve" className="hover:text-buttonColor transition-colors">{t('CV Enhancer')}</Link></li>
           <li><Link to="/waitlist" className="hover:text-buttonColor transition-colors">{t('Teacher Waitlist')}</Link></li>
           <li><Link to="/download" className="hover:text-buttonColor transition-colors">{t('Tadrisino App')}</Link></li>
+          <li><Link to="https://ai.tadrisino.org/" className="hover:text-buttonColor transition-colors">{t('Image Generator AI')}</Link></li>
         </ul>
         </div>
           <h4 className="text-gray-600 dark:text-gray-400 text-lg font-semibold mb-4">{t('Follow Us')}</h4>
             <div className="flex gap-4">
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Linkedin size={20} /></a>
+              <a href="https://t.me/tadrisino_org" className="text-gray-600 hover:text-buttonColor transition-colors"><Send size={20} /></a>
+              {/* <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Twitter size={20} /></a> */}
+              <a href="https://www.instagram.com/tadrisino_org" className="text-gray-600 hover:text-buttonColor transition-colors"><Instagram size={20} /></a>
+              {/* <a href="#" className="text-gray-600 hover:text-buttonColor transition-colors"><Linkedin size={20} /></a> */}
             </div>
             </div>
 

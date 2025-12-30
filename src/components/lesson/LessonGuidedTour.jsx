@@ -56,6 +56,15 @@ const LessonGuidedTour = () => {
         attachTo: { element: ".tour-ai-tab", on: "bottom" },
         buttons: [
           { text: t("Back"), action: function () { this.back(); } },
+          { text: t("Next"), action: function () { this.next(); } }
+        ]
+      },
+      {
+        id: "back-to-course-button",
+        text: t("LessonTabsTour.AI_Assistant"),
+        attachTo: { element: ".tour-back-to-course-button", on: "bottom" },
+        buttons: [
+          { text: t("Back"), action: function () { this.back(); } },
           { text: t("Finish"), action: function () { this.complete(); } }
         ]
       }
