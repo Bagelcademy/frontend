@@ -23,11 +23,11 @@ header {
   button {
     transition: background-color 0.3s ease, transform 0.3s ease; /* Button transition for hover effect */
   }
-  
+/*   
   button:hover {
-    transform: scale(1.05); /* Slight scale up on hover */
-  }
-  
+    transform: scale(1.05); Slight scale up on hover 
+  } */
+
 /* Add to Header.css or index.css */
 
 nav {
@@ -72,8 +72,8 @@ header a:hover {
 button {
   transition: background-color 0.3s ease, transform 0.3s ease; /* Button transition for hover effect */
 }
-
+/* 
 button:hover {
-  transform: scale(1.05); /* Slight scale up on hover */
-}
+  transform: scale(1.05); Slight scale up on hover
+} */
     

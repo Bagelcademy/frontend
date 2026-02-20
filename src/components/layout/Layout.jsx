@@ -43,7 +43,7 @@ const Layout = ({
 
       <main className="flex-grow flex flex-col">
         <div className="w-full flex-grow">
-          <DiscountBanner />
+          {/* <DiscountBanner /> */}
           {children}
         </div>
       </main>

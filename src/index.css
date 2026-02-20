@@ -159,3 +159,72 @@ nav {
   direction: ltr !important;
   /* text-align: left !important; */
 }
+
+/* ------------------------------ extra styles ----------------------------------- */
+
+.heroSection__button {
+  border-radius: calc(infinity * 1px);
+  min-width: 158px;
+  position: relative;
+}
+
+.heroSection__button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  background: conic-gradient(from var(--btn-conic-deg) at 50% 50%, #9333ea 10%, #3b82f6, transparent 50%);
+  border-radius: inherit;
+  z-index: -1;
+  animation: btn-conic-rotation 2s cubic-bezier(.02,.37,.86,.34) infinite forwards;
+  isolation: isolate;
+}
+
+@property --btn-conic-deg {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes btn-conic-rotation {
+  from { --btn-conic-deg: 0deg; }
+  to { --btn-conic-deg: -360deg; }
+}
+
+.courseCard {
+  position: relative;
+  overflow: hidden;
+}
+
+/* maybe later we should consider 3D effect for cards */
+/* a:has(.courseCard):nth-child(1) > .courseCard {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform: translateZ(200px) rotateY(20deg) rotateX(-1deg) rotateZ(-1deg) perspective(500px);
+} */
+
+a:has(.courseCard):nth-child(2) > .courseCard {
+  margin-top: -10px;
+}
+
+.courseCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 -2px 8px 0 #ccc;
+}
+
+.courseCard::before {
+  content: "";
+  position: absolute;
+  width: 80px;
+  top: -65px;
+  right: -150px;
+  height: 150%;
+  background: rgb(200 200 200 / .3);
+  transform: rotate(20deg);
+  transition: right 250ms;
+  z-index: 1;
+}
+
+.courseCard:hover::before {
+  right: calc(100% + 80px);
+}

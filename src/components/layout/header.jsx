@@ -252,16 +252,12 @@ const Header = ({
     <>
       <header
         className={`
-        fixed w-full top-0 z-50 transition-all duration-100
-        ${scrolled ? "py-2" : "py-4"}
-        ${
+        sticky mx-auto z-50 transition-all duration-200 px-16
+        ${scrolled ? `w-[calc(100%-48px)] rounded-2xl py-2 top-5 backdrop-blur-xl border-b ${
           isDarkTheme
-            ? "bg-gray-800/70 shadow-lg shadow-gray-900/10"
-            : "bg-white/30 shadow-lg shadow-gray-200/10"
-        }
-        backdrop-blur-xl
-        border-b
-        ${isDarkTheme ? "border-gray-700/30" : "border-gray-200/30"}
+            ? "bg-gray-800/70 shadow-lg shadow-gray-900/10 border-gray-700/30"
+            : "bg-white/30 shadow-lg shadow-black/10 border-gray-200/40"
+        }` : "py-4 top-0 w-full rounded-none border-none"}
       `}
       >
         {/* Logout alert block */}
@@ -341,7 +337,7 @@ const Header = ({
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-x-4">
+          <div className="hidden lg:flex items-center gap-x-6">
             <Link
               to="/"
               className={`
@@ -448,7 +444,9 @@ const Header = ({
                 {t("login")}
               </Link>
             )}
+          </div>
 
+          <div className="hidden lg:flex items-center gap-x-4">
             <div
               onClick={toggleTheme}
               className={`
