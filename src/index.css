@@ -171,7 +171,7 @@ nav {
 .heroSection__button::before {
   content: "";
   position: absolute;
-  inset: -4px;
+  inset: -3px;
   background: conic-gradient(from var(--btn-conic-deg) at 50% 50%, #9333ea 10%, #3b82f6, transparent 50%);
   border-radius: inherit;
   z-index: -1;
@@ -194,14 +194,6 @@ nav {
   position: relative;
   overflow: hidden;
 }
-
-/* maybe later we should consider 3D effect for cards */
-/* a:has(.courseCard):nth-child(1) > .courseCard {
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  perspective: 1000px;
-  transform: translateZ(200px) rotateY(20deg) rotateX(-1deg) rotateZ(-1deg) perspective(500px);
-} */
 
 a:has(.courseCard):nth-child(2) > .courseCard {
   margin-top: -10px;

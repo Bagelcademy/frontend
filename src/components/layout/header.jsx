@@ -252,8 +252,8 @@ const Header = ({
     <>
       <header
         className={`
-        sticky mx-auto z-50 transition-all duration-200 px-16
-        ${scrolled ? `w-[calc(100%-48px)] rounded-2xl py-2 top-5 backdrop-blur-xl border-b ${
+        sticky mx-auto z-50 transition-all duration-200 px-2 sm:px-14
+        ${scrolled ? `w-[calc(100%-24px)] sm:w-[calc(100%-48px)] rounded-2xl py-2 top-2 sm:top-5 backdrop-blur-xl border-b ${
           isDarkTheme
             ? "bg-gray-800/70 shadow-lg shadow-gray-900/10 border-gray-700/30"
             : "bg-white/30 shadow-lg shadow-black/10 border-gray-200/40"
@@ -333,7 +333,7 @@ const Header = ({
               </div>
 
               {/* Text label */}
-              <span className="text-base tracking-wide">{t("AI Assistant")}</span>
+              <span className="hidden min-[410px]:inline text-sm sm:text-base tracking-wide">{t("AI Assistant")}</span>
             </Link>
           </div>
 
@@ -502,6 +502,7 @@ const Header = ({
           <div
             data-mobile-menu
             className={`
+            rounded-2xl
             lg:hidden px-4 py-2 gap-y-3
             backdrop-blur-xl
             z-50
